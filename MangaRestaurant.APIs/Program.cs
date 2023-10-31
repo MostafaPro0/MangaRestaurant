@@ -10,6 +10,7 @@ using MangaRestaurant.Repository.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Writers;
+using StackExchange.Redis;
 
 namespace MangaRestaurant.APIs
 {
@@ -27,6 +28,12 @@ namespace MangaRestaurant.APIs
             builder.Services.AddDbContext<StoreContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            builder.Services.AddSingleton<IConnectionMultiplexer>(Option =>
+            {
+                var connection = (builder.Configuration.GetConnectionString("DefaultConnection"));
+                return ConnectionMultiplexer.Connect(connection);
             });
 
             builder.Services.AddApplicationServices();
