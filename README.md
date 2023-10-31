@@ -1,0 +1,1 @@
+# MangaRestaurant.Solution
