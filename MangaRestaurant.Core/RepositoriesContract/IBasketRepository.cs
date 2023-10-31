@@ -9,12 +9,10 @@ namespace MangaRestaurant.Core.RepositoriesContract
 {
     public interface IBasketRepository
     {
-        Task<CustomerBasket> GetBasketAsync(int id);
-
-        Task<CustomerBasket?> GetBasketAsync(string BasketId);
+        Task<CustomerBasket?> GetBasketAsync(string id);
 
         Task<CustomerBasket?> UpdateBasketAsync(CustomerBasket basket);
-        Task<bool> DeleteBasketAsync(int id);
+        Task<bool> DeleteBasketAsync(string id);
 
 
     }
