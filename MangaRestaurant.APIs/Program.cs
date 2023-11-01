@@ -32,7 +32,7 @@ namespace MangaRestaurant.APIs
 
             builder.Services.AddSingleton<IConnectionMultiplexer>(Option =>
             {
-                var connection = (builder.Configuration.GetConnectionString("DefaultConnection"));
+                var connection = (builder.Configuration.GetConnectionString("RedisConnection"));
                 return ConnectionMultiplexer.Connect(connection);
             });
 

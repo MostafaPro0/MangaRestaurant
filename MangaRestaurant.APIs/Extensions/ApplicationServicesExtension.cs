@@ -18,6 +18,8 @@ namespace MangaRestaurant.APIs.Extensions
             //ده بيعوض اللى فات كله
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
+            services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));//AllowDependencyInjection
+
             services.AddAutoMapper(typeof(MappingProfile));
 
             services.Configure<ApiBehaviorOptions>(options =>
