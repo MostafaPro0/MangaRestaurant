@@ -43,6 +43,8 @@ namespace MangaRestaurant.Core.Specifications.ProductSpecs
                         break;
                 }
             }
+            else
+                AddOrderBy(P => P.Name);
         }
         private void AddIncludes()
         {
