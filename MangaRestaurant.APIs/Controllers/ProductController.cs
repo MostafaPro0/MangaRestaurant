@@ -6,6 +6,8 @@ using MangaRestaurant.Core.Entities;
 using MangaRestaurant.Core.RepositoriesContract;
 using MangaRestaurant.Core.Specifications;
 using MangaRestaurant.Core.Specifications.ProductSpecs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,6 +28,7 @@ namespace MangaRestaurant.APIs.Controllers
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         //GET : /api/Products
         [HttpGet]
+    //    [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetAllProducts([FromQuery]ProductSpecParams specParams)
         {
             var spec = new ProductWithBrandAndCategorySpecs(specParams);

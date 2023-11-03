@@ -46,7 +46,7 @@ namespace MangaRestaurant.APIs
 
             builder.Services.AddApplicationServices();
 
-            builder.Services.AddIdentityServices();
+            builder.Services.AddIdentityServices(builder.Configuration);
 
             #endregion
 
@@ -98,6 +98,7 @@ namespace MangaRestaurant.APIs
             app.MapControllers();
 
             app.UseAuthorization();
+            app.UseAuthentication();
             #endregion
 
             app.Run();

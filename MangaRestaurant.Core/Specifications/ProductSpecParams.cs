@@ -12,6 +12,15 @@ namespace MangaRestaurant.Core.Specifications
         public int? BrandId { get; set; }
         public int? CategoryId { get; set; }
 
+        private  string? search;
+
+        public  string? Search
+        {
+            get { return search; }
+            set { search = value?.ToLower(); }
+        }
+
+
         private int pageSize = 20;
 
         public int PageSize
