@@ -1,4 +1,5 @@
-﻿using MangaRestaurant.Core.Dtos;
+﻿
+using MangaRestaurant.APIs.Dtos;
 using MangaRestaurant.Core.Specifications;
 
 namespace MangaRestaurant.APIs.Helpers

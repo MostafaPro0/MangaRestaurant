@@ -1,5 +1,5 @@
-﻿using MangaRestaurant.APIs.Errors;
-using MangaRestaurant.Core.Dtos;
+﻿using MangaRestaurant.APIs.Dtos;
+using MangaRestaurant.APIs.Errors;
 using MangaRestaurant.Core.Entities;
 using MangaRestaurant.Core.RepositoriesContract;
 using MangaRestaurant.Core.Specifications;

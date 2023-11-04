@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MangaRestaurant.Core.Dtos
+namespace MangaRestaurant.APIs.Dtos
 {
     public class ProductToReturnDto
     {

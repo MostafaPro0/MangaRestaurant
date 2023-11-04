@@ -28,6 +28,8 @@ namespace MangaRestaurant.APIs
             #region Configuration Service
             builder.Services.AddControllers();
 
+            builder.Services.AddApplicationServices();
+
             builder.Services.AddDbContext<StoreContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -44,7 +46,6 @@ namespace MangaRestaurant.APIs
                 Options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
             });
 
-            builder.Services.AddApplicationServices();
 
             builder.Services.AddIdentityServices(builder.Configuration);
 
@@ -95,10 +96,11 @@ namespace MangaRestaurant.APIs
 
             app.UseStaticFiles();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.MapControllers();
 
-            app.UseAuthorization();
-            app.UseAuthentication();
             #endregion
 
             app.Run();

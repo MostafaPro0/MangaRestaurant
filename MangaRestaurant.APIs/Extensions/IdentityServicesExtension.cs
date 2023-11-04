@@ -4,6 +4,7 @@ using MangaRestaurant.Repository.Identity;
 using MangaRestaurant.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -13,14 +14,20 @@ namespace MangaRestaurant.APIs.Extensions
     {
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddIdentity<AppUser, IdentityRole>(Oprions =>
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddIdentity<AppUser, IdentityRole>(Options =>
             {
                 //   Oprions.Password.RequiredLength = 5;
 
             }).AddEntityFrameworkStores<AppIdentityDbContext>();
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(Option =>
+            services.AddAuthentication(Options=>
             {
-                Option.TokenValidationParameters = new TokenValidationParameters()
+                Options.DefaultAuthenticateScheme= JwtBearerDefaults.AuthenticationScheme;
+                Options.DefaultChallengeScheme= JwtBearerDefaults.AuthenticationScheme;
+            })
+           .AddJwtBearer(Options =>
+            {
+                Options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuer = true,
                     ValidIssuer = configuration["JWT:ValidIssuer"],
@@ -33,7 +40,6 @@ namespace MangaRestaurant.APIs.Extensions
                 };
             });
 
-            services.AddScoped<ITokenService, TokenService>();
 
             return services;
         }

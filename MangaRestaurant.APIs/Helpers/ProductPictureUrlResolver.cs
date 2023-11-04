@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MangaRestaurant.Core.Dtos;
+using MangaRestaurant.APIs.Dtos;
 using MangaRestaurant.Core.Entities;
 
 namespace MangaRestaurant.APIs.Helpers

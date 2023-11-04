@@ -1,5 +1,6 @@
 ﻿using MangaRestaurant.Core.Entities.Identity;
 using MangaRestaurant.Core.Service;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -19,7 +20,7 @@ namespace MangaRestaurant.Service
         public TokenService(IConfiguration configuration) {
             _configuration = configuration;
         }
-        public async Task<string> CreateTokenAsync(AppUser user)
+        public async Task<string> CreateTokenAsync(AppUser user, UserManager<AppUser> userManager)
         {
             //PayLoad [Data] [Claims]
             //1. Private Claims
@@ -28,6 +29,12 @@ namespace MangaRestaurant.Service
                new Claim(ClaimTypes.GivenName,user.DisplayName),
                new Claim(ClaimTypes.Email,user.Email),
             };
+
+            var userRoles = await userManager.GetRolesAsync(user);
+            foreach(var role in userRoles)
+            {
+                authUserClaims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             //2. Register Claims
 
@@ -40,7 +47,7 @@ namespace MangaRestaurant.Service
                 claims: authUserClaims,
                 signingCredentials:new SigningCredentials(authKey,SecurityAlgorithms.HmacSha256));
 
-            return  new JwtSecurityTokenHandler().WriteToken( token);
+            return  new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

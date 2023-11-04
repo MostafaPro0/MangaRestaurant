@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using MangaRestaurant.APIs.Dtos;
 using MangaRestaurant.APIs.Errors;
 using MangaRestaurant.APIs.Helpers;
-using MangaRestaurant.Core.Dtos;
 using MangaRestaurant.Core.Entities;
 using MangaRestaurant.Core.RepositoriesContract;
 using MangaRestaurant.Core.Specifications;
