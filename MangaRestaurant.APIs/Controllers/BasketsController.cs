@@ -1,4 +1,6 @@
-﻿using MangaRestaurant.APIs.Errors;
+﻿using AutoMapper;
+using MangaRestaurant.APIs.Dtos;
+using MangaRestaurant.APIs.Errors;
 using MangaRestaurant.Core.Entities;
 using MangaRestaurant.Core.RepositoriesContract;
 using Microsoft.AspNetCore.Http;
@@ -9,10 +11,12 @@ namespace MangaRestaurant.APIs.Controllers
     public class BasketsController : BaseApiController
     {
         private readonly IBasketRepository _basketRepository;
+        private readonly IMapper _mapper;
 
-        public BasketsController(IBasketRepository basketRepository)
+        public BasketsController(IBasketRepository basketRepository, IMapper mapper)
         {
             _basketRepository = basketRepository;
+            _mapper = mapper;
         }
         // GET Or ReCreate Basket
         [HttpGet]//GET OR Create
@@ -23,9 +27,10 @@ namespace MangaRestaurant.APIs.Controllers
         }
         // Create Or Update
         [HttpPost]
-        public async Task<ActionResult<CustomerBasket>> UpdateBasket(CustomerBasket basket)
+        public async Task<ActionResult<CustomerBasket>> UpdateBasket(CustomerBasketDTO basket)
         {
-            var createdOrUpdated = await _basketRepository.UpdateBasketAsync(basket);
+            var mappedBasket = _mapper.Map<CustomerBasketDTO, CustomerBasket>(basket);
+            var createdOrUpdated = await _basketRepository.UpdateBasketAsync(mappedBasket);
 
             return createdOrUpdated is null ? BadRequest(new ApiResponse(400, "You Have Problem in your basket")) : Ok(createdOrUpdated);
         }

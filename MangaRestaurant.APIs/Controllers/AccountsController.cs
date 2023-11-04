@@ -32,6 +32,10 @@ namespace MangaRestaurant.APIs.Controllers
         [HttpPost("Register")]
         public async Task<ActionResult<UserDTO>> Register(RegisterDTO registerModel)
         {
+            if(CheclEmailExist(registerModel.Email).Result.Value)
+            {
+                return  BadRequest(new ApiResponse(400,"this Email Exist"));
+            }
             var user = new AppUser()
             {
                 DisplayName = registerModel.DisplayName,

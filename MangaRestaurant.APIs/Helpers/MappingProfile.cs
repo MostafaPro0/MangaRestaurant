@@ -15,6 +15,9 @@ namespace MangaRestaurant.APIs.Helpers
                 .ForMember(d => d.PictureUrl, O => O.MapFrom<ProductPictureUrlResolver>());
 
             CreateMap<UserAddress, UserAddressDto>().ReverseMap();
+
+            CreateMap<CustomerBasketDTO, CustomerBasket>();
+            CreateMap<BasketItemDTO, BasketItem>();
         }
     }
 }
