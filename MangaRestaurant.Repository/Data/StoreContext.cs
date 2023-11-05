@@ -1,4 +1,5 @@
 ﻿using MangaRestaurant.Core.Entities;
+using MangaRestaurant.Core.Entities.Order;
 using MangaRestaurant.Repository.Data.Configurations;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -26,6 +27,7 @@ namespace MangaRestaurant.Repository.Data
 
             //الكود ده بيعمل كل اللى فوق
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            base.OnModelCreating(modelBuilder);
         }
 
         //Tables In Our DB
@@ -34,6 +36,9 @@ namespace MangaRestaurant.Repository.Data
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<Employee> Employee { get; set; }
         public DbSet<Department> Department { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
     }
 
 }
