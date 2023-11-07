@@ -1,4 +1,5 @@
 ﻿using MangaRestaurant.Core.Entities;
+using MangaRestaurant.Core.Entities.Order;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,6 +72,20 @@ namespace MangaRestaurant.Repository.Data
                     foreach (var product in products)
                     {
                         _dbContext.Set<Product>().Add(product);
+                    }
+                    await _dbContext.SaveChangesAsync();
+                }
+            }
+            if (_dbContext.Orders.Count() == 0)
+            {
+                var deliveryData = File.ReadAllText("../MangaRestaurant.Repository/Data/DataSeed/delivery.json");
+                var deliveries = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryData);
+
+                if (deliveries?.Count() > 0)
+                {
+                    foreach (var delivery in deliveries)
+                    {
+                        _dbContext.Set<DeliveryMethod>().Add(delivery);
                     }
                     await _dbContext.SaveChangesAsync();
                 }

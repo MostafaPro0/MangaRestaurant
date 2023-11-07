@@ -19,5 +19,7 @@ namespace MangaRestaurant.Core.RepositoriesContract
 
         //Task<IReadOnlyList<T>> GetAsync()
         Task<int?> GetCountAsyncWithSpecAsync(ISpecifications<T> spec);
+
+        Task AddAsync(T entity);
     }
 }

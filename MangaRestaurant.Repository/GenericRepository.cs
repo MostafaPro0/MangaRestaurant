@@ -19,6 +19,7 @@ namespace MangaRestaurant.Repository
         {
             _dbContext = dbContext;
         }
+
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
             //if (typeof(T) == typeof(Product))
@@ -53,5 +54,8 @@ namespace MangaRestaurant.Repository
         {
             return SpecificationsEvaluator<T>.GetQuery(_dbContext.Set<T>(), spec);
         }
+
+        public async Task AddAsync(T entity) => await _dbContext.Set<T>().AddAsync(entity);
+
     }
 }
