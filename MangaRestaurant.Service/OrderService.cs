@@ -53,7 +53,9 @@ namespace MangaRestaurant.Service
 
             var order = new Order(buyerEmail, orderShippingAddress, deliveryMethod, orderItems, subTotal, Disount);
 
-            await _orderRepository.AddAsync(order);
+          await   _orderRepository.AddAsync(order);
+
+            return order;
         }
 
         public Task<Order> GetOrderByIdForSpecificUserAsync(string buyerEmail)
