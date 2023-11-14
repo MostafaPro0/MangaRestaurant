@@ -1,4 +1,5 @@
 ﻿using MangaRestaurant.APIs.Errors;
+using MangaRestaurant.Core;
 using MangaRestaurant.Core.Entities;
 using MangaRestaurant.Core.RepositoriesContract;
 using MangaRestaurant.Core.Specifications.EmployeeSpecs;
@@ -10,11 +11,11 @@ namespace MangaRestaurant.APIs.Controllers
 {
     public class ProductCategoryController : BaseApiController
     {
-        private readonly IGenericRepository<ProductCategory> _productCategoryRepo;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ProductCategoryController(IGenericRepository<ProductCategory> productCategoryRepo)
+        public ProductCategoryController(IUnitOfWork unitOfWork)
         {
-            _productCategoryRepo = productCategoryRepo;
+            _unitOfWork = unitOfWork;
         }
 
         [ProducesResponseType(typeof(ProductCategory), StatusCodes.Status200OK)]
@@ -24,7 +25,7 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult<IReadOnlyList<ProductCategory>>> GetAllProductCategories(string? Sort)
         {
             var spec = new ProductCategorySpecs(Sort);
-            var productCategories = await _productCategoryRepo.GetAllAsyncWithSpecAsync(spec);
+            var productCategories = await _unitOfWork.Repository<ProductCategory>().GetAllAsyncWithSpecAsync(spec);
 
 
             return Ok(productCategories);
@@ -37,7 +38,7 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult<ProductCategory>> GetProductCategory(int id)
         {
             var spec = new ProductCategorySpecs(id);
-            var productCategory = await _productCategoryRepo.GetAsyncWithSpecAsync(spec);
+            var productCategory = await _unitOfWork.Repository<ProductCategory>().GetAsyncWithSpecAsync(spec);
 
             if (productCategory == null)
                 return NotFound(new ApiResponse(404, "Product Category Not Found"));

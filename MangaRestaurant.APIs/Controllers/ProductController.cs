@@ -2,6 +2,7 @@
 using MangaRestaurant.APIs.Dtos;
 using MangaRestaurant.APIs.Errors;
 using MangaRestaurant.APIs.Helpers;
+using MangaRestaurant.Core;
 using MangaRestaurant.Core.Entities;
 using MangaRestaurant.Core.RepositoriesContract;
 using MangaRestaurant.Core.Specifications;
@@ -15,12 +16,12 @@ namespace MangaRestaurant.APIs.Controllers
 {
     public class ProductController : BaseApiController
     {
-        private readonly IGenericRepository<Product> _productRepo;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ProductController(IGenericRepository<Product> productRepo, IMapper mapper)
+        public ProductController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _productRepo = productRepo;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -33,11 +34,11 @@ namespace MangaRestaurant.APIs.Controllers
         {
             var spec = new ProductWithBrandAndCategorySpecs(specParams);
 
-            var products = await _productRepo.GetAllAsyncWithSpecAsync(spec);
+            var products = await _unitOfWork.Repository<Product>().GetAllAsyncWithSpecAsync(spec);
             var MappedProducts = _mapper.Map<IReadOnlyList<Product>,IReadOnlyList<ProductToReturnDto>>(products);
 
             var countSpec  = new ProductWithFiltrationForCountAsync(specParams);
-            var count = await _productRepo.GetCountAsyncWithSpecAsync(countSpec);
+            var count = await _unitOfWork.Repository<Product>().GetCountAsyncWithSpecAsync(countSpec);
 
             return Ok(new Pagination<ProductToReturnDto>(specParams.PageIndex,specParams.PageSize,specParams,MappedProducts, count));
         }
@@ -49,7 +50,7 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
         {
             var spec = new ProductWithBrandAndCategorySpecs(id);
-            var product = await _productRepo.GetAsyncWithSpecAsync(spec);
+            var product = await _unitOfWork.Repository<Product>().GetAsyncWithSpecAsync(spec);
 
             if (product == null)
                 return NotFound(new ApiResponse(404, "Product Not Found"));

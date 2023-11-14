@@ -1,7 +1,10 @@
 ﻿using MangaRestaurant.APIs.Errors;
 using MangaRestaurant.APIs.Helpers;
+using MangaRestaurant.Core;
 using MangaRestaurant.Core.RepositoriesContract;
+using MangaRestaurant.Core.Service;
 using MangaRestaurant.Repository;
+using MangaRestaurant.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MangaRestaurant.APIs.Extensions
@@ -16,9 +19,14 @@ namespace MangaRestaurant.APIs.Extensions
             //services.AddScoped < IGenericRepository<ProductCategory>, GenericRepository < ProductCategory>>();
 
             //ده بيعوض اللى فات كله
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
+         //   services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+         //حذفتها علشان استخدمنا unitofwork
+         //خلاص مش محتاجينها
             services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));//AllowDependencyInjection
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();//AllowDependencyInjection
+
+            services.AddScoped<IOrderService, OrderService>();//AllowDependencyInjection
 
             services.AddAutoMapper(typeof(MappingProfile));
 
