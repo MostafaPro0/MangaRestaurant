@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using MangaRestaurant.APIs.Controllers;
 using MangaRestaurant.APIs.Dtos;
 using MangaRestaurant.Core.Entities;
 using MangaRestaurant.Core.Entities.Identity;
@@ -19,8 +18,8 @@ namespace MangaRestaurant.APIs.Helpers
             CreateMap<UserAddress, UserAddressDto>().ReverseMap();
             CreateMap<UserAddressDto, OrderAddress>();
 
-            CreateMap<CustomerBasketDTO, CustomerBasket>();
-            CreateMap<BasketItemDTO, BasketItem>();
+            CreateMap<CustomerBasketDTO, CustomerBasket>().ReverseMap();
+            CreateMap<BasketItemDTO, BasketItem>().ReverseMap();
             CreateMap<Order, OrderToReturnDTO>()
                 .ForMember(D => D.DeliveryMethod, O => O.MapFrom(S => S.DeliveryMethod.ShortName))
                 .ForMember(D => D.DeliveryMethodCost, O => O.MapFrom(S => S.DeliveryMethod.Cost));

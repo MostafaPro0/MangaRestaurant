@@ -40,7 +40,7 @@ namespace MangaRestaurant.Repository
             return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public async Task<T?> GetAsyncWithSpecAsync(ISpecifications<T> spec)
+        public async Task<T?> GetEntityWithSpecAsync(ISpecifications<T> spec)
         {
             return await ApplySpec(spec).FirstOrDefaultAsync();
         }
@@ -57,5 +57,8 @@ namespace MangaRestaurant.Repository
 
         public async Task AddAsync(T entity) => await _dbContext.Set<T>().AddAsync(entity);
 
+        public void Update(T entity) =>  _dbContext.Set<T>().Update(entity);
+
+        public void Delete(T entity) =>  _dbContext.Set<T>().Remove(entity);
     }
 }

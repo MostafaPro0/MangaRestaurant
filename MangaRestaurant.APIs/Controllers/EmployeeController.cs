@@ -34,7 +34,7 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult<Employee>> GetEmployee(int id)
         {
             var spec = new EmployeeWithDepartmentSpecs(id);
-            var employee = await _employeeRepor.GetAsyncWithSpecAsync(spec);
+            var employee = await _employeeRepor.GetEntityWithSpecAsync(spec);
 
             if(employee is null)
             return NotFound(new ApiResponse(404, "Employee Not Found"));

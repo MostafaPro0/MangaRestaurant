@@ -1,6 +1,6 @@
 ﻿using MangaRestaurant.Core.Entities.Order;
 
-namespace MangaRestaurant.APIs.Controllers
+namespace MangaRestaurant.APIs.Dtos
 {
     public class OrderItemDTO
     {

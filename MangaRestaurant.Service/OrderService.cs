@@ -17,11 +17,13 @@ namespace MangaRestaurant.Service
     {
         private readonly IBasketRepository _basketRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IPaymentService _paymentService;
 
-        public OrderService(IBasketRepository basketRepository, IUnitOfWork unitOfWork)
+        public OrderService(IBasketRepository basketRepository, IUnitOfWork unitOfWork,IPaymentService paymentService)
         {
             _basketRepository = basketRepository;
             _unitOfWork = unitOfWork;
+            _paymentService = paymentService;
         }
         public async Task<Order?> CreateOrderAsync(string buyerEmail, string basketId, int methodId, OrderAddress orderShippingAddress)
         {
@@ -50,7 +52,15 @@ namespace MangaRestaurant.Service
             //Discount when add it i will add it (Mostafa)
             decimal Disount = 0;
 
-            var order = new Order(buyerEmail, orderShippingAddress, deliveryMethod, orderItems, subTotal, Disount);
+            var orderSpec = new OrderWithPaymentIntentSpecifications(basket.PaymentIntentId);
+            var exOrder = await _unitOfWork.Repository<Order>().GetEntityWithSpecAsync(orderSpec);
+            if(exOrder is not null) 
+            {
+                _unitOfWork.Repository<Order>().Delete(exOrder);
+                await _paymentService.CreateOrUpdatePaymentIntent(basketId);
+            }
+            
+            var order = new Order(buyerEmail, orderShippingAddress, deliveryMethod, orderItems, subTotal, Disount,basket.PaymentIntentId);
 
             await _unitOfWork.Repository<Order>().AddAsync(order);
 
@@ -64,7 +74,7 @@ namespace MangaRestaurant.Service
         public Task<Order> GetOrderByIdForSpecificUserAsync(string buyerEmail, int orderId)
         {
             var spec = new OrderSpecifications(buyerEmail, orderId);
-            var orders = _unitOfWork.Repository<Order>().GetAsyncWithSpecAsync(spec);
+            var orders = _unitOfWork.Repository<Order>().GetEntityWithSpecAsync(spec);
             return orders;
         }
 

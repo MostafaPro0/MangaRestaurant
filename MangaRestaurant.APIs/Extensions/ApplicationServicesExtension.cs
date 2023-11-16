@@ -28,6 +28,8 @@ namespace MangaRestaurant.APIs.Extensions
 
             services.AddScoped<IOrderService, OrderService>();//AllowDependencyInjection
 
+            services.AddScoped<IPaymentService, PaymentService>();//AllowDependencyInjection
+
             services.AddAutoMapper(typeof(MappingProfile));
 
             services.Configure<ApiBehaviorOptions>(options =>

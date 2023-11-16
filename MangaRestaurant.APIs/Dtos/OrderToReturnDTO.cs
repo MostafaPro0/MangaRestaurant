@@ -1,10 +1,10 @@
 ﻿using MangaRestaurant.Core.Entities.Order;
 
-namespace MangaRestaurant.APIs.Controllers
+namespace MangaRestaurant.APIs.Dtos
 {
     public class OrderToReturnDTO
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
         public string BuyerEmail { get; set; }
         public DateTimeOffset OrderDate { get; set; }
         public string OrderStatus { get; set; }

@@ -21,4 +21,13 @@ namespace MangaRestaurant.Core.Specifications.OrderSpecs
             Includes.Add(O => O.Items);
         }
     }
+    public class OrderWithPaymentIntentSpecifications : BaseSpecifications<Order>
+    {
+        public OrderWithPaymentIntentSpecifications(string PaymentIntentId) : base(O => O.PaymentIntentId == PaymentIntentId)
+        {
+            Includes.Add(O => O.DeliveryMethod);
+            Includes.Add(O => O.Items);
+            AddOrderByDescending(O => O.OrderDate);
+        }
+    }
 }

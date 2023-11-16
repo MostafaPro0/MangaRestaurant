@@ -50,7 +50,7 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
         {
             var spec = new ProductWithBrandAndCategorySpecs(id);
-            var product = await _unitOfWork.Repository<Product>().GetAsyncWithSpecAsync(spec);
+            var product = await _unitOfWork.Repository<Product>().GetEntityWithSpecAsync(spec);
 
             if (product == null)
                 return NotFound(new ApiResponse(404, "Product Not Found"));

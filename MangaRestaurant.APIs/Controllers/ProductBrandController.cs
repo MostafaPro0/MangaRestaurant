@@ -39,7 +39,7 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult<ProductBrand>> GetProductBrand(int id)
         {
             var spec = new ProductBrandSpecs(id);
-            var productBrand = await _unitOfWork.Repository<ProductBrand>().GetAsyncWithSpecAsync(spec);
+            var productBrand = await _unitOfWork.Repository<ProductBrand>().GetEntityWithSpecAsync(spec);
 
             if (productBrand == null)
                 return NotFound(new ApiResponse(404, "Product Brand Not Found"));

@@ -13,7 +13,7 @@ namespace MangaRestaurant.Core.Entities.Order
         {
 
         }
-        public Order(string buyerEmail, OrderAddress shippingAddress, DeliveryMethod deliveryMethod, ICollection<OrderItem> items, decimal subTotal, decimal discount)
+        public Order(string buyerEmail, OrderAddress shippingAddress, DeliveryMethod deliveryMethod, ICollection<OrderItem> items, decimal subTotal, decimal discount, string paymentIntentId)
         {
             BuyerEmail = buyerEmail;
             ShippingAddress = shippingAddress;
@@ -21,6 +21,7 @@ namespace MangaRestaurant.Core.Entities.Order
             Items = items;
             SubTotal = subTotal;
             Discount = discount;
+            PaymentIntentId = paymentIntentId;
         }
 
         public string BuyerEmail { get; set; }
@@ -37,6 +38,6 @@ namespace MangaRestaurant.Core.Entities.Order
 
         public decimal GetTotal() => (SubTotal - Discount) + DeliveryMethod.Cost;
 
-        public string PaymentIntentId { get; set; } =string.Empty;
+        public string PaymentIntentId { get; set; }
     }
 }

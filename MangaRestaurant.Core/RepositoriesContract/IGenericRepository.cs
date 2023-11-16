@@ -14,12 +14,15 @@ namespace MangaRestaurant.Core.RepositoriesContract
         Task<T?> GetAsync(int id);
 
         Task<IReadOnlyList<T>> GetAllAsyncWithSpecAsync(ISpecifications<T> spec);
-        Task<T?> GetAsyncWithSpecAsync(ISpecifications<T> spec);
+        Task<T?> GetEntityWithSpecAsync(ISpecifications<T> spec);
         //Task DeleteAsync(int id);
 
         //Task<IReadOnlyList<T>> GetAsync()
         Task<int?> GetCountAsyncWithSpecAsync(ISpecifications<T> spec);
 
         Task AddAsync(T entity);
+
+        void Update(T entity);
+        void Delete(T entity);
     }
 }

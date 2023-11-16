@@ -38,7 +38,7 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult<ProductCategory>> GetProductCategory(int id)
         {
             var spec = new ProductCategorySpecs(id);
-            var productCategory = await _unitOfWork.Repository<ProductCategory>().GetAsyncWithSpecAsync(spec);
+            var productCategory = await _unitOfWork.Repository<ProductCategory>().GetEntityWithSpecAsync(spec);
 
             if (productCategory == null)
                 return NotFound(new ApiResponse(404, "Product Category Not Found"));
