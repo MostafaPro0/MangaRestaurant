@@ -19,9 +19,12 @@ namespace MangaRestaurant.APIs.Extensions
             //services.AddScoped < IGenericRepository<ProductCategory>, GenericRepository < ProductCategory>>();
 
             //ده بيعوض اللى فات كله
-         //   services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-         //حذفتها علشان استخدمنا unitofwork
-         //خلاص مش محتاجينها
+            //   services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            //حذفتها علشان استخدمنا unitofwork
+            //خلاص مش محتاجينها
+
+            services.AddSingleton<IResponseCacheService, ResponseCacheService>();//AllowDependencyInjection
+
             services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));//AllowDependencyInjection
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();//AllowDependencyInjection
@@ -29,6 +32,7 @@ namespace MangaRestaurant.APIs.Extensions
             services.AddScoped<IOrderService, OrderService>();//AllowDependencyInjection
 
             services.AddScoped<IPaymentService, PaymentService>();//AllowDependencyInjection
+
 
             services.AddAutoMapper(typeof(MappingProfile));
 

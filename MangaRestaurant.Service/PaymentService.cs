@@ -3,6 +3,7 @@ using MangaRestaurant.Core.Entities;
 using MangaRestaurant.Core.Entities.Order;
 using MangaRestaurant.Core.RepositoriesContract;
 using MangaRestaurant.Core.Service;
+using MangaRestaurant.Core.Specifications.OrderSpecs;
 using Microsoft.Extensions.Configuration;
 using Stripe;
 using System;
@@ -80,6 +81,25 @@ namespace MangaRestaurant.Service
             }
             await _basketRepository.UpdateBasketAsync(basket);
             return basket;
+        }
+
+        public async Task<Order> UpdatePaymentIntentToSuccessOrFailed(string PaymentIntentId, bool flag)
+        {
+            var spec = new OrderWithPaymentIntentSpecifications(PaymentIntentId);
+            var order = await _unitOfWork.Repository<Order>().GetEntityWithSpecAsync(spec);
+            if (flag)
+            {
+                order.OrderStatus = OrderStatus.PaymentReceived;
+
+            }
+            else
+            {
+
+                order.OrderStatus = OrderStatus.PaymentFailed;
+            }
+            _unitOfWork.Repository<Order>().Update(order);
+            await _unitOfWork.CompleteAsync();
+            return order;
         }
     }
 }

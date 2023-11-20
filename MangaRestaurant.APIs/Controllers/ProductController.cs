@@ -29,7 +29,8 @@ namespace MangaRestaurant.APIs.Controllers
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         //GET : /api/Products
         [HttpGet]
-    //    [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
+        //    [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
+        [CashedAttribute(300)]
         public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetAllProducts([FromQuery]ProductSpecParams specParams)
         {
             var spec = new ProductWithBrandAndCategorySpecs(specParams);

@@ -48,7 +48,16 @@ namespace MangaRestaurant.APIs
 
 
             builder.Services.AddIdentityServices(builder.Configuration);
-
+            builder.Services.AddCors(Options =>
+            {
+                Options.AddPolicy("MyPolicy", options =>
+                {
+                    options.AllowAnyHeader();
+                    options.AllowAnyMethod();
+                    options.AllowAnyOrigin();
+                    options.WithOrigins(builder.Configuration["FrontBaseURL"]);
+                });
+            });
             #endregion
 
             var app = builder.Build();
@@ -95,7 +104,7 @@ namespace MangaRestaurant.APIs
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
-
+            app.UseCors("MyPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
 
