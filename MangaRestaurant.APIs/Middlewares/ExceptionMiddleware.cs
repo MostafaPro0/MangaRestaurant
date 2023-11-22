@@ -34,9 +34,12 @@ namespace MangaRestaurant.APIs.Middlewares
 
                 var response = env.IsDevelopment() ?
                     new ApiExceptionResponse((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace.ToString())
-                  : new ApiExceptionResponse((int)HttpStatusCode.InternalServerError);
-
-                var json = JsonSerializer.Serialize(response);
+                  : new ApiExceptionResponse((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace.ToString());
+                var options = new JsonSerializerOptions()
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                var json = JsonSerializer.Serialize(response, options);
                 await context.Response.WriteAsync(json);
             }
         }

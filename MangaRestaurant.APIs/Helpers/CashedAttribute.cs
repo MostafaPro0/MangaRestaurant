@@ -29,10 +29,10 @@ namespace MangaRestaurant.APIs.Helpers
                 context.Result = contentResult;
                 return;
             }
-            var excutedEndPointContext= await next.Invoke();
-            if(excutedEndPointContext.Result is OkObjectResult result)
+            var excutedEndPointContext = await next.Invoke();
+            if (excutedEndPointContext.Result is OkObjectResult result)
             {
-            await    cacheService.CasheResponseAsync(casheKey,result.Value,TimeSpan.FromSeconds(_expireTimeInSecond));
+                await cacheService.CasheResponseAsync(casheKey, result.Value, TimeSpan.FromSeconds(_expireTimeInSecond));
             }
         }
 
