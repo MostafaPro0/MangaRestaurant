@@ -1,0 +1,224 @@
+/* ─── Refined Restaurant Layout ───────────────────────────── */
+
+.navbar-manga {
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 1.25rem 0;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Utils (Left) */
+.manga-toggle-group {
+  display: flex;
+  background: var(--bg-soft);
+  border: 1px solid var(--glass-border);
+  padding: 0.25rem;
+  border-radius: var(--radius-sm);
+}
+
+.manga-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 0.45rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: var(--radius-sm);
+}
+
+.manga-toggle-btn.active {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(255, 49, 49, 0.2);
+}
+
+/* Navigation (Center) */
+.nav-center {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+}
+
+.nav-center a {
+  color: var(--text-dim);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: color 0.2s;
+  position: relative;
+}
+
+.nav-center a:hover {
+  color: var(--primary);
+}
+
+.nav-center a.active {
+  color: var(--text-main);
+}
+
+.nav-center a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1.25rem;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+
+/* Brand & Auth (Right) */
+.nav-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2rem;
+}
+
+.auth-box {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.auth-link {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: color 0.2s;
+}
+
+.auth-btn {
+  background: var(--primary) !important;
+  color: #fff !important;
+  border: none !important;
+  padding: 0.65rem 1.5rem;
+  border-radius: var(--radius-md) !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  box-shadow: 0 4px 10px rgba(255, 49, 49, 0.2) !important;
+}
+
+.manga-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-manga);
+  font-size: 1.75rem;
+  color: var(--text-main);
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+
+.brand-bolt {
+  color: var(--primary);
+  font-size: 1.5rem;
+}
+
+/* Global Section Header (Refined Premium) */
+.section-header-v2 {
+  margin-bottom: 5rem;
+  text-align: center;
+}
+
+.section-tag {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 1.5rem;
+}
+
+.section-title-v2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  color: var(--text-main);
+  margin-bottom: 1rem;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+
+/* Refined Hero Styles */
+.hero-v2 {
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-soft);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-v2::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; width: 100%; height: 100px;
+  background: linear-gradient(to top, var(--bg-deep), transparent);
+}
+
+.hero-title-v2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(3rem, 12vw, 6.5rem);
+  color: var(--text-main);
+  margin-bottom: 2rem;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+}
+
+.hero-title-v2 span.primary-text {
+  color: var(--primary);
+  position: relative;
+}
+
+.hero-desc-v2 {
+  max-width: 700px;
+  margin: 0 auto 3rem;
+  font-size: 1.3rem;
+  color: var(--text-dim);
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.basket-badge {
+  position: absolute;
+  top: -5px;
+  right: -15px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 1px 6px;
+  border-radius: 50%;
+  font-weight: 800;
+  border: 2px solid var(--bg-deep);
+}
+
+.section-pad { padding: 8rem 0; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }

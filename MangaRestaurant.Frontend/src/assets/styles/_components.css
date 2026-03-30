@@ -1,0 +1,111 @@
+/* ─── Mango Restaurant Components ───────────────────────── */
+
+/* Fresh Mango Buttons */
+:host ::ng-deep .p-button {
+  border-radius: var(--radius-md) !important;
+  font-family: var(--font-display) !important;
+  font-weight: 800 !important;
+  font-size: 1.05rem !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border: none !important;
+  box-shadow: 0 4px 15px rgba(255, 190, 0, 0.2) !important;
+  padding: 0.9rem 1.75rem !important;
+}
+
+:host ::ng-deep .p-button:not(.p-button-danger):not(.p-button-text) {
+  background: var(--primary) !important;
+  color: #000 !important; /* Yellow-Black contrast is excellent */
+}
+
+:host ::ng-deep .p-button:not(.p-button-danger):not(.p-button-text):hover {
+  background: var(--primary-hover) !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 10px 30px rgba(255, 190, 0, 0.35) !important;
+}
+
+:host ::ng-deep .p-button-outlined {
+  background: transparent !important;
+  border: 2px solid var(--primary) !important;
+  color: var(--primary) !important;
+}
+
+:host ::ng-deep .p-button-outlined:hover {
+  background: var(--primary) !important;
+  color: #000 !important;
+}
+
+/* Premium Card Style (Smooth Mango Look) */
+.mg-card {
+  background: var(--surface);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.mg-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary);
+}
+
+/* Product Image Card Overlay */
+.img-panel {
+  width: 100%;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.25rem;
+  background: var(--bg-soft);
+  position: relative;
+}
+
+.img-panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Maintain ratio for food images */
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mg-card:hover .img-panel img {
+  transform: scale(1.12); /* Appetizing Zoom */
+}
+
+/* Graphic Badge (Mango Leaf Accent) */
+.badge-neon {
+  display: inline-flex;
+  padding: 0.4rem 1rem;
+  background: var(--secondary); /* Greenish accent */
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-manga);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.25rem;
+}
+
+/* Professional Form Refinements */
+:host ::ng-deep .p-inputtext, 
+:host ::ng-deep .p-password input {
+  background: var(--bg-soft) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text-main) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 1.1rem 1.25rem !important;
+  transition: all 0.3s !important;
+}
+
+:host ::ng-deep .p-inputtext:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 5px rgba(255, 190, 0, 0.15) !important;
+  background: var(--surface) !important;
+}
+
+.primary-text {
+  color: var(--primary);
+  font-weight: 900;
+}

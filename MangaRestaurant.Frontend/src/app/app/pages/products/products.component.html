@@ -1,0 +1,74 @@
+<div class="container section-pad px-3">
+  <!-- Optimized Header (Responsive) -->
+  <div class="section-header-v2">
+    <span class="section-tag">{{ 'PRODUCTS.EXPLORE_TAG' | translate }}</span>
+    <h1 class="section-title-v2 font-bold">{{ 'PRODUCTS.TITLE' | translate }}</h1>
+    <p class="section-subtitle-v2" style="margin: 0 auto">{{ 'PRODUCTS.SUBTITLE' | translate }}</p>
+  </div>
+
+  <!-- Centered Search (Responsive) -->
+  <div class="flex justify-content-center mb-10 w-full">
+    <div class="flex align-items-center gap-2 p-3 bg-soft mg-card w-full" style="max-width: 650px">
+      <span class="p-input-icon-left w-full">
+        <i class="pi pi-search primary-text"></i>
+        <input pInputText type="text" [(ngModel)]="search" 
+               [placeholder]="'PRODUCTS.SEARCH_PLACEHOLDER' | translate" (keydown.enter)="loadProducts()" 
+               style="border:none; background:transparent !important; width: 100%"/>
+      </span>
+      <button pButton icon="pi pi-search" (click)="loadProducts()" class="p-button-lg"></button>
+    </div>
+  </div>
+
+  <div class="flex justify-content-center py-6" *ngIf="loading">
+    <p-progressSpinner strokeWidth="4"></p-progressSpinner>
+  </div>
+
+  <!-- Product Grid (Responsive) -->
+  <div class="grid" *ngIf="!loading">
+    <div class="col-12 sm:col-6 lg:col-4 xl:col-3 mb-6" *ngFor="let product of products">
+      <div class="mg-card h-full flex flex-column">
+        <!-- Manga Image Panel -->
+        <div class="img-panel">
+          <!-- Handled by Backend Resolver for Physical File Checks -->
+          <img [src]="product.pictureUrl" [alt]="product.name" />
+          
+          <!-- Category Pin -->
+          <div style="position:absolute; top: 0; right: 0">
+            <span class="badge-neon py-2 px-3 m-0 shadow-lg">{{ product.category }}</span>
+          </div>
+        </div>
+
+        <!-- content -->
+        <div class="flex-grow-1 flex flex-column justify-content-between">
+          <div class="mb-4">
+            <h3 class="display-font text-2xl font-bold mb-1 uppercase tracking-1">{{ product.name }}</h3>
+            <span class="text-sm font-bold text-muted">{{ product.brand }}</span>
+          </div>
+          
+          <div class="flex align-items-center justify-content-between mb-4">
+            <span class="primary-text text-3xl font-black">{{ product.price | currency }}</span>
+            <span class="text-xs text-muted font-bold opacity-60">incl. VAT</span>
+          </div>
+        </div>
+
+        <div class="grid grid-nogutter gap-2">
+          <div class="col-12">
+            <button pButton class="w-full py-4 text-xl" icon="pi pi-cart-plus"
+                    [label]="'PRODUCTS.ADD_TO_CART' | translate" (click)="addToBasket(product)"></button>
+          </div>
+          <div class="col-12">
+            <a pButton class="p-button-outlined w-full py-3 text-sm" icon="pi pi-eye"
+               [label]="'PRODUCTS.VIEW' | translate"
+               [routerLink]="['/products', product.id]"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="text-center py-8" *ngIf="!loading && products.length === 0">
+    <i class="pi pi-inbox text-8xl text-muted mb-4 opacity-10"></i>
+    <h3 class="display-font text-3xl font-bold">{{ 'PRODUCTS.EMPTY' | translate }}</h3>
+  </div>
+</div>

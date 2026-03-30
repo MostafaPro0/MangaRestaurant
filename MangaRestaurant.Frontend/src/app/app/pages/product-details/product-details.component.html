@@ -1,0 +1,69 @@
+<div class="container section-pad px-3" *ngIf="product && !loading">
+  <!-- Optimized Back Button (Responsive) -->
+  <a routerLink="/products" class="flex align-items-center gap-2 mb-8 text-muted hover-text-primary transition-all">
+    <i class="pi pi-arrow-left"></i>
+    <span class="font-bold uppercase text-sm tracking-1">{{ 'PRODUCTS.BACK' | translate }}</span>
+  </a>
+
+  <div class="grid">
+    <!-- Image Panel (Responsive) -->
+    <div class="col-12 lg:col-6 mb-8 lg:mb-0">
+      <div class="img-panel" style="aspect-ratio: 1/1; width: 100%; height: auto; box-shadow: var(--shadow-lg)">
+        <!-- Backend Handlers physical existence checks -->
+        <img [src]="product.pictureUrl" [alt]="product.name" />
+        
+        <div style="position:absolute; top: 1rem; right: 1rem">
+           <span class="badge-neon py-3 px-4 shadow-lg text-lg">{{ product.category }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info Panel (Responsive) -->
+    <div class="col-12 lg:col-6">
+      <div class="mg-card h-full flex flex-column justify-content-center p-5 lg:p-8">
+        
+        <h1 class="display-font text-4xl lg:text-5xl mb-2 font-black uppercase tracking-1 text-main">{{ product.name }}</h1>
+        <p class="primary-text text-xl font-bold uppercase tracking-2 mb-6">{{ product.brand }}</p>
+        
+        <div class="flex align-items-center gap-4 mb-8">
+           <span class="primary-text text-5xl font-black">{{ product.price | currency }}</span>
+           <span class="text-sm font-bold bg-soft px-3 py-2 rounded-lg opacity-60">Ready in 20min</span>
+        </div>
+        
+        <div class="text-dim text-xl line-height-4 mb-8" style="border-left: 5px solid var(--primary); padding-left: 2rem">
+          {{ product.description }}
+        </div>
+
+        <!-- Actions (Responsive) -->
+        <div class="flex flex-column sm:flex-row gap-4">
+          <button pButton class="p-button-lg px-8 py-5 text-2xl flex-grow-1"
+                  icon="pi pi-shopping-cart"
+                  [label]="'PRODUCTS.ADD_TO_CART' | translate" 
+                  (click)="addToBasket()"></button>
+                  
+          <button pButton class="p-button-outlined p-button-lg px-5"
+                  icon="pi pi-heart"></button>
+        </div>
+
+        <div class="mt-10 grid grid-nogutter border-top-1 border-white-alpha-10 pt-8 opacity-70">
+           <div class="col-4">
+             <span class="block text-muted text-xs font-bold uppercase mb-2">Servings</span>
+             <span class="block font-black text-xl">1 Person</span>
+           </div>
+           <div class="col-4 text-center">
+             <span class="block text-muted text-xs font-bold uppercase mb-2">Prep Time</span>
+             <span class="block font-black text-xl">15-20 Min</span>
+           </div>
+           <div class="col-4 text-right">
+             <span class="block text-muted text-xs font-bold uppercase mb-2">Origin</span>
+             <span class="block font-black text-xl">Fresh Garden</span>
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="flex justify-content-center py-8" *ngIf="loading">
+  <p-progressSpinner strokeWidth="4"></p-progressSpinner>
+</div>

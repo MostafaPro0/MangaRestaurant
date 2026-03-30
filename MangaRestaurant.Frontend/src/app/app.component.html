@@ -1,0 +1,106 @@
+<div class="page-wrap" [class.menu-open]="mobileMenuOpened()">
+  <!-- Premium Responsive Mango Header -->
+  <header class="navbar-manga">
+    <div class="nav-container">
+      
+      <!-- Brand & Home Link -->
+      <a routerLink="/" class="manga-brand">
+        <div class="brand-bolt"><i class="pi pi-bolt"></i></div>
+        <span class="brand-text">MANGARESTO</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="nav-center hidden md:flex">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">{{ 'NAV.HOME' | translate }}</a>
+        <a routerLink="/products" routerLinkActive="active">{{ 'NAV.PRODUCTS' | translate }}</a>
+        <a routerLink="/basket" routerLinkActive="active" class="relative">
+          {{ 'NAV.BASKET' | translate }}
+          <span class="basket-badge" *ngIf="basketCount() > 0">{{basketCount()}}</span>
+        </a>
+      </nav>
+
+      <!-- Desktop Actions -->
+      <div class="nav-right hidden lg:flex">
+        <div class="manga-toggle-group">
+          <button (click)="setLang('ar')" class="manga-toggle-btn" [class.active]="lang() === 'ar'">AR</button>
+          <button (click)="setLang('en')" class="manga-toggle-btn" [class.active]="lang() === 'en'">EN</button>
+          <button (click)="toggleTheme()" class="manga-toggle-btn">
+            <i [class]="currentTheme() === 'light' ? 'pi pi-moon' : 'pi pi-sun'"></i>
+          </button>
+        </div>
+
+        <div class="auth-box">
+          <ng-container *ngIf="isAuthenticated(); else guest">
+            <button pButton type="button" class="p-button-danger p-button-sm"
+                    icon="pi pi-sign-out" [label]="'NAV.LOGOUT' | translate" (click)="logout()"></button>
+          </ng-container>
+          <ng-template #guest>
+            <a routerLink="/login" class="auth-link">{{ 'NAV.LOGIN' | translate }}</a>
+            <a routerLink="/register" class="auth-btn">{{ 'NAV.REGISTER' | translate }}</a>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- Mobile Controls (Cart & Hamburger) -->
+      <div class="flex align-items-center gap-3 lg:hidden">
+        <a routerLink="/basket" class="relative text-2xl nav-item p-0" style="color:var(--text-main)">
+          <i class="pi pi-shopping-cart"></i>
+          <span class="basket-badge" style="top:-8px; right:-8px" *ngIf="basketCount() > 0">{{basketCount()}}</span>
+        </a>
+        <button (click)="toggleMobileMenu()" class="menu-trigger">
+          <i [class]="mobileMenuOpened() ? 'pi pi-times' : 'pi pi-bars'"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-drawer" [class.active]="mobileMenuOpened()">
+      <nav class="mobile-nav px-4 pt-4">
+        <a routerLink="/" (click)="toggleMobileMenu()" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">{{ 'NAV.HOME' | translate }}</a>
+        <a routerLink="/products" (click)="toggleMobileMenu()" routerLinkActive="active">{{ 'NAV.PRODUCTS' | translate }}</a>
+        <a routerLink="/basket" (click)="toggleMobileMenu()" routerLinkActive="active">{{ 'NAV.BASKET' | translate }}</a>
+        <a *ngIf="isAdmin()" routerLink="/admin" (click)="toggleMobileMenu()" routerLinkActive="active">Admin Control</a>
+        
+        <div class="border-top-1 border-white-alpha-10 my-4"></div>
+        
+        <div class="flex justify-content-between align-items-center mb-5">
+           <div class="manga-toggle-group">
+            <button (click)="setLang('ar')" class="manga-toggle-btn" [class.active]="lang() === 'ar'">AR</button>
+            <button (click)="setLang('en')" class="manga-toggle-btn" [class.active]="lang() === 'en'">EN</button>
+           </div>
+           <button (click)="toggleTheme()" class="manga-toggle-btn bg-soft border-radius-sm">
+              <i [class]="currentTheme() === 'light' ? 'pi pi-moon' : 'pi pi-sun'"></i>
+           </button>
+        </div>
+
+        <div class="auth-stack flex flex-column gap-3">
+          <ng-container *ngIf="isAuthenticated(); else mobileGuest">
+            <button pButton icon="pi pi-sign-out" label="Logout" (click)="logout(); toggleMobileMenu()" class="p-button-danger w-full"></button>
+          </ng-container>
+          <ng-template #mobileGuest>
+            <a routerLink="/login" (click)="toggleMobileMenu()" class="p-button p-button-outlined p-button-lg w-full text-center">{{ 'NAV.LOGIN' | translate }}</a>
+            <a routerLink="/register" (click)="toggleMobileMenu()" class="p-button p-button-primary p-button-lg w-full text-center">{{ 'NAV.REGISTER' | translate }}</a>
+          </ng-template>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-body">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="manga-footer">
+    <div class="container">
+       <div class="grid align-items-center">
+         <div class="col-12 md:col-6">
+           <h2 class="manga-font mb-2 primary-text">MangaResto</h2>
+           <p class="text-dim">The ultimate mango-fresh culinary experience.</p>
+         </div>
+         <div class="col-12 md:col-6 md:text-right mt-4 md:mt-0">
+           <div class="text-xs opacity-50">&copy; 2025 MangaRestaurant. Built for legends.</div>
+         </div>
+       </div>
+    </div>
+  </footer>
+</div>

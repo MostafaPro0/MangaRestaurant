@@ -1,0 +1,88 @@
+<div class="container section-pad">
+  <div class="section-header-v2" style="text-align: left">
+    <span class="section-tag">{{ 'BASKET.SUBTITLE' | translate }}</span>
+    <h1 class="section-title-v2">{{ 'BASKET.TITLE' | translate }}</h1>
+  </div>
+
+  <div class="grid mt-4">
+    <!-- Items List -->
+    <div class="col-12 lg:col-8">
+      <div class="mg-card p-0" style="overflow: hidden">
+        <p-table [value]="basket.items" class="manga-table" [responsiveLayout]="'stack'">
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="bg-soft text-muted font-bold text-xs uppercase p-4" style="border:none">{{ 'BASKET.PRODUCT' | translate }}</th>
+              <th class="bg-soft text-muted font-bold text-xs uppercase p-4 text-center" style="border:none">{{ 'BASKET.PRICE' | translate }}</th>
+              <th class="bg-soft text-muted font-bold text-xs uppercase p-4 text-center" style="border:none">{{ 'BASKET.QUANTITY' | translate }}</th>
+              <th class="bg-soft text-muted font-bold text-xs uppercase p-4 text-center" style="border:none">{{ 'BASKET.TOTAL' | translate }}</th>
+              <th class="bg-soft text-muted font-bold text-xs uppercase p-4" style="border:none"></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr class="border-bottom-1 border-white-alpha-10">
+              <td class="p-4">
+                <div class="flex align-items-center gap-3">
+                   <div class="brand-bolt" style="width:32px; height:32px; font-size:1rem; opacity:0.6">
+                     <i class="pi pi-box"></i>
+                   </div>
+                   <span class="font-bold text-lg">{{ item.productName }}</span>
+                </div>
+              </td>
+              <td class="p-4 text-center text-dim">{{ item.price | currency }}</td>
+              <td class="p-4 text-center">
+                 <span class="px-3 py-2 bg-soft font-bold rounded-lg">{{ item.quantity }}</span>
+              </td>
+              <td class="p-4 text-center font-bold text-primary">{{ item.price * item.quantity | currency }}</td>
+              <td class="p-4 text-right">
+                <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
+                        [pTooltip]="'BASKET.REMOVE' | translate" (click)="removeItem(item.productId)"></button>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="5" class="py-8 text-center text-muted">
+                <i class="pi pi-shopping-cart text-6xl opacity-10 mb-4 block"></i>
+                <p class="text-xl font-bold">{{ 'BASKET.EMPTY_TITLE' | translate }}</p>
+                <a routerLink="/products" class="text-primary hover:underline mt-2 inline-block">{{ 'BASKET.EMPTY_LINK' | translate }}</a>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+
+    <!-- Summary Sidebar -->
+    <div class="col-12 lg:col-4">
+      <div class="mg-card" style="position: sticky; top: 100px">
+        <h2 class="display-font text-2xl font-bold mb-4">{{ 'BASKET.SUMMARY' | translate }}</h2>
+        
+        <div class="flex flex-column gap-3 mb-5">
+           <div class="flex justify-content-between p-3 bg-soft rounded-lg mb-1">
+             <span class="text-dim font-bold">{{ 'BASKET.SUBTOTAL' | translate }}</span>
+             <span class="font-bold">{{ total | currency }}</span>
+           </div>
+           <div class="flex justify-content-between p-3 bg-soft rounded-lg">
+             <span class="text-dim font-bold">{{ 'BASKET.DELIVERY' | translate }}</span>
+             <span class="text-primary font-bold">{{ 'BASKET.FREE' | translate }}</span>
+           </div>
+           <div class="flex justify-content-between p-3 mt-2 border-top-1 border-white-alpha-10">
+             <span class="text-xl font-bold">{{ 'BASKET.GRAND_TOTAL' | translate }}</span>
+             <span class="text-2xl font-bold text-primary">{{ total | currency }}</span>
+           </div>
+        </div>
+
+        <button pButton class="p-button-primary p-button-lg w-full py-4 text-lg"
+                [label]="'BASKET.CHECKOUT' | translate" 
+                icon="pi pi-shopping-bag"
+                routerLink="/checkout" 
+                [disabled]="basket.items.length === 0"></button>
+                
+        <div class="mt-4 p-3 border-round-lg text-sm text-dim flex gap-2 align-items-center justify-content-center opacity-60">
+          <i class="pi pi-shield text-primary"></i>
+          {{ 'CHECKOUT.SECURE_DESC' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

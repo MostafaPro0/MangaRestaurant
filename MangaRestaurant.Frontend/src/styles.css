@@ -1,0 +1,62 @@
+/* ─── Global Styles & Frameworks ────────────────────────────── */
+@import "primeicons/primeicons.css";
+@import "primeflex/primeflex.css";
+
+/* ─── Design System Imports ─────────────────────────────── */
+@import "./assets/styles/_variables.css";
+@import "./assets/styles/_base.css";
+@import "./assets/styles/_layout.css";
+@import "./assets/styles/_components.css";
+
+/* ─── PrimeNG Global Overrides ─────────────────────────────── */
+:root {
+  --primary-color: #ff3e3e;
+  --primary-color-text: #ffffff;
+}
+
+/* Custom Scrollbar (Cross-browser) */
+body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) var(--bg-deep);
+}
+
+/* Page Containers */
+.page-wrap {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+}
+
+/* Layout Helpers */
+.section-header-v2 {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-tag {
+  font-family: var(--font-manga);
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.section-title-v2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.section-subtitle-v2 {
+  font-size: 1.1rem;
+  color: var(--text-dim);
+  max-width: 600px;
+  margin: 0 auto;
+}

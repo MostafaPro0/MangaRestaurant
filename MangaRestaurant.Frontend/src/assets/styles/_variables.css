@@ -1,0 +1,65 @@
+/* ─── Mango-Inspired Design System ───────────────────────── */
+
+:root {
+  /* Mango Fruit Brand Colors */
+  --primary:      #FFBE00; /* Fresh Mango Yellow-Orange */
+  --primary-hover: #E6A800;
+  --secondary:    #84CC16; /* Mango Leaf Green (Accent) */
+  
+  /* Modern Manga Graphic Settings */
+  --radius-lg:    12px;
+  --radius-md:    8px;
+  --radius-sm:    4px;
+  --font-display: 'Outfit', 'Cairo', sans-serif;
+  --font-body:    'Inter', 'Cairo', sans-serif;
+  --font-manga:   'Bebas Neue', 'Cairo', sans-serif;
+  
+  /* Modern Shadows */
+  --ink-border:   1px solid rgba(0,0,0,0.1);
+  --soft-shadow:  0 10px 30px rgba(255, 190, 0, 0.1);
+}
+
+/* Default Dark Theme / Deep Mango Night */
+:root, .theme-dark {
+  --bg-deep:      #0b0a05;
+  --bg-soft:      #14130c;
+  --surface:      #1d1c13;
+  --surface-hover: #26251a;
+  --text-main:    #ffffff;
+  --text-dim:     #b6b4a2;
+  --text-muted:   #5d5b4a;
+  --glass:        rgba(20, 19, 12, 0.9);
+  --glass-border: rgba(255, 190, 0, 0.08);
+  --shadow-sm:    0 8px 32px rgba(0,0,0,0.4);
+  --shadow-lg:    0 20px 60px rgba(0,0,0,0.6);
+}
+
+/* Light Theme / Sunny Mango Page */
+.theme-light {
+  --bg-deep:      #fdfbf0;
+  --bg-soft:      #ffffff;
+  --surface:      #fffef7;
+  --surface-hover: #f9f7e5;
+  --text-main:    #2b2a1a;
+  --text-dim:     #5e5c4a;
+  --text-muted:   #b6b4a2;
+  --glass:        rgba(255, 255, 255, 0.95);
+  --glass-border: rgba(255, 190, 0, 0.2);
+  --shadow-sm:    0 4px 12px rgba(255, 190, 0, 0.05);
+  --shadow-lg:    0 20px 40px rgba(0,0,0,0.05);
+}
+
+/* Manga Panel Effect (Cleaned Up) */
+.manga-panel {
+  border: 1px solid var(--glass-border);
+  background: var(--surface);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: var(--radius-md);
+}
+
+/* Subtle Halftone Pattern */
+.manga-halftone {
+  background-image: radial-gradient(rgba(255, 190, 0, 0.1) 1px, transparent 1px);
+  background-size: 10px 10px;
+  opacity: 0.3;
+}
