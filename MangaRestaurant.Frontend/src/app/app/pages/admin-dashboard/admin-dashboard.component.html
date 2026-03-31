@@ -161,8 +161,10 @@
           </ng-template>
           <ng-template pTemplate="body" let-product>
             <tr>
-              <td class="font-medium">{{ product.name }}</td>
-              <td><span class="category-tag">{{ product.category }}</span></td>
+              <td class="font-medium">
+                {{ (translate.currentLang === 'ar' && product.nameAr) ? product.nameAr : product.name }}
+              </td>
+              <td><span class="category-tag">{{ 'CATEGORIES.' + product.category | translate }}</span></td>
               <td class="font-bold">{{ product.price | currency }}</td>
               <td class="text-center">
                 <div class="flex justify-content-center gap-2">
