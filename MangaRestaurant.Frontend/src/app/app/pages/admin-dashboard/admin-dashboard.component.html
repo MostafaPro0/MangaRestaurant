@@ -1,7 +1,7 @@
 <section class="admin-dashboard-container p-3 md:p-4">
   
   <!-- 1. Header Section -->
-  <div class="header-section d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3 p-3">
+  <div class="header-section d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
     <div class="title-group">
       <h1 class="dashboard-title gradient-text mb-1">{{ 'ADMIN.DASHBOARD_TITLE' | translate }}</h1>
       <p class="dashboard-subtitle text-muted">{{ 'ADMIN.DASHBOARD_SUBTITLE' | translate }}</p>
@@ -14,7 +14,7 @@
   <div class="admin-dashboard-wrapper shadow-sm border-round-xl bg-white overflow-hidden">
     
     <!-- 2. CUSTOM SYSTEM NAV -->
-    <div class="custom-admin-nav p-3 border-bottom-1 border-gray-100 bg-gray-50">
+    <div class="custom-admin-nav p-3 border-bottom-1 border-gray-100 bg-gray-50 flex-wrap gap-2">
       <button class="nav-btn" [class.active]="activeTab === 'reports'" (click)="setActiveTab('reports')">
         <i class="pi pi-chart-bar"></i> <span>{{ 'ADMIN.REPORTS' | translate }}</span>
       </button>
@@ -32,47 +32,83 @@
     <!-- 3. Dynamic Content Area -->
     <div class="admin-content-card">
       
-      <!-- Tab 1: Reports -->
+      <!-- Tab 1: FULL ANALYTICAL REPORTS -->
       <div *ngIf="activeTab === 'reports'" class="tab-content animate-fade p-3 md:p-4">
-        <!-- Stats Summary -->
+        
+        <!-- Stats Summary (Row 1) -->
         <div class="grid mb-4" *ngIf="reportData">
-          <div class="col-12 sm:col-6 lg:col-3" *ngFor="let stat of getSummaryStats()">
-            <div class="stat-card p-4 shadow-sm h-full flex align-items-center gap-3">
-              <div [class]="'stat-icon flex align-items-center justify-content-center ' + stat.colorClass">
-                <i [class]="stat.icon"></i>
-              </div>
-              <div class="stat-content">
-                <span class="stat-label block opacity-70">{{ stat.label | translate }}</span>
-                <span class="stat-value block text-2xl font-bold">{{ stat.value }}</span>
-              </div>
-            </div>
-          </div>
+           <div class="col-12 sm:col-6 lg:col-3" *ngFor="let stat of getSummaryStats()">
+             <div class="stat-card p-4 shadow-sm h-full flex align-items-center gap-3 border-round-xl">
+               <div [class]="'stat-icon flex align-items-center justify-content-center ' + stat.colorClass">
+                 <i [class]="stat.icon"></i>
+               </div>
+               <div class="stat-content">
+                 <span class="stat-label block opacity-70">{{ stat.label | translate }}</span>
+                 <span class="stat-value block text-2xl font-bold">{{ stat.value }}</span>
+               </div>
+             </div>
+           </div>
         </div>
 
-        <!-- Charts Grid -->
+        <!-- Analytical Charts (Grid) -->
         <div class="grid">
+          <!-- Row 2: Sales Trend (Main Chart) -->
           <div class="col-12 lg:col-8">
-            <div class="chart-container p-4 bg-white shadow-sm border-round-xl">
+            <div class="chart-container p-4 bg-white shadow-sm border-round-xl mb-4">
               <h3 class="chart-title"><i class="pi pi-chart-line"></i> {{ 'ADMIN.CHART_SALES' | translate }}</h3>
-              <div class="chart-body">
-                <apx-chart *ngIf="salesChartOptions"
-                  [series]="salesChartOptions.series!" [chart]="salesChartOptions.chart!"
-                  [xaxis]="salesChartOptions.xaxis!" [colors]="salesChartOptions.colors!"
-                  [stroke]="salesChartOptions.stroke!" [tooltip]="salesChartOptions.tooltip!">
-                </apx-chart>
-              </div>
+              <apx-chart *ngIf="salesChartOptions" [series]="salesChartOptions.series!" [chart]="salesChartOptions.chart!" 
+                [xaxis]="salesChartOptions.xaxis!" [colors]="salesChartOptions.colors!" [stroke]="salesChartOptions.stroke!" [fill]="salesChartOptions.fill!">
+              </apx-chart>
             </div>
           </div>
+          
+          <!-- Row 2: Status Distribution (Side) -->
           <div class="col-12 lg:col-4">
-            <div class="chart-container p-4 bg-white shadow-sm border-round-xl">
+            <div class="chart-container p-4 bg-white shadow-sm border-round-xl mb-4">
               <h3 class="chart-title"><i class="pi pi-chart-pie"></i> {{ 'ADMIN.CHART_STATUS' | translate }}</h3>
-              <div class="chart-body">
-                <apx-chart *ngIf="statusChartOptions"
-                  [series]="statusChartOptions.series!" [chart]="statusChartOptions.chart!"
-                  [labels]="statusChartOptions.labels!" [colors]="statusChartOptions.colors!"
-                  [legend]="statusChartOptions.legend!" [responsive]="statusChartOptions.responsive!">
-                </apx-chart>
-              </div>
+              <apx-chart *ngIf="statusChartOptions" [series]="statusChartOptions.series!" [chart]="statusChartOptions.chart!" 
+                [labels]="statusChartOptions.labels!" [colors]="statusChartOptions.colors!" [legend]="statusChartOptions.legend!">
+              </apx-chart>
+            </div>
+          </div>
+
+          <!-- Row 3: Peak Hours (Bar) -->
+          <div class="col-12 lg:col-12">
+            <div class="chart-container p-4 bg-white shadow-sm border-round-xl mb-4">
+              <h3 class="chart-title"><i class="pi pi-clock"></i> {{ 'ADMIN.CHART_PEAK_HOURS' | translate }}</h3>
+              <apx-chart *ngIf="peakHoursChartOptions" [series]="peakHoursChartOptions.series!" [chart]="peakHoursChartOptions.chart!" 
+                [xaxis]="peakHoursChartOptions.xaxis!" [colors]="peakHoursChartOptions.colors!" [plotOptions]="peakHoursChartOptions.plotOptions!">
+              </apx-chart>
+            </div>
+          </div>
+
+          <!-- Row 4: Top Products (Horizontal) -->
+          <div class="col-12 lg:col-6">
+            <div class="chart-container p-4 bg-white shadow-sm border-round-xl mb-4 h-full">
+              <h3 class="chart-title"><i class="pi pi-star"></i> {{ 'ADMIN.CHART_TOP_SELLERS' | translate }}</h3>
+              <apx-chart *ngIf="topProductsChartOptions" [series]="topProductsChartOptions.series!" [chart]="topProductsChartOptions.chart!" 
+                [xaxis]="topProductsChartOptions.xaxis!" [colors]="topProductsChartOptions.colors!" [plotOptions]="topProductsChartOptions.plotOptions!">
+              </apx-chart>
+            </div>
+          </div>
+
+          <!-- Row 4: Category Distribution (Pie) -->
+          <div class="col-12 lg:col-6">
+            <div class="chart-container p-4 bg-white shadow-sm border-round-xl mb-4 h-full">
+              <h3 class="chart-title"><i class="pi pi-tag"></i> {{ 'ADMIN.CHART_TOP_SELLERS' | translate }}</h3>
+              <apx-chart *ngIf="categoryChartOptions" [series]="categoryChartOptions.series!" [chart]="categoryChartOptions.chart!" 
+                [labels]="categoryChartOptions.labels!" [colors]="categoryChartOptions.colors!">
+              </apx-chart>
+            </div>
+          </div>
+
+          <!-- Row 5: Delivery Methods (Donut) -->
+          <div class="col-12 lg:col-4">
+            <div class="chart-container p-4 bg-white shadow-sm border-round-xl mb-4 h-full">
+              <h3 class="chart-title"><i class="pi pi-truck"></i> {{ 'ADMIN.CHART_DELIVERY' | translate }}</h3>
+              <apx-chart *ngIf="deliveryChartOptions" [series]="deliveryChartOptions.series!" [chart]="deliveryChartOptions.chart!" 
+                [labels]="deliveryChartOptions.labels!" [colors]="deliveryChartOptions.colors!">
+              </apx-chart>
             </div>
           </div>
         </div>
@@ -80,8 +116,7 @@
 
       <!-- Tab 2: Orders -->
       <div *ngIf="activeTab === 'orders'" class="tab-content animate-fade p-3 md:p-4">
-        <p-table [value]="orders" [rows]="10" [paginator]="true" [loading]="loadingOrders" 
-                 class="custom-table" responsiveLayout="scroll">
+        <p-table [value]="orders" [rows]="10" [paginator]="true" [loading]="loadingOrders" class="custom-table">
           <ng-template pTemplate="header">
             <tr>
               <th style="width: 15%">{{ 'ORDERS.ID' | translate }}</th>
@@ -168,6 +203,23 @@
 
 <!-- Product Dialog -->
 <p-dialog [(visible)]="productDialogVisible" [modal]="true" [header]="(editingProductId ? 'ADMIN.EDIT_PRODUCT' : 'ADMIN.ADD_PRODUCT') | translate"
-          class="custom-dialog">
-  <!-- Dialog Content (kept same for brevity) -->
+          class="custom-dialog" [style]="{width: '500px'}">
+  <div class="p-fluid">
+    <div class="field mb-3">
+      <label for="name" class="font-bold block mb-2">{{ 'ADMIN.PRODUCT_NAME' | translate }}</label>
+      <input id="name" type="text" pInputText [(ngModel)]="selectedProduct.name" />
+    </div>
+    <div class="field mb-3">
+      <label for="price" class="font-bold block mb-2">{{ 'ADMIN.PRICE' | translate }}</label>
+      <input id="price" type="number" pInputText [(ngModel)]="selectedProduct.price" />
+    </div>
+    <div class="field mb-3">
+      <label for="category" class="font-bold block mb-2">{{ 'ADMIN.CATEGORY' | translate }}</label>
+      <input id="category" type="text" pInputText [(ngModel)]="selectedProduct.category" />
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton label="{{ 'ADMIN.CANCEL' | translate }}" icon="pi pi-times" class="p-button-text" (click)="productDialogVisible = false"></button>
+    <button pButton label="{{ 'ADMIN.SAVE' | translate }}" icon="pi pi-check" class="p-button-warning" (click)="saveProduct()"></button>
+  </ng-template>
 </p-dialog>

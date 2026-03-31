@@ -100,19 +100,19 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   loadAllData() {
-    this.adminService.getDashboardReport().subscribe(report => {
+    this.adminService.getAdminReport().subscribe(report => {
       this.reportData = report;
       this.updateCharts(report);
     });
 
-    this.ordersService.getAllOrders().subscribe(orders => {
+    this.ordersService.getAllOrdersAdmin().subscribe(orders => {
       this.orders = orders;
       orders.forEach(o => this.orderStatusDraft[o.id] = o.status);
     });
 
-    this.productsService.getProducts({}).subscribe(p => this.products = p.data);
+    // ProductsService.getProducts expects categoryId or pageIndex (using 1 to avoid negative offset)
+    this.productsService.getProducts(1).subscribe(p => this.products = p.data);
     
-    // Using adminService for employees (assuming structured同样)
     this.adminService.getEmployees().subscribe(e => this.employees = e);
   }
 
@@ -142,7 +142,7 @@ export class AdminDashboardComponent implements OnInit {
 
     // 1. Sales Trend
     this.salesChartOptions = {
-      series: [{ name: isAr ? 'الإيرادات' : 'Revenue', data: report.salesLast7Days.map((d: any) => d.revenue) }],
+      series: [{ name: this.translate.instant('ADMIN.TOTAL_REVENUE'), data: report.salesLast7Days.map((d: any) => d.revenue) }],
       chart: { type: 'area', height: 350, toolbar: { show: false } },
       xaxis: { categories: report.salesLast7Days.map((d: any) => d.date) },
       colors: ['#f9d423'],
@@ -153,7 +153,11 @@ export class AdminDashboardComponent implements OnInit {
     // 2. Status Distribution
     this.statusChartOptions = {
       series: [report.pendingOrders, report.paymentReceivedOrders, report.paymentFailedOrders],
-      labels: isAr ? ['قيد الانتظار', 'تم الاستلام', 'فشل الدفع'] : ['Pending', 'Received', 'Failed'],
+      labels: [
+        this.translate.instant('ORDER_STATUS.PENDING'),
+        this.translate.instant('ORDER_STATUS.PAYMENTRECEIVED'),
+        this.translate.instant('ORDER_STATUS.PAYMENTFAILED')
+      ],
       chart: { type: 'donut', height: 350 },
       colors: ['#f39c12', '#2ecc71', '#e74c3c'],
       legend: { position: 'bottom' }
@@ -161,7 +165,7 @@ export class AdminDashboardComponent implements OnInit {
 
     // 3. Peak Hours
     this.peakHoursChartOptions = {
-      series: [{ name: isAr ? 'الطلبات' : 'Orders', data: report.peakHours.map((h: any) => h.count) }],
+      series: [{ name: this.translate.instant('ORDERS.TITLE'), data: report.peakHours.map((h: any) => h.count) }],
       chart: { type: 'bar', height: 350, toolbar: { show: false } },
       xaxis: { categories: report.peakHours.map((h: any) => `${h.hour}:00`) },
       colors: ['#3498db'],
@@ -178,7 +182,7 @@ export class AdminDashboardComponent implements OnInit {
 
     // 5. Top Products
     this.topProductsChartOptions = {
-      series: [{ name: isAr ? 'الكمية' : 'Quantity', data: report.topProducts.map((p: any) => p.quantity) }],
+      series: [{ name: this.translate.instant('BASKET.QUANTITY'), data: report.topProducts.map((p: any) => p.quantity) }],
       chart: { type: 'bar', height: 350, toolbar: { show: false } },
       xaxis: { categories: report.topProducts.map((p: any) => isAr ? (p.nameAr || p.name) : p.name) },
       colors: ['#e67e22'],
