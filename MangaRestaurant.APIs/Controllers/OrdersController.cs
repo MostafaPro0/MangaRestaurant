@@ -2,6 +2,7 @@ using AutoMapper;
 using MangaRestaurant.APIs.Dtos;
 using MangaRestaurant.APIs.Errors;
 using MangaRestaurant.Core;
+using MangaRestaurant.Core.Entities;
 using MangaRestaurant.Core.Entities.Order;
 using MangaRestaurant.Core.Service;
 using Microsoft.AspNetCore.Authorization;
@@ -15,11 +16,13 @@ namespace MangaRestaurant.APIs.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public OrdersController(IOrderService orderService, IMapper mapper)
+        public OrdersController(IOrderService orderService, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _orderService = orderService;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
         //Create Order
         [ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
@@ -166,13 +169,23 @@ namespace MangaRestaurant.APIs.Controllers
             // Note: Since OrderItem doesn't store Category directly in DB, we'd ideally join but 
             // for now we group by common naming or rely on product service. 
             // Better: Group by the current product list to get counts.
+            // Correctly Calculate Top Categories by joining with real Categories from DB
+            var allProducts = await _unitOfWork.Repository<Product>().GetAllAsync();
+            var allCategories = await _unitOfWork.Repository<ProductCategory>().GetAllAsync();
+
             var topCategories = orders
                 .SelectMany(o => o.Items)
-                .GroupBy(i => i.ProductItemOrder.ProductName.Split(' ').FirstOrDefault() ?? "Other")
-                .Select(g => new TopCategoryDTO
-                {
-                    Name = g.Key,
-                    Count = g.Count()
+                .Select(item => allProducts.FirstOrDefault(p => p.Id == item.ProductItemOrder.ProductId))
+                .Where(p => p != null)
+                .GroupBy(p => p.CategoryId)
+                .Select(g => {
+                    var cat = allCategories.FirstOrDefault(c => c.Id == g.Key);
+                    return new TopCategoryDTO
+                    {
+                        Name = cat?.Name ?? "Other",
+                        NameAr = cat?.NameAr ?? "أخرى",
+                        Count = g.Count()
+                    };
                 })
                 .OrderByDescending(x => x.Count)
                 .Take(5)

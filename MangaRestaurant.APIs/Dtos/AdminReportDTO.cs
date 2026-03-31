@@ -51,6 +51,7 @@ namespace MangaRestaurant.APIs.Dtos
     public class TopCategoryDTO
     {
         public string Name { get; set; }
+        public string NameAr { get; set; }
         public int Count { get; set; }
     }
 }

@@ -14,18 +14,18 @@
     "DASHBOARD": "Dashboard"
   },
   "HOME": {
-    "BADGE": "Premium Restaurant",
+    "BADGE": "Premium Japanese Restaurant",
     "TITLE_1": "The Best",
     "TITLE_2": "Manga Cuisine",
-    "SUBTITLE": "Authentic Japanese flavors delivered to your doorstep.",
+    "SUBTITLE": "Authentic Japanese flavors delivered fresh and prepared with love.",
     "BROWSE": "Explore Menu",
-    "TAG_LINE": "Freshly Prepared",
-    "SECTION_TITLE": "Our Services",
-    "SECTION_SUBTITLE": "High-quality ingredients and fast delivery.",
+    "TAG_LINE": "Freshly Prepared Specially For You",
+    "SECTION_TITLE": "Our Premium Services",
+    "SECTION_SUBTITLE": "We care about the finest details to provide an exceptional dining experience.",
     "FEATURE_1_TITLE": "Fast Delivery",
     "FEATURE_1_DESC": "Your food arrives hot and fresh in record time.",
     "FEATURE_2_TITLE": "Top Quality",
-    "FEATURE_2_DESC": "We use only the finest ingredients in our kitchen.",
+    "FEATURE_2_DESC": "We use only the finest fresh ingredients in our kitchen.",
     "FEATURE_3_TITLE": "Safe Dining",
     "FEATURE_3_DESC": "Highest standards of hygiene and food safety.",
     "FEATURE_4_TITLE": "Customer Choice",
@@ -38,10 +38,10 @@
   "PRODUCTS": {
     "TITLE": "Our Menu",
     "EXPLORE_TAG": "What's Cooking?",
-    "SUBTITLE": "Choose your favorite Japanese dish.",
+    "SUBTITLE": "Choose your favorite Japanese dish from our wide selection.",
     "SEARCH_PLACEHOLDER": "Search the menu...",
     "NAME": "Name",
-    "BRAND": "Ingredients",
+    "BRAND": "Main Ingredients",
     "CATEGORY": "Category",
     "PRICE": "Price",
     "ADD_TO_CART": "Add to Cart",
@@ -54,14 +54,14 @@
   },
   "BASKET": {
     "TITLE": "Your Cart",
-    "SUBTITLE": "Review your order",
+    "SUBTITLE": "Review your order before payment",
     "PRODUCT": "Product",
     "PRICE": "Price",
     "QUANTITY": "Quantity",
     "TOTAL": "Total",
     "REMOVE": "Remove",
     "EMPTY_TITLE": "Your cart is currently empty.",
-    "EMPTY_LINK": "View Menu",
+    "EMPTY_LINK": "Start Browsing",
     "SUMMARY": "Order Summary",
     "GRAND_TOTAL": "Grand Total",
     "CHECKOUT": "Proceed to Checkout",
@@ -87,7 +87,7 @@
     "DELIVERY_SPEED": "Delivery Method",
     "ORDER_REVIEW": "Order Summary",
     "SECURE_PAYMENT": "Secure Payment",
-    "SECURE_DESC": "Your payment is 100% secure"
+    "SECURE_DESC": "Your payment is 100% secure and encrypted"
   },
   "ORDERS": {
     "TITLE": "Order History",
@@ -98,7 +98,7 @@
     "STATUS": "Status",
     "EMPTY": "You haven't placed any orders yet.",
     "EMPTY_TITLE": "No historical records found",
-    "EMPTY_DESC": "You haven't placed any orders with us yet. Let's change that!",
+    "EMPTY_DESC": "You haven't placed any orders with us yet. What are you waiting for?",
     "START_JOURNEY": "Start Your Journey",
     "ORDER_NUM": "Order",
     "ORDERED_ON": "Ordered On",
@@ -115,7 +115,7 @@
     "QUICK_LINKS": "QUICK LINKS",
     "MENU": "Our Menu",
     "CART_ORDERS": "Orders & Cart",
-    "FOOTER_DESC": "The ultimate mango-fresh culinary experience. Authentic Japanese flavors delivered to your doorstep since 2025.",
+    "FOOTER_DESC": "The ultimate Japanese culinary experience delivered to your doorstep with unmatched quality since 2025.",
     "CONTACT_US": "Contact Us"
   },
   "TOAST": {
@@ -133,8 +133,13 @@
     "PENDING": "Pending",
     "PAYMENTRECEIVED": "Payment Received",
     "PAYMENTFAILED": "Payment Failed",
+    "CONFIRMED": "Confirmed",
+    "PROCESSING": "Processing",
+    "SHIPPED": "Shipped",
+    "DELIVERED": "Delivered",
     "COMPLETED": "Completed",
-    "CANCELLED": "Cancelled"
+    "CANCELLED": "Cancelled",
+    "REFUNDED": "Refunded"
   },
   "LOGIN": {
     "TITLE": "Welcome Back",
@@ -143,11 +148,11 @@
     "PASSWORD": "Password",
     "SUBMIT": "Sign In",
     "NO_ACCOUNT": "Don't have an account?",
-    "REGISTER_LINK": "Join Us"
+    "REGISTER_LINK": "Start Now"
   },
   "REGISTER": {
     "TITLE": "Create Account",
-    "SUBTITLE": "Join our community",
+    "SUBTITLE": "Join our community for a faster ordering experience",
     "NAME": "Full Name",
     "EMAIL": "Email",
     "PASSWORD": "Password",
@@ -162,40 +167,38 @@
     "BACK": "Return Home"
   },
   "ADMIN": {
-    "TITLE": "Admin Dashboard",
-    "SUBTITLE": "Manage your restaurant's operations, employees, products, and orders.",
+    "DASHBOARD_TITLE": "Admin Dashboard",
+    "DASHBOARD_SUBTITLE": "Manage restaurant operations, employees, products, and orders.",
     "ADD_PRODUCT": "Add New Product",
     "EDIT_PRODUCT": "Edit Product",
+    "REPORTS": "Reports",
+    "ORDER_LOG": "Order Log",
+    "PRODUCTS": "Products",
+    "EMPLOYEES": "Employees",
     "DELETE_CONFIRM": "Are you sure you want to delete this product?",
     "STOCK": "Stock",
     "ACTIONS": "Actions",
+    "PRODUCT_NAME": "Product Name",
+    "CATEGORY": "Category",
+    "PRICE": "Price",
+    "EMPLOYEE_NAME": "Employee Name",
+    "EMAIL": "Email",
+    "ROLE": "Role",
+    "ROLE_ADMIN": "Administrator",
     "EDIT": "Edit",
     "DELETE": "Delete",
     "UPDATE": "Update",
     "SAVE": "Save",
     "CANCEL": "Cancel",
-    "TABS": {
-      "EMPLOYEES": "Employees",
-      "PRODUCTS": "Products",
-      "ORDERS": "Orders",
-      "REPORTS": "Reports"
-    },
-    "REPORTS": {
-      "SALES_TREND": "Weekly Sales Trend",
-      "ORDER_STATUS": "Order Status Distribution",
-      "TOP_CATEGORIES": "Top Selling Categories"
-    },
-    "EMPLOYEES": {
-      "ID": "ID",
-      "NAME": "Employee Name",
-      "DEPARTMENT": "Department"
-    },
-    "PRODUCT_FORM": {
-      "DESCRIPTION": "Description",
-      "IMAGE_URL": "Picture URL",
-      "PRICE": "Price",
-      "STOCK": "Stock Quantity"
-    },
+    "CHART_SALES": "Sales Revenue Trend",
+    "CHART_STATUS": "Order Status Distribution",
+    "CHART_PEAK_HOURS": "Peak Hours (Order Distribution)",
+    "CHART_TOP_SELLERS": "Top Selling Categories",
+    "CHART_DELIVERY": "Favorite Delivery Methods",
+    "TOTAL_ORDERS": "Total Orders",
+    "TOTAL_REVENUE": "Total Revenue",
+    "AVG_ORDER_VALUE": "Avg Order Value",
+    "TOTAL_EMPLOYEES": "Total Employees",
     "ORDERS": {
       "STATUS_UPDATE": "Update Status"
     }

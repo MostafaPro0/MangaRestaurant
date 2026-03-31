@@ -62,7 +62,7 @@ export class AdminDashboardComponent implements OnInit {
   products: any[] = [];
   employees: any[] = [];
   loadingOrders: boolean = false;
-  
+
   // Charts Options
   public salesChartOptions!: Partial<ChartOptions>;
   public statusChartOptions!: Partial<ChartOptions>;
@@ -93,10 +93,17 @@ export class AdminDashboardComponent implements OnInit {
     private ordersService: OrdersService,
     private messageService: MessageService,
     private translate: TranslateService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadAllData();
+    
+    // Auto-refresh charts when language changes
+    this.translate.onLangChange.subscribe(() => {
+      if (this.reportData) {
+        this.updateCharts(this.reportData);
+      }
+    });
   }
 
   loadAllData() {
@@ -112,7 +119,7 @@ export class AdminDashboardComponent implements OnInit {
 
     // ProductsService.getProducts expects categoryId or pageIndex (using 1 to avoid negative offset)
     this.productsService.getProducts(1).subscribe(p => this.products = p.data);
-    
+
     this.adminService.getEmployees().subscribe(e => this.employees = e);
   }
 
@@ -175,7 +182,7 @@ export class AdminDashboardComponent implements OnInit {
     // 4. Categories
     this.categoryChartOptions = {
       series: report.topCategories.map((c: any) => c.count),
-      labels: report.topCategories.map((c: any) => c.name),
+      labels: report.topCategories.map((c: any) => isAr ? (c.nameAr || c.name) : c.name),
       chart: { type: 'pie', height: 350 },
       colors: ['#8e44ad', '#2c3e50', '#d35400', '#16a085', '#2980b9']
     };
@@ -192,7 +199,7 @@ export class AdminDashboardComponent implements OnInit {
     // 6. Delivery
     this.deliveryChartOptions = {
       series: report.topDeliveryMethods.map((d: any) => d.count),
-      labels: report.topDeliveryMethods.map((d: any) => d.name),
+      labels: report.topDeliveryMethods.map((d: any) => isAr ? (d.nameAr || d.name) : d.name),
       chart: { type: 'donut', height: 300 },
       colors: ['#27ae60', '#f1c40f', '#e74c3c']
     };
