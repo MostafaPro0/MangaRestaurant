@@ -89,6 +89,104 @@
   padding: 1rem !important;
 }
 
+/* Premium Stat Cards */
+.stat-card {
+    background: var(--card-bg, #ffffff);
+    padding: 1.5rem;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    height: 100%;
+}
+
+.theme-dark .stat-card {
+    background: rgba(45, 45, 45, 0.8);
+    backdrop-filter: blur(10px);
+    border-color: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.stat-card.orders .stat-icon { background: linear-gradient(135deg, #3498db, #2980b9); }
+.stat-card.revenue .stat-icon { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+.stat-card.average .stat-icon { background: linear-gradient(135deg, #f39c12, #d35400); }
+.stat-card.employees .stat-icon { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+
+.stat-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    overflow: hidden;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: var(--text-color-secondary, #666);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-color, #1a1a1a);
+}
+
+.theme-dark .stat-value {
+    color: #ffffff;
+}
+
+.theme-dark .stat-label {
+    color: #aaa;
+}
+
+/* Chart Containers */
+.chart-container {
+    background: var(--card-bg, #ffffff);
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.chart-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color, #f9d423);
+    border-bottom: 2px solid rgba(249, 212, 35, 0.1);
+    padding-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.chart-body {
+    min-height: 350px;
+}
+
 /* Badges and Tags */
 .badge-id {
   background: rgba(0, 0, 0, 0.1);
@@ -152,8 +250,13 @@
 .status-badge[data-status="Pending"] { background: #f39c12; color: white; }
 .status-badge[data-status="PaymentReceived"] { background: #3498db; color: white; }
 .status-badge[data-status="PaymentFailed"] { background: #e74c3c; color: white; }
+.status-badge[data-status="Confirmed"] { background: #2c3e50; color: white; }
+.status-badge[data-status="Processing"] { background: #8e44ad; color: white; }
+.status-badge[data-status="Shipped"] { background: #2980b9; color: white; }
+.status-badge[data-status="Delivered"] { background: #27ae60; color: white; }
 .status-badge[data-status="Completed"] { background: #2ecc71; color: white; }
 .status-badge[data-status="Cancelled"] { background: #95a5a6; color: white; }
+.status-badge[data-status="Refunded"] { background: #d35400; color: white; }
 
 /* Buttons */
 .add-btn {

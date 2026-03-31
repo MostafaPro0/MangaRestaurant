@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -11,9 +11,32 @@ namespace MangaRestaurant.Core.Entities.Order
     {
         [EnumMember(Value = "Pending")]
         Pending,
+
         [EnumMember(Value = "Payment Received")]
         PaymentReceived,
+
         [EnumMember(Value = "Payment Failed")]
-        PaymentFailed
+        PaymentFailed,
+
+        [EnumMember(Value = "Confirmed")]
+        Confirmed,
+
+        [EnumMember(Value = "Processing")]
+        Processing,
+
+        [EnumMember(Value = "Shipped")]
+        Shipped,
+
+        [EnumMember(Value = "Delivered")]
+        Delivered,
+
+        [EnumMember(Value = "Completed")]
+        Completed,
+
+        [EnumMember(Value = "Cancelled")]
+        Cancelled,
+
+        [EnumMember(Value = "Refunded")]
+        Refunded
     }
 }

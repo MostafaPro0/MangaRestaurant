@@ -179,11 +179,52 @@
         </ng-template>
 
         <div class="reports-container p-4">
-          <div class="grid">
-            <!-- Row 1: Sales Trend -->
-            <div class="col-12 xl:col-8 mb-4">
-              <div class="p-4 glass-card h-full">
-                <h5 class="manga-font text-xl mb-4 primary-text">{{ 'ADMIN.REPORTS.SALES_TREND' | translate }}</h5>
+          <!-- Premium Summary Stats -->
+        <div class="grid mb-5" *ngIf="reportData">
+          <div class="col-12 sm:col-6 lg:col-3">
+            <div class="stat-card orders">
+              <div class="stat-icon"><i class="pi pi-shopping-bag"></i></div>
+              <div class="stat-content">
+                <span class="stat-label">{{ 'ADMIN.TOTAL_ORDERS' | translate }}</span>
+                <span class="stat-value font-bold">{{ reportData.totalOrders }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 sm:col-6 lg:col-3">
+            <div class="stat-card revenue">
+              <div class="stat-icon"><i class="pi pi-money-bill"></i></div>
+              <div class="stat-content">
+                <span class="stat-label">{{ 'ADMIN.TOTAL_REVENUE' | translate }}</span>
+                <div class="stat-value font-bold">{{ reportData.revenue | currency }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 sm:col-6 lg:col-3">
+            <div class="stat-card average">
+              <div class="stat-icon"><i class="pi pi-chart-bar"></i></div>
+              <div class="stat-content">
+                <span class="stat-label">{{ 'ADMIN.AVG_ORDER_VALUE' | translate }}</span>
+                <div class="stat-value font-bold">{{ reportData.averageOrderValue | currency }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 sm:col-6 lg:col-3">
+            <div class="stat-card employees">
+              <div class="stat-icon"><i class="pi pi-users"></i></div>
+              <div class="stat-content">
+                <span class="stat-label">{{ 'ADMIN.TOTAL_EMPLOYEES' | translate }}</span>
+                <span class="stat-value font-bold">{{ employees.length }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid">
+          <!-- Sales Trend -->
+          <div class="col-12 lg:col-8">
+            <div class="chart-container">
+              <h3 class="chart-title">{{ 'ADMIN.CHART_SALES' | translate }}</h3>
+              <div class="chart-body">
                 <apx-chart
                   *ngIf="salesChartOptions"
                   [series]="salesChartOptions.series!"
@@ -196,14 +237,17 @@
                   [colors]="salesChartOptions.colors!"
                   [yaxis]="salesChartOptions.yaxis!"
                   [tooltip]="salesChartOptions.tooltip!"
+                  style="min-height: 350px; display: block;"
                 ></apx-chart>
               </div>
             </div>
+          </div>
 
-            <!-- Row 1: Order Status -->
-            <div class="col-12 xl:col-4 mb-4">
-              <div class="p-4 glass-card h-full">
-                <h5 class="manga-font text-xl mb-4 primary-text">{{ 'ADMIN.REPORTS.ORDER_STATUS' | translate }}</h5>
+          <!-- Order Status -->
+          <div class="col-12 lg:col-4">
+            <div class="chart-container">
+              <h3 class="chart-title">{{ 'ADMIN.CHART_STATUS' | translate }}</h3>
+              <div class="chart-body">
                 <apx-chart
                   *ngIf="statusChartOptions"
                   [series]="statusChartOptions.series!"
@@ -212,14 +256,37 @@
                   [colors]="statusChartOptions.colors!"
                   [legend]="statusChartOptions.legend!"
                   [stroke]="statusChartOptions.stroke!"
+                  style="min-height: 350px; display: block;"
                 ></apx-chart>
               </div>
             </div>
+          </div>
 
-            <!-- Row 2: Top Categories -->
-            <div class="col-12 mb-4">
-              <div class="p-4 glass-card h-full">
-                <h5 class="manga-font text-xl mb-4 primary-text">{{ 'ADMIN.REPORTS.TOP_CATEGORIES' | translate }}</h5>
+          <!-- Peak Hours -->
+          <div class="col-12">
+            <div class="chart-container">
+              <h3 class="chart-title"><i class="pi pi-clock mr-2"></i> {{ 'ADMIN.CHART_PEAK_HOURS' | translate }}</h3>
+              <div class="chart-body">
+                <apx-chart
+                  *ngIf="peakHoursChartOptions"
+                  [series]="peakHoursChartOptions.series!"
+                  [chart]="peakHoursChartOptions.chart!"
+                  [xaxis]="peakHoursChartOptions.xaxis!"
+                  [stroke]="peakHoursChartOptions.stroke!"
+                  [markers]="peakHoursChartOptions.markers!"
+                  [colors]="peakHoursChartOptions.colors!"
+                  [yaxis]="peakHoursChartOptions.yaxis!"
+                  style="min-height: 350px; display: block;"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Products -->
+          <div class="col-12 lg:col-8">
+            <div class="chart-container">
+              <h3 class="chart-title"><i class="pi pi-star mr-2"></i> {{ 'ADMIN.CHART_CATEGORIES' | translate }}</h3>
+              <div class="chart-body">
                 <apx-chart
                   *ngIf="categoryChartOptions"
                   [series]="categoryChartOptions.series!"
@@ -229,12 +296,33 @@
                   [colors]="categoryChartOptions.colors!"
                   [grid]="categoryChartOptions.grid!"
                   [yaxis]="categoryChartOptions.yaxis!"
+                  style="min-height: 350px; display: block;"
                 ></apx-chart>
               </div>
             </div>
           </div>
+
+          <!-- Delivery Methods -->
+          <div class="col-12 lg:col-4">
+            <div class="chart-container">
+              <h3 class="chart-title"><i class="pi pi-truck mr-2"></i> {{ 'ADMIN.CHART_DELIVERY' | translate }}</h3>
+              <div class="chart-body">
+                <apx-chart
+                  *ngIf="deliveryChartOptions"
+                  [series]="deliveryChartOptions.series!"
+                  [chart]="deliveryChartOptions.chart!"
+                  [labels]="deliveryChartOptions.labels!"
+                  [colors]="deliveryChartOptions.colors!"
+                  [legend]="deliveryChartOptions.legend!"
+                  style="min-height: 350px; display: block;"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+
         </div>
-      </p-tabPanel>
+      </div>
+    </p-tabPanel>
     </p-tabView>
   </div>
 </section>

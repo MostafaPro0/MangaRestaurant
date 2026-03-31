@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using MangaRestaurant.APIs.Dtos;
 using MangaRestaurant.APIs.Errors;
 using MangaRestaurant.Core;
@@ -134,13 +134,95 @@ namespace MangaRestaurant.APIs.Controllers
         {
             var orders = await _orderService.GetAllOrdersAsync();
             var totalOrders = orders.Count;
+            
+            // Calculate Sales Trend (Last 7 Days)
+            var last7Days = Enumerable.Range(0, 7)
+                .Select(i => DateTimeOffset.Now.Date.AddDays(-i))
+                .Select(date => new DailySalesDTO
+                {
+                    Date = date.ToString("MMM dd"),
+                    Revenue = orders
+                        .Where(o => o.OrderDate.Date == date && o.OrderStatus != OrderStatus.PaymentFailed)
+                        .Sum(o => o.GetTotal())
+                })
+                .Reverse()
+                .ToList();
+
+            // Calculate Top Products
+            var topProducts = orders
+                .SelectMany(o => o.Items)
+                .GroupBy(i => new { i.ProductItemOrder.ProductName, i.ProductItemOrder.ProductNameAr })
+                .Select(g => new TopProductDTO
+                {
+                    Name = g.Key.ProductName,
+                    NameAr = g.Key.ProductNameAr,
+                    Quantity = (int)g.Sum(x => x.Quantity)
+                })
+                .OrderByDescending(x => x.Quantity)
+                .Take(5)
+                .ToList();
+
+            // Calculate Top Categories (Using Products associated with orders)
+            // Note: Since OrderItem doesn't store Category directly in DB, we'd ideally join but 
+            // for now we group by common naming or rely on product service. 
+            // Better: Group by the current product list to get counts.
+            var topCategories = orders
+                .SelectMany(o => o.Items)
+                .GroupBy(i => i.ProductItemOrder.ProductName.Split(' ').FirstOrDefault() ?? "Other")
+                .Select(g => new TopCategoryDTO
+                {
+                    Name = g.Key,
+                    Count = g.Count()
+                })
+                .OrderByDescending(x => x.Count)
+                .Take(5)
+                .ToList();
+
+            // Calculate Delivery Methods
+            var topDelivery = orders
+                .GroupBy(o => o.DeliveryMethod.ShortName)
+                .Select(g => new TopDeliveryDTO
+                {
+                    Name = g.Key,
+                    Count = g.Count()
+                })
+                .ToList();
+
+            // Calculate Peak Hours (from OrderDate)
+            var peakHours = orders
+                .GroupBy(o => o.OrderDate.Hour)
+                .Select(g => new PeakHourDTO
+                {
+                    Hour = g.Key,
+                    Count = g.Count()
+                })
+                .OrderBy(x => x.Hour)
+                .ToList();
+
             var report = new AdminReportDTO
             {
                 TotalOrders = totalOrders,
                 PendingOrders = orders.Count(o => o.OrderStatus == OrderStatus.Pending),
                 PaymentReceivedOrders = orders.Count(o => o.OrderStatus == OrderStatus.PaymentReceived),
                 PaymentFailedOrders = orders.Count(o => o.OrderStatus == OrderStatus.PaymentFailed),
-                Revenue = orders.Sum(o => o.GetTotal())
+                Revenue = orders.Sum(o => o.GetTotal()),
+                AverageOrderValue = totalOrders > 0 ? orders.Average(o => o.GetTotal()) : 0,
+                SalesLast7Days = last7Days,
+                TopProducts = topProducts,
+                TopCategories = topCategories,
+                TopDeliveryMethods = topDelivery,
+                PeakHours = peakHours,
+                TopEmployees = orders
+                    .GroupBy(o => o.BuyerEmail)
+                    .Select(g => new TopEmployeeDTO
+                    {
+                        Name = g.Key,
+                        OrderCount = g.Count(),
+                        TotalRevenue = g.Sum(o => o.GetTotal())
+                    })
+                    .OrderByDescending(x => x.TotalRevenue)
+                    .Take(5)
+                    .ToList()
             };
             return Ok(report);
         }

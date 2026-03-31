@@ -13,9 +13,16 @@ namespace MangaRestaurant.Repository.Identity
         public static async Task SeedUserAsync(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             var adminRoleName = "Admin";
+            var userRoleName = "User";
+
             if (!await roleManager.RoleExistsAsync(adminRoleName))
             {
                 await roleManager.CreateAsync(new IdentityRole(adminRoleName));
+            }
+
+            if (!await roleManager.RoleExistsAsync(userRoleName))
+            {
+                await roleManager.CreateAsync(new IdentityRole(userRoleName));
             }
 
             // Seed default admin user (MostafaPro0@yahoo.com)
@@ -36,12 +43,6 @@ namespace MangaRestaurant.Repository.Identity
                 }
             }
 
-            // Ensure mostafaismaelwakeb@gmail.com is Admin if they exist
-            var wakebUser = await userManager.FindByEmailAsync("mostafaismaelwakeb@gmail.com");
-            if (wakebUser != null && !await userManager.IsInRoleAsync(wakebUser, adminRoleName))
-            {
-                await userManager.AddToRoleAsync(wakebUser, adminRoleName);
-            }
 
             // ensure first registered user also is admin for compatibility
             if (!userManager.Users.Any())

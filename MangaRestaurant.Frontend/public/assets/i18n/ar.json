@@ -125,14 +125,21 @@
     "ORDER_FAIL": "فشل في إنشاء الطلب.",
     "ORDERS_FAIL": "فشل تحميل الطلبات.",
     "LOGIN_SUCCESS": "تم تسجيل الدخول بنجاح!",
-    "ITEM_ADDED": "تم إضافة المنتج إلى السلة"
+    "ITEM_ADDED": "تم إضافة المنتج إلى السلة",
+    "REGISTER_SUCCESS": "أهلاً بك في عائلة مطعم مانجا! تم إنشاء حسابك بنجاح.",
+    "REGISTER_FAIL": "عذراً، واجهنا مشكلة في إنشاء الحساب."
   },
   "ORDER_STATUS": {
     "PENDING": "قيد الانتظار",
     "PAYMENTRECEIVED": "تم الدفع",
     "PAYMENTFAILED": "فشل الدفع",
+    "CONFIRMED": "تم التأكيد",
+    "PROCESSING": "قيد التحضير",
+    "SHIPPED": "تم الشحن",
+    "DELIVERED": "تم التوصيل",
     "COMPLETED": "مكتمل",
-    "CANCELLED": "ملغي"
+    "CANCELLED": "ملغي",
+    "REFUNDED": "مسترجع"
   },
   "LOGIN": {
     "TITLE": "مرحباً بك مجدداً",
@@ -178,11 +185,15 @@
       "ORDERS": "سجل الطلبات",
       "REPORTS": "التقارير"
     },
-    "REPORTS": {
-      "SALES_TREND": "اتجاه المبيعات الأسبوعي",
-      "ORDER_STATUS": "توزيع حالات الطلبات",
-      "TOP_CATEGORIES": "الأصناف الأكثر مبيعاً"
-    },
+    "CHART_SALES": "اتجاه المبيعات الإيرادات",
+    "CHART_STATUS": "توزيع حالات الطلبات",
+    "CHART_PEAK_HOURS": "ساعات الذروة (توقيت الطلبات)",
+    "CHART_CATEGORIES": "الأصناف الأكثر مبيعاً",
+    "CHART_DELIVERY": "طرق التوصيل المفضلة",
+    "TOTAL_ORDERS": "إجمالي الطلبات",
+    "TOTAL_REVENUE": "إجمالي الإيرادات",
+    "AVG_ORDER_VALUE": "متوسط قيمة الطلب",
+    "TOTAL_EMPLOYEES": "إجمالي الموظفين",
     "EMPLOYEES": {
       "ID": "المُعرف",
       "NAME": "اسم الموظف",

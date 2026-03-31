@@ -73,8 +73,25 @@ export class OrdersService {
     return this.api.get<DeliveryMethod[]>('Orders/DeliveryMethods');
   }
 
+  getAllOrdersAdmin(): Observable<Order[]> {
+    return this.api.get<Order[]>('Orders/Admin/All').pipe(
+      map((orders) =>
+        orders.map((o) => {
+          const resolvedStatus = this.normalizeStatus(o.orderStatus ?? o.status);
+          return {
+            ...o,
+            status: resolvedStatus,
+            orderStatus: resolvedStatus,
+            orderItems: (o as any).items ?? o.orderItems ?? []
+          } as Order;
+        })
+      )
+    );
+  }
+
   updateOrderStatus(orderId: number, status: string): Observable<Order> {
-    return this.api.put<Order>(`Orders/${orderId}/status`, { status });
+    // API expects a DTO with PascalCase 'Status' property
+    return this.api.put<Order>(`Orders/${orderId}/status`, { Status: status });
   }
 }
 

@@ -125,7 +125,9 @@
     "ORDER_FAIL": "Failed to create order.",
     "ORDERS_FAIL": "Could not load orders.",
     "LOGIN_SUCCESS": "Logged in successfully!",
-    "ITEM_ADDED": "Product added to basket"
+    "ITEM_ADDED": "Product added to basket",
+    "REGISTER_SUCCESS": "Welcome to MangaResto family! Your account was created successfully.",
+    "REGISTER_FAIL": "Sorry, we encountered a problem creating your account."
   },
   "ORDER_STATUS": {
     "PENDING": "Pending",

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using MangaRestaurant.APIs.Dtos;
 using MangaRestaurant.APIs.Errors;
 using MangaRestaurant.APIs.Extensions;
@@ -44,13 +44,19 @@ namespace MangaRestaurant.APIs.Controllers
                 PhoneNumber = registerModel.PhoneNumber,
             };
             var regRequestResult = await _userManager.CreateAsync(user, registerModel.Password);
+            
+            if (!regRequestResult.Succeeded) return BadRequest(new ApiResponse(400));
+
+            // Assign Default Role to User
+            await _userManager.AddToRoleAsync(user, "User");
+
             var mappedUser = new UserDTO()
             {
                 DisplayName = user.DisplayName,
                 Email = user.Email,
                 Token = await _tokenService.CreateTokenAsync(user, _userManager)
             };
-            return !regRequestResult.Succeeded ? BadRequest(new ApiResponse(400)) : Ok(mappedUser);
+            return Ok(mappedUser);
         }
         //Login User
         [HttpPost("Login")]

@@ -114,6 +114,9 @@ export class AdminDashboardComponent implements OnInit {
   public salesChartOptions!: Partial<ChartOptions>;
   public categoryChartOptions!: Partial<ChartOptions>;
   public statusChartOptions!: Partial<ChartOptions>;
+  public deliveryChartOptions!: Partial<ChartOptions>;
+  public peakHoursChartOptions!: Partial<ChartOptions>;
+  public reportData: any = null;
 
   constructor(
     private adminService: AdminService,
@@ -122,11 +125,24 @@ export class AdminDashboardComponent implements OnInit {
     private translate: TranslateService
   ) {}
 
+  lang(): string {
+    return this.translate.currentLang;
+  }
+
   ngOnInit(): void {
     this.loadEmployees();
     this.loadProducts();
     this.loadOrders();
-    this.initCharts();
+    this.loadReport();
+  }
+
+  loadReport(): void {
+    this.adminService.getAdminReport().subscribe({
+      next: (data) => {
+        this.updateCharts(data);
+      },
+      error: (err) => console.error('Failed to load report', err)
+    });
   }
 
   initCharts(): void {
@@ -224,6 +240,103 @@ export class AdminDashboardComponent implements OnInit {
     };
   }
 
+  updateCharts(data: any): void {
+    this.reportData = data;
+    const isDark = localStorage.getItem('theme') === 'dark';
+    const textColor = isDark ? '#ffffff' : '#333333';
+    const isAr = this.translate.currentLang === 'ar';
+
+    // Helper for Arabic Months
+    const translateDate = (dateStr: string) => {
+      if (!isAr) return dateStr;
+      const months: any = {
+        'Jan': 'يناير', 'Feb': 'فبراير', 'Mar': 'مارس', 'Apr': 'أبريل',
+        'May': 'مايو', 'Jun': 'يونيو', 'Jul': 'يوليو', 'Aug': 'أغسطس',
+        'Sep': 'سبتمبر', 'Oct': 'أكتوبر', 'Nov': 'نوفمبر', 'Dec': 'ديسمبر'
+      };
+      let result = dateStr;
+      Object.keys(months).forEach(m => {
+        result = result.replace(m, months[m]);
+      });
+      return result;
+    };
+
+    // Sales Trend
+    const salesData = data.salesLast7Days || data.SalesLast7Days || [];
+    this.salesChartOptions = {
+      series: [{
+        name: isAr ? "الإيرادات" : "Revenue",
+        data: salesData.map((s: any) => s.revenue || s.Revenue || 0)
+      }],
+      chart: { height: 350, type: "area", toolbar: { show: false }, background: 'transparent' },
+      colors: ["#ff4d4d"],
+      stroke: { curve: "smooth", width: 3 },
+      xaxis: {
+        categories: salesData.map((s: any) => translateDate(s.date || s.Date || '')),
+        labels: { style: { colors: textColor } }
+      },
+      yaxis: { labels: { style: { colors: textColor } } },
+      grid: { borderColor: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)" }
+    };
+
+    // Top Products
+    const topProducts = data.topProducts || data.TopProducts || [];
+    this.categoryChartOptions = {
+      series: [{
+        name: isAr ? "المباع" : "Sold",
+        data: topProducts.map((p: any) => p.quantity || p.Quantity || 0)
+      }],
+      chart: { type: "bar", height: 350, toolbar: { show: false }, background: 'transparent' },
+      plotOptions: { bar: { horizontal: false, columnWidth: "55%", borderRadius: 8 } },
+      colors: ["#f9d423"],
+      xaxis: {
+        categories: topProducts.map((p: any) => isAr ? (p.nameAr || p.NameAr || p.name || p.Name) : (p.name || p.Name)),
+        labels: { style: { colors: textColor } }
+      },
+      yaxis: { labels: { style: { colors: textColor } } }
+    };
+
+    // Order Status
+    const pending = data.pendingOrders ?? data.PendingOrders ?? 0;
+    const received = data.paymentReceivedOrders ?? data.PaymentReceivedOrders ?? 0;
+    const failed = data.paymentFailedOrders ?? data.PaymentFailedOrders ?? 0;
+    this.statusChartOptions = {
+      series: [pending, received, failed],
+      chart: { type: "donut", height: 350, background: 'transparent' },
+      labels: isAr ? ["قيد الانتظار", "تم الاستلام", "فشل الدفع"] : ["Pending", "Received", "Failed"],
+      colors: ["#f39c12", "#2ecc71", "#e74c3c"],
+      legend: { position: "bottom", labels: { colors: textColor } }
+    };
+
+    // Delivery Methods (New)
+    const deliveryData = data.topDeliveryMethods || data.TopDeliveryMethods || [];
+    this.deliveryChartOptions = {
+      series: deliveryData.map((d: any) => d.count || d.Count || 0),
+      chart: { type: "pie", height: 350, background: 'transparent' },
+      labels: deliveryData.map((d: any) => d.name || d.Name || ''),
+      colors: ["#3498db", "#9b59b6", "#1abc9c"],
+      legend: { position: "bottom", labels: { colors: textColor } }
+    };
+
+    // Peak Hours (New)
+    const peakData = data.peakHours || data.PeakHours || [];
+    this.peakHoursChartOptions = {
+      series: [{
+        name: isAr ? "الطلبات" : "Orders",
+        data: peakData.map((p: any) => p.count || p.Count || 0)
+      }],
+      chart: { type: "line", height: 350, background: 'transparent', toolbar: { show: false } },
+      stroke: { width: 4, curve: 'smooth' },
+      markers: { size: 6 },
+      colors: ["#e67e22"],
+      xaxis: {
+        categories: peakData.map((p: any) => (p.hour || p.Hour) + ":00"),
+        labels: { style: { colors: textColor } }
+      },
+      yaxis: { labels: { style: { colors: textColor } } }
+    };
+  }
+
   loadEmployees(): void {
     this.loadingEmployees = true;
     this.adminService.getEmployees().subscribe({
@@ -248,9 +361,9 @@ export class AdminDashboardComponent implements OnInit {
 
   loadOrders(): void {
     this.loadingOrders = true;
-    this.ordersService.getOrders().subscribe({
-      next: (data) => {
-        this.orders = data ?? [];
+    this.ordersService.getAllOrdersAdmin().subscribe({
+      next: (orders) => {
+        this.orders = orders;
         this.orderStatusDraft = {};
         const statuses = Object.values(OrderStatus);
         for (const o of this.orders) {
@@ -259,7 +372,10 @@ export class AdminDashboardComponent implements OnInit {
         this.orderStatusOptions = statuses.map((s) => ({ label: s, value: s }));
         this.loadingOrders = false;
       },
-      error: () => (this.loadingOrders = false),
+      error: (err) => {
+        console.error('Failed to load orders', err);
+        this.loadingOrders = false;
+      }
     });
   }
 
