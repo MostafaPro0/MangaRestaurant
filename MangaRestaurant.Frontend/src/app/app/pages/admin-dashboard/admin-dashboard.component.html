@@ -164,7 +164,11 @@
               <td class="font-medium">
                 {{ (translate.currentLang === 'ar' && product.nameAr) ? product.nameAr : product.name }}
               </td>
-              <td><span class="category-tag">{{ 'CATEGORIES.' + product.category | translate }}</span></td>
+              <td>
+                <span class="category-tag">
+                  {{ (translate.currentLang === 'ar' && product.categoryAr) ? product.categoryAr : product.category }}
+                </span>
+              </td>
               <td class="font-bold">{{ product.price | currency }}</td>
               <td class="text-center">
                 <div class="flex justify-content-center gap-2">
