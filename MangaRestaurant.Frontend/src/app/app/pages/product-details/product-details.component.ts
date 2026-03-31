@@ -6,6 +6,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TranslateModule } from '@ngx-translate/core';
 import { ProductsService } from '../../services/products.service';
 import { BasketService } from '../../services/basket.service';
+import { TranslateService } from '../../services/translate.service';
 
 @Component({
   selector: 'app-product-details',
@@ -18,7 +19,12 @@ export class ProductDetailsComponent implements OnInit {
   product: any;
   loading = false;
 
-  constructor(private route: ActivatedRoute, private productsService: ProductsService, private basketService: BasketService) {}
+  constructor(
+    private route: ActivatedRoute, 
+    private productsService: ProductsService, 
+    private basketService: BasketService,
+    public translateService: TranslateService
+  ) {}
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));

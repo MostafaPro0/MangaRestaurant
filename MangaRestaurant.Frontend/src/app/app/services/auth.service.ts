@@ -80,15 +80,32 @@ export class AuthService {
     const payload = this.decodeJwtPayload(token);
     if (!payload) return 'unknown';
 
-    const role = payload?.role ?? payload?.Role;
+    // ASP.NET Identity uses the full URI for ClaimTypes.Role
+    const msRoleUri = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
+    const msRoleClaims = payload[msRoleUri];
+
+    const role = payload?.role ?? payload?.Role ?? msRoleClaims;
     const roles = payload?.roles ?? payload?.Roles;
     const isAdmin = payload?.isAdmin ?? payload?.IsAdmin;
+
+    // Normalize roles array from MS claim URI
+    const msRoles: string[] = Array.isArray(msRoleClaims)
+      ? msRoleClaims
+      : typeof msRoleClaims === 'string'
+      ? [msRoleClaims]
+      : [];
 
     const candidates = [
       typeof role === 'string' ? role : undefined,
       Array.isArray(roles) ? roles : undefined,
       typeof isAdmin === 'boolean' ? isAdmin : undefined,
     ].filter(Boolean) as any[];
+
+    // Check MS claim roles directly
+    if (msRoles.length > 0) {
+      const hasAdmin = msRoles.some((r) => r.toLowerCase() === 'admin' || r.toLowerCase() === 'administrator');
+      return hasAdmin ? 'admin' : 'not-admin';
+    }
 
     if (candidates.length === 0) {
       // Try to find any "role"/"admin" hints in arbitrary claim shapes.

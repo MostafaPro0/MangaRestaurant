@@ -88,11 +88,12 @@
                   class="flex align-items-center justify-content-between p-3 bg-soft-hover border-radius-sm transition-all">
                   <div class="flex align-items-center gap-3">
                     <div class="item-pic-sm shadow-md">
-                      <img [src]="item.pictureUrl || '/assets/images/placeholder.png'" [alt]="item.productName"
+                      <img [src]="item.pictureUrl || '/assets/images/placeholder.png'" 
+                        [alt]="(translate.currentLanguage === 'ar' ? item.productNameAr : item.productName) || item.productName"
                         style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
                     </div>
                     <div>
-                      <div class="font-bold">{{ item.productName }}</div>
+                      <div class="font-bold">{{ (translate.currentLanguage === 'ar' ? item.productNameAr : item.productName) || item.productName }}</div>
                       <div class="text-xs text-dim">{{ item.price | currency }} x {{ item.quantity }}</div>
                     </div>
                   </div>

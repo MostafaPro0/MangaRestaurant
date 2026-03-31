@@ -1,6 +1,7 @@
 export interface BasketItem {
   productId: number;
   productName: string;
+  productNameAr?: string;
   price: number;
   quantity: number;
   pictureUrl: string;

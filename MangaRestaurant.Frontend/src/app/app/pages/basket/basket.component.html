@@ -30,9 +30,11 @@
                     *ngIf="!item.pictureUrl">
                     <i class="pi pi-box"></i>
                   </div>
-                  <img *ngIf="item.pictureUrl" [src]="item.pictureUrl" [alt]="item.productName"
+                  <img *ngIf="item.pictureUrl" [src]="item.pictureUrl" [alt]="(translateService.currentLanguage === 'ar' ? item.productNameAr : item.productName) || item.productName"
                     style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;">
-                  <span class="font-bold text-lg">{{ item.productName }}</span>
+                  <span class="font-bold text-lg cursor-pointer" routerLink="/products/{{item.productId}}">
+                    {{ (translateService.currentLanguage === 'ar' ? item.productNameAr : item.productName) || item.productName }}
+                  </span>
                 </div>
               </td>
               <td class="p-4 text-center text-dim">{{ item.price | currency }}</td>

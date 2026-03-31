@@ -12,6 +12,7 @@ import { BasketService } from './app/services/basket.service';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
+import { Router } from '@angular/router';
 import { User } from './app/models/user.model';
 
 @Component({
@@ -42,7 +43,12 @@ export class AppComponent {
 
   profileMenuItems: MenuItem[] = [];
 
-  constructor(private auth: AuthService, private translateService: TranslateService, private basketService: BasketService) {
+  constructor(
+    private auth: AuthService, 
+    private translateService: TranslateService, 
+    private basketService: BasketService,
+    private router: Router
+  ) {
     this.basketService.basket$.subscribe(basket => {
       const count = basket.items.reduce((sum, item) => sum + item.quantity, 0);
       this.basketCount.set(count);
@@ -85,7 +91,7 @@ export class AppComponent {
       this.profileMenuItems[0].items?.unshift({
         label: isAr ? 'لوحة التحكم' : 'Admin Control',
         icon: 'pi pi-lock',
-        routerLink: '/admin'
+        command: () => this.router.navigate(['/admin'])
       });
     }
   }

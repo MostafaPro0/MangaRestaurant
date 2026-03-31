@@ -10,6 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { BadgeModule } from 'primeng/badge';
 import { ProductsService } from '../../services/products.service';
 import { BasketService } from '../../services/basket.service';
+import { TranslateService } from '../../services/translate.service';
 
 @Component({
   selector: 'app-products',
@@ -23,7 +24,11 @@ export class ProductsComponent implements OnInit {
   loading = false;
   search = '';
 
-  constructor(private productsService: ProductsService, private basketService: BasketService) {}
+  constructor(
+    private productsService: ProductsService, 
+    private basketService: BasketService,
+    public translateService: TranslateService
+  ) {}
 
   ngOnInit(): void {
     this.loadProducts();

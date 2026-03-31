@@ -12,9 +12,7 @@ export const adminGuard: CanActivateFn = () => {
 
   const decision = auth.getAdminDecision();
   if (decision === 'admin') return true;
-  if (decision === 'not-admin') return router.parseUrl('/');
-
-  // If we can't determine admin from token, allow and let backend enforce.
-  return true;
+  
+  // If not admin, redirect to home and deny access
+  return router.parseUrl('/');
 };
-

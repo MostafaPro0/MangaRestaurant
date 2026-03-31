@@ -3,6 +3,7 @@ import { UserAddress } from './user-address.model';
 export interface OrderItem {
   productId: number;
   productName: string;
+  productNameAr?: string;
   pictureUrl: string;
   price: number;
   quantity: number;

@@ -59,6 +59,7 @@ export class BasketService {
           items: (serverBasket.items || []).map((item: any) => ({
             productId: item.id,
             productName: item.name,
+            productNameAr: item.nameAr,
             price: item.price,
             quantity: item.quantity,
             pictureUrl: item.prictureUrl,
@@ -82,6 +83,7 @@ export class BasketService {
       items: basket.items.map((item) => ({
         id: item.productId,
         name: item.productName,
+        nameAr: item.productNameAr,
         prictureUrl: item.pictureUrl,
         price: item.price,
         quantity: item.quantity,
@@ -103,6 +105,7 @@ export class BasketService {
           items: (updated.items || []).map((item: any) => ({
             productId: item.id,
             productName: item.name,
+            productNameAr: item.nameAr,
             price: item.price,
             quantity: item.quantity,
             pictureUrl: item.prictureUrl,
@@ -134,6 +137,7 @@ export class BasketService {
       current.items.push({
         productId: product.id,
         productName: product.name,
+        productNameAr: product.nameAr,
         price: product.price,
         quantity,
         pictureUrl: product.pictureUrl,

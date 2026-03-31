@@ -13,7 +13,7 @@
         <img [src]="product.pictureUrl" [alt]="product.name" />
         
         <div style="position:absolute; top: 1rem; right: 1rem">
-           <span class="badge-neon py-3 px-4 shadow-lg text-lg">{{ product.category }}</span>
+           <span class="badge-neon py-3 px-4 shadow-lg text-lg">{{ (translateService.currentLanguage === 'ar' ? product.categoryAr : product.category) || product.category }}</span>
         </div>
       </div>
     </div>
@@ -22,8 +22,8 @@
     <div class="col-12 lg:col-6">
       <div class="mg-card h-full flex flex-column justify-content-center p-5 lg:p-8">
         
-        <h1 class="display-font text-4xl lg:text-5xl mb-2 font-black uppercase tracking-1 text-main">{{ product.name }}</h1>
-        <p class="primary-text text-xl font-bold uppercase tracking-2 mb-6">{{ product.brand }}</p>
+        <h1 class="display-font text-4xl lg:text-5xl mb-2 font-black uppercase tracking-1 text-main">{{ (translateService.currentLanguage === 'ar' ? product.nameAr : product.name) || product.name }}</h1>
+        <p class="primary-text text-xl font-bold uppercase tracking-2 mb-6">{{ (translateService.currentLanguage === 'ar' ? product.brandAr : product.brand) || product.brand }}</p>
         
         <div class="flex align-items-center gap-4 mb-8">
            <span class="primary-text text-5xl font-black">{{ product.price | currency }}</span>
@@ -31,7 +31,7 @@
         </div>
         
         <div class="text-dim text-xl line-height-4 mb-8" style="border-left: 5px solid var(--primary); padding-left: 2rem">
-          {{ product.description }}
+          {{ (translateService.currentLanguage === 'ar' ? product.descriptionAr : product.description) || product.description }}
         </div>
 
         <!-- Actions (Responsive) -->

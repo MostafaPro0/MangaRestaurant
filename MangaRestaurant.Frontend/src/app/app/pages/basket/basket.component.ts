@@ -6,6 +6,8 @@ import { TableModule } from 'primeng/table';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { BasketService } from '../../services/basket.service';
+import { TranslateService } from '../../services/translate.service';
+import { CustomerBasket } from '../../models/basket.model';
 
 @Component({
   selector: 'app-basket',
@@ -15,9 +17,9 @@ import { BasketService } from '../../services/basket.service';
   styleUrl: './basket.component.css'
 })
 export class BasketComponent implements OnInit {
-  basket: any = { id: '', items: [] };
+  basket: CustomerBasket = { id: '', items: [] };
 
-  constructor(private basketService: BasketService) {}
+  constructor(private basketService: BasketService, public translateService: TranslateService) {}
 
   ngOnInit(): void {
     this.basketService.basket$.subscribe((basket) => (this.basket = basket));
