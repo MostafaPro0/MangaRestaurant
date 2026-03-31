@@ -175,7 +175,13 @@
     "TABS": {
       "EMPLOYEES": "Employees",
       "PRODUCTS": "Products",
-      "ORDERS": "Orders"
+      "ORDERS": "Orders",
+      "REPORTS": "Reports"
+    },
+    "REPORTS": {
+      "SALES_TREND": "Weekly Sales Trend",
+      "ORDER_STATUS": "Order Status Distribution",
+      "TOP_CATEGORIES": "Top Selling Categories"
     },
     "EMPLOYEES": {
       "ID": "ID",

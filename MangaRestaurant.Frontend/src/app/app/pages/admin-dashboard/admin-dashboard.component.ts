@@ -12,6 +12,44 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { Textarea } from 'primeng/inputtextarea';
 import { DropdownModule } from 'primeng/dropdown';
 import { TabViewModule } from 'primeng/tabview';
+import { NgApexchartsModule } from "ng-apexcharts";
+import {
+  ChartComponent,
+  ApexAxisChartSeries,
+  ApexNonAxisChartSeries,
+  ApexChart,
+  ApexXAxis,
+  ApexDataLabels,
+  ApexTitleSubtitle,
+  ApexStroke,
+  ApexGrid,
+  ApexFill,
+  ApexMarkers,
+  ApexYAxis,
+  ApexTheme,
+  ApexLegend,
+  ApexPlotOptions,
+  ApexTooltip
+} from "ng-apexcharts";
+
+export type ChartOptions = {
+  series: ApexAxisChartSeries | ApexNonAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  dataLabels: ApexDataLabels;
+  grid: ApexGrid;
+  stroke: ApexStroke;
+  title: ApexTitleSubtitle;
+  fill: ApexFill;
+  markers: ApexMarkers;
+  yaxis: ApexYAxis;
+  theme: ApexTheme;
+  legend: ApexLegend;
+  plotOptions: ApexPlotOptions;
+  tooltip: ApexTooltip;
+  labels: string[];
+  colors: string[];
+};
 import { AdminService } from '../../services/admin.service';
 import { ProductsService } from '../../services/products.service';
 import { OrdersService } from '../../services/orders.service';
@@ -38,6 +76,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
     TabViewModule,
     CurrencyPipe,
     DatePipe,
+    NgApexchartsModule
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css'
@@ -71,6 +110,11 @@ export class AdminDashboardComponent implements OnInit {
   orderStatusDraft: Record<number, string> = {};
   orderStatusOptions: { label: string; value: string }[] = [];
 
+  // Chart Options
+  public salesChartOptions!: Partial<ChartOptions>;
+  public categoryChartOptions!: Partial<ChartOptions>;
+  public statusChartOptions!: Partial<ChartOptions>;
+
   constructor(
     private adminService: AdminService,
     private productsService: ProductsService,
@@ -82,6 +126,102 @@ export class AdminDashboardComponent implements OnInit {
     this.loadEmployees();
     this.loadProducts();
     this.loadOrders();
+    this.initCharts();
+  }
+
+  initCharts(): void {
+    const isDark = localStorage.getItem('theme') === 'dark';
+    const textColor = isDark ? '#ffffff' : '#333333';
+    
+    // Sales Trend Chart (Area)
+    this.salesChartOptions = {
+      series: [
+        {
+          name: "Sales",
+          data: [450, 520, 380, 670, 480, 920, 850]
+        }
+      ],
+      chart: {
+        height: 350,
+        type: "area",
+        toolbar: { show: false },
+        background: 'transparent',
+        animations: { enabled: true }
+      },
+      colors: ["#ff4d4d"],
+      dataLabels: { enabled: false },
+      stroke: { curve: "smooth", width: 3 },
+      fill: {
+        type: "gradient",
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.7,
+          opacityTo: 0.2,
+          stops: [0, 90, 100]
+        }
+      },
+      xaxis: {
+        categories: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        labels: { style: { colors: textColor } }
+      },
+      yaxis: {
+        labels: { style: { colors: textColor } }
+      },
+      grid: {
+        borderColor: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"
+      }
+    };
+
+    // Top Categories (Bar)
+    this.categoryChartOptions = {
+      series: [
+        {
+          name: "Orders",
+          data: [44, 55, 41, 67, 22]
+        }
+      ],
+      chart: {
+        type: "bar",
+        height: 350,
+        toolbar: { show: false },
+        background: 'transparent'
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "55%",
+          borderRadius: 8
+        }
+      },
+      colors: ["#f9d423"],
+      xaxis: {
+        categories: ["Ramen", "Sushi", "Drinks", "Desserts", "Bento"],
+        labels: { style: { colors: textColor } }
+      },
+      yaxis: {
+        labels: { style: { colors: textColor } }
+      },
+      grid: {
+        borderColor: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"
+      }
+    };
+
+    // Order Status Distribution (Donut)
+    this.statusChartOptions = {
+      series: [44, 55, 13, 33],
+      chart: {
+        type: "donut",
+        height: 350,
+        background: 'transparent'
+      },
+      labels: ["Pending", "Completed", "Cancelled", "Shipped"],
+      colors: ["#f39c12", "#2ecc71", "#e74c3c", "#3498db"],
+      legend: {
+        position: "bottom",
+        labels: { colors: textColor }
+      },
+      stroke: { show: false }
+    };
   }
 
   loadEmployees(): void {

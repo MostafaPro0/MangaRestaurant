@@ -24,7 +24,7 @@
     "@primeng/themes": "^21.0.4",
     "@primeuix/styles": "^2.0.3",
     "apexcharts": "^5.10.4",
-    "ng-apexcharts": "^2.3.0",
+    "ng-apexcharts": "^1.10.0",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
     "primeng": "^19.1.4",

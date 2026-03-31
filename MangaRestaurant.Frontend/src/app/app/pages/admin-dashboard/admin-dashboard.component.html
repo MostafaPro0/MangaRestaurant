@@ -170,6 +170,71 @@
           </p-table>
         </div>
       </p-tabPanel>
+
+      <!-- Reports Tab -->
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <i class="pi pi-chart-bar mr-2"></i>
+          <span>{{ 'ADMIN.TABS.REPORTS' | translate }}</span>
+        </ng-template>
+
+        <div class="reports-container p-4">
+          <div class="grid">
+            <!-- Row 1: Sales Trend -->
+            <div class="col-12 xl:col-8 mb-4">
+              <div class="p-4 glass-card h-full">
+                <h5 class="manga-font text-xl mb-4 primary-text">{{ 'ADMIN.REPORTS.SALES_TREND' | translate }}</h5>
+                <apx-chart
+                  *ngIf="salesChartOptions"
+                  [series]="salesChartOptions.series!"
+                  [chart]="salesChartOptions.chart!"
+                  [xaxis]="salesChartOptions.xaxis!"
+                  [stroke]="salesChartOptions.stroke!"
+                  [dataLabels]="salesChartOptions.dataLabels!"
+                  [fill]="salesChartOptions.fill!"
+                  [grid]="salesChartOptions.grid!"
+                  [colors]="salesChartOptions.colors!"
+                  [yaxis]="salesChartOptions.yaxis!"
+                  [tooltip]="salesChartOptions.tooltip!"
+                ></apx-chart>
+              </div>
+            </div>
+
+            <!-- Row 1: Order Status -->
+            <div class="col-12 xl:col-4 mb-4">
+              <div class="p-4 glass-card h-full">
+                <h5 class="manga-font text-xl mb-4 primary-text">{{ 'ADMIN.REPORTS.ORDER_STATUS' | translate }}</h5>
+                <apx-chart
+                  *ngIf="statusChartOptions"
+                  [series]="statusChartOptions.series!"
+                  [chart]="statusChartOptions.chart!"
+                  [labels]="statusChartOptions.labels!"
+                  [colors]="statusChartOptions.colors!"
+                  [legend]="statusChartOptions.legend!"
+                  [stroke]="statusChartOptions.stroke!"
+                ></apx-chart>
+              </div>
+            </div>
+
+            <!-- Row 2: Top Categories -->
+            <div class="col-12 mb-4">
+              <div class="p-4 glass-card h-full">
+                <h5 class="manga-font text-xl mb-4 primary-text">{{ 'ADMIN.REPORTS.TOP_CATEGORIES' | translate }}</h5>
+                <apx-chart
+                  *ngIf="categoryChartOptions"
+                  [series]="categoryChartOptions.series!"
+                  [chart]="categoryChartOptions.chart!"
+                  [xaxis]="categoryChartOptions.xaxis!"
+                  [plotOptions]="categoryChartOptions.plotOptions!"
+                  [colors]="categoryChartOptions.colors!"
+                  [grid]="categoryChartOptions.grid!"
+                  [yaxis]="categoryChartOptions.yaxis!"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
     </p-tabView>
   </div>
 </section>

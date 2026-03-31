@@ -175,7 +175,13 @@
     "TABS": {
       "EMPLOYEES": "الموظفين",
       "PRODUCTS": "المنتجات",
-      "ORDERS": "سجل الطلبات"
+      "ORDERS": "سجل الطلبات",
+      "REPORTS": "التقارير"
+    },
+    "REPORTS": {
+      "SALES_TREND": "اتجاه المبيعات الأسبوعي",
+      "ORDER_STATUS": "توزيع حالات الطلبات",
+      "TOP_CATEGORIES": "الأصناف الأكثر مبيعاً"
     },
     "EMPLOYEES": {
       "ID": "المُعرف",
