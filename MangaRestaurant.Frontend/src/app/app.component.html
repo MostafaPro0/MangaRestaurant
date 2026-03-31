@@ -1,8 +1,9 @@
 <div class="page-wrap" [class.menu-open]="mobileMenuOpened()">
+  <p-toast position="top-right"></p-toast>
   <!-- Premium Responsive Mango Header -->
   <header class="navbar-manga">
     <div class="nav-container">
-      
+
       <!-- Brand & Home Link -->
       <a routerLink="/" class="manga-brand">
         <div class="brand-bolt"><i class="pi pi-bolt"></i></div>
@@ -11,8 +12,11 @@
 
       <!-- Desktop Navigation -->
       <nav class="nav-center hidden md:flex">
-        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">{{ 'NAV.HOME' | translate }}</a>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">{{ 'NAV.HOME' | translate
+          }}</a>
         <a routerLink="/products" routerLinkActive="active">{{ 'NAV.PRODUCTS' | translate }}</a>
+        <a *ngIf="isAuthenticated()" routerLink="/orders" routerLinkActive="active">{{ 'NAV.MY_ORDERS' | translate
+          }}</a>
         <a routerLink="/basket" routerLinkActive="active" class="relative">
           {{ 'NAV.BASKET' | translate }}
           <span class="basket-badge" *ngIf="basketCount() > 0">{{basketCount()}}</span>
@@ -31,8 +35,17 @@
 
         <div class="auth-box">
           <ng-container *ngIf="isAuthenticated(); else guest">
-            <button pButton type="button" class="p-button-danger p-button-sm"
-                    icon="pi pi-sign-out" [label]="'NAV.LOGOUT' | translate" (click)="logout()"></button>
+            <!-- Profile Avatar with Menu -->
+            <div class="profile-container flex align-items-center gap-2 cursor-pointer" (click)="menu.toggle($event)">
+              <p-avatar [label]="(user()?.displayName || 'U').charAt(0).toUpperCase()" shape="circle" size="large"
+                styleClass="manga-avatar">
+              </p-avatar>
+              <div class="hidden xl:block">
+                <div class="text-sm font-bold line-height-1">{{ user()?.displayName }}</div>
+              </div>
+              <i class="pi pi-chevron-down text-xs text-dim"></i>
+            </div>
+            <p-menu #menu [model]="profileMenuItems" [popup]="true" appendTo="body"></p-menu>
           </ng-container>
           <ng-template #guest>
             <a routerLink="/login" class="auth-link">{{ 'NAV.LOGIN' | translate }}</a>
@@ -56,51 +69,104 @@
     <!-- Mobile Drawer -->
     <div class="mobile-drawer" [class.active]="mobileMenuOpened()">
       <nav class="mobile-nav px-4 pt-4">
-        <a routerLink="/" (click)="toggleMobileMenu()" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">{{ 'NAV.HOME' | translate }}</a>
-        <a routerLink="/products" (click)="toggleMobileMenu()" routerLinkActive="active">{{ 'NAV.PRODUCTS' | translate }}</a>
-        <a routerLink="/basket" (click)="toggleMobileMenu()" routerLinkActive="active">{{ 'NAV.BASKET' | translate }}</a>
-        <a *ngIf="isAdmin()" routerLink="/admin" (click)="toggleMobileMenu()" routerLinkActive="active">Admin Control</a>
-        
+        <a routerLink="/" (click)="toggleMobileMenu()" routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact:true}">{{ 'NAV.HOME' | translate }}</a>
+        <a routerLink="/products" (click)="toggleMobileMenu()" routerLinkActive="active">{{ 'NAV.PRODUCTS' | translate
+          }}</a>
+        <a *ngIf="isAuthenticated()" routerLink="/orders" (click)="toggleMobileMenu()" routerLinkActive="active">{{
+          'NAV.MY_ORDERS' | translate }}</a>
+        <a routerLink="/basket" (click)="toggleMobileMenu()" routerLinkActive="active">{{ 'NAV.BASKET' | translate
+          }}</a>
+        <a *ngIf="isAdmin()" routerLink="/admin" (click)="toggleMobileMenu()" routerLinkActive="active">{{ 'NAV.ADMIN' |
+          translate }}</a>
+
         <div class="border-top-1 border-white-alpha-10 my-4"></div>
-        
+
         <div class="flex justify-content-between align-items-center mb-5">
-           <div class="manga-toggle-group">
+          <div class="manga-toggle-group">
             <button (click)="setLang('ar')" class="manga-toggle-btn" [class.active]="lang() === 'ar'">AR</button>
             <button (click)="setLang('en')" class="manga-toggle-btn" [class.active]="lang() === 'en'">EN</button>
-           </div>
-           <button (click)="toggleTheme()" class="manga-toggle-btn bg-soft border-radius-sm">
-              <i [class]="currentTheme() === 'light' ? 'pi pi-moon' : 'pi pi-sun'"></i>
-           </button>
+          </div>
+          <button (click)="toggleTheme()" class="manga-toggle-btn bg-soft border-radius-sm">
+            <i [class]="currentTheme() === 'light' ? 'pi pi-moon' : 'pi pi-sun'"></i>
+          </button>
         </div>
 
         <div class="auth-stack flex flex-column gap-3">
           <ng-container *ngIf="isAuthenticated(); else mobileGuest">
-            <button pButton icon="pi pi-sign-out" label="Logout" (click)="logout(); toggleMobileMenu()" class="p-button-danger w-full"></button>
+            <div class="flex align-items-center gap-3 p-3 bg-soft border-radius-md mb-2">
+              <p-avatar [label]="(user()?.displayName || 'U').charAt(0).toUpperCase()" shape="circle"
+                size="large"></p-avatar>
+              <div>
+                <div class="font-bold">{{ user()?.displayName }}</div>
+                <div class="text-xs text-dim">{{ user()?.email }}</div>
+              </div>
+            </div>
+            <button pButton icon="pi pi-sign-out" [label]="'NAV.LOGOUT' | translate"
+              (click)="logout(); toggleMobileMenu()" class="p-button-danger w-full"></button>
           </ng-container>
           <ng-template #mobileGuest>
-            <a routerLink="/login" (click)="toggleMobileMenu()" class="p-button p-button-outlined p-button-lg w-full text-center">{{ 'NAV.LOGIN' | translate }}</a>
-            <a routerLink="/register" (click)="toggleMobileMenu()" class="p-button p-button-primary p-button-lg w-full text-center">{{ 'NAV.REGISTER' | translate }}</a>
+            <a routerLink="/login" (click)="toggleMobileMenu()"
+              class="p-button p-button-outlined p-button-lg w-full text-center">{{ 'NAV.LOGIN' | translate }}</a>
+            <a routerLink="/register" (click)="toggleMobileMenu()"
+              class="p-button p-button-primary p-button-lg w-full text-center">{{ 'NAV.REGISTER' | translate }}</a>
           </ng-template>
         </div>
       </nav>
     </div>
   </header>
 
-  <main class="main-body">
+  <main class="main-body flex-1">
     <router-outlet></router-outlet>
   </main>
 
-  <footer class="manga-footer">
-    <div class="container">
-       <div class="grid align-items-center">
-         <div class="col-12 md:col-6">
-           <h2 class="manga-font mb-2 primary-text">MangaResto</h2>
-           <p class="text-dim">The ultimate mango-fresh culinary experience.</p>
-         </div>
-         <div class="col-12 md:col-6 md:text-right mt-4 md:mt-0">
-           <div class="text-xs opacity-50">&copy; 2025 MangaRestaurant. Built for legends.</div>
-         </div>
-       </div>
+  <footer class="manga-footer mt-5">
+    <div class="container py-4">
+      <div class="grid align-items-start">
+        <div class="col-12 md:col-4 mb-6 md:mb-0">
+          <div class="manga-brand mb-4">
+            <div class="brand-bolt"><i class="pi pi-bolt"></i></div>
+            <span class="brand-text">MANGARESTO</span>
+          </div>
+          <p class="text-dim pr-6" [innerHTML]="'COMMON.FOOTER_DESC' | translate"></p>
+          <div class="flex gap-3 mt-6">
+            <a href="#" class="social-icon"><i class="pi pi-facebook"></i></a>
+            <a href="#" class="social-icon"><i class="pi pi-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="pi pi-twitter"></i></a>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-4 mb-6 md:mb-0">
+          <h4 class="manga-font mb-4 primary-text text-xl">{{ 'COMMON.QUICK_LINKS' | translate }}</h4>
+          <ul class="flex flex-column gap-2 text-dim font-medium">
+            <li><a routerLink="/" class="hover:text-primary transition-colors">{{ 'NAV.HOME' | translate }}</a></li>
+            <li><a routerLink="/products" class="hover:text-primary transition-colors">{{ 'COMMON.MENU' | translate
+                }}</a></li>
+            <li><a routerLink="/basket" class="hover:text-primary transition-colors">{{ 'COMMON.CART_ORDERS' | translate
+                }}</a></li>
+          </ul>
+        </div>
+
+        <div class="col-12 md:col-4">
+          <h4 class="manga-font mb-4 primary-text text-xl">{{ 'COMMON.CONTACT_US' | translate }}</h4>
+          <ul class="flex flex-column gap-3 text-dim font-medium">
+            <li class="flex align-items-center gap-3"><i class="pi pi-map-marker primary-text"></i> 123 Ramen St, Tokyo
+              District</li>
+            <li class="flex align-items-center gap-3"><i class="pi pi-phone primary-text"></i> +123 456 789</li>
+            <li class="flex align-items-center gap-3"><i class="pi pi-envelope primary-text"></i>
+              support&#64;mangaresto.com</li>
+          </ul>
+        </div>
+      </div>
+
+      <div
+        class="border-top-1 border-white-alpha-10 pt-2 flex flex-column md:flex-row justify-content-between align-items-center gap-3 text-xs text-muted font-bold opacity-50">
+        <div>&copy; 2025 {{ 'COMMON.RIGHTS' | translate }}.</div>
+        <div class="flex gap-4">
+          <a href="#">{{ 'COMMON.PRIVACY' | translate }}</a>
+          <a href="#">{{ 'COMMON.TERMS' | translate }}</a>
+        </div>
+      </div>
     </div>
   </footer>
 </div>

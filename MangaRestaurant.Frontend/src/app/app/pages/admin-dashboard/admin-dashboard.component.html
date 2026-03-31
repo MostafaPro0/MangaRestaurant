@@ -1,192 +1,231 @@
-<section class="app-page p-m-4">
-  <div class="p-d-flex p-ai-center p-jc-between p-flex-wrap p-gap-3 p-mb-3">
-    <div>
-      <h2 class="app-title">{{ 'ADMIN.TITLE' | translate }}</h2>
-      <div class="app-subtitle">Manage employees, products and orders.</div>
+<section class="admin-dashboard-container p-4">
+  <div class="header-section d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <div class="title-group">
+      <h1 class="dashboard-title gradient-text">{{ 'ADMIN.TITLE' | translate }}</h1>
+      <p class="dashboard-subtitle text-muted">{{ 'ADMIN.SUBTITLE' | translate }}</p>
     </div>
 
     <button
       pButton
       type="button"
       icon="pi pi-plus"
-      label="Add Product"
+      class="p-button-raised p-button-rounded add-btn"
+      [label]="'ADMIN.ADD_PRODUCT' | translate"
       (click)="openCreateProduct()"
     ></button>
   </div>
 
-  <p-tabView>
-    <p-tabPanel header="Employees">
-      <p-card header="Employees" styleClass="app-surface">
-        <p-table [value]="employees" *ngIf="!loadingEmployees">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>{{ 'ADMIN.ID' | translate }}</th>
-              <th>{{ 'ADMIN.NAME' | translate }}</th>
-              <th>{{ 'ADMIN.DEPARTMENT' | translate }}</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-e>
-            <tr>
-              <td>{{ e.id }}</td>
-              <td>{{ e.fullName || e.name || e.displayName }}</td>
-              <td>{{ e.department?.name || e.department?.title }}</td>
-            </tr>
-          </ng-template>
-        </p-table>
+  <div class="dashboard-content card-glass">
+    <p-tabView styleClass="custom-tabs">
+      <!-- Employees Tab -->
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <i class="pi pi-users mr-2"></i>
+          <span>{{ 'ADMIN.TABS.EMPLOYEES' | translate }}</span>
+        </ng-template>
 
-        <div *ngIf="loadingEmployees" class="p-d-flex p-jc-center p-py-4">
-          <p-progressSpinner></p-progressSpinner>
+        <div class="table-container pt-3">
+          <p-table [value]="employees" [loading]="loadingEmployees" [rows]="10" [paginator]="true" 
+                   styleClass="p-datatable-sm p-datatable-striped custom-table" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 10%">{{ 'ADMIN.EMPLOYEES.ID' | translate }}</th>
+                <th style="width: 50%">{{ 'ADMIN.EMPLOYEES.NAME' | translate }}</th>
+                <th style="width: 40%">{{ 'ADMIN.EMPLOYEES.DEPARTMENT' | translate }}</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-e>
+              <tr>
+                <td><span class="badge-id">#{{ e.id }}</span></td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="avatar-circle mr-3">{{ (e.fullName || e.name || 'E').charAt(0) }}</div>
+                    <span class="font-bold">{{ e.fullName || e.name || e.displayName }}</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="dept-tag">{{ e.department?.name || e.department?.title || 'Staff' }}</span>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="3" class="text-center py-5">No employees found.</td>
+              </tr>
+            </ng-template>
+          </p-table>
         </div>
-      </p-card>
-    </p-tabPanel>
+      </p-tabPanel>
 
-    <p-tabPanel header="{{ 'PRODUCTS.TITLE' | translate }}">
-      <p-card header="{{ 'PRODUCTS.TITLE' | translate }}" styleClass="app-surface">
-        <p-table [value]="products" *ngIf="!loadingProducts">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>{{ 'PRODUCTS.NAME' | translate }}</th>
-              <th>{{ 'PRODUCTS.BRAND' | translate }}</th>
-              <th>{{ 'PRODUCTS.CATEGORY' | translate }}</th>
-              <th>{{ 'PRODUCTS.PRICE' | translate }}</th>
-              <th>Stock</th>
-              <th style="width: 220px">Actions</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-p>
-            <tr>
-              <td>{{ p.name }}</td>
-              <td>{{ p.brand }}</td>
-              <td>{{ p.category }}</td>
-              <td>{{ p.price | currency }}</td>
-              <td>{{ p.quantityInStock }}</td>
-              <td>
-                <button
-                  pButton
-                  type="button"
-                  class="p-button-text"
-                  icon="pi pi-pencil"
-                  label="Edit"
-                  (click)="openEditProduct(p)"
-                ></button>
-                <button
-                  pButton
-                  type="button"
-                  class="p-button-text p-button-danger"
-                  icon="pi pi-trash"
-                  label="Delete"
-                  (click)="deleteProduct(p.id)"
-                ></button>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
+      <!-- Products Tab -->
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <i class="pi pi-box mr-2"></i>
+          <span>{{ 'ADMIN.TABS.PRODUCTS' | translate }}</span>
+        </ng-template>
 
-        <div *ngIf="loadingProducts" class="p-d-flex p-jc-center p-py-4">
-          <p-progressSpinner></p-progressSpinner>
+        <div class="table-container pt-3">
+          <p-table [value]="products" [loading]="loadingProducts" [rows]="10" [paginator]="true"
+                   styleClass="p-datatable-sm p-datatable-striped custom-table" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 25%">{{ 'PRODUCTS.NAME' | translate }}</th>
+                <th style="width: 15%">{{ 'PRODUCTS.CATEGORY' | translate }}</th>
+                <th style="width: 15%">{{ 'PRODUCTS.PRICE' | translate }}</th>
+                <th style="width: 15%">{{ 'ADMIN.STOCK' | translate }}</th>
+                <th style="width: 30%" class="text-center">{{ 'ADMIN.ACTIONS' | translate }}</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-p>
+              <tr>
+                <td class="font-bold">{{ p.name }}</td>
+                <td><span class="category-tag">{{ p.category }}</span></td>
+                <td><span class="price-text">{{ p.price | currency }}</span></td>
+                <td>
+                  <span [class]="p.quantityInStock > 5 ? 'stock-ok' : 'stock-low'">
+                    {{ p.quantityInStock }}
+                  </span>
+                </td>
+                <td class="text-center">
+                  <div class="action-btns d-flex justify-content-center gap-2">
+                    <button
+                      pButton
+                      type="button"
+                      icon="pi pi-pencil"
+                      class="p-button-text p-button-sm edit-btn"
+                      [pTooltip]="'ADMIN.EDIT' | translate"
+                      (click)="openEditProduct(p)"
+                    ></button>
+                    <button
+                      pButton
+                      type="button"
+                      icon="pi pi-trash"
+                      class="p-button-text p-button-danger p-button-sm delete-btn"
+                      [pTooltip]="'ADMIN.DELETE' | translate"
+                      (click)="deleteProduct(p.id)"
+                    ></button>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
         </div>
-      </p-card>
-    </p-tabPanel>
+      </p-tabPanel>
 
-    <p-tabPanel header="{{ 'ORDERS.TITLE' | translate }}">
-      <p-card header="{{ 'ORDERS.TITLE' | translate }}" styleClass="app-surface">
-        <p-table [value]="orders" *ngIf="!loadingOrders">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>{{ 'ORDERS.ID' | translate }}</th>
-              <th>{{ 'ORDERS.DATE' | translate }}</th>
-              <th>{{ 'ORDERS.TOTAL' | translate }}</th>
-              <th>{{ 'ORDERS.STATUS' | translate }}</th>
-              <th style="width: 140px">Action</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-order>
-            <tr>
-              <td>{{ order.id }}</td>
-              <td>{{ order.orderDate | date }}</td>
-              <td>{{ order.total | currency }}</td>
-              <td style="min-width: 180px">
-                <p-dropdown
-                  [options]="orderStatusOptions"
-                  [(ngModel)]="orderStatusDraft[order.id]"
-                  appendTo="body"
-                ></p-dropdown>
-              </td>
-              <td>
-                <button
-                  pButton
-                  type="button"
-                  icon="pi pi-check"
-                  label="Update"
-                  (click)="updateOrderStatus(order.id)"
-                ></button>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
+      <!-- Orders Tab -->
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <i class="pi pi-shopping-cart mr-2"></i>
+          <span>{{ 'ADMIN.TABS.ORDERS' | translate }}</span>
+        </ng-template>
 
-        <div *ngIf="loadingOrders" class="p-d-flex p-jc-center p-py-4">
-          <p-progressSpinner></p-progressSpinner>
+        <div class="table-container pt-3">
+          <p-table [value]="orders" [loading]="loadingOrders" [rows]="10" [paginator]="true"
+                   styleClass="p-datatable-sm p-datatable-striped custom-table" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 10%">{{ 'ORDERS.ID' | translate }}</th>
+                <th style="width: 20%">{{ 'ORDERS.DATE' | translate }}</th>
+                <th style="width: 15%">{{ 'ORDERS.TOTAL' | translate }}</th>
+                <th style="width: 25%">{{ 'ORDERS.STATUS' | translate }}</th>
+                <th style="width: 30%" class="text-center">{{ 'ADMIN.ORDERS.STATUS_UPDATE' | translate }}</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-order>
+              <tr>
+                <td><span class="badge-id">#{{ order.id }}</span></td>
+                <td>{{ order.orderDate | date:'mediumDate' }}</td>
+                <td class="font-bold">{{ order.total | currency }}</td>
+                <td>
+                  <span class="status-badge" [attr.data-status]="orderStatusDraft[order.id]">
+                    {{ 'ORDER_STATUS.' + ((orderStatusDraft[order.id] || 'Pending') | uppercase) | translate }}
+                  </span>
+                </td>
+                <td class="text-center">
+                  <div class="d-flex align-items-center justify-content-center gap-2">
+                    <p-dropdown
+                      [options]="orderStatusOptions"
+                      [(ngModel)]="orderStatusDraft[order.id]"
+                      appendTo="body"
+                      styleClass="w-full"
+                    ></p-dropdown>
+                    <button
+                      pButton
+                      type="button"
+                      icon="pi pi-save"
+                      class="p-button-rounded p-button-sm update-btn"
+                      (click)="updateOrderStatus(order.id)"
+                    ></button>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
         </div>
-      </p-card>
-    </p-tabPanel>
-  </p-tabView>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
 </section>
 
+<!-- Product Dialog -->
 <p-dialog
   [(visible)]="productDialogVisible"
   [modal]="true"
-  [header]="productDialogTitle"
-  [style]="{ width: '520px' }"
+  [header]="(editingProductId ? 'ADMIN.EDIT_PRODUCT' : 'ADMIN.ADD_PRODUCT') | translate"
+  [style]="{ width: '550px', 'max-width': '95vw' }"
+  styleClass="product-dialog custom-dialog"
+  [draggable]="false"
+  [resizable]="false"
+  appendTo="body"
 >
-  <div class="p-fluid p-d-grid p-gap-3">
-    <div class="p-field p-col-12">
-      <label>{{ 'PRODUCTS.NAME' | translate }}</label>
-      <input pInputText [(ngModel)]="productDraft.name" name="name" />
+  <div class="grid p-fluid mt-2 form-container">
+    <div class="col-12 mb-3">
+      <label class="form-label font-bold block mb-2">{{ 'PRODUCTS.NAME' | translate }}</label>
+      <input pInputText [(ngModel)]="productDraft.name" name="name" class="w-full p-3" />
     </div>
 
-    <div class="p-field p-col-12">
-      <label>{{ 'PRODUCTS.BRAND' | translate }}</label>
-      <input pInputText [(ngModel)]="productDraft.brand" name="brand" />
+    <div class="col-12 md:col-6 mb-3">
+      <label class="form-label font-bold block mb-2">{{ 'PRODUCTS.BRAND' | translate }}</label>
+      <input pInputText [(ngModel)]="productDraft.brand" name="brand" class="w-full p-3" />
     </div>
 
-    <div class="p-field p-col-12">
-      <label>{{ 'PRODUCTS.CATEGORY' | translate }}</label>
-      <input pInputText [(ngModel)]="productDraft.category" name="category" />
+    <div class="col-12 md:col-6 mb-3">
+      <label class="form-label font-bold block mb-2">{{ 'PRODUCTS.CATEGORY' | translate }}</label>
+      <input pInputText [(ngModel)]="productDraft.category" name="category" class="w-full p-3" />
     </div>
 
-    <div class="p-field p-col-6">
-      <label>{{ 'PRODUCTS.PRICE' | translate }}</label>
-      <p-inputNumber [(ngModel)]="productDraft.price" name="price" [showButtons]="true"></p-inputNumber>
+    <div class="col-12 md:col-6 mb-3">
+      <label class="form-label font-bold block mb-2">{{ 'ADMIN.PRODUCT_FORM.PRICE' | translate }}</label>
+      <p-inputNumber [(ngModel)]="productDraft.price" mode="currency" currency="USD" locale="en-US" styleClass="w-full input-num-p3"></p-inputNumber>
     </div>
 
-    <div class="p-field p-col-6">
-      <label>Stock</label>
-      <p-inputNumber
-        [(ngModel)]="productDraft.quantityInStock"
-        name="quantityInStock"
-        [showButtons]="true"
-      ></p-inputNumber>
+    <div class="col-12 md:col-6 mb-3">
+      <label class="form-label font-bold block mb-2">{{ 'ADMIN.PRODUCT_FORM.STOCK' | translate }}</label>
+      <p-inputNumber [(ngModel)]="productDraft.quantityInStock" [showButtons]="true" [min]="0" styleClass="w-full input-num-p3"></p-inputNumber>
     </div>
 
-    <div class="p-field p-col-12">
-      <label>Description</label>
+    <div class="col-12 mb-3">
+      <label class="form-label font-bold block mb-2">{{ 'ADMIN.PRODUCT_FORM.DESCRIPTION' | translate }}</label>
       <textarea
         pInputTextarea
         [(ngModel)]="productDraft.description"
         name="description"
         rows="4"
+        class="w-full p-3"
+        [autoResize]="true"
       ></textarea>
     </div>
 
-    <div class="p-field p-col-12">
-      <label>Picture URL</label>
-      <input pInputText [(ngModel)]="productDraft.pictureUrl" name="pictureUrl" />
+    <div class="col-12 mb-3">
+      <label class="form-label font-bold block mb-2">{{ 'ADMIN.PRODUCT_FORM.IMAGE_URL' | translate }}</label>
+      <input pInputText [(ngModel)]="productDraft.pictureUrl" name="pictureUrl" class="w-full p-3" />
     </div>
   </div>
 
   <ng-template pTemplate="footer">
-    <button pButton type="button" class="p-button-text" label="Cancel" (click)="productDialogVisible = false"></button>
-    <button pButton type="button" label="Save" (click)="saveProduct()"></button>
+    <div class="flex justify-content-end gap-3 w-full mt-3">
+      <button pButton type="button" [label]="'ADMIN.CANCEL' | translate" class="p-button-outlined p-button-danger py-2 px-4 border-round-md" (click)="productDialogVisible = false"></button>
+      <button pButton type="button" [label]="'ADMIN.SAVE' | translate" class="p-button-raised p-button-success py-2 px-5 border-round-md font-bold" (click)="saveProduct()"></button>
+    </div>
   </ng-template>
 </p-dialog>

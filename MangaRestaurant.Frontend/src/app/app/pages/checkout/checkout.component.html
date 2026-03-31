@@ -1,16 +1,16 @@
 <div class="container section-pad">
-  <div class="section-header-v2" style="text-align: left">
+  <div class="section-header-v2">
     <span class="section-tag">{{ 'CHECKOUT.TAG_LINE' | translate }}</span>
     <h1 class="section-title-v2">{{ 'CHECKOUT.TITLE' | translate }}</h1>
   </div>
 
   <div class="grid mt-4">
     <div class="col-12 lg:col-8">
-      <div class="mg-card p-5">
+      <div class="mg-card p-5" style="overflow: visible;">
         <h3 class="display-font text-2xl mb-5 font-bold border-bottom-1 border-white-alpha-10 pb-3">
-           <i class="pi pi-map-marker text-primary mr-2"></i> {{ 'CHECKOUT.SHIPPING' | translate }}
+          <i class="pi pi-map-marker text-primary mr-2"></i> {{ 'CHECKOUT.SHIPPING' | translate }}
         </h3>
-        
+
         <form (ngSubmit)="createOrder()" #checkoutForm="ngForm" class="flex flex-column gap-6">
           <div class="grid">
             <div class="col-12 md:col-6 flex flex-column gap-2 mb-3">
@@ -37,6 +37,10 @@
               <label class="text-xs text-muted font-bold uppercase">{{ 'CHECKOUT.ZIP' | translate }}</label>
               <input pInputText [(ngModel)]="address.zipcode" name="zipcode" class="p-input-lg" required />
             </div>
+            <div class="col-12 md:col-4 flex flex-column gap-2">
+              <label class="text-xs text-muted font-bold uppercase">{{ 'CHECKOUT.COUNTRY' | translate }}</label>
+              <input pInputText [(ngModel)]="address.country" name="country" class="p-input-lg" required />
+            </div>
           </div>
 
           <!-- Delivery -->
@@ -44,10 +48,9 @@
             <h3 class="display-font text-2xl mb-4 font-bold">
               <i class="pi pi-truck text-primary mr-2"></i> {{ 'CHECKOUT.DELIVERY_SPEED' | translate }}
             </h3>
-            <p-dropdown [(ngModel)]="deliveryMethodId" name="deliveryMethod" 
-                        [options]="deliveryMethods" optionLabel="shortName" 
-                        optionValue="id" styleClass="w-full p-input-lg"
-                        placeholder="{{ 'CHECKOUT.SELECT_DELIVERY' | translate }}"></p-dropdown>
+            <p-dropdown [(ngModel)]="deliveryMethodId" name="deliveryMethod" [options]="deliveryMethods"
+              optionLabel="shortName" optionValue="id" styleClass="w-full p-input-lg"
+              placeholder="{{ 'CHECKOUT.SELECT_DELIVERY' | translate }}"></p-dropdown>
           </div>
         </form>
       </div>
@@ -56,37 +59,36 @@
     <!-- Review Sidebar -->
     <div class="col-12 lg:col-4">
       <div class="mg-card" style="position: sticky; top: 100px">
-        <h3 class="display-font text-2xl mb-5 font-bold uppercase border-bottom-1 border-white-alpha-10 pb-3">{{ 'CHECKOUT.ORDER_REVIEW' | translate }}</h3>
-        
+        <h3 class="display-font text-2xl mb-5 font-bold uppercase border-bottom-1 border-white-alpha-10 pb-3">{{
+          'CHECKOUT.ORDER_REVIEW' | translate }}</h3>
+
         <div class="flex flex-column gap-4 mb-6">
-           <div class="flex justify-content-between p-3 bg-soft rounded-lg">
-             <span class="text-dim font-bold">{{ 'CHECKOUT.SUBTOTAL' | translate }}</span>
-             <span class="font-bold">{{ subtotal | currency }}</span>
-           </div>
-           <div class="flex justify-content-between p-3 bg-soft rounded-lg">
-             <span class="text-primary font-bold">{{ 'BASKET.DELIVERY' | translate }}</span>
-             <span class="font-bold">{{ 'BASKET.FREE' | translate }}</span>
-           </div>
-           <div class="pt-4 mt-2 border-top-1 border-white-alpha-10 flex justify-content-between align-items-center">
-             <span class="text-xl font-bold">Total</span>
-             <span class="text-3xl font-bold text-primary">{{ subtotal | currency }}</span>
-           </div>
+          <div class="flex justify-content-between p-3 bg-soft rounded-lg">
+            <span class="text-dim font-bold">{{ 'CHECKOUT.SUBTOTAL' | translate }}</span>
+            <span class="font-bold">{{ subtotal | currency }}</span>
+          </div>
+          <div class="flex justify-content-between p-3 bg-soft rounded-lg">
+            <span class="text-primary font-bold">{{ 'BASKET.DELIVERY' | translate }}</span>
+            <span class="font-bold">{{ 'BASKET.FREE' | translate }}</span>
+          </div>
+          <div class="pt-4 mt-2 border-top-1 border-white-alpha-10 flex justify-content-between align-items-center">
+            <span class="text-xl font-bold">Total</span>
+            <span class="text-3xl font-bold text-primary">{{ subtotal | currency }}</span>
+          </div>
         </div>
 
         <button pButton class="p-button-primary p-button-lg w-full py-4 text-xl"
-                [label]="'CHECKOUT.CREATE_ORDER' | translate" 
-                icon="pi pi-check-circle"
-                (click)="createOrder()"
-                [disabled]="!checkoutForm.valid || loading"></button>
+          [label]="'CHECKOUT.CREATE_ORDER' | translate" icon="pi pi-check-circle" (click)="createOrder()"
+          [disabled]="!checkoutForm.valid || loading"></button>
 
         <div class="mt-6 flex flex-column gap-3 opacity-60">
-           <div class="flex align-items-center gap-3 p-3">
-             <i class="pi pi-lock text-primary text-2xl"></i>
-             <div class="text-xs">
-               <span class="block font-bold">{{ 'CHECKOUT.SECURE_PAYMENT' | translate }}</span>
-               <span class="text-muted">{{ 'CHECKOUT.SECURE_DESC' | translate }}</span>
-             </div>
-           </div>
+          <div class="flex align-items-center gap-3 p-3">
+            <i class="pi pi-lock text-primary text-2xl"></i>
+            <div class="text-xs">
+              <span class="block font-bold">{{ 'CHECKOUT.SECURE_PAYMENT' | translate }}</span>
+              <span class="text-muted">{{ 'CHECKOUT.SECURE_DESC' | translate }}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

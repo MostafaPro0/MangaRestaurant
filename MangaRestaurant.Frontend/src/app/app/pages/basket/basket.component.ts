@@ -27,6 +27,15 @@ export class BasketComponent implements OnInit {
     this.basketService.removeItem(productId);
   }
 
+  updateQuantity(productId: number, currentQuantity: number, change: number) {
+    const newQuantity = currentQuantity + change;
+    if (newQuantity > 0) {
+      this.basketService.updateItemQuantity(productId, newQuantity);
+    } else {
+      this.removeItem(productId);
+    }
+  }
+
   get total(): number {
     return this.basket.items.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
   }

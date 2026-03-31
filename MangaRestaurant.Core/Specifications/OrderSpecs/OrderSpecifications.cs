@@ -30,4 +30,20 @@ namespace MangaRestaurant.Core.Specifications.OrderSpecs
             AddOrderByDescending(O => O.OrderDate);
         }
     }
+
+    public class OrderSpecificationsForAdmin : BaseSpecifications<Order>
+    {
+        public OrderSpecificationsForAdmin() : base(o => true)
+        {
+            Includes.Add(o => o.DeliveryMethod);
+            Includes.Add(o => o.Items);
+            AddOrderByDescending(o => o.OrderDate);
+        }
+
+        public OrderSpecificationsForAdmin(int orderId) : base(o => o.Id == orderId)
+        {
+            Includes.Add(o => o.DeliveryMethod);
+            Includes.Add(o => o.Items);
+        }
+    }
 }

@@ -61,12 +61,96 @@ namespace MangaRestaurant.APIs.Controllers
             return Ok(mappedOrder);
         }
 
+        [ProducesResponseType(typeof(IReadOnlyList<OrderToReturnDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [HttpGet("Admin/All")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<IReadOnlyList<OrderToReturnDTO>>> GetAllOrders()
+        {
+            var orders = await _orderService.GetAllOrdersAsync();
+            var mapped = _mapper.Map<IReadOnlyList<Order>, IReadOnlyList<OrderToReturnDTO>>(orders);
+            return Ok(mapped);
+        }
+
+        [ProducesResponseType(typeof(OrderToReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [HttpGet("Admin/{orderId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<OrderToReturnDTO>> GetOrderByIdAdmin(int orderId)
+        {
+            var order = await _orderService.GetOrderByIdAsync(orderId);
+            if (order is null) return NotFound(new ApiResponse(404, $"Order {orderId} not found"));
+            return Ok(_mapper.Map<Order, OrderToReturnDTO>(order));
+        }
+
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [HttpPut("Admin/{orderId}/status")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<ApiResponse>> UpdateOrderStatusAdmin(int orderId, [FromBody] OrderStatus status)
+        {
+            var ok = await _orderService.UpdateOrderStatusAsync(orderId, status);
+            if (!ok) return NotFound(new ApiResponse(404, $"Order {orderId} not found or not updated"));
+            return Ok(new ApiResponse(200, "Order status updated successfully"));
+        }
+
+        public class UpdateOrderStatusRequest
+        {
+            public string Status { get; set; }
+        }
+
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [HttpPut("{orderId}/status")]
+        [Authorize]
+        public async Task<ActionResult<ApiResponse>> UpdateOrderStatus(int orderId, [FromBody] UpdateOrderStatusRequest request)
+        {
+            if (request == null || string.IsNullOrWhiteSpace(request.Status))
+                return BadRequest(new ApiResponse(400, "Status is required"));
+
+            if (!Enum.TryParse<OrderStatus>(request.Status, true, out var status))
+                return BadRequest(new ApiResponse(400, "Invalid order status"));
+
+            var existing = await _orderService.GetOrderByIdAsync(orderId);
+            if (existing is null) return NotFound(new ApiResponse(404, $"Order {orderId} not found"));
+
+            var buyerEmail = User.FindFirstValue(ClaimTypes.Email);
+            if (!User.IsInRole("Admin") && !string.Equals(existing.BuyerEmail, buyerEmail, StringComparison.OrdinalIgnoreCase))
+            {
+                return Forbid();
+            }
+
+            var ok = await _orderService.UpdateOrderStatusAsync(orderId, status);
+            if (!ok) return NotFound(new ApiResponse(404, $"Order {orderId} not updated"));
+            return Ok(new ApiResponse(200, "Order status updated successfully"));
+        }
+
+        [ProducesResponseType(typeof(AdminReportDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status403Forbidden)]
+        [HttpGet("Admin/Report")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<AdminReportDTO>> GetAdminReport()
+        {
+            var orders = await _orderService.GetAllOrdersAsync();
+            var totalOrders = orders.Count;
+            var report = new AdminReportDTO
+            {
+                TotalOrders = totalOrders,
+                PendingOrders = orders.Count(o => o.OrderStatus == OrderStatus.Pending),
+                PaymentReceivedOrders = orders.Count(o => o.OrderStatus == OrderStatus.PaymentReceived),
+                PaymentFailedOrders = orders.Count(o => o.OrderStatus == OrderStatus.PaymentFailed),
+                Revenue = orders.Sum(o => o.GetTotal())
+            };
+            return Ok(report);
+        }
+
         [ProducesResponseType(typeof(IReadOnlyList<DeliveryMethod>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         [HttpGet("DeliveryMethods")]
         public async Task<ActionResult<IReadOnlyList<DeliveryMethod>>> GetDeliveryMethods()
         {
-            var deliveryMethod =await _orderService.GetDeliveryMethodsAsync();
+            var deliveryMethod = await _orderService.GetDeliveryMethodsAsync();
             return Ok(deliveryMethod);
         }
     }

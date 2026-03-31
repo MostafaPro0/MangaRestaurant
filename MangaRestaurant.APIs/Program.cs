@@ -80,7 +80,8 @@ namespace MangaRestaurant.APIs
                 await StoreContextSeed.SeedAsync(_dbContext);
 
                 var userManager = services.GetRequiredService<UserManager<AppUser>>();
-                await AppIdentityDbContextSeed.SeedUserAsync(userManager);
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                await AppIdentityDbContextSeed.SeedUserAsync(userManager, roleManager);
             }
             catch (Exception ex)
             {

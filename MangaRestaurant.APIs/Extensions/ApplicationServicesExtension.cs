@@ -18,10 +18,8 @@ namespace MangaRestaurant.APIs.Extensions
             //services.AddScoped<IGenericRepository<ProductBrand>, GenericRepository<ProductBrand>>();
             //services.AddScoped < IGenericRepository<ProductCategory>, GenericRepository < ProductCategory>>();
 
-            //ده بيعوض اللى فات كله
-            //   services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            //حذفتها علشان استخدمنا unitofwork
-            //خلاص مش محتاجينها
+            // Register generic repository for controllers/services requiring IGenericRepository<T>
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             services.AddSingleton<IResponseCacheService, ResponseCacheService>();//AllowDependencyInjection
 

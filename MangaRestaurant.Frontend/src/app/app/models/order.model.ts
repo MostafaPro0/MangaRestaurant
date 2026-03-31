@@ -8,14 +8,24 @@ export interface OrderItem {
   quantity: number;
 }
 
+export enum OrderStatus {
+  Pending = 'Pending',
+  PaymentReceived = 'PaymentReceived',
+  PaymentFailed = 'PaymentFailed',
+  Completed = 'Completed',
+  Cancelled = 'Cancelled'
+}
+
 export interface Order {
   id: number;
   buyerEmail: string;
   orderDate: string;
-  shipToAddress: UserAddress;
+  shipToAddress?: UserAddress;
+  shippingAddress?: UserAddress;
   deliveryMethod: string;
   shippingPrice: number;
-  status: string;
+  orderStatus: OrderStatus;
+  status?: OrderStatus;
   orderItems: OrderItem[];
   subtotal: number;
   total: number;

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
-import { Order, OrderCreateRequest, OrderItem, DeliveryMethod } from '../models/order.model';
+import { Order, OrderStatus, OrderCreateRequest, OrderItem, DeliveryMethod } from '../models/order.model';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,12 +18,55 @@ export class OrdersService {
     });
   }
 
+  private normalizeStatus(rawStatus: string | OrderStatus | undefined): OrderStatus {
+    if (!rawStatus) return OrderStatus.Pending;
+
+    const normalized = String(rawStatus).replace(/\s+/g, '').toLowerCase();
+
+    switch (normalized) {
+      case 'paymentreceived':
+        return OrderStatus.PaymentReceived;
+      case 'paymentfailed':
+        return OrderStatus.PaymentFailed;
+      case 'completed':
+        return OrderStatus.Completed;
+      case 'cancelled':
+      case 'canceled':
+        return OrderStatus.Cancelled;
+      case 'pending':
+      default:
+        return OrderStatus.Pending;
+    }
+  }
+
   getOrders(): Observable<Order[]> {
-    return this.api.get<Order[]>('Orders');
+    return this.api.get<Order[]>('Orders').pipe(
+      map((orders) =>
+        orders.map((o) => {
+          const resolvedStatus = this.normalizeStatus(o.orderStatus ?? o.status);
+          return {
+            ...o,
+            status: resolvedStatus,
+            orderStatus: resolvedStatus,
+            orderItems: (o as any).items ?? o.orderItems ?? []
+          } as Order;
+        })
+      )
+    );
   }
 
   getOrder(id: number): Observable<Order> {
-    return this.api.get<Order>(`Orders/${id}`);
+    return this.api.get<Order>(`Orders/${id}`).pipe(
+      map((o) => {
+        const resolvedStatus = this.normalizeStatus(o.orderStatus ?? o.status);
+        return {
+          ...o,
+          status: resolvedStatus,
+          orderStatus: resolvedStatus,
+          orderItems: (o as any).items ?? o.orderItems ?? []
+        } as Order;
+      })
+    );
   }
 
   getDeliveryMethods(): Observable<DeliveryMethod[]> {
@@ -30,7 +74,7 @@ export class OrdersService {
   }
 
   updateOrderStatus(orderId: number, status: string): Observable<Order> {
-    return this.api.put<Order>(`Orders/${orderId}`, { status });
+    return this.api.put<Order>(`Orders/${orderId}/status`, { status });
   }
 }
 

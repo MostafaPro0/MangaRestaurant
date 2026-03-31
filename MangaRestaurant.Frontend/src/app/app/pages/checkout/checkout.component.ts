@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { MessageService } from 'primeng/api';
 import { BasketService } from '../../services/basket.service';
 import { OrdersService } from '../../services/orders.service';
 import { UserAddress } from '../../models/user-address.model';
@@ -26,7 +27,13 @@ export class CheckoutComponent implements OnInit {
   deliveryMethods: any[] = [];
   loading = false;
 
-  constructor(private basketService: BasketService, private ordersService: OrdersService, private router: Router) {}
+  constructor(
+    private basketService: BasketService, 
+    private ordersService: OrdersService, 
+    private router: Router,
+    private messageService: MessageService,
+    private translate: TranslateService
+  ) {}
 
   ngOnInit(): void {
     this.basketService.basket$.subscribe((basket) => (this.basket = basket));
@@ -38,15 +45,51 @@ export class CheckoutComponent implements OnInit {
   }
 
   createOrder(): void {
-    if (!this.basket.id || !this.address.street) return;
+    const currentBasket = this.basketService.getCurrentBasket();
+    const addressValid = [this.address.firstName, this.address.lastName, this.address.street, this.address.city, this.address.country]
+      .every((value) => value && value.trim().length > 0);
+
+    if (!currentBasket.id || currentBasket.items.length === 0 || !addressValid) {
+      console.warn('Order not created: basket or address missing', {
+        basketId: currentBasket.id,
+        address: this.address,
+        items: currentBasket.items.length,
+        addressValid
+      });
+      alert('يرجى إضافة منتج واحد على الأقل وتعبئة جميع حقول العنوان الإجبارية (بما في ذلك الدولة)');
+      return;
+    }
+
     this.loading = true;
-    this.ordersService.createOrder({ basketId: this.basket.id, deliveryMethodId: this.deliveryMethodId, shippingAddress: this.address }).subscribe({
-      next: () => {
+    this.ordersService.createOrder({ basketId: currentBasket.id, deliveryMethodId: this.deliveryMethodId, shippingAddress: this.address }).subscribe({
+      next: (order) => {
         this.loading = false;
-        this.basketService.deleteBasket(this.basket.id).subscribe();
+        console.log('Order created successfully:', order);
+        
+        this.messageService.add({
+          severity: 'success',
+          summary: this.translate.instant('TOAST.SUCCESS') || 'Success',
+          detail: this.translate.instant('TOAST.ORDER_SUCCESS') || 'Order has been placed successfully!',
+          life: 4000
+        });
+
+        this.basketService.deleteBasket(currentBasket.id).subscribe({
+          next: () => console.log('Basket deleted'),
+          error: (err) => console.error('Basket delete error', err)
+        });
         this.router.navigate(['/orders']);
       },
-      error: () => (this.loading = false)
+      error: (err) => {
+        this.loading = false;
+        console.error('Order create error', err);
+        
+        this.messageService.add({
+          severity: 'error',
+          summary: this.translate.instant('TOAST.ERROR') || 'Error',
+          detail: this.translate.instant('TOAST.ORDER_FAIL') || 'Failed to create order. Please try again.',
+          life: 4000
+        });
+      }
     });
   }
 }

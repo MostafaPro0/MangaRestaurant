@@ -1,33 +1,39 @@
 <div class="container section-pad">
-  <div class="section-header-v2" style="text-align: left">
-    <span class="section-tag">History</span>
+  <div class="section-header-v2">
+    <span class="section-tag">{{ 'ORDERS.TAG_LINE' | translate }}</span>
     <h1 class="section-title-v2">{{ 'ORDERS.TITLE' | translate }}</h1>
   </div>
 
   <div class="mt-4">
     <div class="glass-card p-0 overflow-hidden" style="border-radius: var(--radius-lg)">
-      <p-table [value]="orders" *ngIf="!loading" [paginator]="true" [rows]="10" class="manga-table" [responsiveLayout]="'stack'">
+      <p-table [value]="orders" *ngIf="!loading && orders.length > 0" [paginator]="true" [rows]="10" class="manga-table"
+        [responsiveLayout]="'scroll'">
         <ng-template pTemplate="header">
           <tr>
-            <th class="bg-soft text-muted manga-font uppercase text-xs p-4">{{ 'ORDERS.ID' | translate }}</th>
-            <th class="bg-soft text-muted manga-font uppercase text-xs p-4">{{ 'ORDERS.DATE' | translate }}</th>
-            <th class="bg-soft text-muted manga-font uppercase text-xs p-4">{{ 'ORDERS.TOTAL' | translate }}</th>
-            <th class="bg-soft text-muted manga-font uppercase text-xs p-4 text-center">{{ 'ORDERS.STATUS' | translate }}</th>
+            <th class="bg-soft text-muted manga-font uppercase text-xs p-4" style="width: 15%">{{ 'ORDERS.ID' |
+              translate }}</th>
+            <th class="bg-soft text-muted manga-font uppercase text-xs p-4" style="width: 25%">{{ 'ORDERS.DATE' |
+              translate }}</th>
+            <th class="bg-soft text-muted manga-font uppercase text-xs p-4" style="width: 20%">{{ 'ORDERS.TOTAL' |
+              translate }}</th>
+            <th class="bg-soft text-muted manga-font uppercase text-xs p-4 text-center" style="width: 20%">{{
+              'ORDERS.STATUS' | translate }}</th>
+            <th class="bg-soft text-muted manga-font uppercase text-xs p-4 text-center" style="width: 20%">{{ 'COMMON.ACTION' | translate }}</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-order>
-          <tr class="border-bottom-1 border-white-alpha-10">
+          <tr class="border-bottom-1 border-white-alpha-10 hover-bg-soft transition-colors">
             <td class="p-4">
-               <span class="manga-font text-xs text-primary">#{{ order.id }}</span>
+              <span class="manga-font text-xs text-primary font-bold">#{{ order.id }}</span>
             </td>
             <td class="p-4 text-dim">{{ order.orderDate | date:'mediumDate' }}</td>
-            <td class="p-4 font-bold">{{ order.total | currency }}</td>
+            <td class="p-4 font-bold text-xl">{{ order.total | currency }}</td>
             <td class="p-4 text-center">
-              <span class="badge-neon" 
-                    [style.--primary]="order.status === 'Pending' ? '#ffcc00' : '#00ff88'"
-                    style="margin-bottom:0">
-                {{ order.status }}
-              </span>
+              <p-badge [value]="'ORDER_STATUS.' + (getDisplayStatus(order) | uppercase) | translate" [severity]="statusSeverity(getDisplayStatus(order))"></p-badge>
+            </td>
+            <td class="p-4 text-center">
+              <button pButton type="button" [label]="'COMMON.VIEW' | translate" icon="pi pi-eye"
+                class="p-button-sm p-button-outlined p-button-rounded" (click)="openOrderDetails(order)"></button>
             </td>
           </tr>
         </ng-template>
@@ -36,11 +42,96 @@
       <div class="flex justify-content-center py-8" *ngIf="loading">
         <p-progressSpinner strokeWidth="4"></p-progressSpinner>
       </div>
-      
-      <div class="p-8 text-center" *ngIf="!loading && orders.length === 0">
-        <i class="pi pi-inbox text-6xl opacity-10 mb-4 block"></i>
-        <p class="text-xl manga-font text-dim">No historical records found for this legend.</p>
-        <a routerLink="/products" class="text-primary hover:underline mt-2 inline-block">Start Your Journey</a>
+
+      <!-- Enhanced Order Dialog -->
+      <p-dialog [header]="('ORDERS.ORDER_NUM' | translate) + ' #' + (selectedOrder?.id || '')" [(visible)]="orderDialogVisible" [modal]="true"
+        [style]="{width: '75vw', height: '75vh', maxHeight: '75vh', margin: '0'}" [draggable]="false"
+        [resizable]="false" appendTo="body" (onHide)="closeOrderDetails()" styleClass="manga-dialog">
+
+        <ng-container *ngIf="selectedOrder">
+          <div class="flex flex-column gap-6 p-2">
+
+            <!-- Order Status Banner -->
+            <div
+              class="flex justify-content-between align-items-center p-4 bg-soft border-radius-lg border-1 border-white-alpha-10">
+              <div>
+                <div class="text-dim text-xs font-bold uppercase mb-1">{{ 'ORDERS.ORDERED_ON' | translate }}</div>
+                <div class="font-bold">{{ selectedOrder.orderDate | date:'medium' }}</div>
+              </div>
+              <p-badge [value]="'ORDER_STATUS.' + (getDisplayStatus(selectedOrder) | uppercase) | translate" size="large"
+                [severity]="statusSeverity(getDisplayStatus(selectedOrder))"></p-badge>
+            </div>
+
+            <!-- Shipping Info -->
+            <div class="shipping-section">
+              <h5 class="manga-font text-xl primary-text mb-3">{{ 'ORDERS.DELIVERY_ADDRESS' | translate }}</h5>
+              <div class="p-4 glass-card border-radius-md text-dim line-height-3">
+                <div *ngIf="getShippingAddress(selectedOrder); else noAddress">
+                  <div class="font-bold text-main mb-1">{{ getShippingAddress(selectedOrder)?.firstName }} {{
+                    getShippingAddress(selectedOrder)?.lastName }}</div>
+                  {{ getShippingAddress(selectedOrder)?.street }}<br>
+                  {{ getShippingAddress(selectedOrder)?.city }}, {{ getShippingAddress(selectedOrder)?.state }} {{
+                  getShippingAddress(selectedOrder)?.zipcode }}<br>
+                  {{ getShippingAddress(selectedOrder)?.country }}
+                </div>
+                <ng-template #noAddress>
+                  <p class="opacity-50 italic">No delivery address specified.</p>
+                </ng-template>
+              </div>
+            </div>
+
+            <!-- Order Items -->
+            <div class="items-section">
+              <h5 class="manga-font text-xl primary-text mb-3">{{ 'ORDERS.ITEMS_ORDER' | translate }}</h5>
+              <div class="flex flex-column gap-3">
+                <div *ngFor="let item of selectedOrder.orderItems"
+                  class="flex align-items-center justify-content-between p-3 bg-soft-hover border-radius-sm transition-all">
+                  <div class="flex align-items-center gap-3">
+                    <div class="item-pic-sm shadow-md">
+                      <img [src]="item.pictureUrl || '/assets/images/placeholder.png'" [alt]="item.productName"
+                        style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                    </div>
+                    <div>
+                      <div class="font-bold">{{ item.productName }}</div>
+                      <div class="text-xs text-dim">{{ item.price | currency }} x {{ item.quantity }}</div>
+                    </div>
+                  </div>
+                  <div class="font-bold text-primary">{{ (item.price * item.quantity) | currency }}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="summary-section border-top-1 border-white-alpha-10 pt-4 flex flex-column gap-2">
+              <div class="flex justify-content-between text-dim">
+                <span>{{ 'BASKET.SUBTOTAL' | translate }}</span>
+                <span>{{ selectedOrder.subtotal | currency }}</span>
+              </div>
+              <div class="flex justify-content-between text-dim mt-2">
+                <span>{{ 'BASKET.DELIVERY' | translate }} ({{ selectedOrder.deliveryMethod }})</span>
+                <span>{{ selectedOrder.shippingPrice | currency }}</span>
+              </div>
+              <div
+                class="flex justify-content-between text-2xl font-black primary-text mt-2 pt-2 border-top-1 border-white-alpha-05">
+                <span>{{ 'BASKET.TOTAL' | translate }}</span>
+                <span>{{ selectedOrder.total | currency }}</span>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-template pTemplate="footer">
+          <button pButton type="button" [label]="'COMMON.CLOSE' | translate" class="p-button-text p-button-primary w-full py-3"
+            (click)="closeOrderDetails()"></button>
+        </ng-template>
+      </p-dialog>
+
+      <div class="p-8 text-center py-10" *ngIf="!loading && (orders.length === 0)">
+        <i class="pi pi-inbox text-7xl opacity-05 mb-6 block"></i>
+        <h3 class="display-font text-2xl font-bold mb-2">{{ 'ORDERS.EMPTY_TITLE' | translate }}</h3>
+        <p class="text-dim mb-8">{{ 'ORDERS.EMPTY_DESC' | translate }}</p>
+        <a routerLink="/products" pButton [label]="'ORDERS.START_JOURNEY' | translate" icon="pi pi-arrow-right"
+          class="p-button-rounded p-button-lg px-8"></a>
       </div>
     </div>
   </div>

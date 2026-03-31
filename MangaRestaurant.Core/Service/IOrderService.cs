@@ -12,6 +12,9 @@ namespace MangaRestaurant.Core.Service
         Task<Order?> CreateOrderAsync(string buyerEmail, string basketId, int methodId, OrderAddress orderShippingAddress);
         Task<IReadOnlyList<Order>> GetOrdersForSpecificUserAsync(string buyerEmail);
         Task<Order> GetOrderByIdForSpecificUserAsync(string buyerEmail, int orderId);
+        Task<IReadOnlyList<Order>> GetAllOrdersAsync();
+        Task<Order> GetOrderByIdAsync(int orderId);
+        Task<bool> UpdateOrderStatusAsync(int orderId, OrderStatus status);
         Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync();
     }
 }

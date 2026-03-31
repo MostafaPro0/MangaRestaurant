@@ -6,6 +6,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
+import { MessageService } from 'primeng/api';
 import Aura from '@primeng/themes/aura';
 
 import { routes } from './app.routes';
@@ -19,6 +20,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
     provideRouter(routes),
+    MessageService,
     providePrimeNG({
       ripple: true,
       inputStyle: 'outlined',

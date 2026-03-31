@@ -7,7 +7,8 @@ import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 import { CardModule } from 'primeng/card';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MessageService } from 'primeng/api';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -22,12 +23,25 @@ export class LoginComponent {
   password = '';
   error = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService, 
+    private router: Router, 
+    private messageService: MessageService,
+    private translate: TranslateService
+  ) {}
 
   login(): void {
     this.error = '';
     this.authService.login(this.email, this.password).subscribe({
-      next: (user) => this.router.navigate([this.authService.isAdmin(user?.token ?? null) ? '/admin' : '/']),
+      next: (user) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: this.translate.instant('TOAST.SUCCESS') || 'Success',
+          detail: this.translate.instant('TOAST.LOGIN_SUCCESS') || 'Logged in successfully',
+          life: 3000
+        });
+        this.router.navigate([this.authService.isAdmin(user?.token ?? null) ? '/admin' : '/']);
+      },
       error: (err) => (this.error = 'Failed to login: ' + (err?.message || err))
     });
   }

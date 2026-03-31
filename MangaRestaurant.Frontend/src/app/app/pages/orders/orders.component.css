@@ -4,3 +4,22 @@ p-table { width: 100%; }
   width: 100%;
 }
 
+.order-summary small {
+  color: #888;
+}
+
+.order-summary h4 {
+  margin: 0.3rem 0 0.6rem;
+}
+
+.order-items-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.order-items-list li {
+  border-bottom: 1px solid rgba(200, 200, 200, 0.25);
+  padding: 0.5rem 0;
+}
+

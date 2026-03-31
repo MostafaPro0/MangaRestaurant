@@ -185,10 +185,94 @@
   border-left: 5px solid var(--primary);
 }
 
+/* Profile Dropdown */
+.profile-container {
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-lg);
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.profile-container:hover {
+  background: var(--bg-soft);
+  border-color: var(--glass-border);
+}
+
+::ng-deep .manga-avatar {
+  background: var(--primary) !important;
+  color: #000 !important;
+  font-weight: 800 !important;
+  border: 2px solid var(--glass-border) !important;
+}
+
+::ng-deep .p-menu {
+  background: var(--glass) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: var(--shadow-lg) !important;
+  min-width: 200px !important;
+  padding: 0.5rem !important;
+  border-radius: var(--radius-md) !important;
+}
+
+::ng-deep .p-menu .p-menuitem-link {
+  padding: 0.75rem 1rem !important;
+  transition: all 0.2s !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+::ng-deep .p-menu .p-menuitem-link:hover {
+  background: var(--primary) !important;
+  color: #000 !important;
+}
+
+::ng-deep .p-menu .p-menuitem-link:hover .p-menuitem-icon,
+::ng-deep .p-menu .p-menuitem-link:hover .p-menuitem-text {
+  color: #000 !important;
+}
+
+::ng-deep .p-menu .p-submenu-header {
+  background: transparent !important;
+  color: var(--primary) !important;
+  font-weight: 800 !important;
+  font-family: var(--font-manga) !important;
+  letter-spacing: 0.1em !important;
+  padding: 0.5rem 1rem !important;
+  font-size: 0.8rem !important;
+}
+
+/* Footer & Socials */
+.social-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-soft);
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  color: var(--text-dim);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.social-icon:hover {
+  background: var(--primary);
+  color: #000;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(255, 190, 0, 0.2);
+}
+
+.manga-footer a {
+  transition: color 0.2s;
+}
+
+.manga-footer a:hover {
+  color: var(--primary);
+}
+
 /* Global Footer Adjustments */
 .manga-footer {
-  background: var(--bg-soft);
-  padding: 6rem 0 3rem;
+  background: var(--bg-deep);
   border-top: 1px solid var(--glass-border);
   color: var(--text-dim);
 }

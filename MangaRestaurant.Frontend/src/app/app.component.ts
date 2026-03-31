@@ -1,16 +1,31 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 import { AuthService } from './app/services/auth.service';
 import { TranslateService } from './app/services/translate.service';
 import { BasketService } from './app/services/basket.service';
+import { AvatarModule } from 'primeng/avatar';
+import { MenuModule } from 'primeng/menu';
+import { MenuItem } from 'primeng/api';
+import { User } from './app/models/user.model';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, ButtonModule, TooltipModule, TranslateModule],
+  imports: [
+    CommonModule, 
+    RouterModule,
+    ToastModule,
+    ButtonModule, 
+    TooltipModule, 
+    TranslateModule,
+    AvatarModule,
+    MenuModule
+  ],
   standalone: true,
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
@@ -20,9 +35,12 @@ export class AppComponent {
   currentTheme = signal<'light' | 'dark'>(localStorage.getItem('theme') === 'dark' ? 'dark' : 'light');
   isAuthenticated = signal(false);
   isAdmin = signal(false);
+  user = signal<User | null>(null);
   lang = signal<'en' | 'ar'>((localStorage.getItem('lang') as 'en' | 'ar') || 'en');
   basketCount = signal(0);
   mobileMenuOpened = signal(false);
+
+  profileMenuItems: MenuItem[] = [];
 
   constructor(private auth: AuthService, private translateService: TranslateService, private basketService: BasketService) {
     this.basketService.basket$.subscribe(basket => {
@@ -30,10 +48,46 @@ export class AppComponent {
       this.basketCount.set(count);
     });
     this.auth.user.subscribe((user) => {
+      this.user.set(user);
       this.isAuthenticated.set(!!user);
       this.isAdmin.set(this.auth.isAdmin(user?.token ?? null));
+      this.initProfileMenu();
     });
     this.applyTheme(this.currentTheme());
+  }
+
+  initProfileMenu(): void {
+    const isAr = this.lang() === 'ar';
+    this.profileMenuItems = [
+      {
+        label: this.user()?.displayName || (isAr ? 'المستخدم' : 'User'),
+        items: [
+          {
+            label: isAr ? 'طلباتي' : 'My Orders',
+            icon: 'pi pi-shopping-bag',
+            routerLink: '/orders'
+          },
+          {
+            label: isAr ? 'الإعدادات' : 'Settings',
+            icon: 'pi pi-cog',
+            routerLink: '/orders' // Placeholder for settings
+          },
+          {
+            label: isAr ? 'خروج' : 'Logout',
+            icon: 'pi pi-sign-out',
+            command: () => this.logout()
+          }
+        ]
+      }
+    ];
+
+    if (this.isAdmin()) {
+      this.profileMenuItems[0].items?.unshift({
+        label: isAr ? 'لوحة التحكم' : 'Admin Control',
+        icon: 'pi pi-lock',
+        routerLink: '/admin'
+      });
+    }
   }
 
   toggleTheme(): void {
@@ -51,6 +105,7 @@ export class AppComponent {
   setLang(lang: 'en' | 'ar'): void {
     this.translateService.setLanguage(lang);
     this.lang.set(lang);
+    this.initProfileMenu();
   }
 
   toggleMobileMenu(): void {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -16,7 +16,7 @@ import { AdminService } from '../../services/admin.service';
 import { ProductsService } from '../../services/products.service';
 import { OrdersService } from '../../services/orders.service';
 import { Product } from '../../models/product.model';
-import { Order } from '../../models/order.model';
+import { Order, OrderStatus } from '../../models/order.model';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 
 @Component({
@@ -74,7 +74,8 @@ export class AdminDashboardComponent implements OnInit {
   constructor(
     private adminService: AdminService,
     private productsService: ProductsService,
-    private ordersService: OrdersService
+    private ordersService: OrdersService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -111,12 +112,11 @@ export class AdminDashboardComponent implements OnInit {
       next: (data) => {
         this.orders = data ?? [];
         this.orderStatusDraft = {};
-        const statuses = new Set<string>();
+        const statuses = Object.values(OrderStatus);
         for (const o of this.orders) {
-          this.orderStatusDraft[o.id] = o.status;
-          statuses.add(o.status);
+          this.orderStatusDraft[o.id] = o.orderStatus || o.status || OrderStatus.Pending;
         }
-        this.orderStatusOptions = Array.from(statuses).map((s) => ({ label: s, value: s }));
+        this.orderStatusOptions = statuses.map((s) => ({ label: this.translate.instant('ORDER_STATUS.' + s.toUpperCase()) || s, value: s }));
         this.loadingOrders = false;
       },
       error: () => (this.loadingOrders = false),

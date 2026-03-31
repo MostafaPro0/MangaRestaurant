@@ -1,8 +1,202 @@
-:host {
+.admin-dashboard-container {
+  min-height: 100vh;
+  background-color: transparent;
+}
+
+.dashboard-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.5px;
+}
+
+.dashboard-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.8;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #ff4d4d 0%, #f9d423 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glassmorphism Card */
+.card-glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+}
+
+:host-context(.light-theme) .card-glass {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Custom Tabs Styling */
+::ng-deep .custom-tabs .p-tabview-nav {
+  background: transparent !important;
+  border: none !important;
+  padding: 1rem 1rem 0 1rem;
+}
+
+::ng-deep .custom-tabs .p-tabview-nav li .p-tabview-nav-link {
+  background: transparent !important;
+  border-radius: 12px 12px 0 0 !important;
+  border: none !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+  padding: 1rem 1.5rem !important;
+}
+
+::ng-deep .custom-tabs .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  color: var(--primary-color, #ff4d4d) !important;
+  border-bottom: 3px solid var(--primary-color, #ff4d4d) !important;
+}
+
+/* Table Styling */
+.custom-table {
+  background: transparent !important;
+}
+
+::ng-deep .custom-table .p-datatable-thead > tr > th {
+  background: rgba(0, 0, 0, 0.02) !important;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border: none !important;
+  padding: 1.25rem 1rem !important;
+}
+
+::ng-deep .custom-table .p-datatable-tbody > tr {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  transition: background 0.2s;
+}
+
+::ng-deep .custom-table .p-datatable-tbody > tr:hover {
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+::ng-deep .custom-table .p-datatable-tbody > tr > td {
+  border: none !important;
+  padding: 1rem !important;
+}
+
+/* Badges and Tags */
+.badge-id {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-family: monospace;
+  font-weight: 600;
+}
+
+.avatar-circle {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.dept-tag, .category-tag {
+  background: rgba(var(--primary-rgb, 255, 77, 77), 0.1);
+  color: #ff4d4d;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.price-text {
+  font-weight: 700;
+  color: #2ecc71;
+}
+
+.stock-ok {
+  color: #2ecc71;
+  font-weight: 600;
+}
+
+.stock-low {
+  color: #e74c3c;
+  font-weight: 700;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.status-badge[data-status="Pending"] { background: #f39c12; color: white; }
+.status-badge[data-status="PaymentReceived"] { background: #3498db; color: white; }
+.status-badge[data-status="PaymentFailed"] { background: #e74c3c; color: white; }
+.status-badge[data-status="Completed"] { background: #2ecc71; color: white; }
+.status-badge[data-status="Cancelled"] { background: #95a5a6; color: white; }
+
+/* Buttons */
+.add-btn {
+  background: linear-gradient(135deg, #ff4d4d 0%, #ff8c00 100%) !important;
+  border: none !important;
+  padding: 0.8rem 2rem !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3) !important;
+}
+
+.update-btn {
+  background: #2ecc71 !important;
+  border: none !important;
+}
+
+/* Dialog */
+::ng-deep .custom-dialog .p-dialog-header {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 1.5rem !important;
+}
+
+::ng-deep .custom-dialog .p-dialog-content {
+  background: transparent !important;
+  padding: 1.5rem !important;
+}
+
+::ng-deep .custom-dialog .p-dialog-footer {
+  background: transparent !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 1rem 1.5rem !important;
+}
+
+.form-label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
   display: block;
+  font-size: 0.9rem;
 }
 
-p-table {
-  width: 100%;
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-title {
+    font-size: 1.8rem;
+  }
 }
-

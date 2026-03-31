@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
 import { adminGuard } from './app/guards/admin.guard';
+import { guestGuard } from './app/guards/guest.guard';
 
 export const routes: Route[] = [
   { path: '', pathMatch: 'full', loadComponent: () => import('./app/pages/home/home.component').then(m => m.HomeComponent) },
@@ -9,7 +10,7 @@ export const routes: Route[] = [
   { path: 'checkout', loadComponent: () => import('./app/pages/checkout/checkout.component').then(m => m.CheckoutComponent) },
   { path: 'orders', loadComponent: () => import('./app/pages/orders/orders.component').then(m => m.OrdersComponent) },
   { path: 'admin', canActivate: [adminGuard], loadComponent: () => import('./app/pages/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent) },
-  { path: 'login', loadComponent: () => import('./app/pages/login/login.component').then(m => m.LoginComponent) },
-  { path: 'register', loadComponent: () => import('./app/pages/register/register.component').then(m => m.RegisterComponent) },
+  { path: 'login', canActivate: [guestGuard], loadComponent: () => import('./app/pages/login/login.component').then(m => m.LoginComponent) },
+  { path: 'register', canActivate: [guestGuard], loadComponent: () => import('./app/pages/register/register.component').then(m => m.RegisterComponent) },
   { path: '**', loadComponent: () => import('./app/pages/not-found/not-found.component').then(m => m.NotFoundComponent) }
 ];
