@@ -142,18 +142,25 @@
                   </span>
                 </td>
                 <td class="text-center">
-                  <div class="d-flex align-items-center justify-content-center gap-2">
+                  <div class="flex align-items-center justify-content-center gap-2 flex-nowrap">
                     <p-dropdown
                       [options]="orderStatusOptions"
                       [(ngModel)]="orderStatusDraft[order.id]"
                       appendTo="body"
-                      styleClass="w-full"
-                    ></p-dropdown>
+                      styleClass="min-w-10rem"
+                    >
+                      <ng-template pTemplate="selectedItem" let-selectedOption>
+                        <span *ngIf="selectedOption">{{ 'ORDER_STATUS.' + (selectedOption.value | uppercase) | translate }}</span>
+                      </ng-template>
+                      <ng-template pTemplate="item" let-option>
+                        <span>{{ 'ORDER_STATUS.' + (option.value | uppercase) | translate }}</span>
+                      </ng-template>
+                    </p-dropdown>
                     <button
                       pButton
                       type="button"
                       icon="pi pi-save"
-                      class="p-button-rounded p-button-sm update-btn"
+                      class="p-button-rounded p-button-sm update-btn flex-shrink-0"
                       (click)="updateOrderStatus(order.id)"
                     ></button>
                   </div>

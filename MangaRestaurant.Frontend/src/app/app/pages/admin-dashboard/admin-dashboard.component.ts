@@ -116,7 +116,7 @@ export class AdminDashboardComponent implements OnInit {
         for (const o of this.orders) {
           this.orderStatusDraft[o.id] = o.orderStatus || o.status || OrderStatus.Pending;
         }
-        this.orderStatusOptions = statuses.map((s) => ({ label: this.translate.instant('ORDER_STATUS.' + s.toUpperCase()) || s, value: s }));
+        this.orderStatusOptions = statuses.map((s) => ({ label: s, value: s }));
         this.loadingOrders = false;
       },
       error: () => (this.loadingOrders = false),
