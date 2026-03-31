@@ -1,305 +1,161 @@
-.admin-dashboard-container {
+/* 
+  --- MANGA RESTAURANT ADMIN DASHBOARD V3 ---
+  Custom System Nav & Premium Design System
+*/
+
+:host {
+  display: block;
+  background: #f8f9fa;
   min-height: 100vh;
-  background-color: transparent;
 }
 
-.dashboard-title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin-bottom: 0.5rem;
-  letter-spacing: -0.5px;
+.admin-dashboard-wrapper {
+    padding-bottom: 3rem;
 }
 
-.dashboard-subtitle {
-  font-size: 1.1rem;
-  opacity: 0.8;
+/* Header Section */
+.admin-header {
+    background: #fff;
+    border-bottom: 2px solid rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
 }
 
-.gradient-text {
-  background: linear-gradient(135deg, #ff4d4d 0%, #f9d423 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.main-title {
+    background: linear-gradient(135deg, #f9d423 0%, #ff4d4d 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-/* Glassmorphism Card */
-.card-glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+/* --- CUSTOM TABS NAVIGATION (The Hero Fix) --- */
+.custom-admin-nav {
+    display: flex;
+    flex-wrap: wrap; /* Dynamic wrapping */
+    gap: 10px;
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    justify-content: flex-start;
 }
 
-:host-context(.light-theme) .card-glass {
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-/* Custom Tabs Styling */
-::ng-deep .custom-tabs .p-tabview-nav {
-  background: transparent !important;
-  border: none !important;
-  padding: 1rem 1rem 0 1rem;
-}
-
-::ng-deep .custom-tabs .p-tabview-nav li .p-tabview-nav-link {
-  background: transparent !important;
-  border-radius: 12px 12px 0 0 !important;
-  border: none !important;
-  font-weight: 600 !important;
-  transition: all 0.3s ease !important;
-  padding: 1rem 1.5rem !important;
-}
-
-::ng-deep .custom-tabs .p-tabview-nav li.p-highlight .p-tabview-nav-link {
-  color: var(--primary-color, #ff4d4d) !important;
-  border-bottom: 3px solid var(--primary-color, #ff4d4d) !important;
-}
-
-/* Table Styling */
-.custom-table {
-  background: transparent !important;
-}
-
-::ng-deep .custom-table .p-datatable-thead > tr > th {
-  background: rgba(0, 0, 0, 0.02) !important;
-  text-transform: uppercase;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  border: none !important;
-  padding: 1.25rem 1rem !important;
-}
-
-::ng-deep .custom-table .p-datatable-tbody > tr {
-  background: transparent !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-  transition: background 0.2s;
-}
-
-::ng-deep .custom-table .p-datatable-tbody > tr:hover {
-  background: rgba(255, 255, 255, 0.03) !important;
-}
-
-::ng-deep .custom-table .p-datatable-tbody > tr > td {
-  border: none !important;
-  padding: 1rem !important;
-}
-
-/* Premium Stat Cards */
-.stat-card {
-    background: var(--card-bg, #ffffff);
-    padding: 1.5rem;
-    border-radius: 16px;
+.nav-btn {
+    padding: 12px 24px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 14px;
+    background: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
-    gap: 1.25rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    height: 100%;
+    gap: 10px;
+    color: #555;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 
-.theme-dark .stat-card {
-    background: rgba(45, 45, 45, 0.8);
-    backdrop-filter: blur(10px);
-    border-color: rgba(255, 255, 255, 0.05);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+.nav-btn i {
+    font-size: 1.2rem;
+    color: #999;
+}
+
+.nav-btn:hover {
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+    border-color: #f9d423;
+}
+
+.nav-btn.active {
+    background: var(--primary-color, #f9d423) !important;
+    color: #000 !important;
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 8px 20px rgba(249, 212, 35, 0.3);
+}
+
+.nav-btn.active i {
+    color: #000;
+}
+
+/* Content Area */
+.tab-content {
+    animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Stats Summary */
+.stat-card {
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
 }
 
 .stat-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 30px rgba(0,0,0,0.08);
 }
 
 .stat-icon {
-    width: 56px;
-    height: 56px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    color: #fff;
-    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
 }
 
-.stat-card.orders .stat-icon { background: linear-gradient(135deg, #3498db, #2980b9); }
-.stat-card.revenue .stat-icon { background: linear-gradient(135deg, #2ecc71, #27ae60); }
-.stat-card.average .stat-icon { background: linear-gradient(135deg, #f39c12, #d35400); }
-.stat-card.employees .stat-icon { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+.stat-icon.sales { background: #fff8e1; color: #f9d423; }
+.stat-icon.revenue { background: #e8f5e9; color: #4caf50; }
+.stat-icon.avg { background: #e3f2fd; color: #2196f3; }
+.stat-icon.users { background: #fce4ec; color: #e91e63; }
 
-.stat-content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    overflow: hidden;
-}
-
-.stat-label {
-    font-size: 0.875rem;
-    color: var(--text-color-secondary, #666);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-}
-
-.stat-value {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--text-color, #1a1a1a);
-}
-
-.theme-dark .stat-value {
-    color: #ffffff;
-}
-
-.theme-dark .stat-label {
-    color: #aaa;
-}
-
-/* Chart Containers */
+/* Charts */
 .chart-container {
-    background: var(--card-bg, #ffffff);
-    padding: 1.5rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    margin-bottom: 2rem;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid rgba(0,0,0,0.05);
 }
 
 .chart-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    color: var(--primary-color, #f9d423);
-    border-bottom: 2px solid rgba(249, 212, 35, 0.1);
-    padding-bottom: 0.75rem;
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 10px;
 }
 
-.chart-body {
-    min-height: 350px;
-}
+/* MOBILE FIX OVERHAUL */
+@media screen and (max-width: 768px) {
+    .header-main {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
 
-/* Badges and Tags */
-.badge-id {
-  background: rgba(0, 0, 0, 0.1);
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-family: monospace;
-  font-weight: 600;
-}
+    .custom-admin-nav {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important; /* 2 Column Grid */
+        gap: 8px !important;
+        padding: 0.75rem !important;
+    }
 
-.avatar-circle {
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-}
+    .nav-btn {
+        width: 100% !important;
+        flex-direction: column !important;
+        padding: 16px 8px !important;
+        font-size: 0.85rem !important;
+        border-radius: 16px !important;
+        text-align: center;
+    }
 
-.dept-tag, .category-tag {
-  background: rgba(var(--primary-rgb, 255, 77, 77), 0.1);
-  color: #ff4d4d;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
+    .nav-btn i {
+        font-size: 1.4rem !important;
+    }
 
-.price-text {
-  font-weight: 700;
-  color: #2ecc71;
-}
+    .main-title {
+        font-size: 2rem !important;
+    }
 
-.stock-ok {
-  color: #2ecc71;
-  font-weight: 600;
-}
-
-.stock-low {
-  color: #e74c3c;
-  font-weight: 700;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.6; }
-  100% { opacity: 1; }
-}
-
-.status-badge {
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.status-badge[data-status="Pending"] { background: #f39c12; color: white; }
-.status-badge[data-status="PaymentReceived"] { background: #3498db; color: white; }
-.status-badge[data-status="PaymentFailed"] { background: #e74c3c; color: white; }
-.status-badge[data-status="Confirmed"] { background: #2c3e50; color: white; }
-.status-badge[data-status="Processing"] { background: #8e44ad; color: white; }
-.status-badge[data-status="Shipped"] { background: #2980b9; color: white; }
-.status-badge[data-status="Delivered"] { background: #27ae60; color: white; }
-.status-badge[data-status="Completed"] { background: #2ecc71; color: white; }
-.status-badge[data-status="Cancelled"] { background: #95a5a6; color: white; }
-.status-badge[data-status="Refunded"] { background: #d35400; color: white; }
-
-/* Buttons */
-.add-btn {
-  background: linear-gradient(135deg, #ff4d4d 0%, #ff8c00 100%) !important;
-  border: none !important;
-  padding: 0.8rem 2rem !important;
-  font-weight: 700 !important;
-  box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3) !important;
-}
-
-.update-btn {
-  background: #2ecc71 !important;
-  border: none !important;
-}
-
-/* Dialog */
-::ng-deep .custom-dialog .p-dialog-header {
-  background: transparent !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-  padding: 1.5rem !important;
-}
-
-::ng-deep .custom-dialog .p-dialog-content {
-  background: transparent !important;
-  padding: 1.5rem !important;
-}
-
-::ng-deep .custom-dialog .p-dialog-footer {
-  background: transparent !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-  padding: 1rem 1.5rem !important;
-}
-
-.form-label {
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  display: block;
-  font-size: 0.9rem;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .dashboard-title {
-    font-size: 1.8rem;
-  }
+    .chart-container {
+        padding: 1rem !important;
+    }
 }

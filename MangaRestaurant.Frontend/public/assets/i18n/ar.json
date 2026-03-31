@@ -167,44 +167,37 @@
     "BACK": "العودة للرئيسية"
   },
   "ADMIN": {
-    "TITLE": "لوحة التحكم",
-    "SUBTITLE": "إدارة عمليات المطعم، الموظفين، المنتجات، والطلبات.",
+    "DASHBOARD_TITLE": "لوحة التحكم",
+    "DASHBOARD_SUBTITLE": "إدارة عمليات المطعم، الموظفين، المنتجات، والطلبات.",
     "ADD_PRODUCT": "إضافة منتج جديد",
     "EDIT_PRODUCT": "تعديل منتج",
+    "REPORTS": "التقارير",
+    "ORDER_LOG": "سجل الطلبات",
+    "PRODUCTS": "المنتجات",
+    "EMPLOYEES": "الموظفين",
     "DELETE_CONFIRM": "هل أنت متأكد من حذف هذا المنتج؟",
     "STOCK": "المخزون",
     "ACTIONS": "الإجراءات",
+    "PRODUCT_NAME": "اسم المنتج",
+    "CATEGORY": "التصنيف",
+    "PRICE": "السعر",
+    "EMPLOYEE_NAME": "اسم الموظف",
+    "EMAIL": "البريد الإلكتروني",
+    "ROLE": "الدور",
+    "ROLE_ADMIN": "مسؤول (أدمن)",
     "EDIT": "تعديل",
     "DELETE": "حذف",
     "UPDATE": "تحديث",
     "SAVE": "حفظ",
     "CANCEL": "إلغاء",
-    "TABS": {
-      "EMPLOYEES": "الموظفين",
-      "PRODUCTS": "المنتجات",
-      "ORDERS": "سجل الطلبات",
-      "REPORTS": "التقارير"
-    },
     "CHART_SALES": "اتجاه المبيعات الإيرادات",
     "CHART_STATUS": "توزيع حالات الطلبات",
     "CHART_PEAK_HOURS": "ساعات الذروة (توقيت الطلبات)",
-    "CHART_CATEGORIES": "الأصناف الأكثر مبيعاً",
-    "CHART_DELIVERY": "طرق التوصيل المفضلة",
+    "CHART_TOP_SELLERS": "الأصناف الأكثر مبيعاً",
     "TOTAL_ORDERS": "إجمالي الطلبات",
     "TOTAL_REVENUE": "إجمالي الإيرادات",
     "AVG_ORDER_VALUE": "متوسط قيمة الطلب",
     "TOTAL_EMPLOYEES": "إجمالي الموظفين",
-    "EMPLOYEES": {
-      "ID": "المُعرف",
-      "NAME": "اسم الموظف",
-      "DEPARTMENT": "القسم"
-    },
-    "PRODUCT_FORM": {
-      "DESCRIPTION": "الوصف",
-      "IMAGE_URL": "رابط الصورة",
-      "PRICE": "السعر",
-      "STOCK": "كمية المخزون"
-    },
     "ORDERS": {
       "STATUS_UPDATE": "تحديث الحالة"
     }
