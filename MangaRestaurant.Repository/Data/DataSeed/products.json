@@ -1,7 +1,9 @@
 [
     {
         "Name": "Double Caramel Frappuccino",
-        "Description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
+        "NameAr": "فرابوتشينو كراميل مزدوج",
+        "Description": "A rich and creamy blend of caramel and coffee, topped with whipped cream.",
+        "DescriptionAr": "مزيج غني وكريمي من الكراميل والقهوة، مغطى بالكريمة المخفوقة.",
         "Price": 200,
         "PictureUrl": "images/products/sb-ang1.png",
         "CategoryId": 1,
@@ -9,7 +11,9 @@
     },
     {
         "Name": "White Chocolate Mocha Frappuccino",
-        "Description": "Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.",
+        "NameAr": "وايت شوكليت موكا فرابوتشينو",
+        "Description": "Indulgent white chocolate mocha blended with ice and milk.",
+        "DescriptionAr": "موكا الشوكولاتة البيضاء ممزوجة بالثلج والحليب.",
         "Price": 150,
         "PictureUrl": "images/products/sb-ang2.png",
         "CategoryId": 1,
@@ -17,7 +21,9 @@
     },
     {
         "Name": "Iced Cafe Latte",
-        "Description": "Suspendisse dui purus, scelerisque at, vulputate vitae, pretium mattis, nunc. Mauris eget neque at sem venenatis eleifend. Ut nonummy.",
+        "NameAr": "أيس كافيه لاتيه",
+        "Description": "Smooth espresso balanced with cold milk and ice.",
+        "DescriptionAr": "إسبريسو ناعم متوازن مع الحليب البارد والثلج.",
         "Price": 180,
         "PictureUrl": "images/products/sb-core1.png",
         "CategoryId": 2,
@@ -25,7 +31,9 @@
     },
     {
         "Name": "White Chocolate Mocha",
-        "Description": "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.",
+        "NameAr": "وايت شوكليت موكا",
+        "Description": "Creamy white chocolate mocha made with espresso and steamed milk.",
+        "DescriptionAr": "موكا الشوكولاتة البيضاء الكريمية المصنوعة من الإسبريسو والحليب المبخر.",
         "Price": 300,
         "PictureUrl": "images/products/sb-core2.png",
         "CategoryId": 3,
@@ -33,7 +41,9 @@
     },
     {
         "Name": "Iced Caramel Macchiato",
-        "Description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
+        "NameAr": "أيس كراميل ماكياتو",
+        "Description": "Freshly steamed milk with vanilla-flavored syrup marked with espresso and caramel.",
+        "DescriptionAr": "حليب مبخر طازج مع شراب بنكهة الفانيليا ممزوج بالإسبريسو والكراميل.",
         "Price": 250,
         "PictureUrl": "images/products/sb-react1.png",
         "CategoryId": 4,
@@ -41,7 +51,9 @@
     },
     {
         "Name": "Hot Caramel Macchiato",
-        "Description": "Aenean nec lorem. In porttitor. Donec laoreet nonummy augue.",
+        "NameAr": "كراميل ماكياتو ساخن",
+        "Description": "Classic hot caramel macchiato with velvety foam.",
+        "DescriptionAr": "كراميل ماكياتو ساخن كلاسيكي مع رغوة مخملية.",
         "Price": 120,
         "PictureUrl": "images/products/sb-ts1.png",
         "CategoryId": 4,
@@ -49,7 +61,9 @@
     },
     {
         "Name": "Iced Matcha Latte",
-        "Description": "Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
+        "NameAr": "أيس ماتشا لاتيه",
+        "Description": "Pure matcha green tea combined with milk and ice.",
+        "DescriptionAr": "شاي الماتشا الأخضر النقي الممزوج مع الحليب والثلج.",
         "Price": 10,
         "PictureUrl": "images/products/hat-core1.png",
         "CategoryId": 5,
@@ -57,7 +71,9 @@
     },
     {
         "Name": "Honey Cake",
-        "Description": "Suspendisse dui purus, scelerisque at, vulputate vitae, pretium mattis, nunc. Mauris eget neque at sem venenatis eleifend. Ut nonummy.",
+        "NameAr": "كيكة العسل",
+        "Description": "Layered honey cake with a soft and sweet taste.",
+        "DescriptionAr": "كيكة العسل ذات الطبقات مع طعم ناعم وحلو.",
         "Price": 8,
         "PictureUrl": "images/products/hat-react1.png",
         "CategoryId": 6,
@@ -65,7 +81,9 @@
     },
     {
         "Name": "Blueberry Cheesecake",
-        "Description": "Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
+        "NameAr": "تشيز كيك التوت الأزرق",
+        "Description": "Creamy cheesecake topped with fresh blueberry compote.",
+        "DescriptionAr": "تشيز كيك كريمي مغطى بصلصة التوت الأزرق الطازجة.",
         "Price": 15,
         "PictureUrl": "images/products/hat-react2.png",
         "CategoryId": 6,
@@ -73,7 +91,9 @@
     },
     {
         "Name": "Glazed Donuts",
-        "Description": "Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.",
+        "NameAr": "دونات مغطاة بالسكر",
+        "Description": "Soft and fluffy donuts with a sweet glaze.",
+        "DescriptionAr": "دونات ناعمة وهشة مغطاة بطبقة سكر حلوة.",
         "Price": 18,
         "PictureUrl": "images/products/glove-code1.png",
         "CategoryId": 7,
@@ -81,7 +101,9 @@
     },
     {
         "Name": "Greek Salad",
-        "Description": "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.",
+        "NameAr": "سلطة يونانية",
+        "Description": "Fresh salad with olives, feta cheese, and balsamic dressing.",
+        "DescriptionAr": "سلطة طازجة مع زيتون، جبنة فيتا، وتتبيلة البلسميك.",
         "Price": 15,
         "PictureUrl": "images/products/glove-code2.png",
         "CategoryId": 7,
@@ -89,58 +111,12 @@
     },
     {
         "Name": "Iced Black Tea Lemonade",
-        "Description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa.",
+        "NameAr": "أيس شاي أسود بالليمون",
+        "Description": "Refreshing black tea mixed with lemonade and ice.",
+        "DescriptionAr": "شاي أسود منعش ممزوج بعصير الليمون والثلج.",
         "Price": 16,
         "PictureUrl": "images/products/glove-react1.png",
         "CategoryId": 4,
         "BrandId": 4
-    },
-    {
-        "Name": "Iced London Fog Tea Latte",
-        "Description": "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.",
-        "Price": 14,
-        "PictureUrl": "images/products/glove-react2.png",
-        "CategoryId": 4,
-        "BrandId": 4
-    },
-    {
-        "Name": "Turkey Bacon, Cheddar & Egg White Sandwich",
-        "Description": "Suspendisse dui purus, scelerisque at, vulputate vitae, pretium mattis, nunc. Mauris eget neque at sem venenatis eleifend. Ut nonummy.",
-        "Price": 250,
-        "PictureUrl": "images/products/boot-redis1.png",
-        "CategoryId": 3,
-        "BrandId": 6
-    },
-    {
-        "Name": "Core Red Boots",
-        "Description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
-        "Price": 189.99,
-        "PictureUrl": "images/products/boot-core2.png",
-        "CategoryId": 3,
-        "BrandId": 2
-    },
-    {
-        "Name": "Double-Smoked Bacon, Cheddar & Egg Sandwich",
-        "Description": "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.",
-        "Price": 199.99,
-        "PictureUrl": "images/products/boot-core1.png",
-        "CategoryId": 3,
-        "BrandId": 2
-    },
-    {
-        "Name": "Iced Chai Tea Latte with Oleato Golden Foam",
-        "Description": "Aenean nec lorem. In porttitor. Donec laoreet nonummy augue.",
-        "Price": 150,
-        "PictureUrl": "images/products/boot-ang2.png",
-        "CategoryId": 3,
-        "BrandId": 1
-    },
-    {
-        "Name": "Dragon Drink® Starbucks Refreshers® Beverage with Oleato Golden Foam",
-        "Description": "Suspendisse dui purus, scelerisque at, vulputate vitae, pretium mattis, nunc. Mauris eget neque at sem venenatis eleifend. Ut nonummy.",
-        "Price": 180,
-        "PictureUrl": "images/products/boot-ang1.png",
-        "CategoryId": 3,
-        "BrandId": 1
     }
 ]

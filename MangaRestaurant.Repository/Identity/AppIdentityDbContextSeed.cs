@@ -1,4 +1,4 @@
-﻿using MangaRestaurant.Core.Entities.Identity;
+using MangaRestaurant.Core.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -18,6 +18,7 @@ namespace MangaRestaurant.Repository.Identity
                 await roleManager.CreateAsync(new IdentityRole(adminRoleName));
             }
 
+            // Seed default admin user (MostafaPro0@yahoo.com)
             if (!userManager.Users.Any(u => u.Email == "MostafaPro0@yahoo.com"))
             {
                 var adminUser = new AppUser()
@@ -33,6 +34,13 @@ namespace MangaRestaurant.Repository.Identity
                 {
                     await userManager.AddToRoleAsync(adminUser, adminRoleName);
                 }
+            }
+
+            // Ensure mostafaismaelwakeb@gmail.com is Admin if they exist
+            var wakebUser = await userManager.FindByEmailAsync("mostafaismaelwakeb@gmail.com");
+            if (wakebUser != null && !await userManager.IsInRoleAsync(wakebUser, adminRoleName))
+            {
+                await userManager.AddToRoleAsync(wakebUser, adminRoleName);
             }
 
             // ensure first registered user also is admin for compatibility
@@ -54,3 +62,4 @@ namespace MangaRestaurant.Repository.Identity
         }
     }
 }
+

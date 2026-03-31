@@ -12,7 +12,9 @@ namespace MangaRestaurant.APIs.Helpers
         {
             CreateMap<Product, ProductToReturnDto>()
                 .ForMember(d => d.Brand, O => O.MapFrom(s => s.Brand.Name))
+                .ForMember(d => d.BrandAr, O => O.MapFrom(s => s.Brand.NameAr))
                 .ForMember(d => d.Category, O => O.MapFrom(s => s.Category.Name))
+                .ForMember(d => d.CategoryAr, O => O.MapFrom(s => s.Category.NameAr))
                 .ForMember(d => d.PictureUrl, O => O.MapFrom<ProductPictureUrlResolver>());
 
             CreateMap<ProductCreateDto, Product>();
@@ -28,6 +30,7 @@ namespace MangaRestaurant.APIs.Helpers
             CreateMap<OrderItem, OrderItemDTO>()
                 .ForMember(OI => OI.ProductId, O => O.MapFrom(S => S.ProductItemOrder.ProductId))
                 .ForMember(OI => OI.ProductName, O => O.MapFrom(S => S.ProductItemOrder.ProductName))
+                .ForMember(OI => OI.ProductNameAr, O => O.MapFrom(S => S.ProductItemOrder.ProductNameAr))
                 .ForMember(OI => OI.PictureUrl, O => O.MapFrom(S => S.ProductItemOrder.PictureUrl))
                 .ForMember(OI => OI.PictureUrl, O => O.MapFrom<OrderItemPictureUrlResolver>());
         }

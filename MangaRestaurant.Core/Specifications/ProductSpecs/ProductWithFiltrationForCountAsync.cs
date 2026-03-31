@@ -1,4 +1,4 @@
-﻿using MangaRestaurant.Core.Entities;
+using MangaRestaurant.Core.Entities;
 using MangaRestaurant.Core.Specifications.ProductSpecs;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace MangaRestaurant.Core.Specifications
 
         public ProductWithFiltrationForCountAsync(ProductSpecParams specParams)
             : base(P =>
-                    (string.IsNullOrEmpty(specParams.Search) || P.Name.ToLower().Contains(specParams.Search)) &&
+                    (string.IsNullOrEmpty(specParams.Search) || P.Name.ToLower().Contains(specParams.Search) || P.NameAr.ToLower().Contains(specParams.Search)) &&
                     (!specParams.BrandId.HasValue || P.BrandId == specParams.BrandId)
                     &&
                     (!specParams.CategoryId.HasValue || P.CategoryId == specParams.CategoryId))

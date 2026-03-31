@@ -7,8 +7,12 @@ namespace MangaRestaurant.APIs.Dtos
         [Required]
         public string Name { get; set; }
 
+        public string NameAr { get; set; }
+
         [Required]
         public string Description { get; set; }
+
+        public string DescriptionAr { get; set; }
 
         public string PictureUrl { get; set; }
 

@@ -1,4 +1,4 @@
-﻿using MangaRestaurant.Core;
+using MangaRestaurant.Core;
 using MangaRestaurant.Core.Entities;
 using MangaRestaurant.Core.Entities.Order;
 using MangaRestaurant.Core.RepositoriesContract;
@@ -40,7 +40,7 @@ namespace MangaRestaurant.Service
                     if (product == null)
                         continue; // ignore missing products
 
-                    var productItemOrder = new ProductItemOrder(product.Id, product.Name, product.PictureUrl);
+                    var productItemOrder = new ProductItemOrder(product.Id, product.Name, product.NameAr, product.PictureUrl);
                     var orderItem = new OrderItem(productItemOrder, product.Price, item.Quantity);
                     orderItems.Add(orderItem);
                 }
