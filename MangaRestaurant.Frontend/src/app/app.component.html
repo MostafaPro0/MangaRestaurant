@@ -6,8 +6,8 @@
 
       <!-- Brand & Home Link -->
       <a routerLink="/" class="manga-brand">
-        <div class="brand-bolt"><i class="pi pi-bolt"></i></div>
-        <span class="brand-text">MANGARESTO</span>
+        <div class="brand-bolt">🥭</div>
+        <span class="brand-text">{{ lang() === 'ar' ? 'مطعم مانجا' : 'MANGARESTO' }}</span>
       </a>
 
       <!-- Desktop Navigation -->
@@ -124,8 +124,8 @@
       <div class="grid align-items-start">
         <div class="col-12 md:col-4 mb-6 md:mb-0">
           <div class="manga-brand mb-4">
-            <div class="brand-bolt"><i class="pi pi-bolt"></i></div>
-            <span class="brand-text">MANGARESTO</span>
+            <div class="brand-bolt">🥭</div>
+            <span class="brand-text">{{ lang() === 'ar' ? 'مطعم مانجا' : 'MANGARESTO' }}</span>
           </div>
           <p class="text-dim pr-6" [innerHTML]="'COMMON.FOOTER_DESC' | translate"></p>
           <div class="flex gap-3 mt-6">
