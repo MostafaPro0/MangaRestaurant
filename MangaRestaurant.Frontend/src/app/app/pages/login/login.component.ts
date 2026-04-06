@@ -42,7 +42,22 @@ export class LoginComponent {
         });
         this.router.navigate([this.authService.isAdmin(user?.token ?? null) ? '/admin' : '/']);
       },
-      error: (err) => (this.error = 'Failed to login: ' + (err?.message || err))
+      error: (err) => {
+        let errorMsg = err?.error?.message || 'Failed to login: ' + (err?.message || err);
+        
+        // Translate known backend error texts or 401 status to correct language
+        if (err?.status === 401 || typeof errorMsg === 'string' && (errorMsg.includes('Unauthorized') || errorMsg.includes('Invalid email or password'))) {
+          errorMsg = this.translate.instant('LOGIN.INVALID_CREDENTIALS');
+        }
+
+        this.error = errorMsg;
+        this.messageService.add({
+          severity: 'error',
+          summary: this.translate.instant('TOAST.ERROR') || 'Error',
+          detail: errorMsg,
+          life: 3000
+        });
+      }
     });
   }
 }

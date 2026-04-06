@@ -150,7 +150,8 @@
     "PASSWORD": "Password",
     "SUBMIT": "Sign In",
     "NO_ACCOUNT": "Don't have an account?",
-    "REGISTER_LINK": "Start Now"
+    "REGISTER_LINK": "Start Now",
+    "INVALID_CREDENTIALS": "Invalid email or password"
   },
   "REGISTER": {
     "TITLE": "Create Account",

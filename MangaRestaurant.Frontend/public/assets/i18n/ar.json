@@ -150,7 +150,8 @@
     "PASSWORD": "كلمة المرور",
     "SUBMIT": "تسجيل دخول",
     "NO_ACCOUNT": "ليس لديك حساب؟",
-    "REGISTER_LINK": "اشترك الآن"
+    "REGISTER_LINK": "اشترك الآن",
+    "INVALID_CREDENTIALS": "البريد الإلكتروني أو كلمة المرور غير صحيحة"
   },
   "REGISTER": {
     "TITLE": "إنشاء حساب الجديد",

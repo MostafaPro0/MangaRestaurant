@@ -12,12 +12,14 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        // If status is 401 OR the body specifically says 401 (to handle the backend bug if not yet rebuilt)
-        if (error.status === 401 || (error.error && error.error.statusCode === 401)) {
+        const isLoginRequest = req.url.toLowerCase().includes('/accounts/login');
+
+        // Only redirect to login on 401 if it's NOT the login request itself
+        if (error.status === 401 && !isLoginRequest) {
           this.auth.logout();
           this.router.navigate(['/login']);
         }
-        
+
         return throwError(() => error);
       })
     );

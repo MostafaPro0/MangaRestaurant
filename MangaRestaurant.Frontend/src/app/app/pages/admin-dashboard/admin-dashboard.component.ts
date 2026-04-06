@@ -76,15 +76,21 @@ export class AdminDashboardComponent implements OnInit {
   public topProductsChartOptions!: Partial<ChartOptions>;
   public deliveryChartOptions!: Partial<ChartOptions>;
 
-  // Dropdown Options
-  orderStatusOptions = [
-    { label: 'Pending', value: 'Pending' },
-    { label: 'Confirmed', value: 'Confirmed' },
-    { label: 'Processing', value: 'Processing' },
-    { label: 'Shipped', value: 'Shipped' },
-    { label: 'Delivered', value: 'Delivered' },
-    { label: 'Cancelled', value: 'Cancelled' }
-  ];
+  get orderStatusOptions() {
+    return [
+      { label: this.translate.instant('ORDER_STATUS.PENDING'), value: 'Pending' },
+      { label: this.translate.instant('ORDER_STATUS.PAYMENTRECEIVED'), value: 'PaymentReceived' },
+      { label: this.translate.instant('ORDER_STATUS.PAYMENTFAILED'), value: 'PaymentFailed' },
+      { label: this.translate.instant('ORDER_STATUS.CONFIRMED'), value: 'Confirmed' },
+      { label: this.translate.instant('ORDER_STATUS.PROCESSING'), value: 'Processing' },
+      { label: this.translate.instant('ORDER_STATUS.SHIPPED'), value: 'Shipped' },
+      { label: this.translate.instant('ORDER_STATUS.DELIVERED'), value: 'Delivered' },
+      { label: this.translate.instant('ORDER_STATUS.COMPLETED'), value: 'Completed' },
+      { label: this.translate.instant('ORDER_STATUS.CANCELLED'), value: 'Cancelled' },
+      { label: this.translate.instant('ORDER_STATUS.REFUNDED'), value: 'Refunded' }
+    ];
+  }
+  
   orderStatusDraft: { [key: number]: string } = {};
 
   // Dialog Control

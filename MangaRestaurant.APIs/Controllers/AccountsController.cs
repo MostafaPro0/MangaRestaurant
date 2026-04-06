@@ -63,11 +63,19 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginModel)
         {
             var user = await _userManager.FindByEmailAsync(loginModel.Email);
-            if (user is null) return Unauthorized(new ApiResponse(401));
+            if (user is null) return Unauthorized(new ApiResponse(401, "Invalid email or password"));
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginModel.Password, false);
 
-            return !result.Succeeded ? Unauthorized(new ApiResponse(401)) : Ok(new UserDTO { DisplayName = user.DisplayName, Email = user.Email, Token = await _tokenService.CreateTokenAsync(user, _userManager) });
+            if (!result.Succeeded)
+                return Unauthorized(new ApiResponse(401, "Invalid email or password"));
+
+            return Ok(new UserDTO
+            {
+                DisplayName = user.DisplayName,
+                Email = user.Email,
+                Token = await _tokenService.CreateTokenAsync(user, _userManager)
+            });
         }
         [Authorize]
         [HttpGet("GetCurrentUser")]
