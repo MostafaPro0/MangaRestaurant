@@ -151,7 +151,9 @@
     "SUBMIT": "Sign In",
     "NO_ACCOUNT": "Don't have an account?",
     "REGISTER_LINK": "Start Now",
-    "INVALID_CREDENTIALS": "Invalid email or password"
+    "INVALID_CREDENTIALS": "Invalid email or password",
+    "CONTINUE_WITH": "Or continue with"
+
   },
   "REGISTER": {
     "TITLE": "Create Account",

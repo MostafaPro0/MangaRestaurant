@@ -34,6 +34,11 @@ export class LoginComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initGoogle();
+
+    // Re-render Google button when language changes to apply 'ar' or 'en' locale
+    this.translate.onLangChange.subscribe(() => {
+      this.renderGoogleButton();
+    });
   }
 
   initGoogle() {
@@ -49,12 +54,24 @@ export class LoginComponent implements AfterViewInit {
       cancel_on_tap_outside: true
     });
 
+    this.renderGoogleButton();
+  }
+
+  renderGoogleButton() {
     const googleBtnElement = document.getElementById('google-btn');
-    if (googleBtnElement) {
+    if (googleBtnElement && typeof google !== 'undefined' && google.accounts?.id) {
+      googleBtnElement.innerHTML = ''; // prevent duplicates on re-render
+      
+      // Determine language safely using the exact local storage key
+      const activeLang = this.translate.currentLang || this.translate.getDefaultLang() || localStorage.getItem('lang') || 'en';
+      const localeCode = activeLang.toLowerCase().includes('ar') ? 'ar' : 'en';
+
       google.accounts.id.renderButton(googleBtnElement, {
         theme: 'outline',
         size: 'large',
-        width: '100%'
+        width: '100%',
+        text: 'continue_with',
+        locale: localeCode
       });
     }
   }

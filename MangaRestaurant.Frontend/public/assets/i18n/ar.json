@@ -151,7 +151,9 @@
     "SUBMIT": "تسجيل دخول",
     "NO_ACCOUNT": "ليس لديك حساب؟",
     "REGISTER_LINK": "اشترك الآن",
-    "INVALID_CREDENTIALS": "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+    "INVALID_CREDENTIALS": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+    "CONTINUE_WITH": "أو تابع باستخدام"
+
   },
   "REGISTER": {
     "TITLE": "إنشاء حساب الجديد",
