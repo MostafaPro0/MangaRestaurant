@@ -8,6 +8,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TranslateModule } from '@ngx-translate/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { BadgeModule } from 'primeng/badge';
+import { SkeletonModule } from 'primeng/skeleton';
 import { ProductsService } from '../../services/products.service';
 import { BasketService } from '../../services/basket.service';
 import { TranslateService } from '../../services/translate.service';
@@ -15,7 +16,7 @@ import { TranslateService } from '../../services/translate.service';
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, ButtonModule, CardModule, ProgressSpinnerModule, InputTextModule, BadgeModule, TranslateModule],
+  imports: [CommonModule, FormsModule, RouterLink, ButtonModule, CardModule, ProgressSpinnerModule, InputTextModule, BadgeModule, TranslateModule, SkeletonModule],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'
 })

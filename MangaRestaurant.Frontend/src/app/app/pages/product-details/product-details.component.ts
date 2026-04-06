@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TranslateModule } from '@ngx-translate/core';
+import { SkeletonModule } from 'primeng/skeleton';
 import { ProductsService } from '../../services/products.service';
 import { BasketService } from '../../services/basket.service';
 import { TranslateService } from '../../services/translate.service';
@@ -11,7 +12,7 @@ import { TranslateService } from '../../services/translate.service';
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule, RouterLink, ButtonModule, ProgressSpinnerModule, TranslateModule],
+  imports: [CommonModule, RouterLink, ButtonModule, ProgressSpinnerModule, TranslateModule, SkeletonModule],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css'
 })

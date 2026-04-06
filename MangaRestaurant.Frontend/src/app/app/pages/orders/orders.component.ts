@@ -8,13 +8,15 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { BadgeModule } from 'primeng/badge';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
+import { SkeletonModule } from 'primeng/skeleton';
+import { DividerModule } from 'primeng/divider';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { OrdersService } from '../../services/orders.service';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule, CardModule, TableModule, ProgressSpinnerModule, BadgeModule, DialogModule, ButtonModule, TranslateModule],
+  imports: [CommonModule, CardModule, TableModule, ProgressSpinnerModule, BadgeModule, DialogModule, ButtonModule, TranslateModule, SkeletonModule, DividerModule],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css'
 })

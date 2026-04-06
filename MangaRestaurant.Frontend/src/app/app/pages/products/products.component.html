@@ -19,8 +19,22 @@
     </div>
   </div>
 
-  <div class="flex justify-content-center py-6" *ngIf="loading">
-    <p-progressSpinner strokeWidth="4"></p-progressSpinner>
+  <!-- Skeleton Loader: product card grid -->
+  <div class="grid" *ngIf="loading">
+    <div class="col-12 sm:col-6 lg:col-4 xl:col-3 mb-6" *ngFor="let i of [1,2,3,4,5,6,7,8]">
+      <div class="mg-card h-full flex flex-column">
+        <!-- Image skeleton -->
+        <p-skeleton height="220px" styleClass="mb-3" borderRadius="12px"></p-skeleton>
+        <!-- Title & brand -->
+        <p-skeleton width="70%" height="1.4rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="45%" height="1rem" styleClass="mb-4"></p-skeleton>
+        <!-- Price -->
+        <p-skeleton width="55%" height="2rem" styleClass="mb-4"></p-skeleton>
+        <!-- Buttons -->
+        <p-skeleton height="3rem" styleClass="mb-2" borderRadius="8px"></p-skeleton>
+        <p-skeleton height="2.5rem" borderRadius="8px"></p-skeleton>
+      </div>
+    </div>
   </div>
 
   <!-- Product Grid (Responsive) -->

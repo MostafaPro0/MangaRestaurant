@@ -39,8 +39,25 @@
         </ng-template>
       </p-table>
 
-      <div class="flex justify-content-center py-8" *ngIf="loading">
-        <p-progressSpinner strokeWidth="4"></p-progressSpinner>
+      <!-- Skeleton Loader: orders table -->
+      <div *ngIf="loading" class="p-4">
+        <!-- Skeleton header row -->
+        <div class="flex gap-3 mb-3 px-1">
+          <p-skeleton width="15%" height="1rem"></p-skeleton>
+          <p-skeleton width="25%" height="1rem"></p-skeleton>
+          <p-skeleton width="20%" height="1rem"></p-skeleton>
+          <p-skeleton width="20%" height="1rem"></p-skeleton>
+          <p-skeleton width="20%" height="1rem"></p-skeleton>
+        </div>
+        <p-divider></p-divider>
+        <!-- Skeleton body rows -->
+        <div *ngFor="let i of [1,2,3,4,5]" class="flex gap-3 align-items-center py-3 border-bottom-1 border-white-alpha-10 px-1">
+          <p-skeleton width="15%" height="1.2rem"></p-skeleton>
+          <p-skeleton width="25%" height="1.2rem"></p-skeleton>
+          <p-skeleton width="20%" height="1.2rem"></p-skeleton>
+          <p-skeleton width="20%" height="1.8rem" borderRadius="20px"></p-skeleton>
+          <p-skeleton width="20%" height="2rem" borderRadius="20px"></p-skeleton>
+        </div>
       </div>
 
       <!-- Enhanced Order Dialog -->

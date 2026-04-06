@@ -10,6 +10,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { TagModule } from 'primeng/tag';
+import { SkeletonModule } from 'primeng/skeleton';
 import { NgApexchartsModule, ChartComponent, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexTitleSubtitle, ApexStroke, ApexDataLabels, ApexFill, ApexGrid, ApexYAxis, ApexTooltip, ApexLegend, ApexPlotOptions, ApexResponsive } from "ng-apexcharts";
 import { AdminService } from '../../services/admin.service';
 import { ProductsService } from '../../services/products.service';
@@ -49,6 +50,7 @@ export type ChartOptions = {
     DialogModule,
     InputTextModule,
     TagModule,
+    SkeletonModule,
     NgApexchartsModule
   ],
   templateUrl: './admin-dashboard.component.html',
@@ -62,6 +64,9 @@ export class AdminDashboardComponent implements OnInit {
   products: any[] = [];
   employees: any[] = [];
   loadingOrders: boolean = false;
+  loadingReports: boolean = false;
+  loadingProducts: boolean = false;
+  loadingEmployees: boolean = false;
 
   // Charts Options
   public salesChartOptions!: Partial<ChartOptions>;
@@ -107,20 +112,31 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   loadAllData() {
+    this.loadingReports = true;
     this.adminService.getAdminReport().subscribe(report => {
       this.reportData = report;
       this.updateCharts(report);
+      this.loadingReports = false;
     });
 
+    this.loadingOrders = true;
     this.ordersService.getAllOrdersAdmin().subscribe(orders => {
       this.orders = orders;
       orders.forEach(o => this.orderStatusDraft[o.id] = o.status);
+      this.loadingOrders = false;
     });
 
-    // ProductsService.getProducts expects categoryId or pageIndex (using 1 to avoid negative offset)
-    this.productsService.getProducts(1).subscribe(p => this.products = p.data);
+    this.loadingProducts = true;
+    this.productsService.getProducts(1).subscribe(p => {
+      this.products = p.data;
+      this.loadingProducts = false;
+    });
 
-    this.adminService.getEmployees().subscribe(e => this.employees = e);
+    this.loadingEmployees = true;
+    this.adminService.getEmployees().subscribe(e => {
+      this.employees = e;
+      this.loadingEmployees = false;
+    });
   }
 
   setActiveTab(tab: string) {
