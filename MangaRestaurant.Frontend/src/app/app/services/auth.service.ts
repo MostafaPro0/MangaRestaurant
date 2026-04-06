@@ -51,6 +51,31 @@ export class AuthService {
     );
   }
 
+  updateProfile(updateData: { displayName: string, phoneNumber?: string, phoneNumber2?: string, profilePictureUrl?: string }): Observable<User> {
+    return this.api.put<User>('Accounts/UpdateProfile', updateData).pipe(
+      map((user) => {
+        this.setUser(user);
+        return user;
+      })
+    );
+  }
+
+  uploadProfileImage(file: File): Observable<{ url: string }> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    // Directly use HttpClient or adapt ApiService if it doesn't support FormData.
+    // Assuming api.post supports passing FormData directly:
+    return this.api.post<{ url: string }>('Accounts/UploadImage', formData);
+  }
+
+  getUserAddress(): Observable<any> {
+    return this.api.get<any>('Accounts/UserAddress');
+  }
+
+  updateUserAddress(address: any): Observable<any> {
+    return this.api.put<any>('Accounts/UserAddress', address);
+  }
+
   logout(): void {
     localStorage.removeItem('currentUser');
     this.currentUser$.next(null);

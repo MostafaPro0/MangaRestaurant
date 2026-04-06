@@ -54,6 +54,9 @@ namespace MangaRestaurant.APIs.Controllers
             {
                 DisplayName = user.DisplayName,
                 Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                PhoneNumber2 = user.PhoneNumber2,
+                ProfilePictureUrl = user.ProfilePictureUrl,
                 Token = await _tokenService.CreateTokenAsync(user, _userManager)
             };
             return Ok(mappedUser);
@@ -74,6 +77,9 @@ namespace MangaRestaurant.APIs.Controllers
             {
                 DisplayName = user.DisplayName,
                 Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                PhoneNumber2 = user.PhoneNumber2,
+                ProfilePictureUrl = user.ProfilePictureUrl,
                 Token = await _tokenService.CreateTokenAsync(user, _userManager)
             });
         }
@@ -87,10 +93,80 @@ namespace MangaRestaurant.APIs.Controllers
             {
                 DisplayName = user.DisplayName,
                 Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                PhoneNumber2 = user.PhoneNumber2,
+                ProfilePictureUrl = user.ProfilePictureUrl,
                 Token = await _tokenService.CreateTokenAsync(user, _userManager)
             };
             return Ok(returnedUser);
         }
+        
+        [Authorize]
+        [HttpPut("UpdateProfile")]
+        public async Task<ActionResult<UserDTO>> UpdateProfile(UpdateProfileDto updatedProfile)
+        {
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            
+            if (user is null) return Unauthorized(new ApiResponse(401));
+
+            if (!string.IsNullOrEmpty(updatedProfile.PhoneNumber) && 
+                !string.IsNullOrEmpty(updatedProfile.PhoneNumber2) && 
+                updatedProfile.PhoneNumber == updatedProfile.PhoneNumber2)
+            {
+                return BadRequest(new ApiResponse(400, "Phone number and secondary phone number cannot be identical"));
+            }
+
+            user.DisplayName = updatedProfile.DisplayName;
+            user.PhoneNumber = updatedProfile.PhoneNumber;
+            user.PhoneNumber2 = updatedProfile.PhoneNumber2;
+            
+            if (!string.IsNullOrEmpty(updatedProfile.ProfilePictureUrl))
+            {
+                user.ProfilePictureUrl = updatedProfile.ProfilePictureUrl;
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded) return BadRequest(new ApiResponse(400, "Failed to update profile"));
+
+            var returnedUser = new UserDTO()
+            {
+                DisplayName = user.DisplayName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                PhoneNumber2 = user.PhoneNumber2,
+                ProfilePictureUrl = user.ProfilePictureUrl,
+                Token = await _tokenService.CreateTokenAsync(user, _userManager)
+            };
+            return Ok(returnedUser);
+        }
+
+        [Authorize]
+        [HttpPost("UploadImage")]
+        public async Task<ActionResult<string>> UploadProfileImage(IFormFile file)
+        {
+            if (file == null || file.Length == 0) return BadRequest("No file uploaded");
+
+            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "profiles");
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var filePath = Path.Combine(folderPath, fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            // Construct the public URL returning just the relative path
+            var fileUrl = $"/images/profiles/{fileName}";
+            return Ok(new { url = fileUrl });
+        }
+
         [Authorize]
         [HttpGet("UserAddress")]//Get User Address
         public async Task<ActionResult<UserAddressDto>> GetCurrentUserAddress()
@@ -149,6 +225,9 @@ namespace MangaRestaurant.APIs.Controllers
                 {
                     DisplayName = user.DisplayName,
                     Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    PhoneNumber2 = user.PhoneNumber2,
+                    ProfilePictureUrl = user.ProfilePictureUrl,
                     Token = await _tokenService.CreateTokenAsync(user, _userManager)
                 });
             }

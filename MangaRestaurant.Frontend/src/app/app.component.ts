@@ -1,4 +1,5 @@
 import { Component, signal } from '@angular/core';
+import { environment } from '../environments/environment';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -74,9 +75,9 @@ export class AppComponent {
             routerLink: '/orders'
           },
           {
-            label: isAr ? 'الإعدادات' : 'Settings',
-            icon: 'pi pi-cog',
-            routerLink: '/orders' // Placeholder for settings
+            label: isAr ? 'الملف الشخصي' : 'Profile',
+            icon: 'pi pi-user-edit',
+            routerLink: '/profile'
           },
           {
             label: isAr ? 'خروج' : 'Logout',
@@ -120,6 +121,12 @@ export class AppComponent {
 
   logout(): void {
     this.auth.logout();
+  }
+
+  getProfilePicUrl(url?: string): string {
+    if (!url) return '';
+    if (url.startsWith('http')) return url;
+    return environment.apiUrl.replace('/api/', '') + url;
   }
 }
 

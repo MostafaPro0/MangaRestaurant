@@ -37,9 +37,10 @@
           <ng-container *ngIf="isAuthenticated(); else guest">
             <!-- Profile Avatar with Menu -->
             <div class="profile-container flex align-items-center gap-2 cursor-pointer" (click)="menu.toggle($event)">
-              <p-avatar [label]="(user()?.displayName || 'U').charAt(0).toUpperCase()" shape="circle" size="large"
+              <p-avatar *ngIf="!user()?.profilePictureUrl" [label]="(user()?.displayName || 'U').charAt(0).toUpperCase()" shape="circle" size="large"
                 styleClass="manga-avatar">
               </p-avatar>
+              <img *ngIf="user()?.profilePictureUrl" [src]="getProfilePicUrl(user()?.profilePictureUrl)" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-color);" />
               <div class="hidden xl:block">
                 <div class="text-sm font-bold line-height-1">{{ user()?.displayName }}</div>
               </div>
@@ -95,8 +96,9 @@
         <div class="auth-stack flex flex-column gap-3">
           <ng-container *ngIf="isAuthenticated(); else mobileGuest">
             <div class="flex align-items-center gap-3 p-3 bg-soft border-radius-md mb-2">
-              <p-avatar [label]="(user()?.displayName || 'U').charAt(0).toUpperCase()" shape="circle"
+              <p-avatar *ngIf="!user()?.profilePictureUrl" [label]="(user()?.displayName || 'U').charAt(0).toUpperCase()" shape="circle"
                 size="large"></p-avatar>
+              <img *ngIf="user()?.profilePictureUrl" [src]="getProfilePicUrl(user()?.profilePictureUrl)" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-color);" />
               <div>
                 <div class="font-bold">{{ user()?.displayName }}</div>
               </div>

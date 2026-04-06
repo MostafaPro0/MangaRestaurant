@@ -1,0 +1,91 @@
+<div class="container section-pad">
+  <div class="section-header-v2">
+    <span class="section-tag">{{ 'PROFILE.TAG_LINE' | translate }}</span>
+    <h1 class="section-title-v2">{{ 'PROFILE.TITLE' | translate }}</h1>
+  </div>
+
+  <div class="grid mt-4">
+    <!-- Profile Card -->
+    <div class="col-12 md:col-4">
+      <div class="glass-card text-center relative border-radius-lg overflow-hidden p-5 py-6">
+        <div class="manga-halftone opacity-05" style="position:absolute; inset:0; pointer-events: none;"></div>
+        
+        <div class="relative z-1 mb-4 flex justify-content-center">
+            <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" class="hidden" style="display:none" />
+            <div class="cursor-pointer relative profile-pic-container" (click)="triggerFileInput()" style="width: 120px; height: 120px;">
+                <p-avatar *ngIf="!profilePictureUrl" [label]="getInitials()" size="xlarge" shape="circle" [style]="{'background-color':'var(--primary-color)', 'color':'var(--bg-dark)', 'width':'120px', 'height':'120px', 'font-size':'3rem', 'font-family':'var(--font-display)', 'font-weight':'900'}"></p-avatar>
+                <img *ngIf="profilePictureUrl" [src]="profilePictureUrl" alt="Profile" style="width:120px; height:120px; border-radius:50%; object-fit:cover; border: 4px solid var(--primary-color);" />
+                <div class="pic-overlay absolute inset-0 flex justify-content-center align-items-center opacity-0 transition-opacity bg-black-alpha-50 border-circle text-white">
+                     <i class="pi pi-camera text-2xl" *ngIf="!loadingPicture"></i>
+                     <i class="pi pi-spinner pi-spin text-2xl" *ngIf="loadingPicture"></i>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="display-font text-2xl mb-1 relative z-1">{{ displayName }}</h3>
+        <p class="text-dim text-sm mb-4 relative z-1">{{ user?.email }}</p>
+
+        <div class="text-left relative z-1 flex flex-column gap-3 border-top-1 border-white-alpha-10 pt-4">
+            <div class="flex flex-column gap-2">
+                <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.DISPLAY_NAME' | translate }}</label>
+                <input pInputText type="text" [(ngModel)]="displayName" class="w-full" />
+            </div>
+            <div class="flex flex-column gap-2">
+                <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.PHONE' | translate }}</label>
+                <input pInputText type="text" [(ngModel)]="phoneNumber" class="w-full" />
+            </div>
+            <div class="flex flex-column gap-2">
+                <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.SECONDARY_PHONE' | translate }}</label>
+                <input pInputText type="text" [(ngModel)]="phoneNumber2" class="w-full" />
+            </div>
+            <button pButton class="p-button-primary mt-2" [label]="'COMMON.SAVE' | translate" [loading]="loadingProfile" icon="pi pi-save" (click)="saveProfile()"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Address Card -->
+    <div class="col-12 md:col-8">
+      <div class="glass-card border-radius-lg relative z-1 p-5 py-6">
+         <h3 class="display-font text-2xl mb-4 text-primary">{{ 'PROFILE.DELIVERY_ADDRESS' | translate }}</h3>
+         
+         <div class="grid formgrid">
+            <div class="col-12 md:col-6 flex flex-column gap-2 mb-3">
+               <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.FIRST_NAME' | translate }}</label>
+               <input pInputText type="text" [(ngModel)]="address.firstName" class="w-full" />
+            </div>
+            <div class="col-12 md:col-6 flex flex-column gap-2 mb-3">
+               <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.LAST_NAME' | translate }}</label>
+               <input pInputText type="text" [(ngModel)]="address.lastName" class="w-full" />
+            </div>
+
+            <div class="col-12 flex flex-column gap-2 mb-3">
+               <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.STREET' | translate }}</label>
+               <input pInputText type="text" [(ngModel)]="address.street" class="w-full" />
+            </div>
+
+            <div class="col-12 md:col-6 flex flex-column gap-2 mb-3">
+               <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.CITY' | translate }}</label>
+               <input pInputText type="text" [(ngModel)]="address.city" class="w-full" />
+            </div>
+            <div class="col-12 md:col-6 flex flex-column gap-2 mb-3">
+               <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.STATE' | translate }}</label>
+               <input pInputText type="text" [(ngModel)]="address.state" class="w-full" />
+            </div>
+
+            <div class="col-12 md:col-6 flex flex-column gap-2 mb-3">
+               <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.ZIP' | translate }}</label>
+               <input pInputText type="text" [(ngModel)]="address.zipcode" class="w-full" />
+            </div>
+            <div class="col-12 md:col-6 flex flex-column gap-2 mb-3">
+               <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.COUNTRY' | translate }}</label>
+               <input pInputText type="text" [(ngModel)]="address.country" class="w-full" />
+            </div>
+         </div>
+
+         <div class="flex justify-content-end mt-4">
+             <button pButton class="p-button-primary p-button-lg px-6" [loading]="loadingAddress" [label]="'COMMON.SAVE' | translate" icon="pi pi-check" (click)="saveAddress()"></button>
+         </div>
+      </div>
+    </div>
+  </div>
+</div>
