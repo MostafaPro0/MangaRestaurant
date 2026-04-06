@@ -126,10 +126,7 @@
     "ORDER_NUM": "Order",
     "ORDERED_ON": "Ordered On",
     "DELIVERY_ADDRESS": "Delivery Address",
-    "ITEMS_ORDER": "Items Order",
-    "CHANGE_PASSWORD": "Change Password",
-    "CURRENT_PASSWORD": "Current Password",
-    "PASSWORD_CHANGED": "Password changed successfully"
+    "ITEMS_ORDER": "Items Order"
   },
   "PROFILE": {
     "TAG_LINE": "Your Account",
@@ -148,9 +145,12 @@
     "COUNTRY": "Country",
     "MANAGE_ADDRESSES_DESC": "Manage your saved delivery locations",
     "NO_ADDRESSES_TITLE": "No Addresses Yet",
-    "NO_ADDRESSES": "No addresses found. Add one to speed up checkout!",
-    "ADDRESS_SAVED": "Address saved successfully!",
-    "ADDRESS_SAVE_FAILED": "Failed to save address. Please check your data."
+    "NO_ADDRESSES": "You haven't added any shipping addresses yet.",
+    "CHANGE_PASSWORD": "Change Password",
+    "CURRENT_PASSWORD": "Current Password",
+    "PASSWORD_CHANGED": "Password changed successfully",
+    "ADDRESS_SAVED": "Address saved successfully",
+    "ADDRESS_SAVE_FAILED": "Failed to save address"
   },
   "COMMON": {
     "ACTION": "Action",
