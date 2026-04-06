@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# User uploaded images
+MangaRestaurant.APIs/wwwroot/Images/profiles/
