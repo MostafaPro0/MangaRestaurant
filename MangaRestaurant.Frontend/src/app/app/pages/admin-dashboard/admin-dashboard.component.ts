@@ -122,7 +122,7 @@ export class AdminDashboardComponent implements OnInit {
     this.loadingOrders = true;
     this.ordersService.getAllOrdersAdmin().subscribe(orders => {
       this.orders = orders;
-      orders.forEach(o => this.orderStatusDraft[o.id] = o.status);
+      orders.forEach(o => this.orderStatusDraft[o.id] = o.orderStatus || o.status || 'Pending');
       this.loadingOrders = false;
     });
 

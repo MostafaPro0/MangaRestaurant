@@ -45,6 +45,17 @@ export class OrdersComponent implements OnInit {
     return order.shippingAddress || order.shipToAddress;
   }
 
+  getOrderShortId(order: Order): string {
+    const id = (order as any).id;
+    if (!id && id !== 0) return '-';
+    const str = String(id);
+    // UUID format: show first 8 chars
+    if (str.includes('-') && str.length > 12) {
+      return str.substring(0, 8).toUpperCase();
+    }
+    return str;
+  }
+
   openOrderDetails(order: Order): void {
     this.selectedOrder = order;
     this.orderDialogVisible = true;

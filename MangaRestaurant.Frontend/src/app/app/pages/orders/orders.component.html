@@ -24,7 +24,11 @@
         <ng-template pTemplate="body" let-order>
           <tr class="border-bottom-1 border-white-alpha-10 hover-bg-soft transition-colors">
             <td class="p-4">
-              <span class="manga-font text-xs text-primary font-bold">#{{ order.id }}</span>
+              <span class="manga-font text-xs text-primary font-bold"
+                    style="display:inline-block; max-width:100px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap"
+                    [title]="order.id">
+                #{{ getOrderShortId(order) }}
+              </span>
             </td>
             <td class="p-4 text-dim">{{ order.orderDate | date:'mediumDate' }}</td>
             <td class="p-4 font-bold text-xl">{{ order.total | currency }}</td>
@@ -61,7 +65,7 @@
       </div>
 
       <!-- Enhanced Order Dialog -->
-      <p-dialog [header]="('ORDERS.ORDER_NUM' | translate) + ' #' + (selectedOrder?.id || '')" [(visible)]="orderDialogVisible" [modal]="true"
+      <p-dialog [header]="('ORDERS.ORDER_NUM' | translate) + (selectedOrder ? ' #' + getOrderShortId(selectedOrder) : '')" [(visible)]="orderDialogVisible" [modal]="true"
         [style]="{width: '75vw', height: '75vh', maxHeight: '75vh', margin: '0'}" [draggable]="false"
         [resizable]="false" appendTo="body" (onHide)="closeOrderDetails()" styleClass="manga-dialog">
 

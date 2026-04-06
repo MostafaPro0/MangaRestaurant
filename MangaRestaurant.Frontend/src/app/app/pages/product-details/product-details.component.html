@@ -62,6 +62,80 @@
       </div>
     </div>
   </div>
+
+<!-- ==================== RECOMMENDED PRODUCTS ==================== -->
+<div class="container px-3 pb-10" *ngIf="!loading">
+
+  <!-- Section Header -->
+  <div class="recommended-header flex align-items-center gap-4 mb-6 mt-2">
+    <div class="flex flex-column">
+      <span class="section-tag">{{ 'PRODUCTS.EXPLORE_TAG' | translate }}</span>
+      <h2 class="display-font text-3xl font-black text-main m-0">
+        {{ 'PRODUCTS.RECOMMENDED' | translate }}
+      </h2>
+    </div>
+    <div class="flex-grow-1 border-top-1 border-white-alpha-10 mx-4"></div>
+    <a routerLink="/products" pButton icon="pi pi-arrow-right"
+       [label]="'PRODUCTS.VIEW_ALL' | translate"
+       class="p-button-outlined p-button-sm"></a>
+  </div>
+
+  <!-- Skeleton while loading -->
+  <div class="grid" *ngIf="loadingRecommended">
+    <div class="col-12 sm:col-6 lg:col-3" *ngFor="let i of [1,2,3,4]">
+      <div class="mg-card h-full flex flex-column">
+        <p-skeleton height="200px" styleClass="mb-3" borderRadius="12px"></p-skeleton>
+        <p-skeleton width="70%" height="1.3rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="45%" height="1rem" styleClass="mb-4"></p-skeleton>
+        <p-skeleton width="50%" height="1.8rem" styleClass="mb-4"></p-skeleton>
+        <p-skeleton height="2.8rem" borderRadius="8px"></p-skeleton>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recommended Cards -->
+  <div class="grid" *ngIf="!loadingRecommended && recommended.length > 0">
+    <div class="col-12 sm:col-6 lg:col-3" *ngFor="let item of recommended">
+      <div class="mg-card h-full flex flex-column recommended-card" (click)="goToProduct(item.id)" style="cursor:pointer">
+
+        <!-- Image -->
+        <div class="img-panel" style="height:200px">
+          <img [src]="item.pictureUrl" [alt]="item.name" />
+          <div style="position:absolute; top:0; right:0">
+            <span class="badge-neon py-1 px-2 m-0 text-xs">
+              {{ (translateService.currentLanguage === 'ar' ? item.categoryAr : item.category) || item.category }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Info -->
+        <div class="flex-grow-1 flex flex-column justify-content-between p-3">
+          <div class="mb-3">
+            <h3 class="display-font text-lg font-bold mb-1 uppercase tracking-1 text-main">
+              {{ (translateService.currentLanguage === 'ar' ? item.nameAr : item.name) || item.name }}
+            </h3>
+            <span class="text-xs font-bold text-muted">
+              {{ (translateService.currentLanguage === 'ar' ? item.brandAr : item.brand) || item.brand }}
+            </span>
+          </div>
+          <div class="flex align-items-center justify-content-between">
+            <span class="primary-text text-2xl font-black">{{ item.price | currency }}</span>
+            <button pButton icon="pi pi-cart-plus" class="p-button-sm p-button-rounded"
+                    (click)="$event.stopPropagation(); addRecommendedToBasket(item)"></button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty state: same category has no others -->
+  <div *ngIf="!loadingRecommended && recommended.length === 0" class="text-center py-6 opacity-50">
+    <i class="pi pi-inbox text-5xl mb-3 block"></i>
+    <p class="text-muted">No related products found.</p>
+  </div>
+
+</div>
 </div>
 
 <!-- Skeleton Loader: product details -->

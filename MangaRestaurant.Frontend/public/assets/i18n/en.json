@@ -50,7 +50,9 @@
     "SERVINGS": "Servings",
     "PREP_TIME": "Prep Time",
     "ORIGIN": "Origin",
-    "EMPTY": "No items found."
+    "EMPTY": "No items found.",
+    "RECOMMENDED": "You May Also Like",
+    "VIEW_ALL": "View All"
   },
   "BASKET": {
     "TITLE": "Your Cart",
