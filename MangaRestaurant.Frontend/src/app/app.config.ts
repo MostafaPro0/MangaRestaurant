@@ -11,6 +11,7 @@ import Aura from '@primeng/themes/aura';
 
 import { routes } from './app.routes';
 import { AuthInterceptor } from './app/interceptors/auth.interceptor';
+import { ErrorInterceptor } from './app/interceptors/error.interceptor';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -34,6 +35,11 @@ export const appConfig: ApplicationConfig = {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true,
     },
     importProvidersFrom(

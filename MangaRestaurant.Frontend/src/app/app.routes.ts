@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
 import { adminGuard } from './app/guards/admin.guard';
+import { authGuard } from './app/guards/auth.guard';
 import { guestGuard } from './app/guards/guest.guard';
 
 export const routes: Route[] = [
@@ -7,8 +8,8 @@ export const routes: Route[] = [
   { path: 'products', loadComponent: () => import('./app/pages/products/products.component').then(m => m.ProductsComponent) },
   { path: 'products/:id', loadComponent: () => import('./app/pages/product-details/product-details.component').then(m => m.ProductDetailsComponent) },
   { path: 'basket', loadComponent: () => import('./app/pages/basket/basket.component').then(m => m.BasketComponent) },
-  { path: 'checkout', loadComponent: () => import('./app/pages/checkout/checkout.component').then(m => m.CheckoutComponent) },
-  { path: 'orders', loadComponent: () => import('./app/pages/orders/orders.component').then(m => m.OrdersComponent) },
+  { path: 'checkout', canActivate: [authGuard], loadComponent: () => import('./app/pages/checkout/checkout.component').then(m => m.CheckoutComponent) },
+  { path: 'orders', canActivate: [authGuard], loadComponent: () => import('./app/pages/orders/orders.component').then(m => m.OrdersComponent) },
   { path: 'admin', canActivate: [adminGuard], loadComponent: () => import('./app/pages/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent) },
   { path: 'login', canActivate: [guestGuard], loadComponent: () => import('./app/pages/login/login.component').then(m => m.LoginComponent) },
   { path: 'register', canActivate: [guestGuard], loadComponent: () => import('./app/pages/register/register.component').then(m => m.RegisterComponent) },
