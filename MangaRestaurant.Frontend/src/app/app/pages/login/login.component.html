@@ -33,6 +33,12 @@
               [label]="'LOGIN.SUBMIT' | translate" icon="pi pi-sign-in" (click)="login()"></button>
     </div>
 
+    <!-- Google Login -->
+    <div class="flex flex-column align-items-center mt-4">
+      <div class="text-xs text-muted mb-3 uppercase letter-spacing-1">Or continue with</div>
+      <div id="google-btn" class="w-full flex justify-content-center"></div>
+    </div>
+
     <!-- Footer -->
     <div class="text-center mt-5 text-sm">
       <span class="text-muted">{{ 'LOGIN.NO_ACCOUNT' | translate }}</span>

@@ -117,5 +117,45 @@ namespace MangaRestaurant.APIs.Controllers
         {
             return await _userManager.FindByEmailAsync(email) is not null;
         }
+
+        [HttpPost("GoogleLogin")]
+        public async Task<ActionResult<UserDTO>> GoogleLogin(GoogleLoginDTO googleAuth)
+        {
+            try
+            {
+                var settings = new Google.Apis.Auth.GoogleJsonWebSignature.ValidationSettings()
+                {
+                    Audience = new string[] { "331442573652-kqe2go0r9fvcsqgkikii5caukc5792u8.apps.googleusercontent.com" }
+                };
+                var payload = await Google.Apis.Auth.GoogleJsonWebSignature.ValidateAsync(googleAuth.IdToken, settings);
+                
+                var user = await _userManager.FindByEmailAsync(payload.Email);
+                if (user == null)
+                {
+                    user = new AppUser
+                    {
+                        DisplayName = payload.Name ?? payload.GivenName ?? "Google User",
+                        Email = payload.Email,
+                        UserName = payload.Email.Split('@')[0] + "_" + Guid.NewGuid().ToString("N").Substring(0, 4)
+                    };
+
+                    var result = await _userManager.CreateAsync(user);
+                    if (!result.Succeeded) return BadRequest(new ApiResponse(400, "Failed to create user account"));
+
+                    await _userManager.AddToRoleAsync(user, "User");
+                }
+
+                return Ok(new UserDTO
+                {
+                    DisplayName = user.DisplayName,
+                    Email = user.Email,
+                    Token = await _tokenService.CreateTokenAsync(user, _userManager)
+                });
+            }
+            catch (Exception)
+            {
+                return Unauthorized(new ApiResponse(401, "Invalid Google Token"));
+            }
+        }
     }
 }

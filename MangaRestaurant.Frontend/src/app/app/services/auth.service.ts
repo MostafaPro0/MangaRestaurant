@@ -33,6 +33,15 @@ export class AuthService {
     );
   }
 
+  googleLogin(idToken: string): Observable<User> {
+    return this.api.post<User>('Accounts/GoogleLogin', { idToken }).pipe(
+      map((user) => {
+        this.setUser(user);
+        return user;
+      })
+    );
+  }
+
   register(displayName: string, email: string, password: string, phoneNumber?: string): Observable<User> {
     return this.api.post<User>('Accounts/Register', { displayName, email, password, phoneNumber }).pipe(
       map((user) => {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -11,6 +11,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../services/auth.service';
 
+declare var google: any;
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -18,7 +20,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginComponent implements AfterViewInit {
   email = '';
   password = '';
   error = '';
@@ -29,6 +31,58 @@ export class LoginComponent {
     private messageService: MessageService,
     private translate: TranslateService
   ) {}
+
+  ngAfterViewInit(): void {
+    this.initGoogle();
+  }
+
+  initGoogle() {
+    if (typeof google === 'undefined' || !google.accounts) {
+      setTimeout(() => this.initGoogle(), 100);
+      return;
+    }
+
+    google.accounts.id.initialize({
+      client_id: '331442573652-kqe2go0r9fvcsqgkikii5caukc5792u8.apps.googleusercontent.com',
+      callback: this.handleGoogleCredentialResponse.bind(this),
+      auto_select: false,
+      cancel_on_tap_outside: true
+    });
+
+    const googleBtnElement = document.getElementById('google-btn');
+    if (googleBtnElement) {
+      google.accounts.id.renderButton(googleBtnElement, {
+        theme: 'outline',
+        size: 'large',
+        width: '100%'
+      });
+    }
+  }
+
+  handleGoogleCredentialResponse(response: any) {
+    if (response && response.credential) {
+      this.authService.googleLogin(response.credential).subscribe({
+        next: (user) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: this.translate.instant('TOAST.SUCCESS') || 'Success',
+            detail: this.translate.instant('TOAST.LOGIN_SUCCESS') || 'Logged in successfully via Google',
+            life: 3000
+          });
+          this.router.navigate([this.authService.isAdmin(user?.token ?? null) ? '/admin' : '/']);
+        },
+        error: (err) => {
+          this.error = 'Failed to login via Google';
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: this.error,
+            life: 3000
+          });
+        }
+      });
+    }
+  }
 
   login(): void {
     this.error = '';
