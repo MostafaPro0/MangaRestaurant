@@ -89,7 +89,9 @@
     "DELIVERY_SPEED": "Delivery Method",
     "ORDER_REVIEW": "Order Summary",
     "SECURE_PAYMENT": "Secure Payment",
-    "SECURE_DESC": "Your payment is 100% secure and encrypted"
+    "SECURE_DESC": "Your payment is 100% secure and encrypted",
+    "USE_SAVED": "Use a Saved Address",
+    "SELECT_SAVED": "Select a saved address"
   },
   "ORDERS": {
     "TITLE": "Order History",
@@ -121,15 +123,24 @@
     "CITY": "City",
     "STATE": "State",
     "ZIP": "Zip Code",
-    "COUNTRY": "Country"
+    "COUNTRY": "Country",
+    "MANAGE_ADDRESSES_DESC": "Manage your saved delivery locations",
+    "NO_ADDRESSES_TITLE": "No Addresses Yet",
+    "NO_ADDRESSES": "No addresses found. Add one to speed up checkout!",
+    "ADDRESS_SAVED": "Address saved successfully!",
+    "ADDRESS_SAVE_FAILED": "Failed to save address. Please check your data."
   },
   "COMMON": {
     "ACTION": "Action",
+    "REQUIRED": "This field is required",
     "VIEW": "View",
     "CLOSE": "Close",
     "TERMS": "Terms of Service",
     "PRIVACY": "Privacy Policy",
     "SAVE": "Save",
+    "ADD": "Add New",
+    "EDIT": "Edit",
+    "CANCEL": "Cancel",
     "RIGHTS": "MangaRestaurant. All Rights Reserved",
     "QUICK_LINKS": "QUICK LINKS",
     "MENU": "Our Menu",
@@ -146,7 +157,8 @@
     "LOGIN_SUCCESS": "Logged in successfully!",
     "ITEM_ADDED": "Product added to basket",
     "REGISTER_SUCCESS": "Welcome to MangaResto family! Your account was created successfully.",
-    "REGISTER_FAIL": "Sorry, we encountered a problem creating your account."
+    "REGISTER_FAIL": "Sorry, we encountered a problem creating your account.",
+    "WARN": "Warning"
   },
   "ORDER_STATUS": {
     "PENDING": "Pending",

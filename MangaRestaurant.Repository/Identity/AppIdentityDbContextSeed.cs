@@ -33,6 +33,7 @@ namespace MangaRestaurant.Repository.Identity
                     DisplayName = "Mostafa Mohamed",
                     Email = "MostafaPro0@yahoo.com",
                     PhoneNumber = "01008161832",
+                    PhoneNumber2 = "01008161833",
                     UserName = "MostafaPro"
                 };
 

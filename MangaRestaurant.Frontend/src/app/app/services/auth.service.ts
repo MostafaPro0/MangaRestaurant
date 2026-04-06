@@ -68,12 +68,20 @@ export class AuthService {
     return this.api.post<{ url: string }>('Accounts/UploadImage', formData);
   }
 
-  getUserAddress(): Observable<any> {
-    return this.api.get<any>('Accounts/UserAddress');
+  getUserAddresses(): Observable<any[]> {
+    return this.api.get<any[]>('Accounts/UserAddresses');
   }
 
-  updateUserAddress(address: any): Observable<any> {
-    return this.api.put<any>('Accounts/UserAddress', address);
+  addAddress(address: any): Observable<any> {
+    return this.api.post<any>('Accounts/Address', address);
+  }
+
+  updateAddress(address: any): Observable<any> {
+    return this.api.put<any>('Accounts/Address', address);
+  }
+
+  deleteAddress(id: number): Observable<any> {
+    return this.api.delete<any>(`Accounts/Address/${id}`);
   }
 
   logout(): void {

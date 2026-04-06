@@ -20,13 +20,15 @@ namespace MangaRestaurant.APIs.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
 
-        public AccountsController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper)
+        public AccountsController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
             _mapper = mapper;
+            _configuration = configuration;
         }
         //Register User
         [HttpPost("Register")]
@@ -50,15 +52,8 @@ namespace MangaRestaurant.APIs.Controllers
             // Assign Default Role to User
             await _userManager.AddToRoleAsync(user, "User");
 
-            var mappedUser = new UserDTO()
-            {
-                DisplayName = user.DisplayName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                PhoneNumber2 = user.PhoneNumber2,
-                ProfilePictureUrl = user.ProfilePictureUrl,
-                Token = await _tokenService.CreateTokenAsync(user, _userManager)
-            };
+            var mappedUser = _mapper.Map<AppUser, UserDTO>(user);
+            mappedUser.Token = await _tokenService.CreateTokenAsync(user, _userManager);
             return Ok(mappedUser);
         }
         //Login User
@@ -73,15 +68,9 @@ namespace MangaRestaurant.APIs.Controllers
             if (!result.Succeeded)
                 return Unauthorized(new ApiResponse(401, "Invalid email or password"));
 
-            return Ok(new UserDTO
-            {
-                DisplayName = user.DisplayName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                PhoneNumber2 = user.PhoneNumber2,
-                ProfilePictureUrl = user.ProfilePictureUrl,
-                Token = await _tokenService.CreateTokenAsync(user, _userManager)
-            });
+            var mappedUser = _mapper.Map<AppUser, UserDTO>(user);
+            mappedUser.Token = await _tokenService.CreateTokenAsync(user, _userManager);
+            return Ok(mappedUser);
         }
         [Authorize]
         [HttpGet("GetCurrentUser")]
@@ -89,15 +78,8 @@ namespace MangaRestaurant.APIs.Controllers
         {
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
             var user = await _userManager.FindByEmailAsync(userEmail);
-            var returnedUser = new UserDTO()
-            {
-                DisplayName = user.DisplayName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                PhoneNumber2 = user.PhoneNumber2,
-                ProfilePictureUrl = user.ProfilePictureUrl,
-                Token = await _tokenService.CreateTokenAsync(user, _userManager)
-            };
+            var returnedUser = _mapper.Map<AppUser, UserDTO>(user);
+            returnedUser.Token = await _tokenService.CreateTokenAsync(user, _userManager);
             return Ok(returnedUser);
         }
         
@@ -130,15 +112,8 @@ namespace MangaRestaurant.APIs.Controllers
 
             if (!result.Succeeded) return BadRequest(new ApiResponse(400, "Failed to update profile"));
 
-            var returnedUser = new UserDTO()
-            {
-                DisplayName = user.DisplayName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                PhoneNumber2 = user.PhoneNumber2,
-                ProfilePictureUrl = user.ProfilePictureUrl,
-                Token = await _tokenService.CreateTokenAsync(user, _userManager)
-            };
+            var returnedUser = _mapper.Map<AppUser, UserDTO>(user);
+            returnedUser.Token = await _tokenService.CreateTokenAsync(user, _userManager);
             return Ok(returnedUser);
         }
 
@@ -162,30 +137,73 @@ namespace MangaRestaurant.APIs.Controllers
                 await file.CopyToAsync(stream);
             }
 
-            // Construct the public URL returning just the relative path
-            var fileUrl = $"/images/profiles/{fileName}";
+            // Return the full URL using AppSettings BaseURL
+            var baseUrl = _configuration["BaseURL"];
+            var fileUrl = baseUrl + $"/images/profiles/{fileName}";
             return Ok(new { url = fileUrl });
         }
 
         [Authorize]
-        [HttpGet("UserAddress")]//Get User Address
-        public async Task<ActionResult<UserAddressDto>> GetCurrentUserAddress()
+        [HttpGet("UserAddresses")]
+        public async Task<ActionResult<IEnumerable<UserAddressDto>>> GetUserAddresses()
         {
             var user = await _userManager.FindUserWithAddressAsync(User);
-            var mappedAddress = _mapper.Map<UserAddress, UserAddressDto>(user.UserAddress);
-            return Ok(mappedAddress);
+            if (user == null) return Unauthorized(new ApiResponse(401));
+            
+            var mappedAddresses = _mapper.Map<ICollection<UserAddress>, IEnumerable<UserAddressDto>>(user.UserAddresses);
+            return Ok(mappedAddresses);
         }
-        //Update User Address
+
         [Authorize]
-        [HttpPut("UserAddress")]
-        public async Task<ActionResult<UserAddressDto>> UpdateUserAddress(UserAddressDto updatedAddress)
+        [HttpPost("Address")]
+        public async Task<ActionResult<UserAddressDto>> AddAddress(UserAddressDto addressDto)
         {
             var user = await _userManager.FindUserWithAddressAsync(User);
-            if (user is null) return Unauthorized(new ApiResponse(401));
-            var address = _mapper.Map<UserAddressDto, UserAddress>(updatedAddress);
-            user.UserAddress = address;
-            var updateAddres = await _userManager.UpdateAsync(user);
-            return updateAddres.Succeeded ? Ok(updateAddres) : BadRequest(new ApiResponse(400));
+            if (user == null) return Unauthorized(new ApiResponse(401));
+
+            var address = _mapper.Map<UserAddressDto, UserAddress>(addressDto);
+            user.UserAddresses.Add(address);
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded) return BadRequest(new ApiResponse(400, "Could not add address"));
+
+            return Ok(_mapper.Map<UserAddress, UserAddressDto>(address));
+        }
+
+        [Authorize]
+        [HttpPut("Address")]
+        public async Task<ActionResult<UserAddressDto>> UpdateAddress(UserAddressDto addressDto)
+        {
+            var user = await _userManager.FindUserWithAddressAsync(User);
+            if (user == null) return Unauthorized(new ApiResponse(401));
+
+            var address = user.UserAddresses.FirstOrDefault(a => a.Id == addressDto.Id);
+            if (address == null) return NotFound(new ApiResponse(404, "Address not found"));
+
+            _mapper.Map(addressDto, address);
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded) return BadRequest(new ApiResponse(400, "Could not update address"));
+
+            return Ok(_mapper.Map<UserAddress, UserAddressDto>(address));
+        }
+
+        [Authorize]
+        [HttpDelete("Address/{id}")]
+        public async Task<ActionResult> DeleteAddress(int id)
+        {
+            var user = await _userManager.FindUserWithAddressAsync(User);
+            if (user == null) return Unauthorized(new ApiResponse(401));
+
+            var address = user.UserAddresses.FirstOrDefault(a => a.Id == id);
+            if (address == null) return NotFound(new ApiResponse(404, "Address not found"));
+
+            user.UserAddresses.Remove(address);
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded) return BadRequest(new ApiResponse(400, "Could not delete address"));
+
+            return Ok();
         }
 
         [HttpGet("EmailExist")]
@@ -221,15 +239,9 @@ namespace MangaRestaurant.APIs.Controllers
                     await _userManager.AddToRoleAsync(user, "User");
                 }
 
-                return Ok(new UserDTO
-                {
-                    DisplayName = user.DisplayName,
-                    Email = user.Email,
-                    PhoneNumber = user.PhoneNumber,
-                    PhoneNumber2 = user.PhoneNumber2,
-                    ProfilePictureUrl = user.ProfilePictureUrl,
-                    Token = await _tokenService.CreateTokenAsync(user, _userManager)
-                });
+                var mappedUser = _mapper.Map<AppUser, UserDTO>(user);
+                mappedUser.Token = await _tokenService.CreateTokenAsync(user, _userManager);
+                return Ok(mappedUser);
             }
             catch (Exception)
             {

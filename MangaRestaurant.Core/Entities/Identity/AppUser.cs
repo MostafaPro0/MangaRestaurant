@@ -13,7 +13,7 @@ namespace MangaRestaurant.Core.Entities.Identity
         public string? ProfilePictureUrl { get; set; }
         public string? PhoneNumber2 { get; set; }
 
-        public UserAddress UserAddress { get; set; }
+        public ICollection<UserAddress> UserAddresses { get; set; } = new HashSet<UserAddress>();
         //Navigational Proporety
     }
 }

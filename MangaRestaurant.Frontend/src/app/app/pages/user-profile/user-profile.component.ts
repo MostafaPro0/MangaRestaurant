@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -10,11 +10,14 @@ import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user.model';
 import { AvatarModule } from 'primeng/avatar';
 import { environment } from '../../../../environments/environment';
+import { DialogModule } from 'primeng/dialog';
+import { DividerModule } from 'primeng/divider';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, CardModule, ButtonModule, InputTextModule, TranslateModule, AvatarModule],
+  imports: [CommonModule, FormsModule, CardModule, ButtonModule, InputTextModule, TranslateModule, AvatarModule, DialogModule, DividerModule, SkeletonModule],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
 })
@@ -25,21 +28,17 @@ export class UserProfileComponent implements OnInit {
   phoneNumber2 = '';
   profilePictureUrl: string | null = null;
   
-  address = {
-    firstName: '',
-    lastName: '',
-    street: '',
-    city: '',
-    state: '',
-    zipcode: '',
-    country: ''
-  };
+  addresses: any[] = [];
+  addressDialogVisible = false;
+  editingAddress: any = this.getEmptyAddress();
 
   loadingProfile = false;
-  loadingAddress = false;
+  loadingAddresses = false;
   loadingPicture = false;
+  savingAddress = false;
 
   @ViewChild('fileInput') fileInput!: ElementRef;
+  @ViewChild('addressForm') addressForm!: NgForm;
 
   constructor(
     private authService: AuthService,
@@ -53,21 +52,138 @@ export class UserProfileComponent implements OnInit {
       this.displayName = this.user.displayName;
       this.phoneNumber = this.user.phoneNumber || '';
       this.phoneNumber2 = this.user.phoneNumber2 || '';
-      this.profilePictureUrl = this.user.profilePictureUrl ? environment.apiUrl.replace('/api/', '') + this.user.profilePictureUrl : null;
-      if (this.user.profilePictureUrl?.startsWith('http')) {
-         this.profilePictureUrl = this.user.profilePictureUrl;
-      }
+      this.profilePictureUrl = this.user.profilePictureUrl || null;
     }
 
-    this.loadingAddress = true;
-    this.authService.getUserAddress().subscribe({
-      next: (addr) => {
-        if (addr) {
-          this.address = addr;
-        }
-        this.loadingAddress = false;
+    this.loadAddresses();
+  }
+
+  loadAddresses(): void {
+    this.loadingAddresses = true;
+    this.authService.getUserAddresses().subscribe({
+      next: (data) => {
+        this.addresses = data || [];
+        this.loadingAddresses = false;
       },
-      error: () => this.loadingAddress = false
+      error: () => this.loadingAddresses = false
+    });
+  }
+
+  getEmptyAddress() {
+    return {
+      firstName: '',
+      lastName: '',
+      street: '',
+      city: '',
+      state: '',
+      zipcode: '',
+      country: ''
+    };
+  }
+
+  openNewAddress(): void {
+    this.editingAddress = this.getEmptyAddress();
+    this.addressDialogVisible = true;
+  }
+
+  editAddress(address: any): void {
+    this.editingAddress = { ...address };
+    this.addressDialogVisible = true;
+  }
+
+  saveAddress(): void {
+    if (this.addressForm.invalid) {
+        this.addressForm.control.markAllAsTouched();
+        
+        // Find missing fields
+        const missingFields = [];
+        const controls = this.addressForm.controls;
+        if (controls['firstName']?.invalid) missingFields.push(this.translate.instant('PROFILE.FIRST_NAME'));
+        if (controls['lastName']?.invalid) missingFields.push(this.translate.instant('PROFILE.LAST_NAME'));
+        if (controls['street']?.invalid) missingFields.push(this.translate.instant('PROFILE.STREET'));
+        if (controls['city']?.invalid) missingFields.push(this.translate.instant('PROFILE.CITY'));
+        if (controls['state']?.invalid) missingFields.push(this.translate.instant('PROFILE.STATE'));
+        if (controls['zipcode']?.invalid) missingFields.push(this.translate.instant('PROFILE.ZIP'));
+        if (controls['country']?.invalid) missingFields.push(this.translate.instant('PROFILE.COUNTRY'));
+
+        this.messageService.add({ 
+            severity: 'warn', 
+            summary: this.translate.instant('TOAST.WARN') || 'Warning', 
+            detail: (this.translate.instant('COMMON.REQUIRED') || 'Required') + ': ' + missingFields.join(', ')
+        });
+        return;
+    }
+    
+    this.savingAddress = true;
+    const obs = this.editingAddress.id 
+      ? this.authService.updateAddress(this.editingAddress)
+      : this.authService.addAddress(this.editingAddress);
+
+    obs.subscribe({
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: this.translate.instant('TOAST.SUCCESS'), detail: this.translate.instant('PROFILE.ADDRESS_SAVED') || 'Address saved successfully' });
+        this.loadAddresses();
+        this.addressDialogVisible = false;
+        this.savingAddress = false;
+      },
+      error: (err) => {
+        console.error('Save address error:', err);
+        let detail = this.translate.instant('PROFILE.ADDRESS_SAVE_FAILED') || 'Failed to save address';
+        
+        // Handle validation errors from backend
+        if (err.errors && Array.isArray(err.errors) && err.errors.length > 0) {
+            detail = err.errors.join(' | ');
+            
+            // If Arabic, try to translate common field names in the error messages
+            if (this.translate.currentLang === 'ar') {
+                detail = this.translateValidationError(err.errors);
+            }
+        }
+        
+        this.messageService.add({ 
+            severity: 'error', 
+            summary: this.translate.instant('TOAST.ERROR'), 
+            detail: detail,
+            life: 6000
+        });
+        this.savingAddress = false;
+      }
+    });
+  }
+
+  private translateValidationError(errors: string[]): string {
+    return errors.map(err => {
+      let translated = err;
+      // Pattern: The {FieldName} field is required.
+      if (err.includes('field is required')) {
+        const field = err.split(' ')[1];
+        const fieldMap: any = {
+          'FirstName': 'الاسم الأول',
+          'LastName': 'الاسم الأخير',
+          'Street': 'الشارع',
+          'City': 'المدينة',
+          'State': 'المحافظة',
+          'ZipCode': 'الرمز البريدي',
+          'Country': 'البلد',
+          'PhoneNumber': 'رقم الهاتف'
+        };
+        if (fieldMap[field]) {
+          translated = `حقل ${fieldMap[field]} مطلوب.`;
+        }
+      }
+      return translated;
+    }).join(' \n ');
+  }
+
+  deleteAddress(id: number): void {
+    this.authService.deleteAddress(id).subscribe({
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Address deleted' });
+        this.loadAddresses();
+      },
+      error: () => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete address' });
+      }
     });
   }
 
@@ -95,20 +211,6 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-  saveAddress(): void {
-    this.loadingAddress = true;
-    this.authService.updateUserAddress(this.address).subscribe({
-      next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Address updated successfully' });
-        this.loadingAddress = false;
-      },
-      error: () => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update address' });
-        this.loadingAddress = false;
-      }
-    });
-  }
-
   triggerFileInput(): void {
     this.fileInput.nativeElement.click();
   }
@@ -127,7 +229,7 @@ export class UserProfileComponent implements OnInit {
           }).subscribe({
             next: (updatedUser) => {
               this.user = updatedUser;
-              this.profilePictureUrl = environment.apiUrl.replace('/api/', '') + res.url;
+              this.profilePictureUrl = res.url;
               this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Profile picture updated' });
               this.loadingPicture = false;
             }

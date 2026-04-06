@@ -43,49 +43,109 @@
       </div>
     </div>
 
-    <!-- Address Card -->
-    <div class="col-12 md:col-8">
+    <!-- Address Section -->
+    <div class="col-12 lg:col-8">
       <div class="glass-card border-radius-lg relative z-1 p-5 py-6">
-         <h3 class="display-font text-2xl mb-4 text-primary">{{ 'PROFILE.DELIVERY_ADDRESS' | translate }}</h3>
+         <div class="flex flex-column md:flex-row justify-content-between align-items-start md:align-items-center mb-6 gap-3">
+            <div>
+                <h3 class="display-font text-3xl text-primary m-0">{{ 'PROFILE.DELIVERY_ADDRESS' | translate }}</h3>
+                <p class="text-dim mt-2 m-0">{{ 'PROFILE.MANAGE_ADDRESSES_DESC' | translate }}</p>
+            </div>
+            <button pButton icon="pi pi-plus" [label]="'COMMON.ADD' | translate" 
+                class="p-button-outlined p-button-rounded border-2 px-4 shadow-2 hover:bg-primary transition-all" (click)="openNewAddress()"></button>
+         </div>
          
-         <div class="grid formgrid">
-            <div class="col-12 md:col-6 flex flex-column gap-2 mb-3">
-               <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.FIRST_NAME' | translate }}</label>
-               <input pInputText type="text" [(ngModel)]="address.firstName" class="w-full" />
-            </div>
-            <div class="col-12 md:col-6 flex flex-column gap-2 mb-3">
-               <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.LAST_NAME' | translate }}</label>
-               <input pInputText type="text" [(ngModel)]="address.lastName" class="w-full" />
-            </div>
-
-            <div class="col-12 flex flex-column gap-2 mb-3">
-               <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.STREET' | translate }}</label>
-               <input pInputText type="text" [(ngModel)]="address.street" class="w-full" />
-            </div>
-
-            <div class="col-12 md:col-6 flex flex-column gap-2 mb-3">
-               <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.CITY' | translate }}</label>
-               <input pInputText type="text" [(ngModel)]="address.city" class="w-full" />
-            </div>
-            <div class="col-12 md:col-6 flex flex-column gap-2 mb-3">
-               <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.STATE' | translate }}</label>
-               <input pInputText type="text" [(ngModel)]="address.state" class="w-full" />
-            </div>
-
-            <div class="col-12 md:col-6 flex flex-column gap-2 mb-3">
-               <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.ZIP' | translate }}</label>
-               <input pInputText type="text" [(ngModel)]="address.zipcode" class="w-full" />
-            </div>
-            <div class="col-12 md:col-6 flex flex-column gap-2 mb-3">
-               <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.COUNTRY' | translate }}</label>
-               <input pInputText type="text" [(ngModel)]="address.country" class="w-full" />
-            </div>
+         <div *ngIf="loadingAddresses" class="flex flex-column gap-4">
+             <div *ngFor="let i of [1,2]" class="p-4 border-radius-lg bg-soft border-1 border-white-alpha-10">
+                 <p-skeleton width="30%" height="1.5rem" styleClass="mb-3"></p-skeleton>
+                 <p-skeleton width="70%" height="1rem" styleClass="mb-2"></p-skeleton>
+                 <p-skeleton width="50%" height="1rem"></p-skeleton>
+             </div>
          </div>
 
-         <div class="flex justify-content-end mt-4">
-             <button pButton class="p-button-primary p-button-lg px-6" [loading]="loadingAddress" [label]="'COMMON.SAVE' | translate" icon="pi pi-check" (click)="saveAddress()"></button>
+         <div *ngIf="!loadingAddresses && addresses.length === 0" class="text-center py-8 opacity-40 bg-soft border-radius-lg border-2 border-dashed border-white-alpha-10">
+             <i class="pi pi-map-marker text-6xl mb-4 text-primary"></i>
+             <p class="text-xl font-bold mb-2">{{ 'PROFILE.NO_ADDRESSES_TITLE' | translate }}</p>
+             <p>{{ 'PROFILE.NO_ADDRESSES' | translate }}</p>
+         </div>
+
+         <div *ngIf="!loadingAddresses && addresses.length > 0" class="flex flex-column gap-4">
+             <div *ngFor="let addr of addresses" class="address-item p-4 border-radius-lg transition-all relative">
+                 <div class="flex justify-content-between align-items-center">
+                     <div class="flex align-items-start gap-4">
+                         <div class="bg-primary-soft p-3 border-radius-md text-primary hidden md:block">
+                             <i class="pi pi-home text-2xl"></i>
+                         </div>
+                         <div>
+                             <div class="font-bold text-xl mb-1 text-white">{{ addr.firstName }} {{ addr.lastName }}</div>
+                             <div class="text-dim line-height-3">
+                                 {{ addr.street }}<br>
+                                 <span class="text-white-alpha-70">{{ addr.city }}, {{ addr.state }} {{ addr.zipcode }}</span><br>
+                                 <span class="text-primary font-bold text-sm uppercase tracking-wide">{{ addr.country }}</span>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="address-actions flex gap-2">
+                         <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-lg hover:bg-white-alpha-10" (click)="editAddress(addr)"></button>
+                         <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger p-button-lg hover:bg-red-soft" (click)="deleteAddress(addr.id)"></button>
+                     </div>
+                 </div>
+             </div>
          </div>
       </div>
     </div>
   </div>
+
+  <!-- Address Edit Dialog -->
+  <p-dialog [(visible)]="addressDialogVisible" [header]="(editingAddress.id ? 'COMMON.EDIT' : 'COMMON.ADD') | translate" 
+            [modal]="true" class="manga-dialog" [style]="{width: '100%', maxWidth: '600px'}" [breakpoints]="{'960px': '90vw'}" [draggable]="false" [resizable]="false">
+      
+      <form #addressForm="ngForm">
+          <div class="grid formgrid p-fluid">
+              <div class="col-12 md:col-6 mb-4">
+                  <label class="form-label">{{ 'PROFILE.FIRST_NAME' | translate }} <span class="text-primary">*</span></label>
+                  <input pInputText type="text" [(ngModel)]="editingAddress.firstName" name="firstName" #firstName="ngModel" required class="p-input-lg" [ngClass]="{'ng-invalid ng-dirty': firstName.invalid && (firstName.dirty || firstName.touched)}" />
+                  <small class="p-error block mt-1" *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">{{ 'COMMON.REQUIRED' | translate }}</small>
+              </div>
+              <div class="col-12 md:col-6 mb-4">
+                  <label class="form-label">{{ 'PROFILE.LAST_NAME' | translate }} <span class="text-primary">*</span></label>
+                  <input pInputText type="text" [(ngModel)]="editingAddress.lastName" name="lastName" #lastName="ngModel" required class="p-input-lg" [ngClass]="{'ng-invalid ng-dirty': lastName.invalid && (lastName.dirty || lastName.touched)}" />
+                  <small class="p-error block mt-1" *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">{{ 'COMMON.REQUIRED' | translate }}</small>
+              </div>
+              <div class="col-12 mb-4">
+                  <label class="form-label">{{ 'PROFILE.STREET' | translate }} <span class="text-primary">*</span></label>
+                  <input pInputText type="text" [(ngModel)]="editingAddress.street" name="street" #street="ngModel" required class="p-input-lg" [ngClass]="{'ng-invalid ng-dirty': street.invalid && (street.dirty || street.touched)}" placeholder="e.g. 123 Ramen St." />
+                  <small class="p-error block mt-1" *ngIf="street.invalid && (street.dirty || street.touched)">{{ 'COMMON.REQUIRED' | translate }}</small>
+              </div>
+              <div class="col-12 md:col-6 mb-4">
+                  <label class="form-label">{{ 'PROFILE.CITY' | translate }} <span class="text-primary">*</span></label>
+                  <input pInputText type="text" [(ngModel)]="editingAddress.city" name="city" #city="ngModel" required class="p-input-lg" [ngClass]="{'ng-invalid ng-dirty': city.invalid && (city.dirty || city.touched)}" />
+                  <small class="p-error block mt-1" *ngIf="city.invalid && (city.dirty || city.touched)">{{ 'COMMON.REQUIRED' | translate }}</small>
+              </div>
+              <div class="col-12 md:col-6 mb-4">
+                  <label class="form-label">{{ 'PROFILE.STATE' | translate }} <span class="text-primary">*</span></label>
+                  <input pInputText type="text" [(ngModel)]="editingAddress.state" name="state" #state="ngModel" required class="p-input-lg" [ngClass]="{'ng-invalid ng-dirty': state.invalid && (state.dirty || state.touched)}" />
+                  <small class="p-error block mt-1" *ngIf="state.invalid && (state.dirty || state.touched)">{{ 'COMMON.REQUIRED' | translate }}</small>
+              </div>
+              <div class="col-12 md:col-6 mb-4">
+                  <label class="form-label">{{ 'PROFILE.ZIP' | translate }} <span class="text-primary">*</span></label>
+                  <input pInputText type="text" [(ngModel)]="editingAddress.zipcode" name="zipcode" #zipcode="ngModel" required class="p-input-lg" [ngClass]="{'ng-invalid ng-dirty': zipcode.invalid && (zipcode.dirty || zipcode.touched)}" />
+                  <small class="p-error block mt-1" *ngIf="zipcode.invalid && (zipcode.dirty || zipcode.touched)">{{ 'COMMON.REQUIRED' | translate }}</small>
+              </div>
+              <div class="col-12 md:col-6 mb-4">
+                  <label class="form-label">{{ 'PROFILE.COUNTRY' | translate }} <span class="text-primary">*</span></label>
+                  <input pInputText type="text" [(ngModel)]="editingAddress.country" name="country" #country="ngModel" required class="p-input-lg" [ngClass]="{'ng-invalid ng-dirty': country.invalid && (country.dirty || country.touched)}" />
+                  <small class="p-error block mt-1" *ngIf="country.invalid && (country.dirty || country.touched)">{{ 'COMMON.REQUIRED' | translate }}</small>
+              </div>
+          </div>
+      </form>
+      
+      <ng-template pTemplate="footer">
+          <div class="flex justify-content-end gap-3 w-full">
+              <button pButton [label]="'COMMON.CANCEL' | translate" class="p-button-text p-button-lg px-4" (click)="addressDialogVisible = false"></button>
+              <button pButton [label]="'COMMON.SAVE' | translate" [loading]="savingAddress" icon="pi pi-check" 
+                      class="p-button-primary p-button-lg px-6 shadow-2" (click)="saveAddress()"></button>
+          </div>
+      </ng-template>
+  </p-dialog>
 </div>

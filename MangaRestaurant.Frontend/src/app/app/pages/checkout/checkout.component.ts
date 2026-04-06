@@ -12,6 +12,7 @@ import { MessageService } from 'primeng/api';
 import { BasketService } from '../../services/basket.service';
 import { OrdersService } from '../../services/orders.service';
 import { UserAddress } from '../../models/user-address.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-checkout',
@@ -22,6 +23,8 @@ import { UserAddress } from '../../models/user-address.model';
 })
 export class CheckoutComponent implements OnInit {
   basket: any = { id: '', items: [] };
+  savedAddresses: any[] = [];
+  selectedAddress: any = null;
   address: UserAddress = { firstName: '', lastName: '', street: '', city: '', state: '', zipcode: '', country: '' };
   deliveryMethodId = 1;
   deliveryMethods: any[] = [];
@@ -30,6 +33,7 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private basketService: BasketService, 
     private ordersService: OrdersService, 
+    private authService: AuthService,
     private router: Router,
     private messageService: MessageService,
     private translate: TranslateService
@@ -38,6 +42,25 @@ export class CheckoutComponent implements OnInit {
   ngOnInit(): void {
     this.basketService.basket$.subscribe((basket) => (this.basket = basket));
     this.ordersService.getDeliveryMethods().subscribe((methods) => (this.deliveryMethods = methods));
+    this.loadSavedAddresses();
+  }
+
+  loadSavedAddresses(): void {
+    this.authService.getUserAddresses().subscribe({
+        next: (data) => {
+            this.savedAddresses = data || [];
+            if (this.savedAddresses.length > 0) {
+                // Optionally auto-select the first one if desired
+                // this.onAddressSelect({ value: this.savedAddresses[0] });
+            }
+        }
+    });
+  }
+
+  onAddressSelect(event: any): void {
+      if (event.value) {
+          this.address = { ...event.value };
+      }
   }
 
   get subtotal(): number {
