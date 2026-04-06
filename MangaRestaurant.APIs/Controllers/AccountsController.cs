@@ -21,14 +21,16 @@ namespace MangaRestaurant.APIs.Controllers
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
 
-        public AccountsController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper, IConfiguration configuration)
+        public AccountsController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper, IConfiguration configuration, IEmailService emailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
             _mapper = mapper;
             _configuration = configuration;
+            _emailService = emailService;
         }
         //Register User
         [HttpPost("Register")]
@@ -247,6 +249,80 @@ namespace MangaRestaurant.APIs.Controllers
             {
                 return Unauthorized(new ApiResponse(401, "Invalid Google Token"));
             }
+        }
+
+        [HttpPost("ForgotPassword")]
+        public async Task<ActionResult> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
+        {
+            var user = await _userManager.FindByEmailAsync(forgotPasswordDto.Email);
+            if (user == null)
+            {
+                // To prevent email enumeration, return Ok even if user doesn't exist
+                return Ok(new { message = "If your email exists in our system, you will receive a reset link." });
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            
+            // Encode token for URL
+            var encodedToken = System.Web.HttpUtility.UrlEncode(token);
+            
+            // Link to Frontend Reset Password Page
+            var resetLink = $"{_configuration["FrontBaseURL"]}/account/reset-password?token={encodedToken}&email={user.Email}";
+
+            var emailBody = $@"
+                <div style='font-family: Arial, sans-serif; padding: 20px; color: #333;'>
+                    <h2 style='color: #ff3e3e;'>Manga Restaurant - Password Reset</h2>
+                    <p>Hello {user.DisplayName},</p>
+                    <p>You requested a password reset. Click the button below to set a new password:</p>
+                    <div style='margin: 30px 0;'>
+                        <a href='{resetLink}' style='background: #ff3e3e; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Reset Password</a>
+                    </div>
+                    <p>If the button doesn't work, copy and paste this link into your browser:</p>
+                    <p style='color: #666;'>{resetLink}</p>
+                    <p>This link will expire soon. If you didn't request this, please ignore this email.</p>
+                    <hr style='border: 0; border-top: 1px solid #eee; margin-top: 40px;'>
+                    <p style='font-size: 0.8em; color: #999;'>&copy; {DateTime.Now.Year} Manga Restaurant. All rights reserved.</p>
+                </div>";
+
+            await _emailService.SendEmailAsync(user.Email, "Reset Your Password - Manga Restaurant", emailBody);
+
+            return Ok(new { message = "If your email exists in our system, you will receive a reset link." });
+        }
+
+        [HttpPost("ResetPassword")]
+        public async Task<ActionResult> ResetPassword(ResetPasswordDto resetPasswordDto)
+        {
+            var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
+            if (user == null) return BadRequest(new ApiResponse(400, "Invalid request"));
+
+            var result = await _userManager.ResetPasswordAsync(user, resetPasswordDto.Token, resetPasswordDto.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(e => e.Description);
+                return BadRequest(new ApiValidationErrorResponse { Errors = errors });
+            }
+
+            return Ok(new { message = "Password has been reset successfully." });
+        }
+
+        [Authorize]
+        [HttpPost("ChangePassword")]
+        public async Task<ActionResult> ChangePassword(ChangePasswordDto changePasswordDto)
+        {
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user == null) return Unauthorized(new ApiResponse(401));
+
+            var result = await _userManager.ChangePasswordAsync(user, changePasswordDto.CurrentPassword, changePasswordDto.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(e => e.Description);
+                return BadRequest(new ApiValidationErrorResponse { Errors = errors });
+            }
+
+            return Ok(new { message = "Password changed successfully" });
         }
     }
 }

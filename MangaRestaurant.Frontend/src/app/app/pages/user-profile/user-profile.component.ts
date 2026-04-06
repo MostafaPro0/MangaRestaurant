@@ -13,11 +13,13 @@ import { environment } from '../../../../environments/environment';
 import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { SkeletonModule } from 'primeng/skeleton';
+import { PasswordModule } from 'primeng/password';
+import { TabViewModule } from 'primeng/tabview';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, CardModule, ButtonModule, InputTextModule, TranslateModule, AvatarModule, DialogModule, DividerModule, SkeletonModule],
+  imports: [CommonModule, FormsModule, CardModule, ButtonModule, InputTextModule, TranslateModule, AvatarModule, DialogModule, DividerModule, SkeletonModule, PasswordModule, TabViewModule],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
 })
@@ -31,6 +33,9 @@ export class UserProfileComponent implements OnInit {
   addresses: any[] = [];
   addressDialogVisible = false;
   editingAddress: any = this.getEmptyAddress();
+  
+  changePasswordDialogVisible = false;
+  passwordData = { currentPassword: '', newPassword: '', confirmPassword: '' };
 
   loadingProfile = false;
   loadingAddresses = false;
@@ -183,6 +188,29 @@ export class UserProfileComponent implements OnInit {
       },
       error: () => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete address' });
+      }
+    });
+  }
+
+  openChangePassword(): void {
+    this.passwordData = { currentPassword: '', newPassword: '', confirmPassword: '' };
+    this.changePasswordDialogVisible = true;
+  }
+
+  changePassword(): void {
+    if (this.passwordData.newPassword !== this.passwordData.confirmPassword) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: this.translate.instant('AUTH.PASSWORDS_DONT_MATCH') });
+      return;
+    }
+
+    this.authService.changePassword(this.passwordData).subscribe({
+      next: (res) => {
+        this.messageService.add({ severity: 'success', summary: this.translate.instant('TOAST.SUCCESS'), detail: res.message });
+        this.changePasswordDialogVisible = false;
+      },
+      error: (err) => {
+        const detail = err.error?.message || err.error?.errors?.[0] || 'Failed to change password';
+        this.messageService.add({ severity: 'error', summary: this.translate.instant('TOAST.ERROR'), detail });
       }
     });
   }

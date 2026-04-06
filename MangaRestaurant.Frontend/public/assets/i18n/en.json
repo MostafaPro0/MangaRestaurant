@@ -54,6 +54,23 @@
     "RECOMMENDED": "You May Also Like",
     "VIEW_ALL": "View All"
   },
+  "AUTH": {
+    "LOGIN": "Login",
+    "REGISTER": "Register",
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "FORGOT_PASSWORD": "Forgot Password?",
+    "FORGOT_TITLE": "Reset Password",
+    "FORGOT_DESC": "Enter your email address and we'll send you a link to reset your password.",
+    "SEND_LINK": "Send Reset Link",
+    "BACK_TO_LOGIN": "Back to Login",
+    "RESET_TITLE": "New Password",
+    "RESET_DESC": "Please enter and confirm your new password below.",
+    "NEW_PASSWORD": "New Password",
+    "CONFIRM_PASSWORD": "Confirm Password",
+    "UPDATE_PASSWORD": "Update Password",
+    "PASSWORDS_DONT_MATCH": "Passwords do not match"
+  },
   "BASKET": {
     "TITLE": "Your Cart",
     "SUBTITLE": "Review your order before payment",
@@ -109,7 +126,10 @@
     "ORDER_NUM": "Order",
     "ORDERED_ON": "Ordered On",
     "DELIVERY_ADDRESS": "Delivery Address",
-    "ITEMS_ORDER": "Items Order"
+    "ITEMS_ORDER": "Items Order",
+    "CHANGE_PASSWORD": "Change Password",
+    "CURRENT_PASSWORD": "Current Password",
+    "PASSWORD_CHANGED": "Password changed successfully"
   },
   "PROFILE": {
     "TAG_LINE": "Your Account",

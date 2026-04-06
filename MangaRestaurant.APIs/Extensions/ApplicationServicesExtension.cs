@@ -1,4 +1,4 @@
-﻿using MangaRestaurant.APIs.Errors;
+using MangaRestaurant.APIs.Errors;
 using MangaRestaurant.APIs.Helpers;
 using MangaRestaurant.Core;
 using MangaRestaurant.Core.RepositoriesContract;
@@ -30,6 +30,8 @@ namespace MangaRestaurant.APIs.Extensions
             services.AddScoped<IOrderService, OrderService>();//AllowDependencyInjection
 
             services.AddScoped<IPaymentService, PaymentService>();//AllowDependencyInjection
+
+            services.AddScoped<IEmailService, EmailService>();//AllowDependencyInjection
 
 
             services.AddAutoMapper(typeof(MappingProfile));

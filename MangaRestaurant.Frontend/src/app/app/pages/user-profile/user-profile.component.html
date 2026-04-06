@@ -38,65 +38,112 @@
                 <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.SECONDARY_PHONE' | translate }}</label>
                 <input pInputText type="text" [(ngModel)]="phoneNumber2" class="w-full" />
             </div>
-            <button pButton class="p-button-primary mt-2" [label]="'COMMON.SAVE' | translate" [loading]="loadingProfile" icon="pi pi-save" (click)="saveProfile()"></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Address Section -->
+    <!-- Tabbed Content Section -->
     <div class="col-12 lg:col-8">
-      <div class="glass-card border-radius-lg relative z-1 p-5 py-6">
-         <div class="flex flex-column md:flex-row justify-content-between align-items-start md:align-items-center mb-6 gap-3">
-            <div>
-                <h3 class="display-font text-3xl text-primary m-0">{{ 'PROFILE.DELIVERY_ADDRESS' | translate }}</h3>
-                <p class="text-dim mt-2 m-0">{{ 'PROFILE.MANAGE_ADDRESSES_DESC' | translate }}</p>
+      <div class="glass-card border-radius-lg relative z-1 p-0 overflow-hidden">
+        <p-tabView styleClass="manga-tabs">
+          <!-- Addresses Tab -->
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              <i class="pi pi-map-marker mr-2"></i>
+              <span>{{ 'PROFILE.DELIVERY_ADDRESS' | translate }}</span>
+            </ng-template>
+            
+            <div class="p-4">
+              <div class="flex flex-column md:flex-row justify-content-between align-items-start md:align-items-center mb-6 gap-3">
+                <div>
+                  <h3 class="display-font text-3xl text-primary m-0">{{ 'PROFILE.DELIVERY_ADDRESS' | translate }}</h3>
+                  <p class="text-dim mt-2 m-0">{{ 'PROFILE.MANAGE_ADDRESSES_DESC' | translate }}</p>
+                </div>
+                <button pButton icon="pi pi-plus" [label]="'COMMON.ADD' | translate" 
+                  class="p-button-outlined p-button-rounded border-2 px-4 shadow-2 hover:bg-primary transition-all" (click)="openNewAddress()"></button>
+              </div>
+              
+              <div *ngIf="loadingAddresses" class="flex flex-column gap-4">
+                <div *ngFor="let i of [1,2]" class="p-4 border-radius-lg bg-soft border-1 border-white-alpha-10">
+                  <p-skeleton width="30%" height="1.5rem" styleClass="mb-3"></p-skeleton>
+                  <p-skeleton width="70%" height="1rem" styleClass="mb-2"></p-skeleton>
+                  <p-skeleton width="50%" height="1rem"></p-skeleton>
+                </div>
+              </div>
+
+              <div *ngIf="!loadingAddresses && addresses.length === 0" class="text-center py-8 opacity-40 bg-soft border-radius-lg border-2 border-dashed border-white-alpha-10">
+                <i class="pi pi-map-marker text-6xl mb-4 text-primary"></i>
+                <p class="text-xl font-bold mb-2">{{ 'PROFILE.NO_ADDRESSES_TITLE' | translate }}</p>
+                <p>{{ 'PROFILE.NO_ADDRESSES' | translate }}</p>
+              </div>
+
+              <div *ngIf="!loadingAddresses && addresses.length > 0" class="flex flex-column gap-4">
+                <div *ngFor="let addr of addresses" class="address-item p-4 border-radius-lg transition-all relative">
+                  <div class="flex justify-content-between align-items-center">
+                    <div class="flex align-items-start gap-4">
+                      <div class="bg-primary-soft p-3 border-radius-md text-primary hidden md:block">
+                        <i class="pi pi-home text-2xl"></i>
+                      </div>
+                      <div>
+                        <div class="font-bold text-xl mb-1 text-white">{{ addr.firstName }} {{ addr.lastName }}</div>
+                        <div class="text-dim line-height-3">
+                          {{ addr.street }}<br>
+                          <span class="text-white-alpha-70">{{ addr.city }}, {{ addr.state }} {{ addr.zipCode }}</span><br>
+                          <span class="text-primary font-bold text-sm uppercase tracking-wide">{{ addr.country }}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="address-actions flex gap-2">
+                      <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-lg hover:bg-white-alpha-10" (click)="editAddress(addr)"></button>
+                      <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger p-button-lg hover:bg-red-soft" (click)="deleteAddress(addr.id)"></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <button pButton icon="pi pi-plus" [label]="'COMMON.ADD' | translate" 
-                class="p-button-outlined p-button-rounded border-2 px-4 shadow-2 hover:bg-primary transition-all" (click)="openNewAddress()"></button>
-         </div>
-         
-         <div *ngIf="loadingAddresses" class="flex flex-column gap-4">
-             <div *ngFor="let i of [1,2]" class="p-4 border-radius-lg bg-soft border-1 border-white-alpha-10">
-                 <p-skeleton width="30%" height="1.5rem" styleClass="mb-3"></p-skeleton>
-                 <p-skeleton width="70%" height="1rem" styleClass="mb-2"></p-skeleton>
-                 <p-skeleton width="50%" height="1rem"></p-skeleton>
-             </div>
-         </div>
+          </p-tabPanel>
 
-         <div *ngIf="!loadingAddresses && addresses.length === 0" class="text-center py-8 opacity-40 bg-soft border-radius-lg border-2 border-dashed border-white-alpha-10">
-             <i class="pi pi-map-marker text-6xl mb-4 text-primary"></i>
-             <p class="text-xl font-bold mb-2">{{ 'PROFILE.NO_ADDRESSES_TITLE' | translate }}</p>
-             <p>{{ 'PROFILE.NO_ADDRESSES' | translate }}</p>
-         </div>
+          <!-- Password Tab -->
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              <i class="pi pi-lock mr-2"></i>
+              <span>{{ 'PROFILE.CHANGE_PASSWORD' | translate }}</span>
+            </ng-template>
 
-         <div *ngIf="!loadingAddresses && addresses.length > 0" class="flex flex-column gap-4">
-             <div *ngFor="let addr of addresses" class="address-item p-4 border-radius-lg transition-all relative">
-                 <div class="flex justify-content-between align-items-center">
-                     <div class="flex align-items-start gap-4">
-                         <div class="bg-primary-soft p-3 border-radius-md text-primary hidden md:block">
-                             <i class="pi pi-home text-2xl"></i>
-                         </div>
-                         <div>
-                             <div class="font-bold text-xl mb-1 text-white">{{ addr.firstName }} {{ addr.lastName }}</div>
-                             <div class="text-dim line-height-3">
-                                 {{ addr.street }}<br>
-                                 <span class="text-white-alpha-70">{{ addr.city }}, {{ addr.state }} {{ addr.zipcode }}</span><br>
-                                 <span class="text-primary font-bold text-sm uppercase tracking-wide">{{ addr.country }}</span>
-                             </div>
-                         </div>
-                     </div>
-                     <div class="address-actions flex gap-2">
-                         <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-lg hover:bg-white-alpha-10" (click)="editAddress(addr)"></button>
-                         <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger p-button-lg hover:bg-red-soft" (click)="deleteAddress(addr.id)"></button>
-                     </div>
-                 </div>
-             </div>
-         </div>
+            <div class="p-4 md:p-6 mx-auto" style="max-width: 500px;">
+              <h3 class="display-font text-3xl text-primary mb-2 text-center">{{ 'PROFILE.CHANGE_PASSWORD' | translate }}</h3>
+              <p class="text-dim mb-6 text-center text-sm">{{ 'AUTH.RESET_DESC' | translate }}</p>
+              
+              <div class="flex flex-column gap-4 p-fluid">
+                <div class="field">
+                  <label class="form-label mb-2">{{ 'PROFILE.CURRENT_PASSWORD' | translate }}</label>
+                  <p-password [(ngModel)]="passwordData.currentPassword" [feedback]="false" [toggleMask]="true" class="w-full" styleClass="w-full" inputStyleClass="w-full p-input-lg"></p-password>
+                </div>
+                <div class="field">
+                  <label class="form-label mb-2">{{ 'AUTH.NEW_PASSWORD' | translate }}</label>
+                  <p-password [(ngModel)]="passwordData.newPassword" [toggleMask]="true" class="w-full" styleClass="w-full" inputStyleClass="w-full p-input-lg"></p-password>
+                </div>
+                <div class="field">
+                  <label class="form-label mb-2">{{ 'AUTH.CONFIRM_PASSWORD' | translate }}</label>
+                  <p-password [(ngModel)]="passwordData.confirmPassword" [feedback]="false" [toggleMask]="true" class="w-full" styleClass="w-full" inputStyleClass="w-full p-input-lg"></p-password>
+                </div>
+                
+                <div class="bg-red-900/20 p-3 rounded-lg border-1 border-red-500/30 text-red-500 text-sm" 
+                     *ngIf="passwordData.newPassword && passwordData.confirmPassword && passwordData.newPassword !== passwordData.confirmPassword">
+                  <i class="pi pi-exclamation-circle mr-2"></i> {{ 'AUTH.PASSWORDS_DONT_MATCH' | translate }}
+                </div>
+
+                <div class="mt-4 flex justify-content-center">
+                  <button pButton [label]="'COMMON.SAVE' | translate" 
+                          class="p-button-primary p-button-lg px-8 py-3 shadow-3" 
+                          [disabled]="!passwordData.currentPassword || !passwordData.newPassword || passwordData.newPassword !== passwordData.confirmPassword"
+                          (click)="changePassword()"></button>
+                </div>
+              </div>
+            </div>
+          </p-tabPanel>
+        </p-tabView>
       </div>
     </div>
   </div>
 
-  <!-- Address Edit Dialog -->
+  <!-- Global Address Edit Dialog remains for adding/editing -->
   <p-dialog [(visible)]="addressDialogVisible" [header]="(editingAddress.id ? 'COMMON.EDIT' : 'COMMON.ADD') | translate" 
             [modal]="true" class="manga-dialog" [style]="{width: '100%', maxWidth: '600px'}" [breakpoints]="{'960px': '90vw'}" [draggable]="false" [resizable]="false">
       

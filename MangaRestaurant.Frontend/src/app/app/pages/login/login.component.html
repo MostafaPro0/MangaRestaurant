@@ -25,7 +25,10 @@
       </div>
 
       <div class="flex flex-column gap-2" style="text-align: left">
-        <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'LOGIN.PASSWORD' | translate }}</label>
+        <div class="flex justify-content-between align-items-center">
+            <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'LOGIN.PASSWORD' | translate }}</label>
+            <a routerLink="/account/forgot-password" class="text-xs text-primary font-bold no-underline hover:underline">{{ 'AUTH.FORGOT_PASSWORD' | translate }}</a>
+        </div>
         <p-password [(ngModel)]="password" [feedback]="false" [toggleMask]="true" styleClass="w-full" [placeholder]="'LOGIN.PASSWORD' | translate"></p-password>
       </div>
 

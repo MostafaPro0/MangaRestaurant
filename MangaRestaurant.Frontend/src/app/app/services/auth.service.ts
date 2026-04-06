@@ -84,6 +84,18 @@ export class AuthService {
     return this.api.delete<any>(`Accounts/Address/${id}`);
   }
 
+  forgotPassword(email: string): Observable<any> {
+    return this.api.post<any>('Accounts/ForgotPassword', { email });
+  }
+
+  resetPassword(data: any): Observable<any> {
+    return this.api.post<any>('Accounts/ResetPassword', data);
+  }
+
+  changePassword(data: any): Observable<any> {
+    return this.api.post<any>('Accounts/ChangePassword', data);
+  }
+
   logout(): void {
     localStorage.removeItem('currentUser');
     this.currentUser$.next(null);
