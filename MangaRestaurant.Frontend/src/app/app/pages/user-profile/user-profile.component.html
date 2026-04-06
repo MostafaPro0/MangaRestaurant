@@ -129,8 +129,8 @@
               </div>
               <div class="col-12 md:col-6 mb-4">
                   <label class="form-label">{{ 'PROFILE.ZIP' | translate }} <span class="text-primary">*</span></label>
-                  <input pInputText type="text" [(ngModel)]="editingAddress.zipcode" name="zipcode" #zipcode="ngModel" required class="p-input-lg" [ngClass]="{'ng-invalid ng-dirty': zipcode.invalid && (zipcode.dirty || zipcode.touched)}" />
-                  <small class="p-error block mt-1" *ngIf="zipcode.invalid && (zipcode.dirty || zipcode.touched)">{{ 'COMMON.REQUIRED' | translate }}</small>
+                  <input pInputText type="text" [(ngModel)]="editingAddress.zipCode" name="zipCode" #zipCode="ngModel" required class="p-input-lg" [ngClass]="{'ng-invalid ng-dirty': zipCode.invalid && (zipCode.dirty || zipCode.touched)}" />
+                  <small class="p-error block mt-1" *ngIf="zipCode.invalid && (zipCode.dirty || zipCode.touched)">{{ 'COMMON.REQUIRED' | translate }}</small>
               </div>
               <div class="col-12 md:col-6 mb-4">
                   <label class="form-label">{{ 'PROFILE.COUNTRY' | translate }} <span class="text-primary">*</span></label>

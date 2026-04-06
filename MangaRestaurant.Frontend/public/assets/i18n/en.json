@@ -91,7 +91,8 @@
     "SECURE_PAYMENT": "Secure Payment",
     "SECURE_DESC": "Your payment is 100% secure and encrypted",
     "USE_SAVED": "Use a Saved Address",
-    "SELECT_SAVED": "Select a saved address"
+    "SELECT_SAVED": "Select a saved address",
+    "SAVE_ADDRESS": "Save this address for future use"
   },
   "ORDERS": {
     "TITLE": "Order History",

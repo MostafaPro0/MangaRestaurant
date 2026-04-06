@@ -76,7 +76,7 @@ export class UserProfileComponent implements OnInit {
       street: '',
       city: '',
       state: '',
-      zipcode: '',
+      zipCode: '',
       country: ''
     };
   }
@@ -103,7 +103,7 @@ export class UserProfileComponent implements OnInit {
         if (controls['street']?.invalid) missingFields.push(this.translate.instant('PROFILE.STREET'));
         if (controls['city']?.invalid) missingFields.push(this.translate.instant('PROFILE.CITY'));
         if (controls['state']?.invalid) missingFields.push(this.translate.instant('PROFILE.STATE'));
-        if (controls['zipcode']?.invalid) missingFields.push(this.translate.instant('PROFILE.ZIP'));
+        if (controls['zipCode']?.invalid) missingFields.push(this.translate.instant('PROFILE.ZIP'));
         if (controls['country']?.invalid) missingFields.push(this.translate.instant('PROFILE.COUNTRY'));
 
         this.messageService.add({ 

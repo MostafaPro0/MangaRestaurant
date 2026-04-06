@@ -52,12 +52,20 @@
             </div>
             <div class="col-12 md:col-4 flex flex-column gap-2">
               <label class="text-xs text-muted font-bold uppercase">{{ 'CHECKOUT.ZIP' | translate }}</label>
-              <input pInputText [(ngModel)]="address.zipcode" name="zipcode" class="p-input-lg" required />
+              <input pInputText [(ngModel)]="address.zipCode" name="zipCode" class="p-input-lg" required />
             </div>
             <div class="col-12 md:col-4 flex flex-column gap-2">
               <label class="text-xs text-muted font-bold uppercase">{{ 'CHECKOUT.COUNTRY' | translate }}</label>
               <input pInputText [(ngModel)]="address.country" name="country" class="p-input-lg" required />
             </div>
+          </div>
+
+          <!-- Save Address Option -->
+          <div class="mt-2" *ngIf="!selectedAddress">
+              <div class="flex align-items-center gap-3 p-3 bg-white-alpha-05 rounded-lg border-1 border-white-alpha-10">
+                  <p-checkbox [(ngModel)]="saveAddressToProfile" [binary]="true" name="saveAddress" inputId="saveAddr"></p-checkbox>
+                  <label for="saveAddr" class="cursor-pointer text-sm font-bold opacity-80">{{ 'CHECKOUT.SAVE_ADDRESS' | translate }}</label>
+              </div>
           </div>
 
           <!-- Delivery -->
