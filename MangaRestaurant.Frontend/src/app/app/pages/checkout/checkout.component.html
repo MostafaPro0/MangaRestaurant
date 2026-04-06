@@ -11,70 +11,97 @@
           <i class="pi pi-map-marker text-primary mr-2"></i> {{ 'CHECKOUT.SHIPPING' | translate }}
         </h3>
 
-        <form (ngSubmit)="createOrder()" #checkoutForm="ngForm" class="flex flex-column gap-6">
-          <!-- Saved Address Selection -->
-          <div class="mb-6 pb-6 border-bottom-1 border-white-alpha-10" *ngIf="savedAddresses.length > 0">
-              <h3 class="display-font text-xl mb-3 font-bold opacity-70">
-                  <i class="pi pi-bookmark text-primary mr-2"></i> {{ 'CHECKOUT.USE_SAVED' | translate }}
-              </h3>
-              <p-dropdown [(ngModel)]="selectedAddress" name="savedAddress" [options]="savedAddresses"
-                  optionLabel="street" placeholder="{{ 'CHECKOUT.SELECT_SAVED' | translate }}" 
-                  (onChange)="onAddressSelect($event)" styleClass="w-full p-input-lg">
-                  <ng-template let-addr pTemplate="item">
-                      <div class="flex flex-column">
-                          <span class="font-bold">{{ addr.firstName }} {{ addr.lastName }}</span>
-                          <span class="text-xs opacity-60">{{ addr.street }}, {{ addr.city }}</span>
-                      </div>
-                  </ng-template>
-              </p-dropdown>
-          </div>
-
-          <div class="grid">
-            <div class="col-12 md:col-6 flex flex-column gap-2 mb-3">
-              <label class="text-xs text-muted font-bold uppercase">{{ 'CHECKOUT.FIRST_NAME' | translate }}</label>
-              <input pInputText [(ngModel)]="address.firstName" name="firstName" class="p-input-lg" required />
+        <form (ngSubmit)="createOrder()" #checkoutForm="ngForm">
+          <!-- Address Mode Selection -->
+          <div
+            class="flex flex-column md:flex-row gap-3 mb-6 p-2 bg-white-alpha-05 rounded-xl border-1 border-white-alpha-10"
+            *ngIf="savedAddresses.length > 0">
+            <div
+              class="flex-1 flex align-items-center gap-3 p-3 cursor-pointer transition-all hover:bg-white-alpha-05 rounded-lg"
+              [ngClass]="{'bg-primary shadow-2': addressMode === 'saved'}" (click)="addressMode = 'saved'">
+              <p-radioButton name="addrMode" value="saved" [(ngModel)]="addressMode"
+                inputId="modeSaved"></p-radioButton>
+              <label for="modeSaved" class="cursor-pointer font-bold">{{ 'CHECKOUT.USE_SAVED' | translate }}</label>
             </div>
-            <div class="col-12 md:col-6 flex flex-column gap-2 mb-3">
-              <label class="text-xs text-muted font-bold uppercase">{{ 'CHECKOUT.LAST_NAME' | translate }}</label>
-              <input pInputText [(ngModel)]="address.lastName" name="lastName" class="p-input-lg" required />
-            </div>
-            <div class="col-12 flex flex-column gap-2 mb-3">
-              <label class="text-xs text-muted font-bold uppercase">{{ 'CHECKOUT.STREET' | translate }}</label>
-              <input pInputText [(ngModel)]="address.street" name="street" class="p-input-lg" required />
-            </div>
-            <div class="col-12 md:col-4 flex flex-column gap-2">
-              <label class="text-xs text-muted font-bold uppercase">{{ 'CHECKOUT.CITY' | translate }}</label>
-              <input pInputText [(ngModel)]="address.city" name="city" class="p-input-lg" required />
-            </div>
-            <div class="col-12 md:col-4 flex flex-column gap-2">
-              <label class="text-xs text-muted font-bold uppercase">{{ 'CHECKOUT.STATE' | translate }}</label>
-              <input pInputText [(ngModel)]="address.state" name="state" class="p-input-lg" required />
-            </div>
-            <div class="col-12 md:col-4 flex flex-column gap-2">
-              <label class="text-xs text-muted font-bold uppercase">{{ 'CHECKOUT.ZIP' | translate }}</label>
-              <input pInputText [(ngModel)]="address.zipCode" name="zipCode" class="p-input-lg" required />
-            </div>
-            <div class="col-12 md:col-4 flex flex-column gap-2">
-              <label class="text-xs text-muted font-bold uppercase">{{ 'CHECKOUT.COUNTRY' | translate }}</label>
-              <input pInputText [(ngModel)]="address.country" name="country" class="p-input-lg" required />
+            <div
+              class="flex-1 flex align-items-center gap-3 p-3 cursor-pointer transition-all hover:bg-white-alpha-05 rounded-lg"
+              [ngClass]="{'bg-primary shadow-2': addressMode === 'new'}" (click)="addressMode = 'new'">
+              <p-radioButton name="addrMode" value="new" [(ngModel)]="addressMode" inputId="modeNew"></p-radioButton>
+              <label for="modeNew" class="cursor-pointer font-bold">{{ 'CHECKOUT.ADD_NEW' | translate }}</label>
             </div>
           </div>
 
-          <!-- Save Address Option -->
-          <div class="mt-2" *ngIf="!selectedAddress">
-              <div class="flex align-items-center gap-3 p-3 bg-white-alpha-05 rounded-lg border-1 border-white-alpha-10">
-                  <p-checkbox [(ngModel)]="saveAddressToProfile" [binary]="true" name="saveAddress" inputId="saveAddr"></p-checkbox>
-                  <label for="saveAddr" class="cursor-pointer text-sm font-bold opacity-80">{{ 'CHECKOUT.SAVE_ADDRESS' | translate }}</label>
+          <!-- Saved Address Section -->
+          <div class="mb-5 animate-fade-in" *ngIf="addressMode === 'saved'">
+            <label class="block text-sm font-bold opacity-70 mb-3 ml-2 uppercase tracking-wider">{{
+              'CHECKOUT.SELECT_SAVED' | translate }}</label>
+            <p-dropdown [(ngModel)]="selectedAddress" name="savedAddress" [options]="savedAddresses"
+              optionLabel="street" placeholder="{{ 'CHECKOUT.SELECT_SAVED' | translate }}"
+              (onChange)="onAddressSelect($event)" styleClass="w-full p-input-lg shadow-sm">
+              <ng-template let-addr pTemplate="item">
+                <div class="flex flex-column py-2">
+                  <span class="font-bold text-lg">{{ addr.firstName }} {{ addr.lastName }}</span>
+                  <span class="text-sm opacity-70"><i class="pi pi-map-marker mr-1"></i> {{ addr.street }}, {{ addr.city
+                    }}</span>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div>
+
+          <!-- Address Input Grid -->
+          <div class="animate-slide-up" *ngIf="addressMode === 'new' || savedAddresses.length === 0">
+            <div class="formgrid grid mt-3">
+              <div class="field col-12 md:col-6 mb-4">
+                <label for="firstName" class="form-label">{{ 'CHECKOUT.FIRST_NAME' | translate }}</label>
+                <input pInputText id="firstName" [(ngModel)]="address.firstName" name="firstName" class="p-input-lg"
+                  required />
               </div>
+              <div class="field col-12 md:col-6 mb-4">
+                <label for="lastName" class="form-label">{{ 'CHECKOUT.LAST_NAME' | translate }}</label>
+                <input pInputText id="lastName" [(ngModel)]="address.lastName" name="lastName" class="p-input-lg"
+                  required />
+              </div>
+              <div class="field col-12 mb-4">
+                <label for="street" class="form-label">{{ 'CHECKOUT.STREET' | translate }}</label>
+                <input pInputText id="street" [(ngModel)]="address.street" name="street" class="p-input-lg" required
+                  placeholder="e.g. 123 Ramen St." />
+              </div>
+              <div class="field col-12 md:col-4 mb-4">
+                <label for="city" class="form-label">{{ 'CHECKOUT.CITY' | translate }}</label>
+                <input pInputText id="city" [(ngModel)]="address.city" name="city" class="p-input-lg" required />
+              </div>
+              <div class="field col-12 md:col-4 mb-4">
+                <label for="state" class="form-label">{{ 'CHECKOUT.STATE' | translate }}</label>
+                <input pInputText id="state" [(ngModel)]="address.state" name="state" class="p-input-lg" required />
+              </div>
+              <div class="field col-12 md:col-4 mb-4">
+                <label for="zipCode" class="form-label">{{ 'CHECKOUT.ZIP' | translate }}</label>
+                <input pInputText id="zipCode" [(ngModel)]="address.zipCode" name="zipCode" class="p-input-lg"
+                  required />
+              </div>
+              <div class="field col-12 md:col-6 mb-4">
+                <label for="country" class="form-label">{{ 'CHECKOUT.COUNTRY' | translate }}</label>
+                <input pInputText id="country" [(ngModel)]="address.country" name="country" class="p-input-lg"
+                  required />
+              </div>
+            </div>
+
+            <!-- Save Address Checkbox -->
+            <div class="bg-white-alpha-05 rounded-lg border-1 border-white-alpha-10 flex align-items-center gap-3">
+              <p-checkbox [(ngModel)]="saveAddressToProfile" [binary]="true" name="saveAddress"
+                inputId="saveAddr"></p-checkbox>
+              <label for="saveAddr" class="cursor-pointer text-sm font-bold opacity-80">{{ 'CHECKOUT.SAVE_ADDRESS' |
+                translate }}</label>
+            </div>
           </div>
 
-          <!-- Delivery -->
-          <div class="mt-4 pt-4 border-top-1 border-white-alpha-10">
+          <!-- Delivery Speed -->
+          <div class="mt-4 border-top-1 border-white-alpha-10">
             <h3 class="display-font text-2xl mb-4 font-bold">
               <i class="pi pi-truck text-primary mr-2"></i> {{ 'CHECKOUT.DELIVERY_SPEED' | translate }}
             </h3>
             <p-dropdown [(ngModel)]="deliveryMethodId" name="deliveryMethod" [options]="deliveryMethods"
-              optionLabel="shortName" optionValue="id" styleClass="w-full p-input-lg"
+              optionLabel="shortName" optionValue="id" styleClass="w-full p-input-lg shadow-sm"
               placeholder="{{ 'CHECKOUT.SELECT_DELIVERY' | translate }}"></p-dropdown>
           </div>
         </form>

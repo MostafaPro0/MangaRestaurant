@@ -10,6 +10,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MessageService } from 'primeng/api';
 import { CheckboxModule } from 'primeng/checkbox';
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { BasketService } from '../../services/basket.service';
 import { OrdersService } from '../../services/orders.service';
 import { UserAddress } from '../../models/user-address.model';
@@ -18,7 +19,7 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, FormsModule, InputTextModule, PasswordModule, ButtonModule, DropdownModule, ProgressSpinnerModule, TranslateModule, CheckboxModule],
+  imports: [CommonModule, FormsModule, InputTextModule, PasswordModule, ButtonModule, DropdownModule, ProgressSpinnerModule, TranslateModule, CheckboxModule, RadioButtonModule],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.css'
 })
@@ -31,15 +32,16 @@ export class CheckoutComponent implements OnInit {
   deliveryMethods: any[] = [];
   loading = false;
   saveAddressToProfile = false;
+  addressMode: 'saved' | 'new' = 'new';
 
   constructor(
-    private basketService: BasketService, 
-    private ordersService: OrdersService, 
+    private basketService: BasketService,
+    private ordersService: OrdersService,
     private authService: AuthService,
     private router: Router,
     private messageService: MessageService,
     private translate: TranslateService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.basketService.basket$.subscribe((basket) => (this.basket = basket));
@@ -49,20 +51,19 @@ export class CheckoutComponent implements OnInit {
 
   loadSavedAddresses(): void {
     this.authService.getUserAddresses().subscribe({
-        next: (data) => {
-            this.savedAddresses = data || [];
-            if (this.savedAddresses.length > 0) {
-                // Optionally auto-select the first one if desired
-                // this.onAddressSelect({ value: this.savedAddresses[0] });
-            }
+      next: (data) => {
+        this.savedAddresses = data || [];
+        if (this.savedAddresses.length > 0) {
+            this.addressMode = 'saved';
         }
+      }
     });
   }
 
   onAddressSelect(event: any): void {
-      if (event.value) {
-          this.address = { ...event.value };
-      }
+    if (event.value) {
+      this.address = { ...event.value };
+    }
   }
 
   get subtotal(): number {
@@ -88,18 +89,18 @@ export class CheckoutComponent implements OnInit {
     this.loading = true;
 
     // Save address to profile if requested and not already selected from saved addresses
-    if (this.saveAddressToProfile && !this.selectedAddress) {
-        this.authService.addAddress(this.address).subscribe({
-            next: () => console.log('Address saved to profile'),
-            error: (err) => console.error('Failed to save address to profile', err)
-        });
+    if (this.saveAddressToProfile && this.addressMode === 'new') {
+      this.authService.addAddress(this.address).subscribe({
+        next: () => console.log('Address saved to profile'),
+        error: (err) => console.error('Failed to save address to profile', err)
+      });
     }
 
     this.ordersService.createOrder({ basketId: currentBasket.id, deliveryMethodId: this.deliveryMethodId, shippingAddress: this.address }).subscribe({
       next: (order) => {
         this.loading = false;
         console.log('Order created successfully:', order);
-        
+
         this.messageService.add({
           severity: 'success',
           summary: this.translate.instant('TOAST.SUCCESS') || 'Success',
@@ -116,7 +117,7 @@ export class CheckoutComponent implements OnInit {
       error: (err) => {
         this.loading = false;
         console.error('Order create error', err);
-        
+
         this.messageService.add({
           severity: 'error',
           summary: this.translate.instant('TOAST.ERROR') || 'Error',
