@@ -11,4 +11,5 @@ export interface Product {
   category: string;
   categoryAr?: string;
   quantityInStock: number;
+  views: number;
 }

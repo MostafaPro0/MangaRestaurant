@@ -56,6 +56,11 @@ namespace MangaRestaurant.APIs.Controllers
             if (product == null)
                 return NotFound(new ApiResponse(404, "Product Not Found"));
 
+            // Increment Views Count
+            product.Views++;
+            _unitOfWork.Repository<Product>().Update(product);
+            await _unitOfWork.CompleteAsync();
+
             return Ok(_mapper.Map<Product, ProductToReturnDto>(product));
         }
 

@@ -22,5 +22,6 @@ namespace MangaRestaurant.APIs.Dtos
         public int CategoryId { get; set; }
         public string Category { get; set; }
         public string CategoryAr { get; set; }
+        public int Views { get; set; }
     }
 }

@@ -19,5 +19,6 @@ namespace MangaRestaurant.Core.Entities
         public ProductBrand Brand { get; set; }
         public int CategoryId { get; set; }//Foriegn Key Column >> ProudctBrand
         public ProductCategory Category { get; set; } // Navigational Property [ONE]
+        public int Views { get; set; }
     }
 }
