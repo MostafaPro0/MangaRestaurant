@@ -251,7 +251,15 @@
                   {{ (translate.currentLang === 'ar' && product.categoryAr) ? product.categoryAr : product.category }}
                 </span>
               </td>
-              <td class="font-bold">{{ product.price | currency }}</td>
+              <td>
+                <div class="flex flex-column">
+                  <span class="font-bold text-lg">{{ product.price | currency }}</span>
+                  <span *ngIf="product.oldPrice && product.oldPrice > product.price" 
+                        class="text-xs text-dim strikethrough opacity-60">
+                    {{ product.oldPrice | currency }}
+                  </span>
+                </div>
+              </td>
               <td class="text-center">
                 <div class="flex justify-content-center gap-2">
                   <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-warning" (click)="openEditProduct(product)"></button>
