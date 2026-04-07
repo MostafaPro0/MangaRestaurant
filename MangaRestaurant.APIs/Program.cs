@@ -15,6 +15,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Writers;
 using StackExchange.Redis;
 
+using MangaRestaurant.APIs.Hubs;
+
 namespace MangaRestaurant.APIs
 {
     public class Program
@@ -27,6 +29,7 @@ namespace MangaRestaurant.APIs
 
             #region Configuration Service
             builder.Services.AddControllers();
+            builder.Services.AddSignalR(); 
 
             builder.Services.AddApplicationServices();
 
@@ -54,8 +57,8 @@ namespace MangaRestaurant.APIs
                 {
                     options.AllowAnyHeader();
                     options.AllowAnyMethod();
-                    options.AllowAnyOrigin();
-                    options.WithOrigins(builder.Configuration["FrontBaseURL"]);
+                    options.AllowCredentials();
+                    options.WithOrigins(builder.Configuration["FrontBaseURL"] ?? "http://localhost:4200");
                 });
             });
             #endregion
@@ -107,10 +110,11 @@ namespace MangaRestaurant.APIs
             app.UseAuthorization();
 
             app.MapControllers();
+            app.MapHub<NotificationHub>("/hub/notifications");
 
             #endregion
 
             app.Run();
         }
     }
-}
+}

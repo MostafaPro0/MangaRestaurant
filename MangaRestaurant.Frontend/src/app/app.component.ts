@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 import { AuthService } from './app/services/auth.service';
 import { TranslateService } from './app/services/translate.service';
 import { BasketService } from './app/services/basket.service';
+import { NotificationService } from './app/services/notification.service';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
@@ -40,6 +41,7 @@ export class AppComponent {
   user = signal<User | null>(null);
   lang = signal<'en' | 'ar'>((localStorage.getItem('lang') as 'en' | 'ar') || 'en');
   basketCount = signal(0);
+  notificationCount = signal(0);
   mobileMenuOpened = signal(false);
 
   profileMenuItems: MenuItem[] = [];
@@ -48,8 +50,13 @@ export class AppComponent {
     private auth: AuthService, 
     private translateService: TranslateService, 
     private basketService: BasketService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) {
+    this.notificationService.createHubConnection();
+    this.notificationService.unreadCount$.subscribe(count => {
+       this.notificationCount.set(count);
+    });
     this.basketService.basket$.subscribe(basket => {
       const count = basket.items.reduce((sum, item) => sum + item.quantity, 0);
       this.basketCount.set(count);
@@ -117,6 +124,10 @@ export class AppComponent {
 
   toggleMobileMenu(): void {
     this.mobileMenuOpened.set(!this.mobileMenuOpened());
+  }
+
+  resetNotificationCount(): void {
+    this.notificationService.clearUnreadCount();
   }
 
   logout(): void {

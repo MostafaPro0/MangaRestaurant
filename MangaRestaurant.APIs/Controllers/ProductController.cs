@@ -18,11 +18,13 @@ namespace MangaRestaurant.APIs.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly INotificationService _notificationService;
 
-        public ProductsController(IUnitOfWork unitOfWork, IMapper mapper)
+        public ProductsController(IUnitOfWork unitOfWork, IMapper mapper, INotificationService notificationService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _notificationService = notificationService;
         }
 
         [ProducesResponseType(typeof(ProductToReturnDto), StatusCodes.Status200OK)]
@@ -74,6 +76,8 @@ namespace MangaRestaurant.APIs.Controllers
             var result = await _unitOfWork.CompleteAsync();
 
             if (result <= 0) return BadRequest(new ApiResponse(400, "Problem Creating Product"));
+
+            await _notificationService.SendNewProductNotification(product.Name);
 
             return Ok(_mapper.Map<Product, ProductToReturnDto>(product));
         }

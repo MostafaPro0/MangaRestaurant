@@ -18,13 +18,16 @@ namespace MangaRestaurant.Service
         private readonly IBasketRepository _basketRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPaymentService _paymentService;
+        private readonly INotificationService _notificationService;
 
-        public OrderService(IBasketRepository basketRepository, IUnitOfWork unitOfWork,IPaymentService paymentService)
+        public OrderService(IBasketRepository basketRepository, IUnitOfWork unitOfWork, IPaymentService paymentService, INotificationService notificationService)
         {
             _basketRepository = basketRepository;
             _unitOfWork = unitOfWork;
             _paymentService = paymentService;
+            _notificationService = notificationService;
         }
+
         public async Task<Order?> CreateOrderAsync(string buyerEmail, string basketId, int methodId, OrderAddress orderShippingAddress)
         {
             // Get Basket From Basket Repo.
@@ -92,6 +95,10 @@ namespace MangaRestaurant.Service
             var result = await _unitOfWork.CompleteAsync();
 
             if (result <= 0) return null;
+
+            // Notify Admin
+            await _notificationService.NotifyAdminNewOrder(order.Id.ToString(), order.GetTotal());
+
             return order;
         }
 
@@ -133,9 +140,16 @@ namespace MangaRestaurant.Service
         {
             var order = await _unitOfWork.Repository<Order>().GetAsync(orderId);
             if (order == null) return false;
+            
             order.OrderStatus = status;
             _unitOfWork.Repository<Order>().Update(order);
             var result = await _unitOfWork.CompleteAsync();
+
+            if (result > 0)
+            {
+                await _notificationService.SendOrderStatusUpdate(order.BuyerEmail, order.Id.ToString(), status.ToString());
+            }
+
             return result > 0;
         }
     }

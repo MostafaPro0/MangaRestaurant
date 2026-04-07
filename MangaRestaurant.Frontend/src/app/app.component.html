@@ -33,6 +33,15 @@
           </button>
         </div>
 
+        <!-- Notification Bell -->
+        <button class="manga-toggle-btn relative mx-2" (click)="resetNotificationCount()" pTooltip="{{ (lang() === 'ar' ? 'الإشعارات' : 'Notifications') }}">
+          <i class="pi pi-bell"></i>
+          <span class="basket-badge" *ngIf="notificationCount() > 0" 
+                style="top: -5px; right: -5px; background: var(--primary-color); min-width: 18px; height: 18px; font-size: 10px;">
+            {{ notificationCount() }}
+          </span>
+        </button>
+
         <div class="auth-box">
           <ng-container *ngIf="isAuthenticated(); else guest">
             <!-- Profile Avatar with Menu -->
@@ -57,6 +66,12 @@
 
       <!-- Mobile Controls (Cart & Hamburger) -->
       <div class="flex align-items-center gap-3 lg:hidden">
+        <button (click)="resetNotificationCount()" class="relative text-2xl nav-item p-0 border-none bg-transparent" style="color:var(--text-main); cursor:pointer">
+          <i class="pi pi-bell"></i>
+          <span class="basket-badge" style="top:-8px; right:-8px; background: var(--primary-color)" *ngIf="notificationCount() > 0">
+            {{ notificationCount() }}
+          </span>
+        </button>
         <a routerLink="/basket" class="relative text-2xl nav-item p-0" style="color:var(--text-main)">
           <i class="pi pi-shopping-cart"></i>
           <span class="basket-badge" style="top:-8px; right:-8px" *ngIf="basketCount() > 0">{{basketCount()}}</span>

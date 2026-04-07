@@ -14,11 +14,13 @@ namespace MangaRestaurant.APIs.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly INotificationService _notificationService;
 
-        public ReviewsController(IUnitOfWork unitOfWork, IMapper mapper)
+        public ReviewsController(IUnitOfWork unitOfWork, IMapper mapper, INotificationService notificationService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _notificationService = notificationService;
         }
 
         [HttpPost]
@@ -45,6 +47,9 @@ namespace MangaRestaurant.APIs.Controllers
             var result = await _unitOfWork.CompleteAsync();
 
             if (result <= 0) return BadRequest(new ApiResponse(400, "Problem adding review"));
+
+            // Notify Admin
+            await _notificationService.NotifyAdminNewReview(product.Name, review.UserName, review.Rating);
 
             return Ok(_mapper.Map<ProductReview, ProductReviewDto>(review));
         }
