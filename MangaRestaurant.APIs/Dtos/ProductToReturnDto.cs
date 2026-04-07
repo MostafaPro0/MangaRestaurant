@@ -16,6 +16,8 @@ namespace MangaRestaurant.APIs.Dtos
         public string DescriptionAr { get; set; }
         public string PictureUrl { get; set; }
         public decimal Price { get; set; }
+        public decimal? OldPrice { get; set; }
+        public int DiscountPercentage => OldPrice > Price ? (int)(((OldPrice - Price) / OldPrice) * 100) : 0;
         public int BrandId { get; set; }
         public string Brand { get; set; }
         public string BrandAr { get; set; }

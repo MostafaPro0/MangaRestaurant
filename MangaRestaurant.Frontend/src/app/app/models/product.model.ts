@@ -5,6 +5,8 @@ export interface Product {
   description: string;
   descriptionAr?: string;
   price: number;
+  oldPrice?: number;
+  discountPercentage?: number;
   pictureUrl: string;
   brand: string;
   brandAr?: string;

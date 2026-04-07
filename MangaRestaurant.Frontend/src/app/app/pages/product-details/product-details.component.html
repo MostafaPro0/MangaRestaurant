@@ -14,9 +14,13 @@
         <!-- Backend Handlers physical existence checks -->
         <img [src]="product.pictureUrl" [alt]="product.name" />
 
-        <div style="position:absolute; top: 1rem; right: 1rem">
+        <div style="position:absolute; top: 1rem; right: 1rem; display: flex; flex-direction: column; gap: 8px; align-items: flex-end;">
           <span class="badge-neon py-3 px-4 shadow-lg text-lg">{{ (translateService.currentLanguage === 'ar' ?
             product.categoryAr : product.category) || product.category }}</span>
+          <span *ngIf="product.discountPercentage && product.discountPercentage > 0" 
+                class="bg-primary text-white font-bold py-2 px-3 border-round shadow-lg text-sm">
+            -{{ product.discountPercentage }}% {{ 'PRODUCTS.OFF' | translate }}
+          </span>
         </div>
       </div>
     </div>
@@ -31,7 +35,13 @@
           'ar' ? product.brandAr : product.brand) || product.brand }}</p>
 
         <div class="flex align-items-center gap-4 mb-8">
-          <span class="primary-text text-5xl font-black">{{ product.price | currency }}</span>
+          <div class="flex flex-column">
+            <span class="primary-text text-5xl font-black line-height-1">{{ product.price | currency }}</span>
+            <span *ngIf="product.oldPrice && product.oldPrice > product.price" 
+                  class="text-xl text-dim strikethrough opacity-60 mt-1">
+              {{ product.oldPrice | currency }}
+            </span>
+          </div>
           <div class="flex flex-wrap gap-2">
             <span class="text-sm font-bold bg-soft px-3 py-2 rounded-lg opacity-60">{{ 'PRODUCTS.READY_IN' | translate }}</span>
             <span class="text-sm font-bold bg-soft px-3 py-2 rounded-lg opacity-60 flex align-items-center gap-2">
@@ -200,7 +210,13 @@
               </span>
             </div>
             <div class="flex align-items-center justify-content-between">
-              <span class="primary-text text-2xl font-black">{{ item.price | currency }}</span>
+              <div class="flex flex-column">
+                <span class="primary-text text-2xl font-black line-height-1">{{ item.price | currency }}</span>
+                <span *ngIf="item.oldPrice && item.oldPrice > item.price" 
+                      class="text-xs text-dim strikethrough opacity-60">
+                  {{ item.oldPrice | currency }}
+                </span>
+              </div>
               <button pButton icon="pi pi-cart-plus" class="p-button-sm p-button-rounded"
                 (click)="$event.stopPropagation(); addRecommendedToBasket(item)"></button>
             </div>
