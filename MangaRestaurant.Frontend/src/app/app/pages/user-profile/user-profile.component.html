@@ -166,7 +166,7 @@
               </div>
               <div class="col-12 mb-4">
                   <label class="form-label">{{ 'PROFILE.STREET' | translate }} <span class="text-primary">*</span></label>
-                  <input pInputText type="text" [(ngModel)]="editingAddress.street" name="street" #street="ngModel" required class="p-input-lg" [ngClass]="{'ng-invalid ng-dirty': street.invalid && (street.dirty || street.touched)}" placeholder="e.g. 123 Ramen St." />
+                  <input pInputText type="text" [(ngModel)]="editingAddress.street" name="street" #street="ngModel" required class="p-input-lg" [ngClass]="{'ng-invalid ng-dirty': street.invalid && (street.dirty || street.touched)}" [placeholder]="'PROFILE.STREET_PLACEHOLDER' | translate" />
                   <small class="p-error block mt-1" *ngIf="street.invalid && (street.dirty || street.touched)">{{ 'COMMON.REQUIRED' | translate }}</small>
               </div>
               <div class="col-12 md:col-6 mb-4">

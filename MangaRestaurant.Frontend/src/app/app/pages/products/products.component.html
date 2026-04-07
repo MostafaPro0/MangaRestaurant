@@ -21,7 +21,7 @@
   <!-- Categories Filter (Responsive scrolling) -->
   <div class="flex justify-content-center mb-10 w-full">
     <div class="my-2 flex gap-3 overflow-x-auto no-scrollbar py-2 px-1" style="max-width: 1000px">
-      <button pButton [label]="'All' | translate" class="white-space-nowrap p-button-rounded px-6 py-3 font-bold"
+      <button pButton [label]="'COMMON.ALL' | translate" class="white-space-nowrap p-button-rounded px-6 py-3 font-bold"
         [class.p-button-outlined]="selectedCategoryId !== 0" [class.p-button-secondary]="selectedCategoryId !== 0"
         (click)="filterByCategory(0)"></button>
 
@@ -78,7 +78,7 @@
 
           <div class="flex align-items-center justify-content-between mb-4">
             <span class="primary-text text-3xl font-black">{{ product.price | currency }}</span>
-            <span class="text-xs text-muted font-bold opacity-60">incl. VAT</span>
+            <span class="text-xs text-muted font-bold opacity-60">{{ 'PRODUCTS.INCL_VAT' | translate }}</span>
           </div>
         </div>
 

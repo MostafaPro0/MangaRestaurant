@@ -97,7 +97,7 @@
                   {{ getShippingAddress(selectedOrder)?.country }}
                 </div>
                 <ng-template #noAddress>
-                  <p class="opacity-50 italic">No delivery address specified.</p>
+                  <p class="opacity-50 italic">{{ 'ORDERS.NO_SHIPPING_VAL' | translate }}</p>
                 </ng-template>
               </div>
             </div>

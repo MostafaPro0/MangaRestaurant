@@ -52,7 +52,13 @@
     "ORIGIN": "Origin",
     "EMPTY": "No items found.",
     "RECOMMENDED": "You May Also Like",
-    "VIEW_ALL": "View All"
+    "VIEW_ALL": "View All",
+    "READY_IN": "Ready in 20min",
+    "SERVINGS_VAL": "1 Person",
+    "PREP_TIME_VAL": "15-20 Min",
+    "ORIGIN_VAL": "Fresh Garden",
+    "NO_RELATED": "No related products found.",
+    "INCL_VAT": "incl. VAT"
   },
   "AUTH": {
     "LOGIN": "Login",
@@ -86,7 +92,8 @@
     "CHECKOUT": "Proceed to Checkout",
     "FREE": "FREE",
     "DELIVERY": "Delivery",
-    "SUBTOTAL": "Subtotal"
+    "SUBTOTAL": "Subtotal",
+    "VIEW_PRODUCT": "View Product"
   },
   "CHECKOUT": {
     "TITLE": "Secure Checkout",
@@ -126,7 +133,8 @@
     "ORDER_NUM": "Order",
     "ORDERED_ON": "Ordered On",
     "DELIVERY_ADDRESS": "Delivery Address",
-    "ITEMS_ORDER": "Items Order"
+    "ITEMS_ORDER": "Items Order",
+    "NO_SHIPPING_VAL": "No delivery address specified."
   },
   "PROFILE": {
     "TAG_LINE": "Your Account",
@@ -143,6 +151,7 @@
     "STATE": "State",
     "ZIP": "Zip Code",
     "COUNTRY": "Country",
+    "STREET_PLACEHOLDER": "e.g. 123 Ramen St.",
     "MANAGE_ADDRESSES_DESC": "Manage your saved delivery locations",
     "NO_ADDRESSES_TITLE": "No Addresses Yet",
     "NO_ADDRESSES": "You haven't added any shipping addresses yet.",
@@ -168,7 +177,11 @@
     "MENU": "Our Menu",
     "CART_ORDERS": "Orders & Cart",
     "FOOTER_DESC": "The ultimate Japanese culinary experience delivered to your doorstep with unmatched quality since 2025.",
-    "CONTACT_US": "Contact Us"
+    "CONTACT_US": "Contact Us",
+    "ADDRESS_VAL": "123 Ramen St, Tokyo District",
+    "EMAIL_VAL": "support@mangaresto.com",
+    "PHONE_VAL": "+123 456 789",
+    "ALL": "All"
   },
   "TOAST": {
     "SUCCESS": "Success",
@@ -258,5 +271,19 @@
     "ORDERS": {
       "STATUS_UPDATE": "Update Status"
     }
+  },
+  "REVIEWS": {
+    "TITLE": "Customer Reviews",
+    "EMPTY": "No reviews yet. Be the first to share your thoughts!",
+    "FORM_TITLE": "Rate & Review",
+    "YOUR_RATING": "Your Rating",
+    "YOUR_THOUGHTS": "Your Thoughts",
+    "PLACEHOLDER": "Tell others what you think of this dish...",
+    "SUBMIT": "Post Review",
+    "SUBMITTING": "Submitting...",
+    "LOGIN_PROMPT": "Please log in to share your experience with others.",
+    "LOGIN_BTN": "Sign In to Review",
+    "SUCCESS": "Review submitted successfully!",
+    "FAIL": "Failed to submit review."
   }
 }

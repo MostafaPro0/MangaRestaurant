@@ -33,7 +33,7 @@
         <div class="flex align-items-center gap-4 mb-8">
           <span class="primary-text text-5xl font-black">{{ product.price | currency }}</span>
           <div class="flex flex-wrap gap-2">
-            <span class="text-sm font-bold bg-soft px-3 py-2 rounded-lg opacity-60">Ready in 20min</span>
+            <span class="text-sm font-bold bg-soft px-3 py-2 rounded-lg opacity-60">{{ 'PRODUCTS.READY_IN' | translate }}</span>
             <span class="text-sm font-bold bg-soft px-3 py-2 rounded-lg opacity-60 flex align-items-center gap-2">
               <i class="pi pi-eye"></i>
               {{ product.views || 0 }}
@@ -62,16 +62,16 @@
 
         <div class="mt-10 grid grid-nogutter border-top-1 border-white-alpha-10 pt-8 opacity-70">
           <div class="col-4">
-            <span class="block text-muted text-xs font-bold uppercase mb-2">Servings</span>
-            <span class="block font-black text-xl">1 Person</span>
+            <span class="block text-muted text-xs font-bold uppercase mb-2">{{ 'PRODUCTS.SERVINGS' | translate }}</span>
+            <span class="block font-black text-xl">{{ 'PRODUCTS.SERVINGS_VAL' | translate }}</span>
           </div>
           <div class="col-4 text-center">
-            <span class="block text-muted text-xs font-bold uppercase mb-2">Prep Time</span>
-            <span class="block font-black text-xl">15-20 Min</span>
+            <span class="block text-muted text-xs font-bold uppercase mb-2">{{ 'PRODUCTS.PREP_TIME' | translate }}</span>
+            <span class="block font-black text-xl">{{ 'PRODUCTS.PREP_TIME_VAL' | translate }}</span>
           </div>
           <div class="col-4 text-right">
-            <span class="block text-muted text-xs font-bold uppercase mb-2">Origin</span>
-            <span class="block font-black text-xl">Fresh Garden</span>
+            <span class="block text-muted text-xs font-bold uppercase mb-2">{{ 'PRODUCTS.ORIGIN' | translate }}</span>
+            <span class="block font-black text-xl">{{ 'PRODUCTS.ORIGIN_VAL' | translate }}</span>
           </div>
         </div>
       </div>
@@ -81,7 +81,7 @@
   <!-- REVIEWS SECTION -->
   <div class="mt-12">
     <div class="flex align-items-center gap-4 mb-8">
-      <h2 class="display-font text-3xl font-black text-main m-0">Customer Reviews</h2>
+      <h2 class="display-font text-3xl font-black text-main m-0">{{ 'REVIEWS.TITLE' | translate }}</h2>
       <div class="flex-grow-1 border-top-1 border-white-alpha-10"></div>
     </div>
 
@@ -104,7 +104,7 @@
         <ng-template #noReviews>
           <div class="text-center py-8 bg-soft rounded-xl opacity-50">
             <i class="pi pi-comments text-5xl mb-3 block"></i>
-            <p>No reviews yet. Be the first to share your thoughts!</p>
+            <p>{{ 'REVIEWS.EMPTY' | translate }}</p>
           </div>
         </ng-template>
       </div>
@@ -112,30 +112,30 @@
       <!-- Review Form -->
       <div class="col-12 lg:col-5">
         <div class="mg-card p-6 lg:p-8 h-full">
-          <h3 class="display-font text-2xl font-bold mb-6 text-main uppercase italic">Rate & Review</h3>
+          <h3 class="display-font text-2xl font-bold mb-6 text-main uppercase italic">{{ 'REVIEWS.FORM_TITLE' | translate }}</h3>
 
           <div *ngIf="authService.isAuthenticated(); else loginToReview" class="flex flex-column gap-6">
             <div class="flex flex-column gap-2">
-              <label class="font-bold text-muted text-sm uppercase">Your Rating</label>
+              <label class="font-bold text-muted text-sm uppercase">{{ 'REVIEWS.YOUR_RATING' | translate }}</label>
               <p-rating [(ngModel)]="userRating" [cancel]="true" class="mt-1"></p-rating>
             </div>
 
             <div class="flex flex-column gap-2">
-              <label class="font-bold text-muted text-sm uppercase">Your Thoughts</label>
+              <label class="font-bold text-muted text-sm uppercase">{{ 'REVIEWS.YOUR_THOUGHTS' | translate }}</label>
               <textarea pInputTextarea rows="5" [(ngModel)]="userComment"
-                placeholder="Tell others what you think of this dish..."
+                [placeholder]="'REVIEWS.PLACEHOLDER' | translate"
                 class="w-full bg-soft border-1 border-white-alpha-10 p-3 rounded-lg text-lg"></textarea>
             </div>
 
-            <button pButton [label]="submittingReview ? 'Submitting...' : 'Post Review'"
+            <button pButton [label]="submittingReview ? ('REVIEWS.SUBMITTING' | translate) : ('REVIEWS.SUBMIT' | translate)"
               [icon]="submittingReview ? 'pi pi-spin pi-spinner' : 'pi pi-send'" [disabled]="submittingReview"
               (click)="submitReview()" class="p-button-lg w-full py-4 text-xl font-black mt-2"></button>
           </div>
 
           <ng-template #loginToReview>
             <div class="text-center py-6">
-              <p class="text-muted mb-6">Please log in to share your experience with others.</p>
-              <a routerLink="/login" pButton label="Sign In to Review" icon="pi pi-sign-in"
+              <p class="text-muted mb-6">{{ 'REVIEWS.LOGIN_PROMPT' | translate }}</p>
+              <a routerLink="/login" pButton [label]="'REVIEWS.LOGIN_BTN' | translate" icon="pi pi-sign-in"
                 class="p-button-outlined p-button-lg w-full"></a>
             </div>
           </ng-template>
@@ -213,7 +213,7 @@
     <!-- Empty state: same category has no others -->
     <div *ngIf="!loadingRecommended && recommended.length === 0" class="text-center py-6 opacity-50">
       <i class="pi pi-inbox text-5xl mb-3 block"></i>
-      <p class="text-muted">No related products found.</p>
+      <p class="text-muted">{{ 'PRODUCTS.NO_RELATED' | translate }}</p>
     </div>
 
   </div>

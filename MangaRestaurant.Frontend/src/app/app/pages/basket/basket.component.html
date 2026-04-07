@@ -51,7 +51,7 @@
               <td class="p-4 text-center font-bold text-primary">{{ item.price * item.quantity | currency }}</td>
               <td class="p-4 text-right">
                 <button pButton icon="pi pi-eye" class="p-button-rounded p-button-text p-button-secondary"
-                  pTooltip="View Product" routerLink="/products/{{item.productId}}"></button>
+                  [pTooltip]="'BASKET.VIEW_PRODUCT' | translate" routerLink="/products/{{item.productId}}"></button>
                 <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
                   [pTooltip]="'BASKET.REMOVE' | translate" (click)="removeItem(item.productId)"></button>
               </td>

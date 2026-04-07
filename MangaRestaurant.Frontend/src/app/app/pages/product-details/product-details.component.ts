@@ -70,13 +70,22 @@ export class ProductDetailsComponent implements OnInit {
 
   submitReview(): void {
     if (!this.authService.isAuthenticated()) {
-      this.messageService.add({ severity: 'warn', summary: 'Sign In Required', detail: 'Please login to rate this product' });
+      this.messageService.add({ 
+        severity: 'warn', 
+        summary: this.translateService.instant('TOAST.WARN'), 
+        detail: this.translateService.instant('REVIEWS.LOGIN_PROMPT') 
+      });
       this.router.navigate(['/login']);
       return;
     }
 
     if (this.userRating === 0) {
-      this.messageService.add({ severity: 'error', summary: 'Rating Required', detail: 'Please select a rating' });
+      this.messageService.add({ 
+        severity: 'error', 
+        summary: this.translateService.instant('TOAST.ERROR'), 
+        detail: this.translateService.instant('REVIEWS.YOUR_RATING') 
+          + " " + (this.translateService.currentLanguage === 'ar' ? 'مطلوب' : 'is required')
+      });
       return;
     }
 
@@ -89,13 +98,21 @@ export class ProductDetailsComponent implements OnInit {
 
     this.productsService.addReview(reviewData).subscribe({
       next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Thank You!', detail: 'Your review has been submitted' });
+        this.messageService.add({ 
+          severity: 'success', 
+          summary: this.translateService.instant('TOAST.SUCCESS'), 
+          detail: this.translateService.instant('REVIEWS.SUCCESS') 
+        });
         this.resetReviewForm();
         this.loadProduct(this.product.id); // Refresh to show new review and updated rating
         this.submittingReview = false;
       },
-      error: (err) => {
-        this.messageService.add({ severity: 'error', summary: 'Submission Failed', detail: err.error?.message || 'Could not submit review' });
+      error: (err: any) => {
+        this.messageService.add({ 
+          severity: 'error', 
+          summary: this.translateService.instant('TOAST.ERROR'), 
+          detail: err.error?.message || this.translateService.instant('REVIEWS.FAIL') 
+        });
         this.submittingReview = false;
       }
     });
