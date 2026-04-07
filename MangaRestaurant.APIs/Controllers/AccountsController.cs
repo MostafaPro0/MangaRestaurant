@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.Extensions.Localization;
+using MangaRestaurant.APIs.Resources;
 
 namespace MangaRestaurant.APIs.Controllers
 {
@@ -22,8 +24,9 @@ namespace MangaRestaurant.APIs.Controllers
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly IEmailService _emailService;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public AccountsController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper, IConfiguration configuration, IEmailService emailService)
+        public AccountsController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper, IConfiguration configuration, IEmailService emailService, IStringLocalizer<SharedResource> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -31,6 +34,7 @@ namespace MangaRestaurant.APIs.Controllers
             _mapper = mapper;
             _configuration = configuration;
             _emailService = emailService;
+            _localizer = localizer;
         }
         //Register User
         [HttpPost("Register")]
@@ -38,7 +42,7 @@ namespace MangaRestaurant.APIs.Controllers
         {
             if(CheclEmailExist(registerModel.Email).Result.Value)
             {
-                return  BadRequest(new ApiResponse(400,"this Email Exist"));
+                return  BadRequest(new ApiResponse(400,_localizer["DUPLICATE_EMAIL"]));
             }
             var user = new AppUser()
             {
@@ -61,12 +65,12 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginModel)
         {
             var user = await _userManager.FindByEmailAsync(loginModel.Email);
-            if (user is null) return Unauthorized(new ApiResponse(401, "Invalid email or password"));
+            if (user is null) return Unauthorized(new ApiResponse(401, _localizer["INVALID_LOGIN"]));
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginModel.Password, false);
 
             if (!result.Succeeded)
-                return Unauthorized(new ApiResponse(401, "Invalid email or password"));
+                return Unauthorized(new ApiResponse(401, _localizer["INVALID_LOGIN"]));
 
             return Ok(await CreateUserDtoAsync(user));
         }
@@ -312,7 +316,7 @@ namespace MangaRestaurant.APIs.Controllers
                 return BadRequest(new ApiValidationErrorResponse { Errors = errors });
             }
 
-            return Ok(new { message = "Password changed successfully" });
+            return Ok(new { message = _localizer["PASSWORD_CHANGED"].Value });
         }
 
         [Authorize]

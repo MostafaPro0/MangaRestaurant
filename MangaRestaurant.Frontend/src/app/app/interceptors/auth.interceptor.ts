@@ -9,12 +9,18 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.auth.token;
-    if (!token) return next.handle(req);
+    const lang = localStorage.getItem('lang') || 'ar'; // Default to 'ar' to match backend
+
+    let headers: any = {
+      'Accept-Language': lang
+    };
+
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
 
     const authReq = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
+      setHeaders: headers,
     });
 
     return next.handle(authReq);

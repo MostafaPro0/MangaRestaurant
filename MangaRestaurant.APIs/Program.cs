@@ -26,6 +26,7 @@ namespace MangaRestaurant.APIs
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddSwaggerServices();
+            builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             #region Configuration Service
             builder.Services.AddControllers();
@@ -95,6 +96,15 @@ namespace MangaRestaurant.APIs
             #endregion
             #region Configure Kestrel Middlewares
             app.UseMiddleware<ExceptionMiddleware>();
+
+            var supportedCultures = new[] { "ar", "en" };
+            var localizationOptions = new RequestLocalizationOptions()
+                .SetDefaultCulture(supportedCultures[0])
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+
+            app.UseRequestLocalization(localizationOptions);
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
