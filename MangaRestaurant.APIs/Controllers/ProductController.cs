@@ -80,7 +80,11 @@ namespace MangaRestaurant.APIs.Controllers
 
             await _notificationService.SendNewProductNotification(product.Name);
 
-            return Ok(_mapper.Map<Product, ProductToReturnDto>(product));
+            // Re-fetch with relations for proper DTO return
+            var spec = new ProductWithBrandAndCategorySpecs(product.Id);
+            var reloadedProduct = await _unitOfWork.Repository<Product>().GetEntityWithSpecAsync(spec);
+
+            return Ok(_mapper.Map<Product, ProductToReturnDto>(reloadedProduct));
         }
 
         // PUT /api/Products/1
@@ -91,13 +95,24 @@ namespace MangaRestaurant.APIs.Controllers
             var product = await _unitOfWork.Repository<Product>().GetAsync(id);
             if (product == null) return NotFound(new ApiResponse(404));
 
+            // Preserve the existing picture URL because updates are handled by a separate upload endpoint
+            var existingPictureUrl = product.PictureUrl;
+
             _mapper.Map(productDto, product);
+
+            // Restore the original URL
+            product.PictureUrl = existingPictureUrl;
+
             _unitOfWork.Repository<Product>().Update(product);
             var result = await _unitOfWork.CompleteAsync();
 
             if (result <= 0) return BadRequest(new ApiResponse(400, "Problem Updating Product"));
 
-            return Ok(_mapper.Map<Product, ProductToReturnDto>(product));
+            // Re-fetch with relations for proper DTO return
+            var spec = new ProductWithBrandAndCategorySpecs(id);
+            var reloadedProduct = await _unitOfWork.Repository<Product>().GetEntityWithSpecAsync(spec);
+
+            return Ok(_mapper.Map<Product, ProductToReturnDto>(reloadedProduct));
         }
 
         // DELETE /api/Products/1

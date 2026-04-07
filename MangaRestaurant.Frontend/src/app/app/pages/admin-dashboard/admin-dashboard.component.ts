@@ -251,7 +251,7 @@ export class AdminDashboardComponent implements OnInit {
       name: '', nameAr: '', 
       description: '', descriptionAr: '', 
       price: 0, oldPrice: 0,
-      pictureUrl: 'assets/images/products/placeholder.jpg',
+      pictureUrl: '',
       categoryId: this.categories[0]?.id || 1,
       brandId: this.brands[0]?.id || 1
     };

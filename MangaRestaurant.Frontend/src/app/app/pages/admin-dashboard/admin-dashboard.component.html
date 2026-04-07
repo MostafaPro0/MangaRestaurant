@@ -306,26 +306,35 @@
 <p-dialog [(visible)]="productDialogVisible" [modal]="true" [header]="(editingProductId ? 'ADMIN.EDIT_PRODUCT' : 'ADMIN.ADD_PRODUCT') | translate"
           class="custom-dialog" [style]="{width: '700px'}" [breakpoints]="{'960px': '95vw'}">
   <div class="p-fluid">
-    <!-- Image Upload & Preview (Top Priority) -->
-    <div class="formgrid grid mb-4 pt-2">
-      <div class="field col-12 md:col-4 mb-3">
-        <label class="font-bold block mb-2">{{ 'ADMIN.IMAGE_PREVIEW' | translate }}</label>
-        <div class="img-preview-container border-round overflow-hidden shadow-sm bg-gray-100 flex align-items-center justify-content-center" 
-             style="height: 150px; border: 2px dashed #ddd;">
-          <img [src]="getImageUrl(selectedProduct.pictureUrl)" [alt]="selectedProduct.name" 
-               style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+    <!-- Image Click-to-Upload Section -->
+    <div class="field mb-4 pt-2">
+      <label class="font-bold block mb-2">{{ 'ADMIN.IMAGE_PREVIEW' | translate }} <span class="text-red-500">*</span></label>
+      <div 
+        class="img-upload-container border-round overflow-hidden shadow-sm bg-gray-100 flex align-items-center justify-content-center cursor-pointer relative" 
+        style="height: 250px; border: 2px dashed #ddd; min-height: 250px;"
+        (click)="fileUpload.click()">
+        
+        <!-- Case 1: Always Visible Placeholder/Fallback -->
+        <div class="flex flex-column align-items-center justify-content-center text-gray-500 w-full h-full p-4">
+           <i class="pi pi-images text-6xl mb-3 text-red-500 opacity-60"></i>
+           <span class="text-2xl font-bold">Add Product Photo</span>
+           <span class="text-sm opacity-60">Click anywhere here to upload</span>
         </div>
-      </div>
-      <div class="field col-12 md:col-8 mb-3">
-        <label for="img" class="font-bold block mb-2">{{ 'ADMIN.PICTURE_URL' | translate }} <span class="text-red-500">*</span></label>
-        <div class="flex gap-2">
-          <input id="img" type="text" pInputText [(ngModel)]="selectedProduct.pictureUrl" class="flex-grow-1" />
-          <input type="file" #fileUpload hidden (change)="onFileSelected($event)" accept="image/*" />
-          <button pButton type="button" icon="pi pi-upload" class="p-button-outlined" 
-                  [loading]="uploadingImage" (click)="fileUpload.click()"></button>
+
+        <!-- Case 2: Image as an overlay (Only shows if pictureUrl exists) -->
+        <img *ngIf="selectedProduct.pictureUrl" [src]="getImageUrl(selectedProduct.pictureUrl)" [alt]="selectedProduct.name" 
+             style="position: absolute; top:0; left:0; width: 100%; height: 100%; object-fit: contain; z-index: 5; background: #f8f9fa;" />
+        
+        <!-- Case 3: Hover Overlay (Shows 'Change' text when an image exists) -->
+        <div *ngIf="selectedProduct.pictureUrl" class="upload-overlay flex flex-column align-items-center justify-content-center" style="z-index: 10;">
+          <i class="pi pi-camera text-4xl mb-2"></i>
+          <span class="font-bold">Change Image</span>
+          <p class="text-sm mt-1" *ngIf="uploadingImage">Uploading...</p>
         </div>
-        <small class="text-muted block mt-1">Paste URL or upload image file.</small>
+
+        <input type="file" #fileUpload hidden (change)="onFileSelected($event)" accept="image/*" />
       </div>
+      <p class="text-sm text-muted mt-2 text-center font-bold text-red-500">Required *</p>
     </div>
 
     <!-- Row 1: Names -->

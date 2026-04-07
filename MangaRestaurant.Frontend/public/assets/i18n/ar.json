@@ -262,6 +262,8 @@
     "OLD_PRICE": "السعر قبل الخصم",
     "PICTURE_URL": "رابط الصورة",
     "IMAGE_PREVIEW": "معاينة الصورة",
+    "UPLOAD_INSTRUCTION": "اضغط هنا لرفع صورة المنتج",
+    "UPLOAD_HINT": "(يفضل JPG, PNG, WebP)",
     "EMPLOYEE_NAME": "اسم الموظف",
     "EMAIL": "البريد الإلكتروني",
     "ROLE": "الدور",

@@ -262,6 +262,8 @@
     "OLD_PRICE": "Old Price (Discount)",
     "PICTURE_URL": "Picture URL",
     "IMAGE_PREVIEW": "Image Preview",
+    "UPLOAD_INSTRUCTION": "Click here to upload product image",
+    "UPLOAD_HINT": "(JPG, PNG, WebP recommended)",
     "EMPLOYEE_NAME": "Employee Name",
     "EMAIL": "Email",
     "ROLE": "Role",

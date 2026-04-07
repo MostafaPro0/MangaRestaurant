@@ -20,6 +20,10 @@ namespace MangaRestaurant.APIs.Helpers
         {
             if (!string.IsNullOrEmpty(source.PictureUrl))
             {
+                if (source.PictureUrl.StartsWith("http"))
+                {
+                    return source.PictureUrl;
+                }
                 return $"{_configuration["BaseURL"]}/{source.PictureUrl}";
             }
 
