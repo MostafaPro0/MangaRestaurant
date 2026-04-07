@@ -33,7 +33,7 @@ namespace MangaRestaurant.APIs.Controllers
         //GET : /api/Products
         [HttpGet]
         //    [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
-        [CashedAttribute(300)]
+        [CashedAttribute(30)]
         public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetAllProducts([FromQuery]ProductSpecParams specParams)
         {
             var spec = new ProductWithBrandAndCategorySpecs(specParams);

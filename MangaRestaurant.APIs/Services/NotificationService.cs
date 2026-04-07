@@ -19,7 +19,7 @@ namespace MangaRestaurant.APIs.Services
             _unitOfWork = unitOfWork;
         }
 
-        private async Task SaveNotificationAsync(string title, string titleAr, string message, string messageAr, NotificationType type, string targetUser, string relatedId = null)
+        private async Task SaveNotificationAsync(string title, string titleAr, string message, string messageAr, NotificationType type, string targetUser, string? relatedId = null)
         {
             var notification = new Notification
             {
@@ -29,7 +29,7 @@ namespace MangaRestaurant.APIs.Services
                 MessageAr = messageAr,
                 Type = type,
                 TargetUser = targetUser,
-                RelatedId = relatedId
+                RelatedId = relatedId ?? ""
             };
 
             await _unitOfWork.Repository<Notification>().AddAsync(notification);

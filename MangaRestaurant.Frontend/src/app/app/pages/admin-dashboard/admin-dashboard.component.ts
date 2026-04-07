@@ -12,7 +12,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputTextarea } from 'primeng/inputtextarea';
 import { TagModule } from 'primeng/tag';
 import { SkeletonModule } from 'primeng/skeleton';
-import { NgApexchartsModule, ChartComponent, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexTitleSubtitle, ApexStroke, ApexDataLabels, ApexFill, ApexGrid, ApexYAxis, ApexTooltip, ApexLegend, ApexPlotOptions, ApexResponsive } from "ng-apexcharts";
+import { NgApexchartsModule, ChartComponent, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexTitleSubtitle, ApexStroke, ApexDataLabels, ApexFill, ApexGrid, ApexYAxis, ApexTooltip, ApexLegend, ApexPlotOptions, ApexResponsive, ApexTheme } from "ng-apexcharts";
 import { environment } from '../../../../environments/environment';
 import { AdminService } from '../../services/admin.service';
 import { ProductsService } from '../../services/products.service';
@@ -35,6 +35,7 @@ export type ChartOptions = {
   legend: ApexLegend;
   plotOptions: ApexPlotOptions;
   responsive: ApexResponsive[];
+  theme: ApexTheme;
 };
 
 @Component({
@@ -177,13 +178,17 @@ export class AdminDashboardComponent implements OnInit {
 
   updateCharts(report: any) {
     const isAr = this.translate.currentLang === 'ar';
+    const isDark = document.body.classList.contains('theme-dark');
+    const themeMode = isDark ? 'dark' : 'light';
+    const chartBaseConfig = { background: 'transparent', toolbar: { show: false } };
 
     // 1. Sales Trend
     this.salesChartOptions = {
       series: [{ name: this.translate.instant('ADMIN.TOTAL_REVENUE'), data: report.salesLast7Days.map((d: any) => d.revenue) }],
-      chart: { type: 'area', height: 350, toolbar: { show: false } },
+      chart: { type: 'area', height: 350, ...chartBaseConfig },
+      theme: { mode: themeMode as 'light' | 'dark' },
       xaxis: { categories: report.salesLast7Days.map((d: any) => d.date) },
-      colors: ['#f9d423'],
+      colors: ['#ff3e3e'],
       stroke: { curve: 'smooth', width: 3 },
       fill: { type: 'gradient', gradient: { opacityFrom: 0.6, opacityTo: 0.1 } }
     };
@@ -196,7 +201,8 @@ export class AdminDashboardComponent implements OnInit {
         this.translate.instant('ORDER_STATUS.PAYMENTRECEIVED'),
         this.translate.instant('ORDER_STATUS.PAYMENTFAILED')
       ],
-      chart: { type: 'donut', height: 350 },
+      chart: { type: 'donut', height: 350, background: 'transparent' },
+      theme: { mode: themeMode as 'light' | 'dark' },
       colors: ['#f39c12', '#2ecc71', '#e74c3c'],
       legend: { position: 'bottom' }
     };
@@ -204,9 +210,10 @@ export class AdminDashboardComponent implements OnInit {
     // 3. Peak Hours
     this.peakHoursChartOptions = {
       series: [{ name: this.translate.instant('ORDERS.TITLE'), data: report.peakHours.map((h: any) => h.count) }],
-      chart: { type: 'bar', height: 350, toolbar: { show: false } },
+      chart: { type: 'bar', height: 350, ...chartBaseConfig },
+      theme: { mode: themeMode as 'light' | 'dark' },
       xaxis: { categories: report.peakHours.map((h: any) => `${h.hour}:00`) },
-      colors: ['#3498db'],
+      colors: ['#e6b980'],
       plotOptions: { bar: { borderRadius: 4 } }
     };
 
@@ -214,16 +221,18 @@ export class AdminDashboardComponent implements OnInit {
     this.categoryChartOptions = {
       series: report.topCategories.map((c: any) => c.count),
       labels: report.topCategories.map((c: any) => isAr ? (c.nameAr || c.name) : c.name),
-      chart: { type: 'pie', height: 350 },
-      colors: ['#8e44ad', '#2c3e50', '#d35400', '#16a085', '#2980b9']
+      chart: { type: 'pie', height: 350, background: 'transparent' },
+      theme: { mode: themeMode as 'light' | 'dark' },
+      colors: ['#ff3e3e', '#e6b980', '#2c3e50', '#8e44ad', '#2980b9']
     };
 
     // 5. Top Products
     this.topProductsChartOptions = {
       series: [{ name: this.translate.instant('BASKET.QUANTITY'), data: report.topProducts.map((p: any) => p.quantity) }],
-      chart: { type: 'bar', height: 350, toolbar: { show: false } },
+      chart: { type: 'bar', height: 350, ...chartBaseConfig },
+      theme: { mode: themeMode as 'light' | 'dark' },
       xaxis: { categories: report.topProducts.map((p: any) => isAr ? (p.nameAr || p.name) : p.name) },
-      colors: ['#e67e22'],
+      colors: ['#ff4d4d'],
       plotOptions: { bar: { horizontal: true, borderRadius: 4 } }
     };
 
@@ -231,7 +240,8 @@ export class AdminDashboardComponent implements OnInit {
     this.deliveryChartOptions = {
       series: report.topDeliveryMethods.map((d: any) => d.count),
       labels: report.topDeliveryMethods.map((d: any) => isAr ? (d.nameAr || d.name) : d.name),
-      chart: { type: 'donut', height: 300 },
+      chart: { type: 'donut', height: 300, background: 'transparent' },
+      theme: { mode: themeMode as 'light' | 'dark' },
       colors: ['#27ae60', '#f1c40f', '#e74c3c']
     };
   }

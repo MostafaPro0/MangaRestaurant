@@ -23,7 +23,7 @@ namespace MangaRestaurant.Core.Entities
         /// <summary>
         /// Optional ID to link the notification to a specific item (e.g., OrderId, ProductId)
         /// </summary>
-        public string RelatedId { get; set; }
+        public string? RelatedId { get; set; }
         
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public bool IsRead { get; set; } = false;

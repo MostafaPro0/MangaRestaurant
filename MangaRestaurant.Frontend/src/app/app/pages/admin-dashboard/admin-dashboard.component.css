@@ -1,11 +1,10 @@
 /* 
-  --- MANGA RESTAURANT ADMIN DASHBOARD V3 ---
-  Custom System Nav & Premium Design System
+  --- MANGA RESTAURANT ADMIN DASHBOARD V4 ---
+  Premium Theme-Aware Fluid Design 
 */
 
 :host {
   display: block;
-  background: #f8f9fa;
   min-height: 100vh;
 }
 
@@ -13,60 +12,55 @@
     padding-bottom: 3rem;
 }
 
-/* Header Section */
-.admin-header {
-    background: #fff;
-    border-bottom: 2px solid rgba(0,0,0,0.05);
-    margin-bottom: 1.5rem;
-}
-
 .main-title {
-    background: linear-gradient(135deg, #f9d423 0%, #ff4d4d 100%);
+    background: linear-gradient(135deg, #e6b980 0%, var(--primary) 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* --- CUSTOM TABS NAVIGATION (The Hero Fix) --- */
+/* --- CUSTOM TABS NAVIGATION --- */
 .custom-admin-nav {
     display: flex;
-    flex-wrap: wrap; /* Dynamic wrapping */
-    gap: 10px;
+    flex-wrap: wrap; 
+    gap: 12px;
     padding: 0 1.5rem 1.5rem 1.5rem;
     justify-content: flex-start;
+    background: transparent;
 }
 
 .nav-btn {
     padding: 12px 24px;
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid var(--glass-border);
     border-radius: 14px;
-    background: #fff;
+    background: var(--bg-soft);
     font-weight: 700;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #555;
+    color: var(--text-dim);
     box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 
 .nav-btn i {
     font-size: 1.2rem;
-    color: #999;
+    color: var(--text-dim-subtle);
 }
 
 .nav-btn:hover {
-    background: #fff;
+    background: var(--glass);
     transform: translateY(-2px);
-    box-shadow: 0 10px 15px rgba(0,0,0,0.05);
-    border-color: #f9d423;
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary);
 }
 
 .nav-btn.active {
-    background: var(--primary-color, #f9d423) !important;
+    background: var(--primary) !important;
     color: #000 !important;
-    border-color: var(--primary-color) !important;
-    box-shadow: 0 8px 20px rgba(249, 212, 35, 0.3);
+    border-color: var(--primary) !important;
+    box-shadow: 0 8px 20px rgba(255, 62, 62, 0.3);
 }
 
 .nav-btn.active i {
@@ -85,15 +79,17 @@
 
 /* Stats Summary */
 .stat-card {
-    background: #fff;
+    background: var(--glass);
     border-radius: 20px;
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid var(--glass-border);
     transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
 }
 
 .stat-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 30px rgba(0,0,0,0.08);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary);
 }
 
 .stat-icon {
@@ -102,16 +98,17 @@
     border-radius: 15px;
 }
 
-.stat-icon.sales { background: #fff8e1; color: #f9d423; }
-.stat-icon.revenue { background: #e8f5e9; color: #4caf50; }
-.stat-icon.avg { background: #e3f2fd; color: #2196f3; }
-.stat-icon.users { background: #fce4ec; color: #e91e63; }
+.stat-icon.sales { background: rgba(230, 185, 128, 0.1); color: #e6b980; }
+.stat-icon.revenue { background: rgba(76, 175, 80, 0.1); color: #4caf50; }
+.stat-icon.avg { background: rgba(33, 150, 243, 0.1); color: #2196f3; }
+.stat-icon.users { background: rgba(233, 30, 99, 0.1); color: #e91e63; }
 
 /* Charts */
 .chart-container {
-    background: #fff;
+    background: var(--glass);
     border-radius: 20px;
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
 }
 
 .chart-title {
@@ -121,6 +118,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    color: var(--text-main);
 }
 
 /* MOBILE FIX OVERHAUL */
@@ -133,7 +131,7 @@
 
     .custom-admin-nav {
         display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important; /* 2 Column Grid */
+        grid-template-columns: repeat(2, 1fr) !important;
         gap: 8px !important;
         padding: 0.75rem !important;
     }
@@ -160,11 +158,13 @@
     }
 }
 
-/* ─── Premium Form Controls ─────────────────────────────── */
+/* ─── Premium Form Controls (Theme Aware) ─────────────────────────────── */
 .custom-dialog .p-inputtext,
 .custom-dialog .p-inputtextarea {
     border-radius: 12px !important;
-    border: 2px solid #edf2f7 !important;
+    border: 2px solid var(--glass-border) !important;
+    background: var(--bg-deep) !important;
+    color: var(--text-main) !important;
     padding: 12px 16px !important;
     font-size: 1.1rem !important;
     transition: all 0.2s ease;
@@ -172,31 +172,31 @@
 
 .custom-dialog .p-inputtext:focus,
 .custom-dialog .p-inputtextarea:focus {
-    border-color: #f9d423 !important;
-    box-shadow: 0 0 0 4px rgba(249, 212, 35, 0.1) !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 4px rgba(255, 190, 0, 0.1) !important;
 }
 
 .custom-dialog label {
-    color: #4a5568;
+    color: var(--text-dim);
     font-size: 0.95rem;
     margin-bottom: 0.75rem !important;
 }
 
-/* ─── Click-to-Upload Area ──────────────────────────────── */
+/* ─── Click-to-Upload Area (Theme Aware) ──────────────────────────────── */
 .img-upload-container {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    background: #f8f9fa;
-    border: 2px dashed #dee2e6 !important;
+    background: var(--bg-soft);
+    border: 2px dashed var(--glass-border) !important;
     min-height: 250px;
 }
 
 .img-upload-container:hover {
-    border-color: #f9d423 !important;
-    background: #f1f3f5;
+    border-color: var(--primary) !important;
+    background: var(--surface-hover);
     transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+    box-shadow: var(--shadow-lg) !important;
 }
 
 .upload-overlay {

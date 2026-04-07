@@ -106,3 +106,75 @@ body {
   max-width: 600px;
   margin: 0 auto;
 }
+
+/* ─── Dark Mode Specific Adjustments ─────────────────────────────── */
+body.theme-dark {
+    color-scheme: dark;
+}
+
+/* Table Dark Mode Force Overrides */
+body.theme-dark .p-datatable .p-datatable-thead > tr > th {
+    background: var(--bg-soft) !important;
+    color: var(--text-main) !important;
+    border-color: var(--glass-border) !important;
+}
+
+body.theme-dark .p-datatable .p-datatable-tbody > tr {
+    background: var(--bg-deep) !important;
+    color: var(--text-dim) !important;
+    border-color: var(--glass-border) !important;
+}
+
+body.theme-dark .p-datatable .p-datatable-tbody > tr:hover {
+    background: var(--surface-hover) !important;
+}
+
+body.theme-dark .p-paginator {
+    background: var(--bg-deep) !important;
+    color: var(--text-dim) !important;
+    border-color: var(--glass-border) !important;
+}
+
+body.theme-dark .p-paginator .p-paginator-pages .p-paginator-page,
+body.theme-dark .p-paginator .p-paginator-next,
+body.theme-dark .p-paginator .p-paginator-last,
+body.theme-dark .p-paginator .p-paginator-first,
+body.theme-dark .p-paginator .p-paginator-prev {
+    color: var(--text-dim) !important;
+}
+
+body.theme-dark .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: var(--primary) !important;
+    color: #000 !important;
+}
+
+/* Dialog Dark Mode Force Overrides */
+body.theme-dark .p-dialog .p-dialog-header,
+body.theme-dark .p-dialog .p-dialog-content,
+body.theme-dark .p-dialog .p-dialog-footer {
+    background: var(--bg-soft) !important;
+    color: var(--text-main) !important;
+    border-color: var(--glass-border) !important;
+}
+
+/* Notification Panel Contrast Fix */
+body.theme-dark .notification-panel {
+    background: var(--glass) !important;
+    border-color: var(--glass-border) !important;
+}
+
+body.theme-dark .notification-item .text-main {
+    color: #fff !important;
+}
+
+body.theme-dark .notification-item .text-dim {
+    color: #cecece !important;
+}
+
+body.theme-dark .p-toast-detail {
+    color: #cecece !important;
+}
+
+body.theme-dark .p-toast-summary {
+    color: #fff !important;
+}
