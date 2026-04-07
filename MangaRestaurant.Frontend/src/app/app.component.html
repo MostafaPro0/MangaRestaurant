@@ -58,21 +58,24 @@
               </div>
 
               <div *ngFor="let notif of notifications()" 
-                   class="notification-item p-3 mb-2 border-round-lg cursor-pointer transition-all hover:bg-white-alpha-10"
+                   class="notification-item p-3 mb-2 border-round-lg cursor-pointer transition-all relative"
+                   [ngStyle]="{'background': notif.isRead ? 'transparent' : 'var(--surface-ground)'}"
                    (click)="handleNotificationItemClick(notif, op)">
-                <div class="flex align-items-start gap-3">
+                <!-- Unread Dot -->
+                <div *ngIf="!notif.isRead" class="absolute border-circle bg-red-500" style="width: 8px; height: 8px; top: 12px; left: 12px;"></div>
+                <div class="flex align-items-start gap-3 pl-3">
                   <div class="notification-icon-wrap" [ngClass]="notif.type">
                     <i [class]="'pi ' + notificationService.getNotificationIcon(notif.type)"></i>
                   </div>
                   <div class="flex-1">
-                    <div class="text-sm font-bold text-main line-height-1 mb-1">
+                    <div class="text-sm font-bold text-main line-height-1 mb-1" [ngStyle]="{'opacity': notif.isRead ? '0.7' : '1'}">
                       {{ (lang() === 'ar' ? notif.titleAr : notif.title) }}
                     </div>
-                    <div class="text-xs text-dim line-height-2">
+                    <div class="text-xs text-dim line-height-2" [ngStyle]="{'opacity': notif.isRead ? '0.7' : '1'}">
                        {{ (lang() === 'ar' ? notif.messageAr : notif.message) }}
                     </div>
                     <div class="text-right mt-1">
-                      <span class="text-2xs text-dim-subtle">{{ notif.timestamp | date:'shortTime' }}</span>
+                      <span class="text-2xs text-dim-subtle">{{ notif.createdAt | date:'short' }}</span>
                     </div>
                   </div>
                 </div>
@@ -120,10 +123,17 @@
                   <p class="text-dim-subtle text-sm">{{ (lang() === 'ar' ? 'لا توجد إشعارات' : 'No notifications') }}</p>
                 </div>
                 <div *ngFor="let notif of notifications()" 
-                     class="p-2 mb-2 border-round hover:bg-white-alpha-10 cursor-pointer"
+                     class="notification-item p-2 mb-2 border-round cursor-pointer relative"
+                     [ngStyle]="{'background': notif.isRead ? 'transparent' : 'var(--surface-ground)'}"
                      (click)="handleNotificationItemClick(notif, op_mob)">
-                  <div class="text-xs font-bold">{{ (lang() === 'ar' ? notif.titleAr : notif.title) }}</div>
-                  <div class="text-2xs text-dim">{{ (lang() === 'ar' ? notif.messageAr : notif.message) }}</div>
+                  <div *ngIf="!notif.isRead" class="absolute border-circle bg-red-500" style="width: 6px; height: 6px; top: 12px; left: 8px;"></div>
+                  <div class="pl-2">
+                    <div class="text-xs font-bold" [ngStyle]="{'opacity': notif.isRead ? '0.7' : '1'}">{{ (lang() === 'ar' ? notif.titleAr : notif.title) }}</div>
+                    <div class="text-2xs text-dim" [ngStyle]="{'opacity': notif.isRead ? '0.7' : '1'}">{{ (lang() === 'ar' ? notif.messageAr : notif.message) }}</div>
+                    <div class="text-right mt-1">
+                      <span class="text-2xs text-dim-subtle" style="font-size: 9px">{{ notif.createdAt | date:'short' }}</span>
+                    </div>
+                  </div>
                 </div>
              </div>
           </div>

@@ -38,6 +38,9 @@ namespace MangaRestaurant.APIs.Helpers
 
             CreateMap<AppUser, UserDTO>()
                 .ForMember(d => d.ProfilePictureUrl, o => o.MapFrom<ProfilePictureUrlResolver>());
+                
+            CreateMap<Notification, NotificationToReturnDto>()
+                .ForMember(d => d.Type, o => o.MapFrom(s => s.Type.ToString()));
         }
     }
 }

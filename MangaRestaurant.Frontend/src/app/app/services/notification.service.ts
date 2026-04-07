@@ -5,7 +5,7 @@ import { MessageService } from 'primeng/api';
 import { environment } from '../../../environments/environment';
 import { AuthService } from './auth.service';
 import { TranslateService } from './translate.service';
-
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -23,8 +23,20 @@ export class NotificationService {
     private messageService: MessageService,
     private authService: AuthService,
     private translateService: TranslateService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {}
+
+  loadNotifications() {
+    this.http.get<any[]>(environment.apiUrl + '/notifications').subscribe({
+      next: (notifications) => {
+        this.notificationsSource.next(notifications);
+        const unread = notifications.filter(n => !n.isRead).length;
+        this.unreadCountSource.next(unread);
+      },
+      error: (e) => console.log(e)
+    });
+  }
 
   createHubConnection() {
     this.hubConnection = new HubConnectionBuilder()
@@ -56,7 +68,7 @@ export class NotificationService {
     });
 
     this.hubConnection.on('ReceiveAdminNotification', (notification: any) => {
-      this.addNotification(notification); // Add to dropdown list
+      this.addNotification(notification); 
       
       this.messageService.add({
         severity: 'warn',
@@ -69,34 +81,56 @@ export class NotificationService {
       });
     });
 
-    // Join groups based on user role/identity
     this.authService.user.subscribe(user => {
-      if (user && this.hubConnection) {
-        this.hubConnection.invoke('JoinUserGroup', user.email);
-        
-        if (this.authService.isAdmin(user.token)) {
-           this.hubConnection.invoke('JoinAdminGroup');
+      if (user) {
+        if (this.hubConnection) {
+          this.hubConnection.invoke('JoinUserGroup', user.email);
+          if (this.authService.isAdmin(user.token)) {
+             this.hubConnection.invoke('JoinAdminGroup');
+          }
         }
+        this.loadNotifications();
+      } else {
+        this.notificationsSource.next([]);
+        this.unreadCountSource.next(0);
       }
     });
   }
 
   clearUnreadCount() {
-    this.unreadCountSource.next(0);
+    this.http.post(environment.apiUrl + '/notifications/read-all', {}).subscribe(() => {
+      this.unreadCountSource.next(0);
+      
+      const updated = this.notificationsSource.value.map(n => ({...n, isRead: true}));
+      this.notificationsSource.next(updated);
+    });
+  }
+  
+  markAsRead(id: number) {
+    this.http.post(environment.apiUrl + `/notifications/${id}/read`, {}).subscribe(() => {
+      const current = this.notificationsSource.value;
+      const index = current.findIndex(n => n.id === id);
+      if (index !== -1) {
+         current[index].isRead = true;
+         this.notificationsSource.next([...current]);
+         
+         const unread = Math.max(0, this.unreadCountSource.value - 1);
+         this.unreadCountSource.next(unread);
+      }
+    });
   }
 
   addNotification(notification: any) {
     const current = this.notificationsSource.value;
-    // Prevent duplicates for specific local types
     if (notification.type === 'password_reminder' && current.some(n => n.type === 'password_reminder')) {
        return;
     }
 
     const newNotif = {
       ...notification,
-      id: Date.now(),
-      timestamp: new Date(),
-      read: false
+      id: notification.id || Date.now(), 
+      createdAt: new Date(),
+      isRead: false
     };
 
     this.notificationsSource.next([newNotif, ...current]);
@@ -113,6 +147,7 @@ export class NotificationService {
       case 'NewProduct': return 'pi pi-bolt';
       case 'NewOrder': return 'pi pi-shopping-cart';
       case 'NewReview': return 'pi pi-star-fill';
+      case 'PasswordChange':
       case 'password_reminder': return 'pi pi-shield';
       default: return 'pi pi-bell';
     }
@@ -146,18 +181,37 @@ export class NotificationService {
         });
       }
     });
-
-    // Listen for toast clicks
-    // Note: PrimeNG Toast onClick handles the event on the message component.
-    // We can handle it globally if we use a specific key or data.
   }
 
   handleNotificationClick(event: any) {
-    // Check if event is Message or has message property
     const msg = event?.message || event;
-    if (msg?.data?.type === 'password_reminder') {
-       this.router.navigate(['/profile'], { queryParams: { tab: 'password' } });
-       this.messageService.clear();
+    const data = msg?.data || msg;
+    
+    if (data.id && !data.isRead) {
+      this.markAsRead(data.id);
     }
+    
+    switch(data.type) {
+        case 'password_reminder':
+        case 'PasswordChange':
+            this.router.navigate(['/profile'], { queryParams: { tab: 'password' } });
+            break;
+        case 'OrderUpdate':
+            // Redirect to orders
+            this.router.navigate(['/orders']); 
+            break;
+        case 'NewOrder':
+            // Logic admin order
+            this.router.navigate(['/admin'], { queryParams: { tab: 'orders', orderId: data.relatedId }});
+            break;
+        case 'NewProduct':
+            if (data.relatedId) {
+               this.router.navigate(['/product', data.relatedId]);
+            } else {
+               this.router.navigate(['/products']);
+            }
+            break;
+    }
+    this.messageService.clear();
   }
 }

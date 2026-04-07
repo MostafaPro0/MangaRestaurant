@@ -14,10 +14,10 @@
 
 /* Notification Dropdown Styles */
 .notification-panel {
-  border: 1px solid var(--primary-color) !important;
-  background: rgba(13, 13, 13, 0.95) !important;
+  border: 1px solid var(--glass-border) !important;
+  background: var(--glass) !important;
   backdrop-filter: blur(10px);
-  box-shadow: 0 10px 40px rgba(255, 62, 62, 0.2) !important;
+  box-shadow: var(--shadow-lg) !important;
   border-radius: 12px !important;
 }
 
@@ -41,8 +41,13 @@
   color: #3ea1ff;
 }
 
+.notification-item {
+  border: 1px solid transparent;
+}
+
 .notification-item:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-soft) !important;
+  border-color: var(--glass-border);
 }
 
 .strikethrough {
