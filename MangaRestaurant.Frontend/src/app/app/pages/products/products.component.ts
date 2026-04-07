@@ -22,8 +22,10 @@ import { TranslateService } from '../../services/translate.service';
 })
 export class ProductsComponent implements OnInit {
   products: any[] = [];
+  categories: any[] = [];
   loading = false;
   search = '';
+  selectedCategoryId = 0;
 
   constructor(
     private productsService: ProductsService, 
@@ -33,17 +35,31 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProducts();
+    this.loadCategories();
   }
 
   loadProducts(): void {
     this.loading = true;
-    this.productsService.getProducts(1, 30, this.search).subscribe({
+    const catId = this.selectedCategoryId === 0 ? null : this.selectedCategoryId;
+    this.productsService.getProducts(1, 40, this.search, catId).subscribe({
       next: (result) => {
         this.products = result?.data ?? [];
         this.loading = false;
       },
       error: () => (this.loading = false)
     });
+  }
+
+  loadCategories(): void {
+    this.productsService.getCategories().subscribe({
+      next: (categories) => (this.categories = categories),
+      error: () => {}
+    });
+  }
+
+  filterByCategory(id: number): void {
+    this.selectedCategoryId = id;
+    this.loadProducts();
   }
 
   clearSearch(): void {

@@ -11,11 +11,25 @@
     <div class="flex align-items-center gap-2 p-3 bg-soft mg-card w-full" style="max-width: 650px">
       <span class="p-input-icon-left w-full">
         <i class="pi pi-search primary-text"></i>
-        <input pInputText type="text" [(ngModel)]="search" 
-               [placeholder]="'PRODUCTS.SEARCH_PLACEHOLDER' | translate" (keydown.enter)="loadProducts()" 
-               style="border:none; background:transparent !important; width: 100%"/>
+        <input pInputText type="text" [(ngModel)]="search" [placeholder]="'PRODUCTS.SEARCH_PLACEHOLDER' | translate"
+          (keydown.enter)="loadProducts()" style="border:none; background:transparent !important; width: 100%" />
       </span>
       <button pButton icon="pi pi-search" (click)="loadProducts()" class="p-button-lg"></button>
+    </div>
+  </div>
+
+  <!-- Categories Filter (Responsive scrolling) -->
+  <div class="flex justify-content-center mb-10 w-full">
+    <div class="my-2 flex gap-3 overflow-x-auto no-scrollbar py-2 px-1" style="max-width: 1000px">
+      <button pButton [label]="'All' | translate" class="white-space-nowrap p-button-rounded px-6 py-3 font-bold"
+        [class.p-button-outlined]="selectedCategoryId !== 0" [class.p-button-secondary]="selectedCategoryId !== 0"
+        (click)="filterByCategory(0)"></button>
+
+      <button *ngFor="let cat of categories" pButton
+        [label]="(translateService.currentLanguage === 'ar' ? cat.nameAr : cat.name) || cat.name"
+        class="white-space-nowrap p-button-rounded px-6 py-3 font-bold"
+        [class.p-button-outlined]="selectedCategoryId !== cat.id"
+        [class.p-button-secondary]="selectedCategoryId !== cat.id" (click)="filterByCategory(cat.id)"></button>
     </div>
   </div>
 
@@ -45,20 +59,23 @@
         <div class="img-panel">
           <!-- Handled by Backend Resolver for Physical File Checks -->
           <img [src]="product.pictureUrl" [alt]="product.name" />
-          
+
           <!-- Category Pin -->
           <div style="position:absolute; top: 0; right: 0">
-            <span class="badge-neon py-2 px-3 m-0 shadow-lg">{{ (translateService.currentLanguage === 'ar' ? product.categoryAr : product.category) || product.category }}</span>
+            <span class="badge-neon py-2 px-3 m-0 shadow-lg">{{ (translateService.currentLanguage === 'ar' ?
+              product.categoryAr : product.category) || product.category }}</span>
           </div>
         </div>
 
         <!-- content -->
         <div class="flex-grow-1 flex flex-column justify-content-between">
           <div class="mb-4">
-            <h3 class="display-font text-2xl font-bold mb-1 uppercase tracking-1">{{ (translateService.currentLanguage === 'ar' ? product.nameAr : product.name) || product.name }}</h3>
-            <span class="text-sm font-bold text-muted">{{ (translateService.currentLanguage === 'ar' ? product.brandAr : product.brand) || product.brand }}</span>
+            <h3 class="display-font text-2xl font-bold mb-1 uppercase tracking-1">{{ (translateService.currentLanguage
+              === 'ar' ? product.nameAr : product.name) || product.name }}</h3>
+            <span class="text-sm font-bold text-muted">{{ (translateService.currentLanguage === 'ar' ? product.brandAr :
+              product.brand) || product.brand }}</span>
           </div>
-          
+
           <div class="flex align-items-center justify-content-between mb-4">
             <span class="primary-text text-3xl font-black">{{ product.price | currency }}</span>
             <span class="text-xs text-muted font-bold opacity-60">incl. VAT</span>
@@ -68,12 +85,11 @@
         <div class="grid grid-nogutter gap-2">
           <div class="col-12">
             <button pButton class="w-full py-4 text-xl" icon="pi pi-cart-plus"
-                    [label]="'PRODUCTS.ADD_TO_CART' | translate" (click)="addToBasket(product)"></button>
+              [label]="'PRODUCTS.ADD_TO_CART' | translate" (click)="addToBasket(product)"></button>
           </div>
           <div class="col-12">
             <a pButton class="p-button-outlined w-full py-3 text-sm" icon="pi pi-eye"
-               [label]="'PRODUCTS.VIEW' | translate"
-               [routerLink]="['/products', product.id]"></a>
+              [label]="'PRODUCTS.VIEW' | translate" [routerLink]="['/products', product.id]"></a>
           </div>
         </div>
       </div>

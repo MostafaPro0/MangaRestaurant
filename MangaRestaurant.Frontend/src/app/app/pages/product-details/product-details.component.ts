@@ -56,7 +56,7 @@ export class ProductDetailsComponent implements OnInit {
 
   loadRecommended(product: any, currentId: number): void {
     this.loadingRecommended = true;
-    this.productsService.getProducts(1, 10, '', product.category || '').subscribe({
+    this.productsService.getProducts(1, 10, '', product.categoryId).subscribe({
       next: (result) => {
         this.recommended = (result?.data ?? [])
           .filter((p: any) => p.id !== currentId)
