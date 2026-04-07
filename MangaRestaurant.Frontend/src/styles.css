@@ -8,6 +8,43 @@
 @import "./assets/styles/_layout.css";
 @import "./assets/styles/_components.css";
 
+.p-toast-message {
+  cursor: pointer !important;
+}
+
+/* Notification Dropdown Styles */
+.notification-panel {
+  border: 1px solid var(--primary-color) !important;
+  background: rgba(13, 13, 13, 0.95) !important;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 40px rgba(255, 62, 62, 0.2) !important;
+  border-radius: 12px !important;
+}
+
+.notification-icon-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.notification-icon-wrap.password_reminder {
+  background: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+}
+
+.notification-icon-wrap.order_status {
+  background: rgba(62, 161, 255, 0.2);
+  color: #3ea1ff;
+}
+
+.notification-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
 /* ─── PrimeNG Global Overrides ─────────────────────────────── */
 :root {
   --primary-color: #ff3e3e;

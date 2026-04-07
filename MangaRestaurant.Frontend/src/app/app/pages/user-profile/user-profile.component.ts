@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -50,18 +51,11 @@ export class UserProfileComponent implements OnInit {
     private authService: AuthService,
     private messageService: MessageService,
     private translate: TranslateService,
-    private route: import('@angular/router').ActivatedRoute
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.user = this.authService.currentUser;
-    if (this.user) {
-      this.displayName = this.user.displayName;
-      this.phoneNumber = this.user.phoneNumber || '';
-      this.phoneNumber2 = this.user.phoneNumber2 || '';
-      this.profilePictureUrl = this.user.profilePictureUrl || null;
-    }
-
+    this.refreshUser();
     this.loadAddresses();
 
     this.route.queryParams.subscribe(params => {
@@ -69,6 +63,20 @@ export class UserProfileComponent implements OnInit {
         this.activeTabIndex = 1;
       } else if (params['tab'] === 'address') {
         this.activeTabIndex = 0;
+      }
+    });
+  }
+
+  refreshUser(): void {
+    this.authService.getCurrentUser().subscribe({
+      next: (user) => {
+        this.user = user;
+        if (this.user) {
+          this.displayName = this.user.displayName;
+          this.phoneNumber = this.user.phoneNumber || '';
+          this.phoneNumber2 = this.user.phoneNumber2 || '';
+          this.profilePictureUrl = this.user.profilePictureUrl || null;
+        }
       }
     });
   }

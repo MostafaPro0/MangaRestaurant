@@ -40,7 +40,7 @@ namespace MangaRestaurant.Repository.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Department");
+                    b.ToTable("Department", (string)null);
                 });
 
             modelBuilder.Entity("MangaRestaurant.Core.Entities.Employee", b =>
@@ -66,7 +66,7 @@ namespace MangaRestaurant.Repository.Data.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Employee");
+                    b.ToTable("Employee", (string)null);
                 });
 
             modelBuilder.Entity("MangaRestaurant.Core.Entities.Order.DeliveryMethod", b =>
@@ -94,7 +94,7 @@ namespace MangaRestaurant.Repository.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DeliveryMethods");
+                    b.ToTable("DeliveryMethods", (string)null);
                 });
 
             modelBuilder.Entity("MangaRestaurant.Core.Entities.Order.Order", b =>
@@ -133,7 +133,7 @@ namespace MangaRestaurant.Repository.Data.Migrations
 
                     b.HasIndex("DeliveryMethodId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("MangaRestaurant.Core.Entities.Order.OrderItem", b =>
@@ -157,7 +157,7 @@ namespace MangaRestaurant.Repository.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("MangaRestaurant.Core.Entities.Product", b =>
@@ -207,7 +207,7 @@ namespace MangaRestaurant.Repository.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("MangaRestaurant.Core.Entities.ProductBrand", b =>
@@ -229,7 +229,7 @@ namespace MangaRestaurant.Repository.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductBrands");
+                    b.ToTable("ProductBrands", (string)null);
                 });
 
             modelBuilder.Entity("MangaRestaurant.Core.Entities.ProductCategory", b =>
@@ -251,7 +251,7 @@ namespace MangaRestaurant.Repository.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductCategories");
+                    b.ToTable("ProductCategories", (string)null);
                 });
 
             modelBuilder.Entity("MangaRestaurant.Core.Entities.ProductReview", b =>
@@ -287,7 +287,7 @@ namespace MangaRestaurant.Repository.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductReviews");
+                    b.ToTable("ProductReviews", (string)null);
                 });
 
             modelBuilder.Entity("MangaRestaurant.Core.Entities.Employee", b =>
@@ -309,7 +309,7 @@ namespace MangaRestaurant.Repository.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.OwnsOne("MangaRestaurant.Core.Entities.Order.OrderAddress", "ShippingAddress", b1 =>
+                    b.OwnsOne("MangaRestaurant.Core.Entities.Order.Order.ShippingAddress#MangaRestaurant.Core.Entities.Order.OrderAddress", "ShippingAddress", b1 =>
                         {
                             b1.Property<int>("OrderId")
                                 .HasColumnType("int");
@@ -336,7 +336,7 @@ namespace MangaRestaurant.Repository.Data.Migrations
 
                             b1.HasKey("OrderId");
 
-                            b1.ToTable("Orders");
+                            b1.ToTable("Orders", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderId");
@@ -354,7 +354,7 @@ namespace MangaRestaurant.Repository.Data.Migrations
                         .WithMany("Items")
                         .HasForeignKey("OrderId");
 
-                    b.OwnsOne("MangaRestaurant.Core.Entities.Order.ProductItemOrder", "ProductItemOrder", b1 =>
+                    b.OwnsOne("MangaRestaurant.Core.Entities.Order.OrderItem.ProductItemOrder#MangaRestaurant.Core.Entities.Order.ProductItemOrder", "ProductItemOrder", b1 =>
                         {
                             b1.Property<int>("OrderItemId")
                                 .HasColumnType("int");
@@ -376,7 +376,7 @@ namespace MangaRestaurant.Repository.Data.Migrations
 
                             b1.HasKey("OrderItemId");
 
-                            b1.ToTable("OrderItems");
+                            b1.ToTable("OrderItems", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderItemId");

@@ -82,7 +82,11 @@ export class CheckoutComponent implements OnInit {
         items: currentBasket.items.length,
         addressValid
       });
-      alert('يرجى إضافة منتج واحد على الأقل وتعبئة جميع حقول العنوان الإجبارية (بما في ذلك الدولة)');
+      this.messageService.add({
+        severity: 'warn',
+        summary: this.translate.instant('TOAST.WARN'),
+        detail: this.translate.instant('TOAST.CHECKOUT.VALIDATION_ERROR')
+      });
       return;
     }
 

@@ -19,6 +19,15 @@ export class AuthService {
     return this.currentUser$.asObservable();
   }
 
+  getCurrentUser(): Observable<User> {
+    return this.api.get<User>('Accounts/GetCurrentUser').pipe(
+      map(user => {
+        this.setUser(user);
+        return user;
+      })
+    );
+  }
+
   private setUser(user: User): void {
     this.currentUser$.next(user);
     localStorage.setItem('currentUser', JSON.stringify(user));

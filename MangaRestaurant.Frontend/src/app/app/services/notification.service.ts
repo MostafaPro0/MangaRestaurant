@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { MessageService } from 'primeng/api';
 import { environment } from '../../../environments/environment';
@@ -15,11 +16,14 @@ export class NotificationService {
   private unreadCountSource = new BehaviorSubject<number>(0);
   unreadCount$ = this.unreadCountSource.asObservable();
 
+  private notificationsSource = new BehaviorSubject<any[]>([]);
+  notifications$ = this.notificationsSource.asObservable();
+
   constructor(
     private messageService: MessageService,
     private authService: AuthService,
     private translateService: TranslateService,
-    private router: import('@angular/router').Router
+    private router: Router
   ) {}
 
   createHubConnection() {
@@ -35,7 +39,8 @@ export class NotificationService {
       .catch(error => console.log(error));
 
     this.hubConnection.on('ReceiveNotification', (notification: any) => {
-      this.unreadCountSource.next(this.unreadCountSource.value + 1);
+      this.addNotification(notification);
+      
       const title = this.translateService.currentLanguage === 'ar' ? notification.titleAr : notification.title;
       const msg = this.translateService.currentLanguage === 'ar' ? notification.messageAr : notification.message;
       
@@ -44,7 +49,9 @@ export class NotificationService {
         summary: title,
         detail: msg,
         sticky: true,
-        icon: this.getNotificationIcon(notification.type)
+        styleClass: 'clickable-toast',
+        icon: this.getNotificationIcon(notification.type),
+        data: notification
       });
     });
 
@@ -72,6 +79,24 @@ export class NotificationService {
     this.unreadCountSource.next(0);
   }
 
+  addNotification(notification: any) {
+    const current = this.notificationsSource.value;
+    // Prevent duplicates for specific local types
+    if (notification.type === 'password_reminder' && current.some(n => n.type === 'password_reminder')) {
+       return;
+    }
+
+    const newNotif = {
+      ...notification,
+      id: Date.now(),
+      timestamp: new Date(),
+      read: false
+    };
+
+    this.notificationsSource.next([newNotif, ...current]);
+    this.unreadCountSource.next(this.unreadCountSource.value + 1);
+  }
+
   stopHubConnection() {
     this.hubConnection?.stop().catch(error => console.log(error));
   }
@@ -87,18 +112,27 @@ export class NotificationService {
   checkPasswordReminder() {
     this.authService.user.subscribe(user => {
       if (user && user.hasPassword === false) {
-        const title = this.translateService.currentLanguage === 'ar' ? 'تنبيه أمني' : 'Security Alert';
-        const msg = this.translateService.currentLanguage === 'ar' 
-          ? 'يجب تعيين كلمة مرور لحسابك. اضغط هنا للتعيين الآن.' 
-          : 'You must set a password for your account. Click here to set it now.';
+        const titleAr = 'تنبيه أمني';
+        const titleEn = 'Security Alert';
+        const msgAr = 'يجب تعيين كلمة مرور لحسابك. اضغط هنا للتعيين الآن.';
+        const msgEn = 'You must set a password for your account. Click here to set it now.';
         
-        this.unreadCountSource.next(this.unreadCountSource.value + 1);
-        
+        const notification = {
+           type: 'password_reminder',
+           title: titleEn,
+           titleAr: titleAr,
+           message: msgEn,
+           messageAr: msgAr
+        };
+
+        this.addNotification(notification);
+
         this.messageService.add({
           severity: 'warn',
-          summary: title,
-          detail: msg,
+          summary: this.translateService.currentLanguage === 'ar' ? titleAr : titleEn,
+          detail: this.translateService.currentLanguage === 'ar' ? msgAr : msgEn,
           sticky: true,
+          styleClass: 'clickable-toast',
           data: { type: 'password_reminder' }
         });
       }
@@ -110,7 +144,9 @@ export class NotificationService {
   }
 
   handleNotificationClick(event: any) {
-    if (event?.message?.data?.type === 'password_reminder') {
+    // Check if event is Message or has message property
+    const msg = event?.message || event;
+    if (msg?.data?.type === 'password_reminder') {
        this.router.navigate(['/profile'], { queryParams: { tab: 'password' } });
        this.messageService.clear();
     }

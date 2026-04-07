@@ -195,7 +195,10 @@
     "ITEM_ADDED": "Product added to basket",
     "REGISTER_SUCCESS": "Welcome to MangaResto family! Your account was created successfully.",
     "REGISTER_FAIL": "Sorry, we encountered a problem creating your account.",
-    "WARN": "Warning"
+    "WARN": "Warning",
+    "CHECKOUT": {
+      "VALIDATION_ERROR": "Please add at least one item and fill all mandatory address fields (including country)"
+    }
   },
   "ORDER_STATUS": {
     "PENDING": "Pending",

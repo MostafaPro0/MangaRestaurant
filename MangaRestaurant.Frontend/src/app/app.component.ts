@@ -16,6 +16,7 @@ import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { User } from './app/models/user.model';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +28,8 @@ import { User } from './app/models/user.model';
     TooltipModule, 
     TranslateModule,
     AvatarModule,
-    MenuModule
+    MenuModule,
+    OverlayPanelModule
   ],
   standalone: true,
   templateUrl: './app.component.html',
@@ -42,6 +44,7 @@ export class AppComponent {
   lang = signal<'en' | 'ar'>((localStorage.getItem('lang') as 'en' | 'ar') || 'en');
   basketCount = signal(0);
   notificationCount = signal(0);
+  notifications = signal<any[]>([]);
   mobileMenuOpened = signal(false);
 
   profileMenuItems: MenuItem[] = [];
@@ -56,6 +59,9 @@ export class AppComponent {
     this.notificationService.createHubConnection();
     this.notificationService.unreadCount$.subscribe(count => {
        this.notificationCount.set(count);
+    });
+    this.notificationService.notifications$.subscribe(notifs => {
+       this.notifications.set(notifs);
     });
     this.basketService.basket$.subscribe(basket => {
       const count = basket.items.reduce((sum, item) => sum + item.quantity, 0);
@@ -128,6 +134,11 @@ export class AppComponent {
 
   resetNotificationCount(): void {
     this.notificationService.clearUnreadCount();
+  }
+
+  handleNotificationItemClick(notification: any, op: any): void {
+    op.hide();
+    this.notificationService.handleNotificationClick({ message: { data: notification } });
   }
 
   logout(): void {

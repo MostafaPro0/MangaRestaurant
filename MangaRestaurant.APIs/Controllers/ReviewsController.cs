@@ -3,6 +3,7 @@ using MangaRestaurant.APIs.Dtos;
 using MangaRestaurant.APIs.Errors;
 using MangaRestaurant.Core;
 using MangaRestaurant.Core.Entities;
+using MangaRestaurant.Core.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
