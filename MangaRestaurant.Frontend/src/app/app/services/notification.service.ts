@@ -18,7 +18,8 @@ export class NotificationService {
   constructor(
     private messageService: MessageService,
     private authService: AuthService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private router: import('@angular/router').Router
   ) {}
 
   createHubConnection() {
@@ -27,7 +28,11 @@ export class NotificationService {
       .withAutomaticReconnect()
       .build();
 
-    this.hubConnection.start().catch(error => console.log(error));
+    this.hubConnection.start()
+      .then(() => {
+        this.checkPasswordReminder();
+      })
+      .catch(error => console.log(error));
 
     this.hubConnection.on('ReceiveNotification', (notification: any) => {
       this.unreadCountSource.next(this.unreadCountSource.value + 1);
@@ -76,6 +81,38 @@ export class NotificationService {
       case 'OrderUpdate': return 'pi pi-shopping-bag';
       case 'NewProduct': return 'pi pi-bolt';
       default: return 'pi pi-bell';
+    }
+  }
+
+  checkPasswordReminder() {
+    this.authService.user.subscribe(user => {
+      if (user && user.hasPassword === false) {
+        const title = this.translateService.currentLanguage === 'ar' ? 'تنبيه أمني' : 'Security Alert';
+        const msg = this.translateService.currentLanguage === 'ar' 
+          ? 'يجب تعيين كلمة مرور لحسابك. اضغط هنا للتعيين الآن.' 
+          : 'You must set a password for your account. Click here to set it now.';
+        
+        this.unreadCountSource.next(this.unreadCountSource.value + 1);
+        
+        this.messageService.add({
+          severity: 'warn',
+          summary: title,
+          detail: msg,
+          sticky: true,
+          data: { type: 'password_reminder' }
+        });
+      }
+    });
+
+    // Listen for toast clicks
+    // Note: PrimeNG Toast onClick handles the event on the message component.
+    // We can handle it globally if we use a specific key or data.
+  }
+
+  handleNotificationClick(event: any) {
+    if (event?.message?.data?.type === 'password_reminder') {
+       this.router.navigate(['/profile'], { queryParams: { tab: 'password' } });
+       this.messageService.clear();
     }
   }
 }

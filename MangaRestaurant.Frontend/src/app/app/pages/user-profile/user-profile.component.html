@@ -46,7 +46,7 @@
     <!-- Tabbed Content Section -->
     <div class="col-12 lg:col-8">
       <div class="glass-card border-radius-lg relative z-1 p-0 overflow-hidden">
-        <p-tabView styleClass="manga-tabs">
+        <p-tabView styleClass="manga-tabs" [(activeIndex)]="activeTabIndex">
           <!-- Addresses Tab -->
           <p-tabPanel>
             <ng-template pTemplate="header">

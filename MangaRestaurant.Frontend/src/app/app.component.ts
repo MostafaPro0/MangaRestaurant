@@ -51,7 +51,7 @@ export class AppComponent {
     private translateService: TranslateService, 
     private basketService: BasketService,
     private router: Router,
-    private notificationService: NotificationService
+    public notificationService: NotificationService
   ) {
     this.notificationService.createHubConnection();
     this.notificationService.unreadCount$.subscribe(count => {

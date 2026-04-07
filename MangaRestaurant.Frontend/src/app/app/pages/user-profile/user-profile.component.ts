@@ -41,6 +41,7 @@ export class UserProfileComponent implements OnInit {
   loadingAddresses = false;
   loadingPicture = false;
   savingAddress = false;
+  activeTabIndex = 0;
 
   @ViewChild('fileInput') fileInput!: ElementRef;
   @ViewChild('addressForm') addressForm!: NgForm;
@@ -48,7 +49,8 @@ export class UserProfileComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private messageService: MessageService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private route: import('@angular/router').ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -61,6 +63,14 @@ export class UserProfileComponent implements OnInit {
     }
 
     this.loadAddresses();
+
+    this.route.queryParams.subscribe(params => {
+      if (params['tab'] === 'password') {
+        this.activeTabIndex = 1;
+      } else if (params['tab'] === 'address') {
+        this.activeTabIndex = 0;
+      }
+    });
   }
 
   loadAddresses(): void {

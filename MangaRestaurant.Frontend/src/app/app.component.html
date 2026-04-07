@@ -1,5 +1,5 @@
 <div class="page-wrap" [class.menu-open]="mobileMenuOpened()">
-  <p-toast position="top-right"></p-toast>
+  <p-toast position="top-right" (onClick)="notificationService.handleNotificationClick($event)"></p-toast>
   <!-- Premium Responsive Mango Header -->
   <header class="navbar-manga">
     <div class="nav-container">
