@@ -51,6 +51,7 @@ namespace MangaRestaurant.Core.Specifications.ProductSpecs
 
             Includes.Add(P => P.Brand);
             Includes.Add(P => P.Category);
+            Includes.Add(P => P.Reviews);
 
         }
 

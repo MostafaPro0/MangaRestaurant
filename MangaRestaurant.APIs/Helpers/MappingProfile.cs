@@ -15,9 +15,12 @@ namespace MangaRestaurant.APIs.Helpers
                 .ForMember(d => d.BrandAr, O => O.MapFrom(s => s.Brand.NameAr))
                 .ForMember(d => d.Category, O => O.MapFrom(s => s.Category.Name))
                 .ForMember(d => d.CategoryAr, O => O.MapFrom(s => s.Category.NameAr))
-                .ForMember(d => d.PictureUrl, O => O.MapFrom<ProductPictureUrlResolver>());
+                .ForMember(d => d.PictureUrl, O => O.MapFrom<ProductPictureUrlResolver>())
+                .ForMember(d => d.AverageRating, O => O.MapFrom(s => s.Reviews.Any() ? Math.Round(s.Reviews.Average(r => r.Rating), 1) : 0));
 
             CreateMap<ProductCreateDto, Product>();
+            CreateMap<ProductReview, ProductReviewDto>();
+            CreateMap<ProductReviewCreateDto, ProductReview>();
 
             CreateMap<UserAddress, UserAddressDto>().ReverseMap();
             CreateMap<UserAddressDto, OrderAddress>();

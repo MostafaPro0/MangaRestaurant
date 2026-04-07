@@ -1,3 +1,5 @@
+<p-toast></p-toast>
+
 <div class="container section-pad px-3" *ngIf="product && !loading">
   <!-- Optimized Back Button (Responsive) -->
   <a routerLink="/products" class="flex align-items-center gap-2 mb-8 text-muted hover-text-primary transition-all">
@@ -11,9 +13,10 @@
       <div class="img-panel" style="aspect-ratio: 1/1; width: 100%; height: auto; box-shadow: var(--shadow-lg)">
         <!-- Backend Handlers physical existence checks -->
         <img [src]="product.pictureUrl" [alt]="product.name" />
-        
+
         <div style="position:absolute; top: 1rem; right: 1rem">
-           <span class="badge-neon py-3 px-4 shadow-lg text-lg">{{ (translateService.currentLanguage === 'ar' ? product.categoryAr : product.category) || product.category }}</span>
+          <span class="badge-neon py-3 px-4 shadow-lg text-lg">{{ (translateService.currentLanguage === 'ar' ?
+            product.categoryAr : product.category) || product.category }}</span>
         </div>
       </div>
     </div>
@@ -21,127 +24,199 @@
     <!-- Info Panel (Responsive) -->
     <div class="col-12 lg:col-6">
       <div class="mg-card h-full flex flex-column justify-content-center p-5 lg:p-8">
-        
-        <h1 class="display-font text-4xl lg:text-5xl mb-2 font-black uppercase tracking-1 text-main">{{ (translateService.currentLanguage === 'ar' ? product.nameAr : product.name) || product.name }}</h1>
-        <p class="primary-text text-xl font-bold uppercase tracking-2 mb-6">{{ (translateService.currentLanguage === 'ar' ? product.brandAr : product.brand) || product.brand }}</p>
-        
+
+        <h1 class="display-font text-4xl lg:text-5xl mb-2 font-black uppercase tracking-1 text-main">{{
+          (translateService.currentLanguage === 'ar' ? product.nameAr : product.name) || product.name }}</h1>
+        <p class="primary-text text-xl font-bold uppercase tracking-2 mb-6">{{ (translateService.currentLanguage ===
+          'ar' ? product.brandAr : product.brand) || product.brand }}</p>
+
         <div class="flex align-items-center gap-4 mb-8">
-           <span class="primary-text text-5xl font-black">{{ product.price | currency }}</span>
-           <div class="flex flex-wrap gap-2">
-             <span class="text-sm font-bold bg-soft px-3 py-2 rounded-lg opacity-60">Ready in 20min</span>
-             <span class="text-sm font-bold bg-soft px-3 py-2 rounded-lg opacity-60 flex align-items-center gap-2">
-               <i class="pi pi-eye"></i>
-               {{ product.views || 0 }}
-             </span>
-           </div>
+          <span class="primary-text text-5xl font-black">{{ product.price | currency }}</span>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-sm font-bold bg-soft px-3 py-2 rounded-lg opacity-60">Ready in 20min</span>
+            <span class="text-sm font-bold bg-soft px-3 py-2 rounded-lg opacity-60 flex align-items-center gap-2">
+              <i class="pi pi-eye"></i>
+              {{ product.views || 0 }}
+            </span>
+            <span class="text-sm font-bold bg-soft px-3 py-2 rounded-lg opacity-60 flex align-items-center gap-2"
+              *ngIf="product.averageRating > 0">
+              <i class="pi pi-star-fill text-yellow-500"></i>
+              {{ product.averageRating }}
+            </span>
+          </div>
         </div>
-        
-        <div class="text-dim text-xl line-height-4 mb-8" style="border-left: 5px solid var(--primary); padding-left: 2rem">
-          {{ (translateService.currentLanguage === 'ar' ? product.descriptionAr : product.description) || product.description }}
+
+        <div class="text-dim text-xl line-height-4 mb-8"
+          style="border-left: 5px solid var(--primary); padding-left: 2rem">
+          {{ (translateService.currentLanguage === 'ar' ? product.descriptionAr : product.description) ||
+          product.description }}
         </div>
 
         <!-- Actions (Responsive) -->
         <div class="flex flex-column sm:flex-row gap-4">
-          <button pButton class="p-button-lg px-8 py-5 text-2xl flex-grow-1"
-                  icon="pi pi-shopping-cart"
-                  [label]="'PRODUCTS.ADD_TO_CART' | translate" 
-                  (click)="addToBasket()"></button>
-                  
-          <button pButton class="p-button-outlined p-button-lg px-5"
-                  icon="pi pi-heart"></button>
+          <button pButton class="p-button-lg px-8 py-5 text-2xl flex-grow-1" icon="pi pi-shopping-cart"
+            [label]="'PRODUCTS.ADD_TO_CART' | translate" (click)="addToBasket()"></button>
+
+          <button pButton class="p-button-outlined p-button-lg px-5" icon="pi pi-heart"></button>
         </div>
 
         <div class="mt-10 grid grid-nogutter border-top-1 border-white-alpha-10 pt-8 opacity-70">
-           <div class="col-4">
-             <span class="block text-muted text-xs font-bold uppercase mb-2">Servings</span>
-             <span class="block font-black text-xl">1 Person</span>
-           </div>
-           <div class="col-4 text-center">
-             <span class="block text-muted text-xs font-bold uppercase mb-2">Prep Time</span>
-             <span class="block font-black text-xl">15-20 Min</span>
-           </div>
-           <div class="col-4 text-right">
-             <span class="block text-muted text-xs font-bold uppercase mb-2">Origin</span>
-             <span class="block font-black text-xl">Fresh Garden</span>
-           </div>
+          <div class="col-4">
+            <span class="block text-muted text-xs font-bold uppercase mb-2">Servings</span>
+            <span class="block font-black text-xl">1 Person</span>
+          </div>
+          <div class="col-4 text-center">
+            <span class="block text-muted text-xs font-bold uppercase mb-2">Prep Time</span>
+            <span class="block font-black text-xl">15-20 Min</span>
+          </div>
+          <div class="col-4 text-right">
+            <span class="block text-muted text-xs font-bold uppercase mb-2">Origin</span>
+            <span class="block font-black text-xl">Fresh Garden</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-<!-- ==================== RECOMMENDED PRODUCTS ==================== -->
-<div class="container px-3 pb-10" *ngIf="!loading">
-
-  <!-- Section Header -->
-  <div class="recommended-header flex align-items-center gap-4 mb-6 mt-2">
-    <div class="flex flex-column">
-      <span class="section-tag">{{ 'PRODUCTS.EXPLORE_TAG' | translate }}</span>
-      <h2 class="display-font text-3xl font-black text-main m-0">
-        {{ 'PRODUCTS.RECOMMENDED' | translate }}
-      </h2>
+  <!-- REVIEWS SECTION -->
+  <div class="mt-12">
+    <div class="flex align-items-center gap-4 mb-8">
+      <h2 class="display-font text-3xl font-black text-main m-0">Customer Reviews</h2>
+      <div class="flex-grow-1 border-top-1 border-white-alpha-10"></div>
     </div>
-    <div class="flex-grow-1 border-top-1 border-white-alpha-10 mx-4"></div>
-    <a routerLink="/products" pButton icon="pi pi-arrow-right"
-       [label]="'PRODUCTS.VIEW_ALL' | translate"
-       class="p-button-outlined p-button-sm"></a>
-  </div>
 
-  <!-- Skeleton while loading -->
-  <div class="grid" *ngIf="loadingRecommended">
-    <div class="col-12 sm:col-6 lg:col-3" *ngFor="let i of [1,2,3,4]">
-      <div class="mg-card h-full flex flex-column">
-        <p-skeleton height="200px" styleClass="mb-3" borderRadius="12px"></p-skeleton>
-        <p-skeleton width="70%" height="1.3rem" styleClass="mb-2"></p-skeleton>
-        <p-skeleton width="45%" height="1rem" styleClass="mb-4"></p-skeleton>
-        <p-skeleton width="50%" height="1.8rem" styleClass="mb-4"></p-skeleton>
-        <p-skeleton height="2.8rem" borderRadius="8px"></p-skeleton>
+    <div class="grid">
+      <!-- Reviews List -->
+      <div class="col-12 lg:col-7 mb-8 lg:mb-0">
+        <div *ngIf="product.reviews?.length > 0; else noReviews" class="flex flex-column gap-4">
+          <div *ngFor="let review of product.reviews" class="p-5 bg-soft rounded-xl border-1 border-white-alpha-10">
+            <div class="flex justify-content-between align-items-start mb-3">
+              <div>
+                <p class="font-bold m-0 text-lg">{{ review.userName }}</p>
+                <p class="text-xs text-muted m-0">{{ review.createdAt | date:'mediumDate' }}</p>
+              </div>
+              <p-rating [(ngModel)]="review.rating" [readonly]="true" [cancel]="false"
+                iconCancelClass="hidden"></p-rating>
+            </div>
+            <p class="text-dim line-height-3 m-0">{{ review.comment }}</p>
+          </div>
+        </div>
+        <ng-template #noReviews>
+          <div class="text-center py-8 bg-soft rounded-xl opacity-50">
+            <i class="pi pi-comments text-5xl mb-3 block"></i>
+            <p>No reviews yet. Be the first to share your thoughts!</p>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Review Form -->
+      <div class="col-12 lg:col-5">
+        <div class="mg-card p-6 lg:p-8 h-full">
+          <h3 class="display-font text-2xl font-bold mb-6 text-main uppercase italic">Rate & Review</h3>
+
+          <div *ngIf="authService.isAuthenticated(); else loginToReview" class="flex flex-column gap-6">
+            <div class="flex flex-column gap-2">
+              <label class="font-bold text-muted text-sm uppercase">Your Rating</label>
+              <p-rating [(ngModel)]="userRating" [cancel]="true" class="mt-1"></p-rating>
+            </div>
+
+            <div class="flex flex-column gap-2">
+              <label class="font-bold text-muted text-sm uppercase">Your Thoughts</label>
+              <textarea pInputTextarea rows="5" [(ngModel)]="userComment"
+                placeholder="Tell others what you think of this dish..."
+                class="w-full bg-soft border-1 border-white-alpha-10 p-3 rounded-lg text-lg"></textarea>
+            </div>
+
+            <button pButton [label]="submittingReview ? 'Submitting...' : 'Post Review'"
+              [icon]="submittingReview ? 'pi pi-spin pi-spinner' : 'pi pi-send'" [disabled]="submittingReview"
+              (click)="submitReview()" class="p-button-lg w-full py-4 text-xl font-black mt-2"></button>
+          </div>
+
+          <ng-template #loginToReview>
+            <div class="text-center py-6">
+              <p class="text-muted mb-6">Please log in to share your experience with others.</p>
+              <a routerLink="/login" pButton label="Sign In to Review" icon="pi pi-sign-in"
+                class="p-button-outlined p-button-lg w-full"></a>
+            </div>
+          </ng-template>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Recommended Cards -->
-  <div class="grid" *ngIf="!loadingRecommended && recommended.length > 0">
-    <div class="col-12 sm:col-6 lg:col-3" *ngFor="let item of recommended">
-      <div class="mg-card h-full flex flex-column recommended-card" (click)="goToProduct(item.id)" style="cursor:pointer">
+  <!-- ==================== RECOMMENDED PRODUCTS ==================== -->
+  <div class="container px-3 pb-10" *ngIf="!loading">
 
-        <!-- Image -->
-        <div class="img-panel" style="height:200px">
-          <img [src]="item.pictureUrl" [alt]="item.name" />
-          <div style="position:absolute; top:0; right:0">
-            <span class="badge-neon py-1 px-2 m-0 text-xs">
-              {{ (translateService.currentLanguage === 'ar' ? item.categoryAr : item.category) || item.category }}
-            </span>
-          </div>
+    <!-- Section Header -->
+    <div class="recommended-header flex align-items-center gap-4 mb-6 mt-2">
+      <div class="flex flex-column">
+        <span class="section-tag">{{ 'PRODUCTS.EXPLORE_TAG' | translate }}</span>
+        <h2 class="display-font text-3xl font-black text-main m-0">
+          {{ 'PRODUCTS.RECOMMENDED' | translate }}
+        </h2>
+      </div>
+      <div class="flex-grow-1 border-top-1 border-white-alpha-10 mx-4"></div>
+      <a routerLink="/products" pButton icon="pi pi-arrow-right" [label]="'PRODUCTS.VIEW_ALL' | translate"
+        class="p-button-outlined p-button-sm"></a>
+    </div>
+
+    <!-- Skeleton while loading -->
+    <div class="grid" *ngIf="loadingRecommended">
+      <div class="col-12 sm:col-6 lg:col-3" *ngFor="let i of [1,2,3,4]">
+        <div class="mg-card h-full flex flex-column">
+          <p-skeleton height="200px" styleClass="mb-3" borderRadius="12px"></p-skeleton>
+          <p-skeleton width="70%" height="1.3rem" styleClass="mb-2"></p-skeleton>
+          <p-skeleton width="45%" height="1rem" styleClass="mb-4"></p-skeleton>
+          <p-skeleton width="50%" height="1.8rem" styleClass="mb-4"></p-skeleton>
+          <p-skeleton height="2.8rem" borderRadius="8px"></p-skeleton>
         </div>
-
-        <!-- Info -->
-        <div class="flex-grow-1 flex flex-column justify-content-between p-3">
-          <div class="mb-3">
-            <h3 class="display-font text-lg font-bold mb-1 uppercase tracking-1 text-main">
-              {{ (translateService.currentLanguage === 'ar' ? item.nameAr : item.name) || item.name }}
-            </h3>
-            <span class="text-xs font-bold text-muted">
-              {{ (translateService.currentLanguage === 'ar' ? item.brandAr : item.brand) || item.brand }}
-            </span>
-          </div>
-          <div class="flex align-items-center justify-content-between">
-            <span class="primary-text text-2xl font-black">{{ item.price | currency }}</span>
-            <button pButton icon="pi pi-cart-plus" class="p-button-sm p-button-rounded"
-                    (click)="$event.stopPropagation(); addRecommendedToBasket(item)"></button>
-          </div>
-        </div>
-
       </div>
     </div>
-  </div>
 
-  <!-- Empty state: same category has no others -->
-  <div *ngIf="!loadingRecommended && recommended.length === 0" class="text-center py-6 opacity-50">
-    <i class="pi pi-inbox text-5xl mb-3 block"></i>
-    <p class="text-muted">No related products found.</p>
-  </div>
+    <!-- Recommended Cards -->
+    <div class="grid" *ngIf="!loadingRecommended && recommended.length > 0">
+      <div class="col-12 sm:col-6 lg:col-3" *ngFor="let item of recommended">
+        <div class="mg-card h-full flex flex-column recommended-card" (click)="goToProduct(item.id)"
+          style="cursor:pointer">
 
-</div>
+          <!-- Image -->
+          <div class="img-panel" style="height:200px">
+            <img [src]="item.pictureUrl" [alt]="item.name" />
+            <div style="position:absolute; top:0; right:0">
+              <span class="badge-neon py-1 px-2 m-0 text-xs">
+                {{ (translateService.currentLanguage === 'ar' ? item.categoryAr : item.category) || item.category }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Info -->
+          <div class="flex-grow-1 flex flex-column justify-content-between p-3">
+            <div class="mb-3">
+              <h3 class="display-font text-lg font-bold mb-1 uppercase tracking-1 text-main">
+                {{ (translateService.currentLanguage === 'ar' ? item.nameAr : item.name) || item.name }}
+              </h3>
+              <span class="text-xs font-bold text-muted">
+                {{ (translateService.currentLanguage === 'ar' ? item.brandAr : item.brand) || item.brand }}
+              </span>
+            </div>
+            <div class="flex align-items-center justify-content-between">
+              <span class="primary-text text-2xl font-black">{{ item.price | currency }}</span>
+              <button pButton icon="pi pi-cart-plus" class="p-button-sm p-button-rounded"
+                (click)="$event.stopPropagation(); addRecommendedToBasket(item)"></button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty state: same category has no others -->
+    <div *ngIf="!loadingRecommended && recommended.length === 0" class="text-center py-6 opacity-50">
+      <i class="pi pi-inbox text-5xl mb-3 block"></i>
+      <p class="text-muted">No related products found.</p>
+    </div>
+
+  </div>
 </div>
 
 <!-- Skeleton Loader: product details -->

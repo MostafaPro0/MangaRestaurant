@@ -12,4 +12,16 @@ export interface Product {
   categoryAr?: string;
   quantityInStock: number;
   views: number;
+  averageRating: number;
+  reviews: Review[];
+}
+
+export interface Review {
+  id?: number;
+  productId: number;
+  userName?: string;
+  email?: string;
+  rating: number;
+  comment: string;
+  createdAt?: string;
 }

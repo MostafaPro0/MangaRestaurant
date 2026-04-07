@@ -20,5 +20,6 @@ namespace MangaRestaurant.Core.Entities
         public int CategoryId { get; set; }//Foriegn Key Column >> ProudctBrand
         public ProductCategory Category { get; set; } // Navigational Property [ONE]
         public int Views { get; set; }
+        public ICollection<ProductReview> Reviews { get; set; } = new HashSet<ProductReview>();
     }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
-import { Product } from '../models/product.model';
+import { Product, Review } from '../models/product.model';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +44,10 @@ export class ProductsService {
 
   getBrands(): Observable<any[]> {
     return this.api.get<any[]>('ProductBrand');
+  }
+
+  addReview(review: Review): Observable<Review> {
+    return this.api.post<Review>('Reviews', review);
   }
 }
 

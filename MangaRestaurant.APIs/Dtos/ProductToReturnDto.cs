@@ -23,5 +23,7 @@ namespace MangaRestaurant.APIs.Dtos
         public string Category { get; set; }
         public string CategoryAr { get; set; }
         public int Views { get; set; }
+        public double AverageRating { get; set; }
+        public IReadOnlyList<ProductReviewDto> Reviews { get; set; }
     }
 }
