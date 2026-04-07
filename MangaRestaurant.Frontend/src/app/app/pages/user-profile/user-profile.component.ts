@@ -203,13 +203,20 @@ export class UserProfileComponent implements OnInit {
       return;
     }
 
-    this.authService.changePassword(this.passwordData).subscribe({
-      next: (res) => {
-        this.messageService.add({ severity: 'success', summary: this.translate.instant('TOAST.SUCCESS'), detail: res.message });
-        this.changePasswordDialogVisible = false;
+    const obs = (this.user?.hasPassword ?? true) 
+      ? this.authService.changePassword(this.passwordData)
+      : this.authService.addPassword({ newPassword: this.passwordData.newPassword, confirmPassword: this.passwordData.confirmPassword });
+
+    obs.subscribe({
+      next: (res: any) => {
+        this.messageService.add({ severity: 'success', summary: this.translate.instant('TOAST.SUCCESS'), detail: res.message || 'Updated' });
+        this.passwordData = { currentPassword: '', newPassword: '', confirmPassword: '' };
+        if (!this.user?.hasPassword) {
+           this.user = this.authService.currentUser;
+        }
       },
       error: (err) => {
-        const detail = err.error?.message || err.error?.errors?.[0] || 'Failed to change password';
+        const detail = err.error?.message || err.error?.errors?.[0] || 'Failed to update password';
         this.messageService.add({ severity: 'error', summary: this.translate.instant('TOAST.ERROR'), detail });
       }
     });

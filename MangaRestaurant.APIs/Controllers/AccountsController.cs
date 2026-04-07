@@ -54,9 +54,7 @@ namespace MangaRestaurant.APIs.Controllers
             // Assign Default Role to User
             await _userManager.AddToRoleAsync(user, "User");
 
-            var mappedUser = _mapper.Map<AppUser, UserDTO>(user);
-            mappedUser.Token = await _tokenService.CreateTokenAsync(user, _userManager);
-            return Ok(mappedUser);
+            return Ok(await CreateUserDtoAsync(user));
         }
         //Login User
         [HttpPost("Login")]
@@ -70,9 +68,7 @@ namespace MangaRestaurant.APIs.Controllers
             if (!result.Succeeded)
                 return Unauthorized(new ApiResponse(401, "Invalid email or password"));
 
-            var mappedUser = _mapper.Map<AppUser, UserDTO>(user);
-            mappedUser.Token = await _tokenService.CreateTokenAsync(user, _userManager);
-            return Ok(mappedUser);
+            return Ok(await CreateUserDtoAsync(user));
         }
         [Authorize]
         [HttpGet("GetCurrentUser")]
@@ -80,9 +76,7 @@ namespace MangaRestaurant.APIs.Controllers
         {
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
             var user = await _userManager.FindByEmailAsync(userEmail);
-            var returnedUser = _mapper.Map<AppUser, UserDTO>(user);
-            returnedUser.Token = await _tokenService.CreateTokenAsync(user, _userManager);
-            return Ok(returnedUser);
+            return Ok(await CreateUserDtoAsync(user));
         }
         
         [Authorize]
@@ -114,9 +108,7 @@ namespace MangaRestaurant.APIs.Controllers
 
             if (!result.Succeeded) return BadRequest(new ApiResponse(400, "Failed to update profile"));
 
-            var returnedUser = _mapper.Map<AppUser, UserDTO>(user);
-            returnedUser.Token = await _tokenService.CreateTokenAsync(user, _userManager);
-            return Ok(returnedUser);
+            return Ok(await CreateUserDtoAsync(user));
         }
 
         [Authorize]
@@ -241,9 +233,7 @@ namespace MangaRestaurant.APIs.Controllers
                     await _userManager.AddToRoleAsync(user, "User");
                 }
 
-                var mappedUser = _mapper.Map<AppUser, UserDTO>(user);
-                mappedUser.Token = await _tokenService.CreateTokenAsync(user, _userManager);
-                return Ok(mappedUser);
+                return Ok(await CreateUserDtoAsync(user));
             }
             catch (Exception)
             {
@@ -323,6 +313,38 @@ namespace MangaRestaurant.APIs.Controllers
             }
 
             return Ok(new { message = "Password changed successfully" });
+        }
+
+        [Authorize]
+        [HttpPost("AddPassword")]
+        public async Task<ActionResult<UserDTO>> AddPassword(AddPasswordDto addPasswordDto)
+        {
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user == null) return Unauthorized(new ApiResponse(401));
+
+            if (await _userManager.HasPasswordAsync(user))
+            {
+                return BadRequest(new ApiResponse(400, "User already has a password. Use ChangePassword instead."));
+            }
+
+            var result = await _userManager.AddPasswordAsync(user, addPasswordDto.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(e => e.Description);
+                return BadRequest(new ApiValidationErrorResponse { Errors = errors });
+            }
+
+            return Ok(await CreateUserDtoAsync(user));
+        }
+
+        private async Task<UserDTO> CreateUserDtoAsync(AppUser user)
+        {
+            var userDto = _mapper.Map<AppUser, UserDTO>(user);
+            userDto.Token = await _tokenService.CreateTokenAsync(user, _userManager);
+            userDto.HasPassword = await _userManager.HasPasswordAsync(user);
+            return userDto;
         }
     }
 }

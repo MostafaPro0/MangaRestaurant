@@ -142,6 +142,8 @@
     "DISPLAY_NAME": "Display Name",
     "PHONE": "Phone Number",
     "SECONDARY_PHONE": "Secondary Phone Number",
+    "SET_PASSWORD": "Set Local Password",
+    "SET_PASSWORD_DESC": "You are logged in with Google. Set a password to login directly next time.",
     "PHONE_MATCH_ERROR": "Primary and secondary phone numbers cannot be identical",
     "DELIVERY_ADDRESS": "Default Delivery Address",
     "FIRST_NAME": "First Name",

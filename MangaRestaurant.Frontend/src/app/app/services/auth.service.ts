@@ -96,6 +96,15 @@ export class AuthService {
     return this.api.post<any>('Accounts/ChangePassword', data);
   }
 
+  addPassword(data: any): Observable<User> {
+    return this.api.post<User>('Accounts/AddPassword', data).pipe(
+      map(user => {
+        this.setUser(user);
+        return user;
+      })
+    );
+  }
+
   logout(): void {
     localStorage.removeItem('currentUser');
     this.currentUser$.next(null);

@@ -108,15 +108,15 @@
           <p-tabPanel>
             <ng-template pTemplate="header">
               <i class="pi pi-lock mr-2"></i>
-              <span>{{ 'PROFILE.CHANGE_PASSWORD' | translate }}</span>
+              <span>{{ (user?.hasPassword ? 'PROFILE.CHANGE_PASSWORD' : 'PROFILE.SET_PASSWORD') | translate }}</span>
             </ng-template>
 
             <div class="p-4 md:p-6 mx-auto" style="max-width: 500px;">
-              <h3 class="display-font text-3xl text-primary mb-2 text-center">{{ 'PROFILE.CHANGE_PASSWORD' | translate }}</h3>
-              <p class="text-dim mb-6 text-center text-sm">{{ 'AUTH.RESET_DESC' | translate }}</p>
+              <h3 class="display-font text-3xl text-primary mb-2 text-center">{{ (user?.hasPassword ? 'PROFILE.CHANGE_PASSWORD' : 'PROFILE.SET_PASSWORD') | translate }}</h3>
+              <p class="text-dim mb-6 text-center text-sm">{{ (user?.hasPassword ? 'AUTH.RESET_DESC' : 'PROFILE.SET_PASSWORD_DESC') | translate }}</p>
               
               <div class="flex flex-column gap-4 p-fluid">
-                <div class="field">
+                <div class="field" *ngIf="user?.hasPassword">
                   <label class="form-label mb-2">{{ 'PROFILE.CURRENT_PASSWORD' | translate }}</label>
                   <p-password [(ngModel)]="passwordData.currentPassword" [feedback]="false" [toggleMask]="true" class="w-full" styleClass="w-full" inputStyleClass="w-full p-input-lg"></p-password>
                 </div>
@@ -137,7 +137,7 @@
                 <div class="mt-4 flex justify-content-center">
                   <button pButton [label]="'COMMON.SAVE' | translate" 
                           class="p-button-primary p-button-lg px-8 py-3 shadow-3" 
-                          [disabled]="!passwordData.currentPassword || !passwordData.newPassword || passwordData.newPassword !== passwordData.confirmPassword"
+                          [disabled]="(user?.hasPassword && !passwordData.currentPassword) || !passwordData.newPassword || passwordData.newPassword !== passwordData.confirmPassword"
                           (click)="changePassword()"></button>
                 </div>
               </div>

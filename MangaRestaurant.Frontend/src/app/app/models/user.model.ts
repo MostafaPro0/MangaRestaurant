@@ -5,4 +5,5 @@ export interface User {
   phoneNumber?: string;
   phoneNumber2?: string;
   profilePictureUrl?: string;
+  hasPassword?: boolean;
 }
