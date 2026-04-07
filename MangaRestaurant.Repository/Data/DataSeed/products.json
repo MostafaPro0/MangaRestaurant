@@ -5,7 +5,7 @@
         "Description": "A rich and creamy blend of caramel and coffee, topped with whipped cream.",
         "DescriptionAr": "مزيج غني وكريمي من الكراميل والقهوة، مغطى بالكريمة المخفوقة.",
         "Price": 200,
-        "PictureUrl": "images/products/sb-ang1.png",
+        "PictureUrl": "images/products/double-caramel-frappuccino.png",
         "CategoryId": 1,
         "BrandId": 1
     },
@@ -15,7 +15,17 @@
         "Description": "Indulgent white chocolate mocha blended with ice and milk.",
         "DescriptionAr": "موكا الشوكولاتة البيضاء ممزوجة بالثلج والحليب.",
         "Price": 150,
-        "PictureUrl": "images/products/sb-ang2.png",
+        "PictureUrl": "images/products/white-chocolate-mocha-frappuccino.png",
+        "CategoryId": 1,
+        "BrandId": 1
+    },
+    {
+        "Name": "Matcha Frappuccino",
+        "NameAr": "ماتشا فرابوتشينو",
+        "Description": "Premium matcha green tea blended with milk and ice, topped with cream.",
+        "DescriptionAr": "شاي الماتشا الأخضر الممتاز الممزوج بالحليب والثلج، مغطى بالكريمة.",
+        "Price": 240,
+        "PictureUrl": "images/products/matcha-frappuccino.png",
         "CategoryId": 1,
         "BrandId": 1
     },
@@ -25,9 +35,29 @@
         "Description": "Smooth espresso balanced with cold milk and ice.",
         "DescriptionAr": "إسبريسو ناعم متوازن مع الحليب البارد والثلج.",
         "Price": 180,
-        "PictureUrl": "images/products/sb-core1.png",
+        "PictureUrl": "images/products/iced-cafe-latte.png",
         "CategoryId": 2,
         "BrandId": 1
+    },
+    {
+        "Name": "Iced Vanilla Latte",
+        "NameAr": "أيس فانيلا لاتيه",
+        "Description": "Smooth espresso with creamy milk and sweet vanilla syrup over ice.",
+        "DescriptionAr": "إسبريسو ناعم مع حليب كريمي وشراب الفانيليا الحلو فوق الثلج.",
+        "Price": 190,
+        "PictureUrl": "images/products/iced-vanilla-latte.png",
+        "CategoryId": 2,
+        "BrandId": 1
+    },
+    {
+        "Name": "Iced Spanish Latte",
+        "NameAr": "أيس سبانش لاتيه",
+        "Description": "Signature latte with condensed milk for a sweet and creamy finish.",
+        "DescriptionAr": "لاتيه مميز مع حليب مكثف لقوام كريمي وحلو.",
+        "Price": 210,
+        "PictureUrl": "images/products/iced-spanish-latte.png",
+        "CategoryId": 2,
+        "BrandId": 2
     },
     {
         "Name": "White Chocolate Mocha",
@@ -35,9 +65,19 @@
         "Description": "Creamy white chocolate mocha made with espresso and steamed milk.",
         "DescriptionAr": "موكا الشوكولاتة البيضاء الكريمية المصنوعة من الإسبريسو والحليب المبخر.",
         "Price": 300,
-        "PictureUrl": "images/products/sb-core2.png",
+        "PictureUrl": "images/products/white-chocolate-mocha.png",
         "CategoryId": 3,
         "BrandId": 2
+    },
+    {
+        "Name": "Dark Chocolate Mocha",
+        "NameAr": "دارك شوكليت موكا",
+        "Description": "Rich espresso combined with dark chocolate sauce and steamed milk.",
+        "DescriptionAr": "إسبريسو غني ممزوج بصلصة الشوكولاتة الداكنة والحليب المبخر.",
+        "Price": 320,
+        "PictureUrl": "images/products/dark-chocolate-mocha.png",
+        "CategoryId": 3,
+        "BrandId": 1
     },
     {
         "Name": "Iced Caramel Macchiato",
@@ -45,7 +85,7 @@
         "Description": "Freshly steamed milk with vanilla-flavored syrup marked with espresso and caramel.",
         "DescriptionAr": "حليب مبخر طازج مع شراب بنكهة الفانيليا ممزوج بالإسبريسو والكراميل.",
         "Price": 250,
-        "PictureUrl": "images/products/sb-react1.png",
+        "PictureUrl": "images/products/iced-caramel-macchiato.png",
         "CategoryId": 4,
         "BrandId": 1
     },
@@ -55,9 +95,19 @@
         "Description": "Classic hot caramel macchiato with velvety foam.",
         "DescriptionAr": "كراميل ماكياتو ساخن كلاسيكي مع رغوة مخملية.",
         "Price": 120,
-        "PictureUrl": "images/products/sb-ts1.png",
+        "PictureUrl": "images/products/hot-caramel-macchiato.png",
         "CategoryId": 4,
         "BrandId": 5
+    },
+    {
+        "Name": "Iced Black Tea Lemonade",
+        "NameAr": "أيس شاي أسود بالليمون",
+        "Description": "Refreshing black tea mixed with lemonade and ice.",
+        "DescriptionAr": "شاي أسود منعش ممزوج بعصير الليمون والثلج.",
+        "Price": 16,
+        "PictureUrl": "images/products/iced-black-tea-lemonade.png",
+        "CategoryId": 4,
+        "BrandId": 4
     },
     {
         "Name": "Iced Matcha Latte",
@@ -65,7 +115,7 @@
         "Description": "Pure matcha green tea combined with milk and ice.",
         "DescriptionAr": "شاي الماتشا الأخضر النقي الممزوج مع الحليب والثلج.",
         "Price": 10,
-        "PictureUrl": "images/products/hat-core1.png",
+        "PictureUrl": "images/products/iced-matcha-latte.png",
         "CategoryId": 5,
         "BrandId": 2
     },
@@ -75,19 +125,39 @@
         "Description": "Layered honey cake with a soft and sweet taste.",
         "DescriptionAr": "كيكة العسل ذات الطبقات مع طعم ناعم وحلو.",
         "Price": 8,
-        "PictureUrl": "images/products/hat-react1.png",
+        "PictureUrl": "images/products/honey-cake.png",
         "CategoryId": 6,
         "BrandId": 1
     },
     {
         "Name": "Blueberry Cheesecake",
-        "NameAr": "تشيز كيك التوت الأزرق",
+        "NameAr": "تشیز كيك التوت الأزرق",
         "Description": "Creamy cheesecake topped with fresh blueberry compote.",
         "DescriptionAr": "تشيز كيك كريمي مغطى بصلصة التوت الأزرق الطازجة.",
         "Price": 15,
-        "PictureUrl": "images/products/hat-react2.png",
+        "PictureUrl": "images/products/blueberry-cheesecake.png",
         "CategoryId": 6,
         "BrandId": 1
+    },
+    {
+        "Name": "Red Velvet Cake",
+        "NameAr": "ريد فيلفيت كيك",
+        "Description": "Classic red velvet sponge with velvety cream cheese frosting.",
+        "DescriptionAr": "كيكة الرد فيلفيت الكلاسيكية مع كريمة الجبن المخملية.",
+        "Price": 45,
+        "PictureUrl": "images/products/red-velvet-cake.png",
+        "CategoryId": 6,
+        "BrandId": 4
+    },
+    {
+        "Name": "Chocolate Lava Cake",
+        "NameAr": "تشوكليت لافا كيك",
+        "Description": "Warm chocolate cake with a molten chocolate center.",
+        "DescriptionAr": "كيكة الشوكولاتة الدافئة مع مركز من الشوكولاتة الذائبة.",
+        "Price": 55,
+        "PictureUrl": "images/products/chocolate-lava-cake.png",
+        "CategoryId": 6,
+        "BrandId": 3
     },
     {
         "Name": "Glazed Donuts",
@@ -95,9 +165,19 @@
         "Description": "Soft and fluffy donuts with a sweet glaze.",
         "DescriptionAr": "دونات ناعمة وهشة مغطاة بطبقة سكر حلوة.",
         "Price": 18,
-        "PictureUrl": "images/products/glove-code1.png",
+        "PictureUrl": "images/products/glazed-donuts.png",
         "CategoryId": 7,
         "BrandId": 3
+    },
+    {
+        "Name": "Chocolate Frosted Donut",
+        "NameAr": "دونات مغطاة بالشوكولاتة",
+        "Description": "Our classic fluffy donut topped with a rich chocolate glaze.",
+        "DescriptionAr": "فطيرة الدونات الهشة الكلاسيكية مغطاة بطبقة من الشوكولاتة الغنية.",
+        "Price": 22,
+        "PictureUrl": "images/products/chocolate-frosted-donut.png",
+        "CategoryId": 7,
+        "BrandId": 7
     },
     {
         "Name": "Greek Salad",
@@ -105,18 +185,18 @@
         "Description": "Fresh salad with olives, feta cheese, and balsamic dressing.",
         "DescriptionAr": "سلطة طازجة مع زيتون، جبنة فيتا، وتتبيلة البلسميك.",
         "Price": 15,
-        "PictureUrl": "images/products/glove-code2.png",
+        "PictureUrl": "images/products/greek-salad.png",
         "CategoryId": 7,
         "BrandId": 1
     },
     {
-        "Name": "Iced Black Tea Lemonade",
-        "NameAr": "أيس شاي أسود بالليمون",
-        "Description": "Refreshing black tea mixed with lemonade and ice.",
-        "DescriptionAr": "شاي أسود منعش ممزوج بعصير الليمون والثلج.",
-        "Price": 16,
-        "PictureUrl": "images/products/glove-react1.png",
-        "CategoryId": 4,
-        "BrandId": 4
+        "Name": "Chicken Caesar Salad",
+        "NameAr": "سلطة سيزر بالدجاج",
+        "Description": "Grilled chicken, crisp romaine, croutons, and Caesar dressing.",
+        "DescriptionAr": "دجاج مشوي، خس روماني مقرمش، خبز محمص، وتتبيلة السيزر.",
+        "Price": 85,
+        "PictureUrl": "images/products/chicken-caesar-salad.png",
+        "CategoryId": 7,
+        "BrandId": 5
     }
 ]
