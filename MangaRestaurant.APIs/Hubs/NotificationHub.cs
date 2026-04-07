@@ -17,5 +17,14 @@ namespace MangaRestaurant.APIs.Hubs
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, email);
         }
+        public async Task JoinAdminGroup()
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, "Admins");
+        }
+
+        public async Task LeaveAdminGroup()
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, "Admins");
+        }
     }
 }

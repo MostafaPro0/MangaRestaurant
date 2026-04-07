@@ -56,21 +56,27 @@ export class NotificationService {
     });
 
     this.hubConnection.on('ReceiveAdminNotification', (notification: any) => {
-      if (this.authService.isAdmin()) {
-        this.unreadCountSource.next(this.unreadCountSource.value + 1);
-        this.messageService.add({
-          severity: 'warn',
-          summary: 'Admin Alert: ' + notification.title,
-          detail: notification.message,
-          life: 10000
-        });
-      }
+      this.addNotification(notification); // Add to dropdown list
+      
+      this.messageService.add({
+        severity: 'warn',
+        summary: (this.translateService.currentLanguage === 'ar' ? 'تنبيه إداري: ' : 'Admin Alert: ') + notification.title,
+        detail: notification.message,
+        sticky: true,
+        styleClass: 'clickable-toast',
+        icon: this.getNotificationIcon(notification.type),
+        data: notification
+      });
     });
 
-    // Join user-specific group for order updates
+    // Join groups based on user role/identity
     this.authService.user.subscribe(user => {
       if (user && this.hubConnection) {
         this.hubConnection.invoke('JoinUserGroup', user.email);
+        
+        if (this.authService.isAdmin(user.token)) {
+           this.hubConnection.invoke('JoinAdminGroup');
+        }
       }
     });
   }
@@ -105,6 +111,9 @@ export class NotificationService {
     switch (type) {
       case 'OrderUpdate': return 'pi pi-shopping-bag';
       case 'NewProduct': return 'pi pi-bolt';
+      case 'NewOrder': return 'pi pi-shopping-cart';
+      case 'NewReview': return 'pi pi-star-fill';
+      case 'password_reminder': return 'pi pi-shield';
       default: return 'pi pi-bell';
     }
   }
