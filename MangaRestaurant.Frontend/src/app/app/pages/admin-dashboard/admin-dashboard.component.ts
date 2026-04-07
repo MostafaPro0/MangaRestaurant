@@ -9,9 +9,11 @@ import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
+import { InputTextarea } from 'primeng/inputtextarea';
 import { TagModule } from 'primeng/tag';
 import { SkeletonModule } from 'primeng/skeleton';
 import { NgApexchartsModule, ChartComponent, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexTitleSubtitle, ApexStroke, ApexDataLabels, ApexFill, ApexGrid, ApexYAxis, ApexTooltip, ApexLegend, ApexPlotOptions, ApexResponsive } from "ng-apexcharts";
+import { environment } from '../../../../environments/environment';
 import { AdminService } from '../../services/admin.service';
 import { ProductsService } from '../../services/products.service';
 import { OrdersService } from '../../services/orders.service';
@@ -49,6 +51,7 @@ export type ChartOptions = {
     DropdownModule,
     DialogModule,
     InputTextModule,
+    InputTextarea,
     TagModule,
     SkeletonModule,
     NgApexchartsModule
@@ -67,6 +70,9 @@ export class AdminDashboardComponent implements OnInit {
   loadingReports: boolean = false;
   loadingProducts: boolean = false;
   loadingEmployees: boolean = false;
+  categories: any[] = [];
+  brands: any[] = [];
+  uploadingImage: boolean = false;
 
   // Charts Options
   public salesChartOptions!: Partial<ChartOptions>;
@@ -143,6 +149,9 @@ export class AdminDashboardComponent implements OnInit {
       this.employees = e;
       this.loadingEmployees = false;
     });
+
+    this.productsService.getCategories().subscribe(c => this.categories = c);
+    this.productsService.getBrands().subscribe(b => this.brands = b);
   }
 
   setActiveTab(tab: string) {
@@ -238,7 +247,14 @@ export class AdminDashboardComponent implements OnInit {
 
   openCreateProduct() {
     this.editingProductId = null;
-    this.selectedProduct = {};
+    this.selectedProduct = { 
+      name: '', nameAr: '', 
+      description: '', descriptionAr: '', 
+      price: 0, oldPrice: 0,
+      pictureUrl: 'assets/images/products/placeholder.jpg',
+      categoryId: this.categories[0]?.id || 1,
+      brandId: this.brands[0]?.id || 1
+    };
     this.productDialogVisible = true;
   }
 
@@ -258,7 +274,57 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   saveProduct() {
-    // Logic to save/update product would go here
-    this.productDialogVisible = false;
+    // Validation
+    if (!this.selectedProduct.name || !this.selectedProduct.nameAr || 
+        !this.selectedProduct.price || !this.selectedProduct.categoryId || 
+        !this.selectedProduct.brandId || !this.selectedProduct.description || 
+        !this.selectedProduct.descriptionAr || !this.selectedProduct.pictureUrl) {
+      this.messageService.add({ 
+        severity: 'error', 
+        summary: this.translate.instant('TOAST.ERROR'), 
+        detail: this.translate.currentLang === 'ar' ? 'يرجى ملء جميع الحقول المطلوبة' : 'Please fill all required fields' 
+      });
+      return;
+    }
+
+    const operation = this.editingProductId 
+      ? this.productsService.updateProduct(this.editingProductId, this.selectedProduct)
+      : this.productsService.createProduct(this.selectedProduct);
+
+    operation.subscribe({
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product saved' });
+        this.productDialogVisible = false;
+        this.loadAllData();
+      },
+      error: (err) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Save failed' });
+      }
+    });
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.uploadingImage = true;
+      this.adminService.uploadProductImage(file).subscribe({
+        next: (path: string) => {
+          this.selectedProduct.pictureUrl = path;
+          this.uploadingImage = false;
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Image uploaded successfully' });
+        },
+        error: () => {
+          this.uploadingImage = false;
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Image upload failed' });
+        }
+      });
+    }
+  }
+
+  getImageUrl(path: string): string {
+    if (!path) return 'assets/images/products/placeholder.jpg';
+    if (path.startsWith('http')) return path;
+    const baseUrl = environment.apiUrl.replace('/api', '');
+    return `${baseUrl}/${path}`;
   }
 }

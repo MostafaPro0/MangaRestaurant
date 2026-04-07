@@ -304,19 +304,70 @@
 
 <!-- Product Dialog -->
 <p-dialog [(visible)]="productDialogVisible" [modal]="true" [header]="(editingProductId ? 'ADMIN.EDIT_PRODUCT' : 'ADMIN.ADD_PRODUCT') | translate"
-          class="custom-dialog" [style]="{width: '500px'}">
+          class="custom-dialog" [style]="{width: '700px'}" [breakpoints]="{'960px': '95vw'}">
   <div class="p-fluid">
-    <div class="field mb-3">
-      <label for="name" class="font-bold block mb-2">{{ 'ADMIN.PRODUCT_NAME' | translate }}</label>
-      <input id="name" type="text" pInputText [(ngModel)]="selectedProduct.name" />
+    <!-- Image Upload & Preview (Top Priority) -->
+    <div class="formgrid grid mb-4 pt-2">
+      <div class="field col-12 md:col-4 mb-3">
+        <label class="font-bold block mb-2">{{ 'ADMIN.IMAGE_PREVIEW' | translate }}</label>
+        <div class="img-preview-container border-round overflow-hidden shadow-sm bg-gray-100 flex align-items-center justify-content-center" 
+             style="height: 150px; border: 2px dashed #ddd;">
+          <img [src]="getImageUrl(selectedProduct.pictureUrl)" [alt]="selectedProduct.name" 
+               style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+        </div>
+      </div>
+      <div class="field col-12 md:col-8 mb-3">
+        <label for="img" class="font-bold block mb-2">{{ 'ADMIN.PICTURE_URL' | translate }} <span class="text-red-500">*</span></label>
+        <div class="flex gap-2">
+          <input id="img" type="text" pInputText [(ngModel)]="selectedProduct.pictureUrl" class="flex-grow-1" />
+          <input type="file" #fileUpload hidden (change)="onFileSelected($event)" accept="image/*" />
+          <button pButton type="button" icon="pi pi-upload" class="p-button-outlined" 
+                  [loading]="uploadingImage" (click)="fileUpload.click()"></button>
+        </div>
+        <small class="text-muted block mt-1">Paste URL or upload image file.</small>
+      </div>
     </div>
-    <div class="field mb-3">
-      <label for="price" class="font-bold block mb-2">{{ 'ADMIN.PRICE' | translate }}</label>
-      <input id="price" type="number" pInputText [(ngModel)]="selectedProduct.price" />
+
+    <!-- Row 1: Names -->
+    <div class="formgrid grid">
+      <div class="field col-12 md:col-6 mb-3">
+        <label for="name" class="font-bold block mb-2">{{ 'ADMIN.PRODUCT_NAME' | translate }} <span class="text-red-500">*</span></label>
+        <input id="name" type="text" pInputText [(ngModel)]="selectedProduct.name" />
+      </div>
+      <div class="field col-12 md:col-6 mb-3">
+        <label for="nameAr" class="font-bold block mb-2">{{ 'ADMIN.PRODUCT_NAME_AR' | translate }} <span class="text-red-500">*</span></label>
+        <input id="nameAr" type="text" pInputText [(ngModel)]="selectedProduct.nameAr" dir="rtl" />
+      </div>
     </div>
-    <div class="field mb-3">
-      <label for="category" class="font-bold block mb-2">{{ 'ADMIN.CATEGORY' | translate }}</label>
-      <input id="category" type="text" pInputText [(ngModel)]="selectedProduct.category" />
+    <div class="formgrid grid">
+      <div class="field col-12 md:col-6 mb-3">
+        <label for="price" class="font-bold block mb-2">{{ 'ADMIN.PRICE' | translate }} <span class="text-red-500">*</span></label>
+        <input id="price" type="number" pInputText [(ngModel)]="selectedProduct.price" />
+      </div>
+      <div class="field col-12 md:col-6 mb-3">
+        <label for="oldPrice" class="font-bold block mb-2">{{ 'ADMIN.OLD_PRICE' | translate }}</label>
+        <input id="oldPrice" type="number" pInputText [(ngModel)]="selectedProduct.oldPrice" />
+      </div>
+    </div>
+    <div class="formgrid grid">
+      <div class="field col-12 md:col-6 mb-3">
+        <label for="category" class="font-bold block mb-2">{{ 'ADMIN.CATEGORY' | translate }} <span class="text-red-500">*</span></label>
+        <p-dropdown id="category" [options]="categories" [(ngModel)]="selectedProduct.categoryId" 
+                    optionLabel="name" optionValue="id" [placeholder]="'ADMIN.CATEGORY' | translate"></p-dropdown>
+      </div>
+      <div class="field col-12 md:col-6 mb-3">
+        <label for="brand" class="font-bold block mb-2">{{ 'ADMIN.BRAND' | translate }} <span class="text-red-500">*</span></label>
+        <p-dropdown id="brand" [options]="brands" [(ngModel)]="selectedProduct.brandId" 
+                    optionLabel="name" optionValue="id" [placeholder]="'ADMIN.BRAND' | translate"></p-dropdown>
+      </div>
+    </div>
+    <div class="field mb-4">
+      <label for="desc" class="font-bold block mb-2">{{ 'ADMIN.DESCRIPTION_EN' | translate }} <span class="text-red-500">*</span></label>
+      <textarea id="desc" rows="8" pInputTextarea [(ngModel)]="selectedProduct.description" class="w-full text-lg"></textarea>
+    </div>
+    <div class="field mb-4">
+      <label for="descAr" class="font-bold block mb-2">{{ 'ADMIN.DESCRIPTION_AR' | translate }} <span class="text-red-500">*</span></label>
+      <textarea id="descAr" rows="8" pInputTextarea [(ngModel)]="selectedProduct.descriptionAr" dir="rtl" class="w-full text-lg"></textarea>
     </div>
   </div>
   <ng-template pTemplate="footer">

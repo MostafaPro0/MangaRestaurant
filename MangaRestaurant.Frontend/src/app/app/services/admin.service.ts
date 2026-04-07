@@ -19,4 +19,10 @@ export class AdminService {
   getEmployee(id: number): Observable<any> {
     return this.api.get<any>(`Employee/${id}`);
   }
+
+  uploadProductImage(file: File): Observable<string> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.api.post<string>('Upload/image', formData);
+  }
 }
