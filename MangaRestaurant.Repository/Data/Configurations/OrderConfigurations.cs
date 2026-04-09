@@ -1,4 +1,4 @@
-﻿using MangaRestaurant.Core.Entities.Order;
+using MangaRestaurant.Core.Entities.Order;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -23,9 +23,7 @@ namespace MangaRestaurant.Repository.Data.Configurations
 
             builder.OwnsOne(O => O.ShippingAddress, SA => SA.WithOwner());
 
-            builder.HasOne(O => O.DeliveryMethod)
-                .WithMany()
-                .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }

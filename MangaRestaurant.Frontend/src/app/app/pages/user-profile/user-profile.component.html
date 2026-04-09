@@ -1,0 +1,203 @@
+<div class="container section-pad">
+  <div class="section-header-v2">
+    <span class="section-tag">{{ 'PROFILE.TAG_LINE' | translate }}</span>
+    <h1 class="section-title-v2">{{ 'PROFILE.TITLE' | translate }}</h1>
+  </div>
+
+  <div class="grid mt-4">
+    <!-- Profile Card -->
+    <div class="col-12 md:col-4">
+      <div class="glass-card text-center relative border-radius-lg overflow-hidden p-5 py-6">
+        <div class="manga-halftone opacity-05" style="position:absolute; inset:0; pointer-events: none;"></div>
+        
+        <div class="relative z-1 mb-4 flex justify-content-center">
+            <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" class="hidden" style="display:none" />
+            <div class="cursor-pointer relative profile-pic-container" (click)="triggerFileInput()" style="width: 120px; height: 120px;">
+                <p-avatar *ngIf="!profilePictureUrl" [label]="getInitials()" size="xlarge" shape="circle" [style]="{'background-color':'var(--primary-color)', 'color':'var(--bg-dark)', 'width':'120px', 'height':'120px', 'font-size':'3rem', 'font-family':'var(--font-display)', 'font-weight':'900'}"></p-avatar>
+                <img *ngIf="profilePictureUrl" [src]="profilePictureUrl" alt="Profile" style="width:120px; height:120px; border-radius:50%; object-fit:cover; border: 4px solid var(--primary-color);" />
+                <div class="pic-overlay absolute inset-0 flex justify-content-center align-items-center opacity-0 transition-opacity bg-black-alpha-50 border-circle text-white">
+                     <i class="pi pi-camera text-2xl" *ngIf="!loadingPicture"></i>
+                     <i class="pi pi-spinner pi-spin text-2xl" *ngIf="loadingPicture"></i>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="display-font text-2xl mb-1 relative z-1">{{ displayName }}</h3>
+        <p class="text-dim text-sm mb-4 relative z-1">{{ user?.email }}</p>
+
+        <div class="text-left relative z-1 flex flex-column gap-3 border-top-1 border-white-alpha-10 pt-4">
+            <div class="flex flex-column gap-2">
+                <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.DISPLAY_NAME' | translate }}</label>
+                <input pInputText type="text" [(ngModel)]="displayName" class="w-full" />
+            </div>
+            <div class="flex flex-column gap-2">
+                <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.PHONE' | translate }}</label>
+                <input pInputText type="text" [(ngModel)]="phoneNumber" class="w-full" />
+            </div>
+            <div class="flex flex-column gap-2">
+                <label class="manga-font text-xs uppercase letter-spacing-1">{{ 'PROFILE.SECONDARY_PHONE' | translate }}</label>
+                <input pInputText type="text" [(ngModel)]="phoneNumber2" class="w-full" />
+            </div>
+            <button pButton class="p-button-primary mt-2" [label]="'COMMON.SAVE' | translate" [loading]="loadingProfile" icon="pi pi-save" (click)="saveProfile()"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabbed Content Section -->
+    <div class="col-12 lg:col-8">
+      <div class="glass-card border-radius-lg relative z-1 p-0 overflow-hidden">
+        <p-tabView styleClass="manga-tabs" [(activeIndex)]="activeTabIndex">
+          <!-- Addresses Tab -->
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              <i class="pi pi-map-marker mr-2"></i>
+              <span>{{ 'PROFILE.DELIVERY_ADDRESS' | translate }}</span>
+            </ng-template>
+            
+            <div class="p-4">
+              <div class="flex flex-column md:flex-row justify-content-between align-items-start md:align-items-center mb-6 gap-3">
+                <div>
+                  <h3 class="display-font text-3xl text-primary m-0">{{ 'PROFILE.DELIVERY_ADDRESS' | translate }}</h3>
+                  <p class="text-dim mt-2 m-0">{{ 'PROFILE.MANAGE_ADDRESSES_DESC' | translate }}</p>
+                </div>
+                <button pButton icon="pi pi-plus" [label]="'COMMON.ADD' | translate" 
+                  class="p-button-outlined p-button-rounded border-2 px-4 shadow-2 hover:bg-primary transition-all" (click)="openNewAddress()"></button>
+              </div>
+              
+              <div *ngIf="loadingAddresses" class="flex flex-column gap-4">
+                <div *ngFor="let i of [1,2]" class="p-4 border-radius-lg bg-soft border-1 border-white-alpha-10">
+                  <p-skeleton width="30%" height="1.5rem" styleClass="mb-3"></p-skeleton>
+                  <p-skeleton width="70%" height="1rem" styleClass="mb-2"></p-skeleton>
+                  <p-skeleton width="50%" height="1rem"></p-skeleton>
+                </div>
+              </div>
+
+              <div *ngIf="!loadingAddresses && addresses.length === 0" class="text-center py-8 opacity-40 bg-soft border-radius-lg border-2 border-dashed border-white-alpha-10">
+                <i class="pi pi-map-marker text-6xl mb-4 text-primary"></i>
+                <p class="text-xl font-bold mb-2">{{ 'PROFILE.NO_ADDRESSES_TITLE' | translate }}</p>
+                <p>{{ 'PROFILE.NO_ADDRESSES' | translate }}</p>
+              </div>
+
+              <div *ngIf="!loadingAddresses && addresses.length > 0" class="flex flex-column gap-4">
+                <div *ngFor="let addr of addresses" class="address-item p-4 border-radius-lg transition-all relative">
+                  <div class="flex justify-content-between align-items-center">
+                    <div class="flex align-items-start gap-4">
+                      <div class="bg-primary-soft p-3 border-radius-md text-primary hidden md:block">
+                        <i class="pi pi-home text-2xl"></i>
+                      </div>
+                      <div>
+                        <div class="font-bold text-xl mb-1 text-white">{{ addr.firstName }} {{ addr.lastName }}</div>
+                        <div class="text-dim line-height-3">
+                          {{ addr.street }}<br>
+                          <span class="text-white-alpha-70">{{ addr.city }}, {{ addr.state }} {{ addr.zipCode }}</span><br>
+                          <span class="text-primary font-bold text-sm uppercase tracking-wide">{{ addr.country }}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="address-actions flex gap-2">
+                      <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-lg hover:bg-white-alpha-10" (click)="editAddress(addr)"></button>
+                      <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger p-button-lg hover:bg-red-soft" (click)="deleteAddress(addr.id)"></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </p-tabPanel>
+
+          <!-- Password Tab -->
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              <i class="pi pi-lock mr-2"></i>
+              <span>{{ (user?.hasPassword ? 'PROFILE.CHANGE_PASSWORD' : 'PROFILE.SET_PASSWORD') | translate }}</span>
+            </ng-template>
+
+            <div class="p-4 md:p-6 mx-auto" style="max-width: 500px;">
+              <h3 class="display-font text-3xl text-primary mb-2 text-center">{{ (user?.hasPassword ? 'PROFILE.CHANGE_PASSWORD' : 'PROFILE.SET_PASSWORD') | translate }}</h3>
+              <p class="text-dim mb-6 text-center text-sm">{{ (user?.hasPassword ? 'AUTH.RESET_DESC' : 'PROFILE.SET_PASSWORD_DESC') | translate }}</p>
+              
+              <div class="flex flex-column gap-4 p-fluid">
+                <div class="field" *ngIf="user?.hasPassword">
+                  <label class="form-label mb-2">{{ 'PROFILE.CURRENT_PASSWORD' | translate }}</label>
+                  <p-password [(ngModel)]="passwordData.currentPassword" [feedback]="false" [toggleMask]="true" class="w-full" styleClass="w-full" inputStyleClass="w-full p-input-lg"></p-password>
+                </div>
+                <div class="field">
+                  <label class="form-label mb-2">{{ 'AUTH.NEW_PASSWORD' | translate }}</label>
+                  <p-password [(ngModel)]="passwordData.newPassword" [toggleMask]="true" class="w-full" styleClass="w-full" inputStyleClass="w-full p-input-lg"></p-password>
+                </div>
+                <div class="field">
+                  <label class="form-label mb-2">{{ 'AUTH.CONFIRM_PASSWORD' | translate }}</label>
+                  <p-password [(ngModel)]="passwordData.confirmPassword" [feedback]="false" [toggleMask]="true" class="w-full" styleClass="w-full" inputStyleClass="w-full p-input-lg"></p-password>
+                </div>
+                
+                <div class="bg-red-900/20 p-3 rounded-lg border-1 border-red-500/30 text-red-500 text-sm" 
+                     *ngIf="passwordData.newPassword && passwordData.confirmPassword && passwordData.newPassword !== passwordData.confirmPassword">
+                  <i class="pi pi-exclamation-circle mr-2"></i> {{ 'AUTH.PASSWORDS_DONT_MATCH' | translate }}
+                </div>
+
+                <div class="mt-4 flex justify-content-center">
+                  <button pButton [label]="'COMMON.SAVE' | translate" 
+                          class="p-button-primary p-button-lg px-8 py-3 shadow-3" 
+                          [disabled]="(user?.hasPassword && !passwordData.currentPassword) || !passwordData.newPassword || passwordData.newPassword !== passwordData.confirmPassword"
+                          (click)="changePassword()"></button>
+                </div>
+              </div>
+            </div>
+          </p-tabPanel>
+        </p-tabView>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Address Edit Dialog remains for adding/editing -->
+  <p-dialog [(visible)]="addressDialogVisible" [header]="(editingAddress.id ? 'COMMON.EDIT' : 'COMMON.ADD') | translate" 
+            [modal]="true" class="manga-dialog" [style]="{width: '100%', maxWidth: '600px'}" [breakpoints]="{'960px': '90vw'}" [draggable]="false" [resizable]="false">
+      
+      <form #addressForm="ngForm">
+          <div class="grid formgrid p-fluid">
+              <div class="col-12 md:col-6 mb-4">
+                  <label class="form-label">{{ 'PROFILE.FIRST_NAME' | translate }} <span class="text-primary">*</span></label>
+                  <input pInputText type="text" [(ngModel)]="editingAddress.firstName" name="firstName" #firstName="ngModel" required class="p-input-lg" [ngClass]="{'ng-invalid ng-dirty': firstName.invalid && (firstName.dirty || firstName.touched)}" />
+                  <small class="p-error block mt-1" *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">{{ 'COMMON.REQUIRED' | translate }}</small>
+              </div>
+              <div class="col-12 md:col-6 mb-4">
+                  <label class="form-label">{{ 'PROFILE.LAST_NAME' | translate }} <span class="text-primary">*</span></label>
+                  <input pInputText type="text" [(ngModel)]="editingAddress.lastName" name="lastName" #lastName="ngModel" required class="p-input-lg" [ngClass]="{'ng-invalid ng-dirty': lastName.invalid && (lastName.dirty || lastName.touched)}" />
+                  <small class="p-error block mt-1" *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">{{ 'COMMON.REQUIRED' | translate }}</small>
+              </div>
+              <div class="col-12 mb-4">
+                  <label class="form-label">{{ 'PROFILE.STREET' | translate }} <span class="text-primary">*</span></label>
+                  <input pInputText type="text" [(ngModel)]="editingAddress.street" name="street" #street="ngModel" required class="p-input-lg" [ngClass]="{'ng-invalid ng-dirty': street.invalid && (street.dirty || street.touched)}" [placeholder]="'PROFILE.STREET_PLACEHOLDER' | translate" />
+                  <small class="p-error block mt-1" *ngIf="street.invalid && (street.dirty || street.touched)">{{ 'COMMON.REQUIRED' | translate }}</small>
+              </div>
+              <div class="col-12 md:col-6 mb-4">
+                  <label class="form-label">{{ 'PROFILE.CITY' | translate }} <span class="text-primary">*</span></label>
+                  <input pInputText type="text" [(ngModel)]="editingAddress.city" name="city" #city="ngModel" required class="p-input-lg" [ngClass]="{'ng-invalid ng-dirty': city.invalid && (city.dirty || city.touched)}" />
+                  <small class="p-error block mt-1" *ngIf="city.invalid && (city.dirty || city.touched)">{{ 'COMMON.REQUIRED' | translate }}</small>
+              </div>
+              <div class="col-12 md:col-6 mb-4">
+                  <label class="form-label">{{ 'PROFILE.STATE' | translate }} <span class="text-primary">*</span></label>
+                  <input pInputText type="text" [(ngModel)]="editingAddress.state" name="state" #state="ngModel" required class="p-input-lg" [ngClass]="{'ng-invalid ng-dirty': state.invalid && (state.dirty || state.touched)}" />
+                  <small class="p-error block mt-1" *ngIf="state.invalid && (state.dirty || state.touched)">{{ 'COMMON.REQUIRED' | translate }}</small>
+              </div>
+              <div class="col-12 md:col-6 mb-4">
+                  <label class="form-label">{{ 'PROFILE.ZIP' | translate }} <span class="text-primary">*</span></label>
+                  <input pInputText type="text" [(ngModel)]="editingAddress.zipCode" name="zipCode" #zipCode="ngModel" required class="p-input-lg" [ngClass]="{'ng-invalid ng-dirty': zipCode.invalid && (zipCode.dirty || zipCode.touched)}" />
+                  <small class="p-error block mt-1" *ngIf="zipCode.invalid && (zipCode.dirty || zipCode.touched)">{{ 'COMMON.REQUIRED' | translate }}</small>
+              </div>
+              <div class="col-12 md:col-6 mb-4">
+                  <label class="form-label">{{ 'PROFILE.COUNTRY' | translate }} <span class="text-primary">*</span></label>
+                  <input pInputText type="text" [(ngModel)]="editingAddress.country" name="country" #country="ngModel" required class="p-input-lg" [ngClass]="{'ng-invalid ng-dirty': country.invalid && (country.dirty || country.touched)}" />
+                  <small class="p-error block mt-1" *ngIf="country.invalid && (country.dirty || country.touched)">{{ 'COMMON.REQUIRED' | translate }}</small>
+              </div>
+          </div>
+      </form>
+      
+      <ng-template pTemplate="footer">
+          <div class="flex justify-content-end gap-3 w-full">
+              <button pButton [label]="'COMMON.CANCEL' | translate" class="p-button-text p-button-lg px-4" (click)="addressDialogVisible = false"></button>
+              <button pButton [label]="'COMMON.SAVE' | translate" [loading]="savingAddress" icon="pi pi-check" 
+                      class="p-button-primary p-button-lg px-6 shadow-2" (click)="saveAddress()"></button>
+          </div>
+      </ng-template>
+  </p-dialog>
+</div>

@@ -1,4 +1,4 @@
-﻿
+
 using MangaRestaurant.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MangaRestaurant.Core.Specifications.EmployeeSpecs
+namespace MangaRestaurant.Core.Specifications.ProductBrandSpecs
 {
     public class ProductBrandSpecs : BaseSpecifications<ProductBrand>
     {
-        public ProductBrandSpecs(string? Sort)
-        : base()
+        public ProductBrandSpecs(string? Sort, bool showHidden = false)
+        : base(x => showHidden || !x.IsHidden)
         {
             AddSort(Sort);
         }

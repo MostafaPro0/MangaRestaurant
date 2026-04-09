@@ -1,4 +1,4 @@
-﻿using MangaRestaurant.Core.Entities;
+using MangaRestaurant.Core.Entities;
 using MangaRestaurant.Core.Entities.Order;
 using MangaRestaurant.Repository.Data.Configurations;
 using Microsoft.EntityFrameworkCore;
@@ -34,11 +34,10 @@ namespace MangaRestaurant.Repository.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductBrand> ProductBrands { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
-        public DbSet<Employee> Employee { get; set; }
-        public DbSet<Department> Department { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
-        public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
+        public DbSet<ProductReview> ProductReviews { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<SiteSettings> SiteSettings { get; set; }
     }
-
 }

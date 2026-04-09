@@ -1,0 +1,26 @@
+img { max-width: 100%; }
+
+.main-cart-btn {
+    white-space: nowrap !important;
+    font-size: 1.25rem !important;
+    padding: 1.25rem 2rem !important;
+}
+
+.action-icon-btn {
+    width: 60px !important;
+    height: 60px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 576px) {
+    .main-cart-btn {
+        font-size: 1.1rem !important;
+    }
+    .action-icon-btn {
+        flex: 1;
+        width: auto !important;
+    }
+}

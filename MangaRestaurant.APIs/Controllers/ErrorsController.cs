@@ -1,4 +1,4 @@
-﻿using MangaRestaurant.APIs.Errors;
+using MangaRestaurant.APIs.Errors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +11,7 @@ namespace MangaRestaurant.APIs.Controllers
     {
         public ActionResult Error(int code)
         {
-            return NotFound(new ApiResponse(code));
+            return new ObjectResult(new ApiResponse(code));
         }
     }
 }

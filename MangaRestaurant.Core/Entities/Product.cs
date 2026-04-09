@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -10,12 +10,18 @@ namespace MangaRestaurant.Core.Entities
     public class Product : BaseEntity
     {
         public string Name { get; set; }
+        public string NameAr { get; set; }
         public string Description { get; set; }
+        public string DescriptionAr { get; set; }
         public string PictureUrl { get; set; }
         public decimal Price { get; set; }
+        public decimal? OldPrice { get; set; }
+        public bool IsHidden { get; set; } = false;
         public int BrandId { get; set; }
         public ProductBrand Brand { get; set; }
         public int CategoryId { get; set; }//Foriegn Key Column >> ProudctBrand
         public ProductCategory Category { get; set; } // Navigational Property [ONE]
+        public int Views { get; set; }
+        public ICollection<ProductReview> Reviews { get; set; } = new HashSet<ProductReview>();
     }
 }

@@ -1,0 +1,190 @@
+<div class="container section-pad min-h-screen">
+  <div class="section-header-v2">
+    <span class="section-tag">{{ 'BASKET.SUBTITLE' | translate }}</span>
+    <h1 class="section-title-v2">{{ 'BASKET.TITLE' | translate }}</h1>
+  </div>
+
+  <div class="grid mt-4" *ngIf="settings$ | async as settings">
+    <!-- Items List -->
+    <div class="col-12 lg:col-8">
+      <div class="mg-card p-0" style="overflow: hidden">
+        <p-table [value]="basket.items" class="manga-table" [responsiveLayout]="'stack'">
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="bg-soft text-muted font-bold text-xs uppercase p-4" style="border:none">{{ 'BASKET.PRODUCT' |
+                translate }}</th>
+              <th class="bg-soft text-muted font-bold text-xs uppercase p-4 text-center" style="border:none">{{
+                'BASKET.PRICE' | translate }}</th>
+              <th class="bg-soft text-muted font-bold text-xs uppercase p-4 text-center" style="border:none">{{
+                'BASKET.QUANTITY' | translate }}</th>
+              <th class="bg-soft text-muted font-bold text-xs uppercase p-4 text-center" style="border:none">{{
+                'BASKET.TOTAL' | translate }}</th>
+              <th class="bg-soft text-muted font-bold text-xs uppercase p-4" style="border:none"></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr class="border-bottom-1 border-white-alpha-10">
+              <td class="p-4">
+                <div class="flex align-items-center gap-3">
+                  <div class="brand-bolt" style="width:32px; height:32px; font-size:1rem; opacity:0.6"
+                    *ngIf="!item.pictureUrl">
+                    <i class="pi pi-box"></i>
+                  </div>
+                  <img *ngIf="item.pictureUrl" [src]="getImageUrl(item.pictureUrl)"
+                    [alt]="(translateService.currentLanguage === 'ar' ? item.productNameAr : item.productName) || item.productName"
+                    style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;">
+                  <span class="font-bold text-lg cursor-pointer" routerLink="/products/{{item.productId}}">
+                    {{ (translateService.currentLanguage === 'ar' ? item.productNameAr : item.productName) ||
+                    item.productName }}
+                  </span>
+                </div>
+              </td>
+              <td class="p-4 text-center text-dim">
+                <ng-container *ngIf="translateService.currentLanguage === 'ar'">
+                  {{ item.price | number : '1.2-2' }} ج.م
+                </ng-container>
+                <ng-container *ngIf="translateService.currentLanguage !== 'ar'">
+                  {{ item.price | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                </ng-container>
+              </td>
+              <td class="p-4 text-center">
+                <div class="flex align-items-center justify-content-center gap-2">
+                  <button pButton icon="pi pi-minus" class="p-button-rounded p-button-text p-button-sm"
+                    (click)="updateQuantity(item.productId, item.quantity, -1)"
+                    [pTooltip]="(translateService.currentLanguage === 'ar' ? 'تقليل' : 'Decrease')"></button>
+                  <span class="px-3 py-2 bg-soft font-bold rounded-lg min-w-min"
+                    style="display:inline-block; width: 40px; text-align: center;">{{ item.quantity }}</span>
+                  <button pButton icon="pi pi-plus" class="p-button-rounded p-button-text p-button-sm"
+                    (click)="updateQuantity(item.productId, item.quantity, 1)"
+                    [pTooltip]="(translateService.currentLanguage === 'ar' ? 'زيادة' : 'Increase')"></button>
+                </div>
+              </td>
+              <td class="p-4 text-center font-bold text-primary">
+                <ng-container *ngIf="translateService.currentLanguage === 'ar'">
+                  {{ item.price * item.quantity | number : '1.2-2' }} ج.م
+                </ng-container>
+                <ng-container *ngIf="translateService.currentLanguage !== 'ar'">
+                  {{ item.price * item.quantity | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                </ng-container>
+              </td>
+              <td class="p-4 text-right">
+                <button pButton icon="pi pi-eye" class="p-button-rounded p-button-text p-button-secondary"
+                  [pTooltip]="'BASKET.VIEW_PRODUCT' | translate" routerLink="/products/{{item.productId}}"></button>
+                <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
+                  [pTooltip]="'BASKET.REMOVE' | translate" (click)="removeItem(item.productId)"></button>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="5" class="py-8 text-center text-muted">
+                <i class="pi pi-shopping-cart text-6xl opacity-10 mb-4 block"></i>
+                <p class="text-xl font-bold">{{ 'BASKET.EMPTY_TITLE' | translate }}</p>
+                <a routerLink="/products" class="text-primary hover:underline mt-2 inline-block">{{ 'BASKET.EMPTY_LINK'
+                  | translate }}</a>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+    </div>
+
+    <!-- Summary Sidebar -->
+    <div class="col-12 lg:col-4">
+      <div class="mg-card" style="position: sticky; top: 100px">
+        <h2 class="display-font text-2xl font-bold mb-4">{{ 'BASKET.SUMMARY' | translate }}</h2>
+
+        <div class="flex flex-column gap-3 mb-5">
+          <div class="flex justify-content-between p-3 bg-soft rounded-lg mb-1">
+            <span class="text-dim font-bold">{{ 'BASKET.SUBTOTAL' | translate }}</span>
+            <span class="font-bold">
+              <ng-container *ngIf="translateService.currentLanguage === 'ar'">
+                {{ total | number : '1.2-2' }} ج.م
+              </ng-container>
+              <ng-container *ngIf="translateService.currentLanguage !== 'ar'">
+                {{ total | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+              </ng-container>
+            </span>
+          </div>
+          <div class="flex justify-content-between p-3 bg-soft rounded-lg">
+            <span class="text-dim font-bold">{{ 'BASKET.DELIVERY' | translate }}</span>
+            <span class="text-primary font-bold">{{ (translateService.currentLanguage === 'ar' ? 'مجاني' : 'FREE')
+              }}</span>
+          </div>
+          <div class="flex justify-content-between p-3 mt-2 border-top-1 border-white-alpha-10">
+            <span class="text-xl font-bold">{{ 'BASKET.GRAND_TOTAL' | translate }}</span>
+            <span class="text-2xl font-bold text-primary">
+              <ng-container *ngIf="translateService.currentLanguage === 'ar'">
+                {{ total | number : '1.2-2' }} ج.م
+              </ng-container>
+              <ng-container *ngIf="translateService.currentLanguage !== 'ar'">
+                {{ total | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+              </ng-container>
+            </span>
+          </div>
+        </div>
+
+        <button pButton class="p-button-primary p-button-lg w-full py-4 text-lg" [label]="'BASKET.CHECKOUT' | translate"
+          icon="pi pi-shopping-bag" routerLink="/checkout" [disabled]="basket.items.length === 0"></button>
+
+        <div
+          class="mt-4 p-3 border-round-lg text-sm text-dim flex gap-2 align-items-center justify-content-center opacity-60">
+          <i class="pi pi-shield text-primary"></i>
+          {{ 'CHECKOUT.SECURE_DESC' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Offers Carousel Section (Full Width below grid) -->
+  <div class="mt-2 animate-fade" *ngIf="deals.length > 0 && (settings$ | async) as settings">
+    <div class="flex align-items-center gap-4 mb-4">
+      <h2 class="display-font text-3xl font-bold text-main">{{ 'BASKET.DEALS_TITLE' | translate }}</h2>
+      <div class="flex-grow-1 border-top-1 border-white-alpha-10"></div>
+    </div>
+
+    <p-carousel [value]="deals" [numVisible]="4" [numScroll]="1" [responsiveOptions]="responsiveOptions"
+      [circular]="true" [autoplayInterval]="4000" [showIndicators]="true">
+      <ng-template let-product pTemplate="item">
+        <div class="mg-card mx-2 p-0 overflow-hidden h-full flex flex-column shadow-sm border-white-alpha-10">
+          <div class="relative overflow-hidden cursor-pointer" routerLink="/products/{{product.id}}">
+            <img [src]="getImageUrl(product.pictureUrl)" class="w-full h-150px object-cover hover-zoom">
+            <span
+              class="absolute top-0 right-0 bg-primary text-white text-xs font-bold px-2 py-1 m-2 rounded shadow-lg">
+              -{{ product.discountPercentage }}%
+            </span>
+          </div>
+          <div class="p-4 flex-grow-1 flex flex-column justify-content-between">
+            <h4 class="m-0 text-md font-bold truncate text-main mb-2">
+              {{ (translateService.currentLanguage === 'ar' ? product.nameAr : product.name) || product.name }}
+            </h4>
+            <div class="flex align-items-center justify-content-between">
+              <div class="flex flex-column">
+                <span class="primary-text font-black text-xl">
+                  <ng-container *ngIf="translateService.currentLanguage === 'ar'">
+                    {{ product.price | number : '1.1-1' }} ج.م
+                  </ng-container>
+                  <ng-container *ngIf="translateService.currentLanguage !== 'ar'">
+                    {{ product.price | currency : settings.currencyCode : 'symbol' : '1.1-1' }}
+                  </ng-container>
+                </span>
+                <span class="text-xs text-dim strikethrough opacity-50">
+                   <ng-container *ngIf="translateService.currentLanguage === 'ar'">
+                    {{ product.oldPrice | number : '1.1-1' }} ج.م
+                  </ng-container>
+                  <ng-container *ngIf="translateService.currentLanguage !== 'ar'">
+                    {{ product.oldPrice | currency : settings.currencyCode : 'symbol' : '1.1-1' }}
+                  </ng-container>
+                </span>
+              </div>
+              <button pButton icon="pi pi-cart-plus" class="p-button-rounded p-button-primary shadow-sm"
+                (click)="addToBasket(product)" 
+                [pTooltip]="(translateService.currentLanguage === 'ar' ? 'إضافة للسلة' : 'Add to Basket')"></button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-carousel>
+  </div>
+</div>

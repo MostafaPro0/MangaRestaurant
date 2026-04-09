@@ -1,26 +1,34 @@
 [
     {
-        "Name": "Frappuccino"
+        "Name": "Frappuccino",
+        "NameAr": "فرابوتشينو"
     },
     {
-        "Name": "Latte"
+        "Name": "Latte",
+        "NameAr": "لاتيه"
     },
     {
-        "Name": "Mocha"
+        "Name": "Mocha",
+        "NameAr": "موكا"
     },
     {
-        "Name": "Macchiato"
+        "Name": "Macchiato",
+        "NameAr": "ماكياتو"
     },
     {
-        "Name": "Matcha"
+        "Name": "Matcha",
+        "NameAr": "ماتشا"
     },
     {
-        "Name": "Cake"
+        "Name": "Cake",
+        "NameAr": "كيك"
     },
     {
-        "Name": "Donuts"
+        "Name": "Donuts",
+        "NameAr": "دونات"
     },
     {
-        "Name": "Salad"
+        "Name": "Salad",
+        "NameAr": "سلطات"
     }
 ]

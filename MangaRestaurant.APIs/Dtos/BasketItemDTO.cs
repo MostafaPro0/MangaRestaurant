@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace MangaRestaurant.APIs.Dtos
 {
@@ -8,6 +8,8 @@ namespace MangaRestaurant.APIs.Dtos
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
+        [Required]
+        public string NameAr { get; set; }
         [Required]
         public string PrictureUrl { get; set; }
         [Required]

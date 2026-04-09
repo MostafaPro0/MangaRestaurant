@@ -1,23 +1,30 @@
 [
     {
-        "Name": "Starbucks"
+        "Name": "Starbucks",
+        "NameAr": "ستاربكس"
     },
     {
-        "Name": "Costa"
+        "Name": "Costa",
+        "NameAr": "كوستا"
     },
     {
-        "Name": "Cilantro"
+        "Name": "Cilantro",
+        "NameAr": "سيلانترو"
     },
     {
-        "Name": "TBS"
+        "Name": "TBS",
+        "NameAr": "تي بي اس"
     },
     {
-        "Name": "On The Run"
+        "Name": "On The Run",
+        "NameAr": "أون ذا ران"
     },
     {
-        "Name": "Caribou"
+        "Name": "Caribou",
+        "NameAr": "كاريبو"
     },
     {
-        "Name": "Krispy Kreme"
+        "Name": "Krispy Kreme",
+        "NameAr": "كريسبي كريم"
     }
 ]

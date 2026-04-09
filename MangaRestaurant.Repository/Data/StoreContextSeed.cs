@@ -1,4 +1,4 @@
-﻿using MangaRestaurant.Core.Entities;
+using MangaRestaurant.Core.Entities;
 using MangaRestaurant.Core.Entities.Order;
 using System;
 using System.Collections.Generic;
@@ -76,19 +76,29 @@ namespace MangaRestaurant.Repository.Data
                     await _dbContext.SaveChangesAsync();
                 }
             }
-            if (_dbContext.Orders.Count() == 0)
+            if (!_dbContext.SiteSettings.Any())
             {
-                var deliveryData = File.ReadAllText("../MangaRestaurant.Repository/Data/DataSeed/delivery.json");
-                var deliveries = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryData);
-
-                if (deliveries?.Count() > 0)
+                var settings = new SiteSettings
                 {
-                    foreach (var delivery in deliveries)
-                    {
-                        _dbContext.Set<DeliveryMethod>().Add(delivery);
-                    }
-                    await _dbContext.SaveChangesAsync();
-                }
+                    RestaurantName = "Manga Restaurant",
+                    RestaurantNameAr = "مطعم مانجا",
+                    Address = "123 Manga Street, Cairo, Egypt",
+                    AddressAr = "123 شارع مانجا، القاهرة، مصر",
+                    Phone1 = "+20 123 456 7890",
+                    Phone2 = "+20 100 123 4567",
+                    Email = "info@mangarestaurant.com",
+                    CurrencyCode = "EGP",
+                    CurrencySymbol = "ج.م",
+                    FacebookUrl = "https://facebook.com/mangarestaurant",
+                    InstagramUrl = "https://instagram.com/mangarestaurant",
+                    TwitterUrl = "https://twitter.com/mangarestaurant",
+                    OpeningHoursEn = "Mon-Sun: 10:00 AM - 11:00 PM",
+                    OpeningHoursAr = "الإثنين-الأحد: 10:00 صباحاً - 11:00 مساءً",
+                    DeliveryFee = 25.0m
+                };
+
+                _dbContext.SiteSettings.Add(settings);
+                await _dbContext.SaveChangesAsync();
             }
         }
     }

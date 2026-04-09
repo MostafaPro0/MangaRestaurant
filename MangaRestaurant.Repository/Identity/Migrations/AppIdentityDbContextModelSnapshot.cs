@@ -45,6 +45,9 @@ namespace MangaRestaurant.Repository.Identity.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsBanned")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -65,8 +68,14 @@ namespace MangaRestaurant.Repository.Identity.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PhoneNumber2")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("ProfilePictureUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -119,14 +128,21 @@ namespace MangaRestaurant.Repository.Identity.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZipCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId")
-                        .IsUnique();
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("UserAddress");
                 });
@@ -267,8 +283,8 @@ namespace MangaRestaurant.Repository.Identity.Migrations
             modelBuilder.Entity("MangaRestaurant.Core.Entities.Identity.UserAddress", b =>
                 {
                     b.HasOne("MangaRestaurant.Core.Entities.Identity.AppUser", "User")
-                        .WithOne("UserAddress")
-                        .HasForeignKey("MangaRestaurant.Core.Entities.Identity.UserAddress", "AppUserId")
+                        .WithMany("UserAddresses")
+                        .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -328,8 +344,7 @@ namespace MangaRestaurant.Repository.Identity.Migrations
 
             modelBuilder.Entity("MangaRestaurant.Core.Entities.Identity.AppUser", b =>
                 {
-                    b.Navigation("UserAddress")
-                        .IsRequired();
+                    b.Navigation("UserAddresses");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,0 +1,168 @@
+<div class="container section-pad">
+  <div class="section-header-v2">
+    <span class="section-tag">{{ 'CHECKOUT.TAG_LINE' | translate }}</span>
+    <h1 class="section-title-v2">{{ 'CHECKOUT.TITLE' | translate }}</h1>
+  </div>
+
+  <div class="grid mt-4">
+    <div class="col-12 lg:col-8">
+      <div class="mg-card p-5" style="overflow: visible;">
+        <h3 class="display-font text-2xl mb-5 font-bold border-bottom-1 border-white-alpha-10 pb-3">
+          <i class="pi pi-map-marker text-primary mr-2"></i> {{ 'CHECKOUT.SHIPPING' | translate }}
+        </h3>
+
+        <form (ngSubmit)="createOrder()" #checkoutForm="ngForm">
+          <!-- Address Mode Selection -->
+          <div
+            class="flex flex-column md:flex-row gap-3 mb-6 p-2 bg-white-alpha-05 rounded-xl border-1 border-white-alpha-10"
+            *ngIf="savedAddresses.length > 0">
+            <div
+              class="flex-1 flex align-items-center gap-3 p-3 cursor-pointer transition-all hover:bg-white-alpha-05 rounded-lg"
+              [ngClass]="{'bg-primary shadow-2': addressMode === 'saved'}" (click)="addressMode = 'saved'">
+              <p-radioButton name="addrMode" value="saved" [(ngModel)]="addressMode"
+                inputId="modeSaved"></p-radioButton>
+              <label for="modeSaved" class="cursor-pointer font-bold">{{ 'CHECKOUT.USE_SAVED' | translate }}</label>
+            </div>
+            <div
+              class="flex-1 flex align-items-center gap-3 p-3 cursor-pointer transition-all hover:bg-white-alpha-05 rounded-lg"
+              [ngClass]="{'bg-primary shadow-2': addressMode === 'new'}" (click)="addressMode = 'new'">
+              <p-radioButton name="addrMode" value="new" [(ngModel)]="addressMode" inputId="modeNew"></p-radioButton>
+              <label for="modeNew" class="cursor-pointer font-bold">{{ 'CHECKOUT.ADD_NEW' | translate }}</label>
+            </div>
+          </div>
+
+          <!-- Saved Address Section -->
+          <div class="mb-5 animate-fade-in" *ngIf="addressMode === 'saved'">
+            <label class="block text-sm font-bold opacity-70 mb-3 ml-2 uppercase tracking-wider">{{
+              'CHECKOUT.SELECT_SAVED' | translate }}</label>
+            <p-dropdown [(ngModel)]="selectedAddress" name="savedAddress" [options]="savedAddresses"
+              optionLabel="street" placeholder="{{ 'CHECKOUT.SELECT_SAVED' | translate }}"
+              (onChange)="onAddressSelect($event)" styleClass="w-full p-input-lg shadow-sm">
+              <ng-template let-addr pTemplate="item">
+                <div class="flex flex-column py-2">
+                  <span class="font-bold text-lg">{{ addr.firstName }} {{ addr.lastName }}</span>
+                  <span class="text-sm opacity-70"><i class="pi pi-map-marker mr-1"></i> {{ addr.street }}, {{ addr.city
+                    }}</span>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div>
+
+          <!-- Address Input Grid -->
+          <div class="animate-slide-up" *ngIf="addressMode === 'new' || savedAddresses.length === 0">
+            <div class="formgrid grid mt-3">
+              <div class="field col-12 md:col-6 mb-4">
+                <label for="firstName" class="form-label">{{ 'CHECKOUT.FIRST_NAME' | translate }}</label>
+                <input pInputText id="firstName" [(ngModel)]="address.firstName" name="firstName" class="p-input-lg"
+                  required />
+              </div>
+              <div class="field col-12 md:col-6 mb-4">
+                <label for="lastName" class="form-label">{{ 'CHECKOUT.LAST_NAME' | translate }}</label>
+                <input pInputText id="lastName" [(ngModel)]="address.lastName" name="lastName" class="p-input-lg"
+                  required />
+              </div>
+              <div class="field col-12 mb-4">
+                <label for="street" class="form-label">{{ 'CHECKOUT.STREET' | translate }}</label>
+                <input pInputText id="street" [(ngModel)]="address.street" name="street" class="p-input-lg" required
+                  placeholder="e.g. 123 Ramen St." />
+              </div>
+              <div class="field col-12 md:col-4 mb-4">
+                <label for="city" class="form-label">{{ 'CHECKOUT.CITY' | translate }}</label>
+                <input pInputText id="city" [(ngModel)]="address.city" name="city" class="p-input-lg" required />
+              </div>
+              <div class="field col-12 md:col-4 mb-4">
+                <label for="state" class="form-label">{{ 'CHECKOUT.STATE' | translate }}</label>
+                <input pInputText id="state" [(ngModel)]="address.state" name="state" class="p-input-lg" required />
+              </div>
+              <div class="field col-12 md:col-4 mb-4">
+                <label for="zipCode" class="form-label">{{ 'CHECKOUT.ZIP' | translate }}</label>
+                <input pInputText id="zipCode" [(ngModel)]="address.zipCode" name="zipCode" class="p-input-lg"
+                  required />
+              </div>
+              <div class="field col-12 md:col-6 mb-4">
+                <label for="country" class="form-label">{{ 'CHECKOUT.COUNTRY' | translate }}</label>
+                <input pInputText id="country" [(ngModel)]="address.country" name="country" class="p-input-lg"
+                  required />
+              </div>
+            </div>
+
+            <!-- Save Address Checkbox -->
+            <div class="bg-white-alpha-05 rounded-lg border-1 border-white-alpha-10 flex align-items-center gap-3">
+              <p-checkbox [(ngModel)]="saveAddressToProfile" [binary]="true" name="saveAddress"
+                inputId="saveAddr"></p-checkbox>
+              <label for="saveAddr" class="cursor-pointer text-sm font-bold opacity-80">{{ 'CHECKOUT.SAVE_ADDRESS' |
+                translate }}</label>
+            </div>
+          </div>
+
+          <!-- No longer needed -->
+        </form>
+      </div>
+    </div>
+
+    <!-- Review Sidebar -->
+    <div class="col-12 lg:col-4">
+      <div class="mg-card" style="position: sticky; top: 100px">
+        <h3 class="display-font text-2xl mb-5 font-bold uppercase border-bottom-1 border-white-alpha-10 pb-3">{{
+          'CHECKOUT.ORDER_REVIEW' | translate }}</h3>
+
+        <div class="flex flex-column gap-4 mb-6" *ngIf="settings$ | async as settings">
+          <div class="flex justify-content-between p-3 bg-soft rounded-lg">
+            <span class="text-dim font-bold">{{ 'CHECKOUT.SUBTOTAL' | translate }}</span>
+            <span class="font-bold">
+              <ng-container *ngIf="translate.currentLanguage === 'ar'">
+                {{ subtotal | number : '1.2-2' }} {{ settings.currencySymbol }}
+              </ng-container>
+              <ng-container *ngIf="translate.currentLanguage !== 'ar'">
+                {{ subtotal | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+              </ng-container>
+            </span>
+          </div>
+          <div class="flex justify-content-between p-3 bg-soft rounded-lg">
+            <span class="text-primary font-bold">{{ 'BASKET.DELIVERY' | translate }}</span>
+            <span class="font-bold">
+              <ng-container *ngIf="translate.currentLanguage === 'ar'">
+                {{ settings.deliveryFee | number : '1.2-2' }} {{ settings.currencySymbol }}
+              </ng-container>
+              <ng-container *ngIf="translate.currentLanguage !== 'ar'">
+                {{ settings.deliveryFee | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+              </ng-container>
+            </span>
+          </div>
+          <div class="pt-4 mt-2 border-top-1 border-white-alpha-10 flex justify-content-between align-items-center">
+            <span class="text-xl font-bold">{{ 'CHECKOUT.TOTAL' | translate }}</span>
+            <span class="text-3xl font-bold text-primary">
+              <ng-container *ngIf="translate.currentLanguage === 'ar'">
+                {{ (subtotal + settings.deliveryFee) | number : '1.2-2' }} {{ settings.currencySymbol }}
+              </ng-container>
+              <ng-container *ngIf="translate.currentLanguage !== 'ar'">
+                {{ (subtotal + settings.deliveryFee) | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+              </ng-container>
+            </span>
+          </div>
+        </div>
+
+        <button pButton class="p-button-primary p-button-lg w-full py-4 text-xl"
+          [label]="'CHECKOUT.CREATE_ORDER' | translate" 
+          [icon]="loading ? 'pi pi-spin pi-spinner' : 'pi pi-check-circle'" 
+          [loading]="loading"
+          (click)="createOrder()"
+          [disabled]="!checkoutForm.valid || loading"></button>
+
+        <div class="mt-6 flex flex-column gap-3 opacity-60">
+          <div class="flex align-items-center gap-3 p-3">
+            <i class="pi pi-lock text-primary text-2xl"></i>
+            <div class="text-xs">
+              <span class="block font-bold">{{ 'CHECKOUT.SECURE_PAYMENT' | translate }}</span>
+              <span class="text-muted">{{ 'CHECKOUT.SECURE_DESC' | translate }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="flex justify-content-center py-8" *ngIf="loading">
+  <p-progressSpinner strokeWidth="4"></p-progressSpinner>
+</div>

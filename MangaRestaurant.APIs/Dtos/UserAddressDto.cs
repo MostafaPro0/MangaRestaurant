@@ -1,10 +1,11 @@
-﻿using MangaRestaurant.Core.Entities.Identity;
+using MangaRestaurant.Core.Entities.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace MangaRestaurant.APIs.Dtos
 {
     public class UserAddressDto
     {
+        public int Id { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]
@@ -13,6 +14,10 @@ namespace MangaRestaurant.APIs.Dtos
         public string Street { get; set; }
         [Required]
         public string City { get; set; }
+        [Required]
+        public string State { get; set; }
+        [Required]
+        public string ZipCode { get; set; }
         [Required]
         public string Country { get; set; }
     }

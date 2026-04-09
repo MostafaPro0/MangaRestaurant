@@ -1,0 +1,300 @@
+/* ─── Premium Modern Navigation ─────────────────────────── */
+
+.navbar-manga {
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 2px solid var(--glass-border);
+  padding: 1rem 0;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Utils & Brand */
+.nav-utils, .nav-right { flex: 1; }
+
+.manga-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-manga);
+  font-size: 1.75rem;
+  color: var(--text-main);
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+
+.brand-bolt {
+  color: var(--primary);
+  font-size: 1.5rem;
+}
+
+/* Navigation (Desktop) */
+.nav-center {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+}
+
+.nav-center a {
+  color: var(--text-dim);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  transition: color 0.2s;
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+.nav-center a:hover {
+  color: var(--primary);
+}
+
+.nav-center a.active {
+  color: var(--text-main);
+}
+
+.nav-center a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1rem;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+
+.dine-in-nav-link:hover {
+  background: var(--primary-color) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 62, 62, 0.3);
+}
+
+.dine-in-nav-link:active {
+  transform: scale(0.95);
+}
+
+/* Actions (Right) */
+.nav-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.5rem;
+}
+
+.auth-box {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.auth-link {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+}
+
+.auth-btn {
+  background: var(--primary);
+  color: #000;
+  padding: 0.65rem 1.75rem;
+  font-weight: 800;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 10px rgba(255, 190, 0, 0.2);
+}
+
+/* Toggle Colors */
+.manga-toggle-group {
+  display: flex;
+  background: var(--bg-soft);
+  border: 1px solid var(--glass-border);
+  padding: 0.2rem;
+  border-radius: var(--radius-sm);
+}
+
+.manga-toggle-btn {
+  background: transparent;
+  border: none;
+  padding: 0.45rem 0.85rem;
+  color: var(--text-dim);
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+
+.manga-toggle-btn.active {
+  background: var(--primary);
+  color: #000;
+}
+
+/* Mobile Drawer (Mobile) */
+.menu-trigger {
+  background: var(--surface);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.mobile-drawer {
+  position: fixed;
+  top: 75px; 
+  left: 0;
+  width: 100%;
+  height: 0;
+  background: var(--bg-deep);
+  z-index: 1050;
+  overflow: hidden;
+  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 40px 100px rgba(0,0,0,0.2);
+}
+
+.mobile-drawer.active {
+  height: calc(100vh - 75px);
+}
+
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  font-family: var(--font-manga);
+  padding-bottom: 5rem;
+}
+
+.mobile-nav a {
+  font-size: 2rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.mobile-nav a.active {
+  color: var(--primary);
+  padding-left: 1rem;
+  border-left: 5px solid var(--primary);
+}
+
+/* Profile Dropdown */
+.profile-container {
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-lg);
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.profile-container:hover {
+  background: var(--bg-soft);
+  border-color: var(--glass-border);
+}
+
+::ng-deep .manga-avatar {
+  background: var(--primary) !important;
+  color: #000 !important;
+  font-weight: 800 !important;
+  border: 2px solid var(--glass-border) !important;
+}
+
+::ng-deep .p-menu {
+  background: var(--glass) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: var(--shadow-lg) !important;
+  min-width: 200px !important;
+  padding: 0.5rem !important;
+  border-radius: var(--radius-md) !important;
+}
+
+::ng-deep .p-menu .p-menuitem-link {
+  padding: 0.75rem 1rem !important;
+  transition: all 0.2s !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+::ng-deep .p-menu .p-menuitem-link:hover {
+  background: var(--primary) !important;
+  color: #000 !important;
+}
+
+::ng-deep .p-menu .p-menuitem-link:hover .p-menuitem-icon,
+::ng-deep .p-menu .p-menuitem-link:hover .p-menuitem-text {
+  color: #000 !important;
+}
+
+::ng-deep .p-menu .p-submenu-header {
+  background: transparent !important;
+  color: var(--primary) !important;
+  font-weight: 800 !important;
+  font-family: var(--font-manga) !important;
+  letter-spacing: 0.1em !important;
+  padding: 0.5rem 1rem !important;
+  font-size: 0.8rem !important;
+}
+
+/* Footer & Socials */
+.social-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-soft);
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  color: var(--text-dim);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.social-icon:hover {
+  background: var(--primary);
+  color: #000;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(255, 190, 0, 0.2);
+}
+
+.manga-footer a {
+  transition: color 0.2s;
+}
+
+.manga-footer a:hover {
+  color: var(--primary);
+}
+
+/* Global Footer Adjustments */
+.manga-footer {
+  background: var(--bg-deep);
+  border-top: 1px solid var(--glass-border);
+  color: var(--text-dim);
+}
+
+/* Scroll Lock */
+.page-wrap.menu-open {
+  height: 100vh;
+  overflow: hidden;
+}
+
+@media (max-width: 991px) {
+  .navbar-manga { padding: 0.75rem 0; }
+  .brand-text { font-size: 1.25rem; }
+}

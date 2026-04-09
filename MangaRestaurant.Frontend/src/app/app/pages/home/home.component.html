@@ -1,0 +1,260 @@
+<!-- Premium Modern Dining Hero -->
+<section class="hero-v2">
+  <div class="manga-halftone" style="position:absolute; inset:0; opacity:0.1"></div>
+  
+  <div class="container hero-content text-center">
+    <!-- Sophisticated Badge -->
+    <div class="inline-flex py-2 px-4 bg-soft border-1 border-white-alpha-10 mb-5 rounded-full" style="border-radius: 50px">
+      <span class="text-primary font-bold text-sm flex align-items-center gap-2">
+        <i class="pi pi-verified"></i>
+        {{ 'HOME.BADGE' | translate }}
+      </span>
+    </div>
+    
+    <h1 class="hero-title-v2">
+      <span>{{ 'HOME.TITLE_1' | translate }}</span><br/>
+      <span class="primary-text">{{ 'HOME.TITLE_2' | translate }}</span>
+    </h1>
+    
+    <p class="hero-desc-v2">
+      {{ 'HOME.SUBTITLE' | translate }}
+    </p>
+    
+    <div class="flex align-items-center justify-content-center flex-wrap gap-4 mt-8">
+      <button pButton routerLink="/pos" icon="pi pi-desktop"
+         [label]="'HOME.DINE_IN' | translate"
+         class="p-button-warning p-button-lg px-8 py-5 text-2xl shadow-lg border-none"
+         style="background: linear-gradient(135deg, #ffcc33 0%, #ffb300 100%); color: #000; font-weight: 800;"></button>
+      <button pButton routerLink="/products" icon="pi pi-shopping-bag"
+         [label]="'HOME.BROWSE' | translate"
+         class="p-button-primary p-button-lg px-8 py-5 text-2xl"></button>
+      <button pButton routerLink="/basket" icon="pi pi-shopping-cart"
+         [label]="'NAV.BASKET' | translate"
+         class="p-button-outlined p-button-lg px-8 py-5 text-2xl"></button>
+    </div>
+  </div>
+</section>
+
+<!-- Modern Restaurant Features -->
+<div class="container section-pad">
+  <div class="section-header-v2">
+    <span class="section-tag">{{ 'HOME.TAG_LINE' | translate }}</span>
+    <h2 class="section-title-v2 mt-4">{{ 'HOME.SECTION_TITLE' | translate }}</h2>
+    <p class="section-subtitle-v2" style="margin: 0 auto">{{ 'HOME.SECTION_SUBTITLE' | translate }}</p>
+  </div>
+
+  <div class="grid mt-8">
+    <div class="col-12 md:col-6 lg:col-3">
+      <div class="mg-card h-full text-start" style="min-height: 300px">
+        <div class="badge-neon mb-4" style="background:var(--primary); color:#fff; border:none; padding:1.25rem; border-radius:12px; font-size:1.5rem">
+           <i class="pi pi-bolt"></i> 
+        </div>
+        <h3 class="display-font text-2xl mb-3 font-bold uppercase">{{ 'HOME.FEATURE_1_TITLE' | translate }}</h3>
+        <p class="text-dim text-lg leading-relaxed">{{ 'HOME.FEATURE_1_DESC' | translate }}</p>
+      </div>
+    </div>
+    
+    <div class="col-12 md:col-6 lg:col-3">
+      <div class="mg-card h-full text-start" style="min-height: 300px">
+        <div class="badge-neon mb-4" style="background:var(--primary); color:#fff; border:none; padding:1.25rem; border-radius:12px; font-size:1.5rem">
+           <i class="pi pi-star-fill"></i>
+        </div>
+        <h3 class="display-font text-2xl mb-3 font-bold uppercase">{{ 'HOME.FEATURE_2_TITLE' | translate }}</h3>
+        <p class="text-dim text-lg leading-relaxed">{{ 'HOME.FEATURE_2_DESC' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="col-12 md:col-6 lg:col-3">
+      <div class="mg-card h-full text-start" style="min-height: 300px">
+        <div class="badge-neon mb-4" style="background:var(--primary); color:#fff; border:none; padding:1.25rem; border-radius:12px; font-size:1.5rem">
+           <i class="pi pi-shield"></i>
+        </div>
+        <h3 class="display-font text-2xl mb-3 font-bold uppercase">{{ 'HOME.FEATURE_3_TITLE' | translate }}</h3>
+        <p class="text-dim text-lg leading-relaxed">{{ 'HOME.FEATURE_3_DESC' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="col-12 md:col-6 lg:col-3">
+      <div class="mg-card h-full text-start" style="min-height: 300px">
+        <div class="badge-neon mb-4" style="background:var(--primary); color:#fff; border:none; padding:1.25rem; border-radius:12px; font-size:1.5rem">
+           <i class="pi pi-heart-fill"></i>
+        </div>
+        <h3 class="display-font text-2xl mb-3 font-bold uppercase">{{ 'HOME.FEATURE_4_TITLE' | translate }}</h3>
+        <p class="text-dim text-lg leading-relaxed">{{ 'HOME.FEATURE_4_DESC' | translate }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Special Deals Section -->
+<section class="section-pad bg-soft">
+  <div class="container">
+    <div class="section-header-v2 mb-8">
+      <span class="section-tag">{{ 'HOME.DEALS_TAG' | translate }}</span>
+      <h2 class="section-title-v2 mt-3">{{ 'HOME.DEALS_TITLE' | translate }}</h2>
+    </div>
+
+    <!-- Skeleton Loading for Deals -->
+    <div class="grid" *ngIf="loadingDeals">
+      <div class="col-12 sm:col-6 lg:col-3" *ngFor="let i of [1,2,3,4]">
+        <div class="mg-card p-0 overflow-hidden">
+          <p-skeleton width="100%" height="250px"></p-skeleton>
+          <div class="p-4">
+            <p-skeleton width="40%" height="1rem" styleClass="mb-2"></p-skeleton>
+            <p-skeleton width="80%" height="1.5rem" styleClass="mb-3"></p-skeleton>
+            <div class="flex justify-content-between align-items-center">
+              <p-skeleton width="30%" height="2rem"></p-skeleton>
+              <p-skeleton shape="circle" size="3rem"></p-skeleton>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid" *ngIf="!loadingDeals && deals.length > 0">
+      <div class="col-12 sm:col-6 lg:col-3" *ngFor="let item of deals">
+        <div class="product-card-v2 mg-card h-full p-0 overflow-hidden group">
+          <div class="product-img-wrapper relative overflow-hidden" routerLink="/product/{{item.id}}" style="cursor:pointer">
+            <img [src]="getImageUrl(item.pictureUrl)" [alt]="item.name" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" style="height: 250px" />
+            
+            <div class="absolute top-0 right-0 m-3 py-1 px-3 bg-red-600 text-white font-bold rounded-lg shadow-lg z-10" *ngIf="item.oldPrice > item.price">
+              {{ translate.currentLanguage === 'ar' ? ( 'PRODUCTS.OFF' | translate ) : '' }} 
+              -{{ ((item.oldPrice - item.price) / item.oldPrice * 100).toFixed(0) }}% 
+              {{ translate.currentLanguage === 'en' ? ( 'PRODUCTS.OFF' | translate ) : '' }}
+            </div>
+          </div>
+          
+          <div class="p-4">
+            <div class="flex justify-content-between align-items-start mb-2">
+              <span class="text-dim text-sm uppercase tracking-wider font-bold">
+                {{ (translate.currentLanguage === 'ar' ? item.categoryAr : item.category) || item.category }}
+              </span>
+              <div class="flex gap-1 text-primary">
+                 <i class="pi pi-star-fill text-xs"></i>
+                 <i class="pi pi-star-fill text-xs"></i>
+                 <i class="pi pi-star-fill text-xs"></i>
+                 <i class="pi pi-star-fill text-xs"></i>
+              </div>
+            </div>
+            
+            <h3 class="text-xl font-bold mb-3 truncate hover:text-primary transition-colors cursor-pointer" routerLink="/product/{{item.id}}">
+              {{ (translate.currentLanguage === 'ar' ? item.nameAr : item.name) || item.name }}
+            </h3>
+            
+            <div class="flex align-items-center justify-content-between pt-3 border-top-1 surface-border mt-auto" *ngIf="settings$ | async as settings">
+              <div>
+                <span class="text-2xl font-bold primary-text">
+                  <ng-container *ngIf="translate.currentLanguage === 'ar'">
+                    {{ item.price | number : '1.2-2' }} {{ settings.currencySymbol }}
+                  </ng-container>
+                  <ng-container *ngIf="translate.currentLanguage !== 'ar'">
+                    {{ item.price | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                  </ng-container>
+                </span>
+                <span *ngIf="item.oldPrice > item.price" class="block text-sm text-dim strikethrough opacity-60">
+                   <ng-container *ngIf="translate.currentLanguage === 'ar'">
+                    {{ item.oldPrice | number : '1.2-2' }} {{ settings.currencySymbol }}
+                  </ng-container>
+                  <ng-container *ngIf="translate.currentLanguage !== 'ar'">
+                    {{ item.oldPrice | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                  </ng-container>
+                </span>
+              </div>
+                <button pButton icon="pi pi-cart-plus" class="p-button-rounded p-button-primary p-button-lg shadow-md" (click)="addToBasket(item)"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="text-center mt-6" *ngIf="!loadingDeals && deals.length === 0">
+      <p class="text-dim italic">{{ 'PRODUCTS.EMPTY' | translate }}</p>
+    </div>
+  </div>
+</section>
+
+<!-- Latest Arrivals Section -->
+<section class="section-pad">
+  <div class="container">
+    <div class="section-header-v2 mb-8">
+      <span class="section-tag">{{ 'HOME.LATEST_TAG' | translate }}</span>
+      <h2 class="section-title-v2 mt-3">{{ 'HOME.LATEST_TITLE' | translate }}</h2>
+    </div>
+
+    <!-- Skeleton Loading for Latest -->
+    <div class="grid" *ngIf="loadingLatest">
+      <div class="col-12 sm:col-6 lg:col-3" *ngFor="let i of [1,2,3,4]">
+        <div class="mg-card p-0 overflow-hidden">
+          <p-skeleton width="100%" height="250px"></p-skeleton>
+          <div class="p-4">
+            <p-skeleton width="30%" height="1rem" styleClass="mb-2"></p-skeleton>
+            <p-skeleton width="70%" height="1.5rem" styleClass="mb-3"></p-skeleton>
+            <div class="flex justify-content-between align-items-center">
+              <p-skeleton width="40%" height="2rem"></p-skeleton>
+              <p-skeleton shape="circle" size="3rem"></p-skeleton>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid" *ngIf="!loadingLatest && latestProducts.length > 0">
+      <div class="col-12 sm:col-6 lg:col-3" *ngFor="let item of latestProducts">
+        <div class="product-card-v2 mg-card h-full p-0 overflow-hidden group">
+          <div class="product-img-wrapper relative overflow-hidden" routerLink="/product/{{item.id}}" style="cursor:pointer">
+            <img [src]="getImageUrl(item.pictureUrl)" [alt]="item.name" class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110" style="height: 250px" />
+            <div class="absolute top-0 left-0 m-3 py-1 px-3 bg-primary text-white font-bold rounded-lg shadow-lg z-10 text-xs uppercase">
+              {{ 'HOME.LATEST_TAG' | translate }}
+            </div>
+          </div>
+          
+          <div class="p-4">
+            <span class="text-dim text-sm uppercase tracking-wider font-bold mb-2 block">
+                {{ (translate.currentLanguage === 'ar' ? item.categoryAr : item.category) || item.category }}
+            </span>
+            <h3 class="text-xl font-bold mb-3 truncate hover:text-primary transition-colors cursor-pointer" routerLink="/product/{{item.id}}">
+              {{ (translate.currentLanguage === 'ar' ? item.nameAr : item.name) || item.name }}
+            </h3>
+            
+            <div class="flex align-items-center justify-content-between pt-3 border-top-1 surface-border mt-auto" *ngIf="settings$ | async as settings">
+              <div class="flex flex-column">
+                <span class="text-2xl font-bold primary-text">
+                  <ng-container *ngIf="translate.currentLanguage === 'ar'">
+                    {{ item.price | number : '1.2-2' }} {{ settings.currencySymbol }}
+                  </ng-container>
+                  <ng-container *ngIf="translate.currentLanguage !== 'ar'">
+                    {{ item.price | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                  </ng-container>
+                </span>
+                <span *ngIf="item.oldPrice > item.price" class="text-xs text-dim strikethrough opacity-60">
+                  <ng-container *ngIf="translate.currentLanguage === 'ar'">
+                    {{ item.oldPrice | number : '1.2-2' }} {{ settings.currencySymbol }}
+                  </ng-container>
+                  <ng-container *ngIf="translate.currentLanguage !== 'ar'">
+                    {{ item.oldPrice | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                  </ng-container>
+                </span>
+              </div>
+              <button pButton icon="pi pi-cart-plus" class="p-button-rounded p-button-warning p-button-lg shadow-md" (click)="addToBasket(item)"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modern Delivery Promo -->
+<section class="section-pad" style="background: var(--bg-soft); position: relative; overflow: hidden; border-top: 1px solid var(--glass-border)">
+  <div class="manga-halftone" style="position:absolute; inset:0; opacity:0.1"></div>
+  <div class="container" style="position:relative; z-index:10; text-align:center">
+    <div class="mg-card" style="background: var(--surface); padding: 6rem 1.5rem !important; border: 2px solid var(--primary)">
+      <h2 class="hero-title-v2" style="font-size: clamp(2rem, 8vw, 4.5rem); margin-bottom: 3rem">
+        {{ 'HOME.CTA_TITLE_1' | translate }} <span class="primary-text" style="display:inline">{{ 'HOME.CTA_TITLE_2' | translate }}</span>
+      </h2>
+      <button pButton routerLink="/register" [label]="'HOME.CTA_BTN' | translate" 
+              class="p-button-primary p-button-lg px-8 py-5 text-2xl shadow-lg border-none" 
+              style="padding-left:4rem; padding-right:4rem"></button>
+    </div>
+  </div>
+</section>

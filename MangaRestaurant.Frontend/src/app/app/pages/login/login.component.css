@@ -1,0 +1,85 @@
+/* ─── Modern Premium Auth Layout ─────────────────────────── */
+
+.auth-page-v2 {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  background-color: var(--bg-soft);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-page-v2::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-image: radial-gradient(circle at 10% 20%, rgba(255, 49, 49, 0.05) 0%, transparent 40%),
+                    radial-gradient(circle at 80% 80%, rgba(255, 49, 49, 0.05) 0%, transparent 40%);
+}
+
+.login-box {
+  width: 100%;
+  max-width: 480px;
+  padding: 4.5rem 3rem;
+  z-index: 10;
+  text-align: center;
+  background: var(--surface) !important;
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border-radius: var(--radius-lg) !important;
+  transition: all 0.3s ease;
+}
+
+.login-box:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 40px 100px rgba(0,0,0,0.1) !important;
+}
+
+.login-header {
+  margin-bottom: 4rem;
+}
+
+.login-header h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2.25rem;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+}
+
+.login-header p {
+  color: var(--text-dim);
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+:host ::ng-deep .p-password input {
+  width: 100%;
+}
+
+:host ::ng-deep .p-input-icon-left i {
+  color: var(--primary);
+  font-size: 1.25rem;
+}
+
+/* Auth Buttons Force Style */
+.auth-submit-btn {
+  background: var(--primary) !important;
+  color: #fff !important;
+  width: 100%;
+  padding: 1.25rem !important;
+  border: none !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  margin-top: 1.5rem;
+  border-radius: var(--radius-md) !important;
+  box-shadow: 0 10px 30px rgba(255, 49, 49, 0.2) !important;
+}
+
+.auth-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(255, 49, 49, 0.35) !important;
+}

@@ -1,0 +1,791 @@
+<section class="admin-dashboard-container p-3 md:p-4">
+
+  <!-- 1. Header Section -->
+  <div class="header-section d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <div class="title-group">
+      <h1 class="dashboard-title gradient-text mb-1">{{ 'ADMIN.DASHBOARD_TITLE' | translate }}</h1>
+      <p class="dashboard-subtitle text-muted">{{ 'ADMIN.DASHBOARD_SUBTITLE' | translate }}</p>
+    </div>
+
+    <button pButton type="button" icon="pi pi-plus" class="p-button-raised p-button-rounded add-btn"
+      [label]="'ADMIN.ADD_PRODUCT' | translate" (click)="openCreateProduct()"></button>
+  </div>
+
+  <div class="admin-dashboard-wrapper border-round-xl overflow-hidden glass-panel"
+    style="background: var(--bg-deep); border: 1px solid var(--glass-border)">
+
+    <!-- 2. CUSTOM SYSTEM NAV -->
+    <div class="custom-admin-nav p-3 border-bottom-1 flex-wrap gap-2"
+      style="border-color: var(--glass-border) !important;">
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'reports'" [routerLink]="['/admin', 'reports']">
+        <i class="pi pi-chart-bar"></i> <span>{{ 'ADMIN.REPORTS' | translate }}</span>
+      </a>
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'orders'" [routerLink]="['/admin', 'orders']">
+        <i class="pi pi-shopping-cart"></i> <span>{{ 'ADMIN.ORDER_LOG' | translate }}</span>
+      </a>
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'products'" [routerLink]="['/admin', 'products']">
+        <i class="pi pi-box"></i> <span>{{ 'ADMIN.PRODUCTS' | translate }}</span>
+      </a>
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'users'" (click)="setActiveTab('users')">
+        <i class="pi pi-users"></i> <span>{{ 'ADMIN.STAFF_MANAGEMENT' | translate }}</span>
+      </a>
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'categories'" (click)="setActiveTab('categories')">
+        <i class="pi pi-tags"></i> <span>{{ (translateService.currentLang === 'ar' ? 'التصنيفات' : 'Categories') }}</span>
+      </a>
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'brands'" (click)="setActiveTab('brands')">
+        <i class="pi pi-bookmark"></i> <span>{{ (translateService.currentLang === 'ar' ? 'البراندات' : 'Brands') }}</span>
+      </a>
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'settings'" [routerLink]="['/admin', 'settings']">
+        <i class="pi pi-cog"></i> <span>{{ 'ADMIN.SETTINGS' | translate }}</span>
+      </a>
+      <a class="nav-btn no-underline cursor-pointer bg-primary-reverse" routerLink="/pos" target="_blank" 
+         style="background: rgba(255, 62, 62, 0.1); color: #ff3e3e;"
+         [pTooltip]="(translateService.currentLang === 'ar' ? 'فتح نظام الكاشير' : 'Open POS System')">
+        <i class="pi pi-desktop"></i> <span>POS System</span>
+      </a>
+    </div>
+
+    <!-- 3. Dynamic Content Area -->
+    <div class="admin-content-card">
+
+      <!-- Tab 1: FULL ANALYTICAL REPORTS -->
+      <div *ngIf="activeTab === 'reports'" class="tab-content animate-fade p-3 md:p-4">
+
+        <!-- === LOADING SKELETONS === -->
+        <ng-container *ngIf="loadingReports">
+          <!-- Stat card skeletons -->
+          <div class="grid mb-4">
+            <div class="col-12 sm:col-6 lg:col-3" *ngFor="let i of [1,2,3,4]">
+              <div class="stat-card p-4 shadow-sm h-full flex align-items-center gap-3 border-round-xl">
+                <p-skeleton shape="circle" size="3rem"></p-skeleton>
+                <div class="flex flex-column gap-2 flex-grow-1">
+                  <p-skeleton width="60%" height="0.9rem"></p-skeleton>
+                  <p-skeleton width="80%" height="1.6rem"></p-skeleton>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Chart skeletons -->
+          <div class="grid">
+            <div class="col-12 lg:col-8">
+              <div class="chart-container p-4 shadow-sm border-round-xl mb-4">
+                <p-skeleton width="40%" height="1.2rem" styleClass="mb-4"></p-skeleton>
+                <p-skeleton height="320px" borderRadius="8px"></p-skeleton>
+              </div>
+            </div>
+            <div class="col-12 lg:col-4">
+              <div class="chart-container p-4 shadow-sm border-round-xl mb-4">
+                <p-skeleton width="60%" height="1.2rem" styleClass="mb-4"></p-skeleton>
+                <p-skeleton height="320px" borderRadius="50%" width="220px" styleClass="mx-auto"></p-skeleton>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="chart-container p-4 shadow-sm border-round-xl mb-4">
+                <p-skeleton width="30%" height="1.2rem" styleClass="mb-4"></p-skeleton>
+                <p-skeleton height="300px" borderRadius="8px"></p-skeleton>
+              </div>
+            </div>
+            <div class="col-12 lg:col-6">
+              <div class="chart-container p-4 shadow-sm border-round-xl mb-4">
+                <p-skeleton width="45%" height="1.2rem" styleClass="mb-4"></p-skeleton>
+                <p-skeleton height="300px" borderRadius="8px"></p-skeleton>
+              </div>
+            </div>
+            <div class="col-12 lg:col-6">
+              <div class="chart-container p-4 shadow-sm border-round-xl mb-4">
+                <p-skeleton width="45%" height="1.2rem" styleClass="mb-4"></p-skeleton>
+                <p-skeleton height="300px" borderRadius="8px"></p-skeleton>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <!-- === END SKELETONS === -->
+
+        <!-- Stats Summary (Row 1) -->
+        <div class="grid mb-4" *ngIf="reportData && !loadingReports">
+          <div class="col-12 sm:col-6 lg:col-3" *ngFor="let stat of getSummaryStats()">
+            <div class="stat-card p-4 shadow-sm h-full flex align-items-center gap-3 border-round-xl">
+              <div [class]="'stat-icon flex align-items-center justify-content-center ' + stat.colorClass">
+                <i [class]="stat.icon"></i>
+              </div>
+              <div class="stat-content">
+                <span class="stat-label block opacity-70">{{ stat.label | translate }}</span>
+                <span class="stat-value block text-2xl font-bold">{{ stat.value }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Analytical Charts (Grid) -->
+        <div class="grid" *ngIf="!loadingReports">
+          <!-- Row 2: Sales Trend (Main Chart) -->
+          <div class="col-12 lg:col-8">
+            <div class="chart-container p-4 shadow-sm border-round-xl mb-4">
+              <h3 class="chart-title"><i class="pi pi-chart-line"></i> {{ 'ADMIN.CHART_SALES' | translate }}</h3>
+              <apx-chart *ngIf="salesChartOptions" [series]="salesChartOptions.series!"
+                [chart]="salesChartOptions.chart!" [xaxis]="salesChartOptions.xaxis!"
+                [colors]="salesChartOptions.colors!" [stroke]="salesChartOptions.stroke!"
+                [fill]="salesChartOptions.fill!">
+              </apx-chart>
+            </div>
+          </div>
+
+          <!-- Row 2: Status Distribution (Side) -->
+          <div class="col-12 lg:col-4">
+            <div class="chart-container p-4 shadow-sm border-round-xl mb-4">
+              <h3 class="chart-title"><i class="pi pi-chart-pie"></i> {{ 'ADMIN.CHART_STATUS' | translate }}</h3>
+              <apx-chart *ngIf="statusChartOptions" [series]="statusChartOptions.series!"
+                [chart]="statusChartOptions.chart!" [labels]="statusChartOptions.labels!"
+                [colors]="statusChartOptions.colors!" [legend]="statusChartOptions.legend!">
+              </apx-chart>
+            </div>
+          </div>
+
+          <!-- Row 3: Peak Hours (Bar) -->
+          <div class="col-12 lg:col-12">
+            <div class="chart-container p-4 shadow-sm border-round-xl mb-4">
+              <h3 class="chart-title"><i class="pi pi-clock"></i> {{ 'ADMIN.CHART_PEAK_HOURS' | translate }}</h3>
+              <apx-chart *ngIf="peakHoursChartOptions" [series]="peakHoursChartOptions.series!"
+                [chart]="peakHoursChartOptions.chart!" [xaxis]="peakHoursChartOptions.xaxis!"
+                [colors]="peakHoursChartOptions.colors!" [plotOptions]="peakHoursChartOptions.plotOptions!">
+              </apx-chart>
+            </div>
+          </div>
+
+          <!-- Row 4: Top Products (Horizontal) -->
+          <div class="col-12 lg:col-6">
+            <div class="chart-container p-4 shadow-sm border-round-xl mb-4 h-full">
+              <h3 class="chart-title"><i class="pi pi-star"></i> {{ 'ADMIN.CHART_TOP_PRODUCTS' | translate }}</h3>
+              <apx-chart *ngIf="topProductsChartOptions" [series]="topProductsChartOptions.series!"
+                [chart]="topProductsChartOptions.chart!" [xaxis]="topProductsChartOptions.xaxis!"
+                [colors]="topProductsChartOptions.colors!" [plotOptions]="topProductsChartOptions.plotOptions!">
+              </apx-chart>
+            </div>
+          </div>
+
+          <!-- Row 4: Category Distribution (Pie) -->
+          <div class="col-12 lg:col-6">
+            <div class="chart-container p-4 shadow-sm border-round-xl mb-4 h-full">
+              <h3 class="chart-title"><i class="pi pi-tag"></i> {{ 'ADMIN.CHART_TOP_SELLERS' | translate }}</h3>
+              <apx-chart *ngIf="categoryChartOptions" [series]="categoryChartOptions.series!"
+                [chart]="categoryChartOptions.chart!" [labels]="categoryChartOptions.labels!"
+                [colors]="categoryChartOptions.colors!">
+              </apx-chart>
+            </div>
+          </div>
+
+          <div class="col-12 lg:col-4">
+            <div class="chart-container p-4 shadow-sm border-round-xl mb-4 h-full">
+              <h3 class="chart-title"><i class="pi pi-id-card"></i> {{ 'ADMIN.CHART_DRIVERS' | translate }}</h3>
+              <apx-chart *ngIf="driversChartOptions" [series]="driversChartOptions.series!"
+                [chart]="driversChartOptions.chart!" [labels]="driversChartOptions.labels!"
+                [colors]="driversChartOptions.colors!">
+              </apx-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Orders -->
+      <div *ngIf="activeTab === 'orders'" class="tab-content animate-fade p-3 md:p-4">
+        <!-- Skeleton for orders table -->
+        <ng-container *ngIf="loadingOrders">
+          <div class="flex gap-3 mb-3 px-1">
+            <p-skeleton width="15%" height="1rem"></p-skeleton>
+            <p-skeleton width="25%" height="1rem"></p-skeleton>
+            <p-skeleton width="15%" height="1rem"></p-skeleton>
+            <p-skeleton width="20%" height="1rem"></p-skeleton>
+            <p-skeleton width="25%" height="1rem"></p-skeleton>
+          </div>
+          <div *ngFor="let i of [1,2,3,4,5,6,7]"
+            class="flex gap-3 align-items-center py-3 border-bottom-1 surface-border px-1">
+            <p-skeleton width="15%" height="1.2rem"></p-skeleton>
+            <p-skeleton width="25%" height="1.2rem"></p-skeleton>
+            <p-skeleton width="15%" height="1.2rem"></p-skeleton>
+            <p-skeleton width="20%" height="1.8rem" borderRadius="20px"></p-skeleton>
+            <p-skeleton width="25%" height="2.5rem" borderRadius="8px"></p-skeleton>
+          </div>
+        </ng-container>
+        <div class="flex justify-content-between align-items-center mb-4 gap-3 bg-glass-light p-3 border-radius-md border-1 surface-border" *ngIf="!loadingOrders">
+          <div class="flex align-items-center gap-3">
+             <i class="pi pi-filter primary-text text-xl"></i>
+             <p-selectButton [options]="orderTypeOptions" [(ngModel)]="selectedOrderType" class="p-buttonset-sm"></p-selectButton>
+          </div>
+          <div class="text-dim font-bold">
+            {{ filteredOrders.length }} {{ (translateService.currentLang === 'ar' ? 'طلب معروض' : 'Orders showing') }}
+          </div>
+        </div>
+
+        <p-table *ngIf="!loadingOrders" [value]="filteredOrders" [rows]="10" [paginator]="true" class="custom-table">
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 8%">{{ 'ORDERS.ID' | translate }}</th>
+              <th style="width: 15%">{{ 'ORDERS.DATE' | translate }}</th>
+              <th style="width: 12%">{{ 'ORDERS.TOTAL' | translate }}</th>
+              <th style="width: 15%">{{ 'ORDERS.STATUS' | translate }}</th>
+              <th style="width: 12%">{{ (translateService.currentLang === 'ar' ? 'النوع' : 'Type') }}</th>
+              <th style="width: 18%">{{ (translateService.currentLang === 'ar' ? 'مسؤول التوصيل' : 'Delivery Person') }}</th>
+              <th style="width: 20%" class="text-center">{{ 'ADMIN.ORDERS.STATUS_UPDATE' | translate }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-order>
+            <tr>
+              <td><span class="badge-id">#{{ order.id }}</span></td>
+              <td>{{ order.orderDate | date:'medium' }}</td>
+              <td class="font-bold text-primary" *ngIf="settings$ | async as settings">
+                <ng-container *ngIf="translateService.currentLang === 'ar'">
+                  {{ order.total | number : '1.2-2' }} {{ settings.currencySymbol }}
+                </ng-container>
+                <ng-container *ngIf="translateService.currentLang !== 'ar'">
+                  {{ order.total | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                </ng-container>
+              </td>
+              <td>
+                <span class="status-badge" [attr.data-status]="orderStatusDraft[order.id]">
+                  {{ 'ORDER_STATUS.' + ((orderStatusDraft[order.id] || 'Pending') | uppercase) | translate }}
+                </span>
+              </td>
+              <td>
+                <p-tag [severity]="order.orderType === 'DineIn' ? 'warning' : 'info'" 
+                       [value]="order.orderType === 'DineIn' ? (translateService.currentLang === 'ar' ? 'داخل المطعم' : 'Dine-In') : (translateService.currentLang === 'ar' ? 'توصيل' : 'Delivery')"
+                       [rounded]="true" class="font-bold">
+                </p-tag>
+              </td>
+              <td>
+                <div class="flex align-items-center gap-2" *ngIf="order.orderType !== 'DineIn'">
+                  <p-dropdown [options]="deliveryEmployees" [(ngModel)]="orderDeliveryAssignee[order.id]" 
+                    optionLabel="displayName" optionValue="id" [placeholder]="(translateService.currentLang === 'ar' ? 'اختر عامل' : 'Select Driver')"
+                    class="p-inputtext-sm w-full">
+                  </p-dropdown>
+                  <button pButton 
+                    [icon]="savingOrderStatus ? 'pi pi-spin pi-spinner' : 'pi pi-user-plus'" 
+                    [loading]="savingOrderStatus"
+                    class="p-button-rounded p-button-text p-button-info p-button-sm"
+                    (click)="updateOrderDelivery(order.id)" 
+                    [pTooltip]="(translateService.currentLang === 'ar' ? 'تعيين' : 'Assign')"
+                    [disabled]="!orderDeliveryAssignee[order.id] || savingOrderStatus"></button>
+                </div>
+                <span class="text-dim italic" *ngIf="order.orderType === 'DineIn'">N/A</span>
+              </td>
+              <td class="text-center">
+                <div class="flex align-items-center justify-content-center gap-2">
+                  <p-dropdown [options]="orderStatusOptions" [(ngModel)]="orderStatusDraft[order.id]" appendTo="body"
+                    class="p-inputtext-sm">
+                  </p-dropdown>
+                  <button pButton 
+                    [icon]="savingOrderStatus ? 'pi pi-spin pi-spinner' : 'pi pi-save'" 
+                    [loading]="savingOrderStatus"
+                    [disabled]="savingOrderStatus"
+                    class="p-button-rounded p-button-warning"
+                    (click)="updateOrderStatus(order.id)"
+                    [pTooltip]="(translateService.currentLang === 'ar' ? 'حفظ الحالة' : 'Save Status')"></button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <!-- Tab 3: Products -->
+      <div *ngIf="activeTab === 'products'" class="tab-content animate-fade p-3 md:p-4">
+        <!-- Skeleton for products table -->
+        <ng-container *ngIf="loadingProducts">
+          <div class="flex gap-3 mb-3 px-1">
+            <p-skeleton width="30%" height="1rem"></p-skeleton>
+            <p-skeleton width="20%" height="1rem"></p-skeleton>
+            <p-skeleton width="20%" height="1rem"></p-skeleton>
+            <p-skeleton width="30%" height="1rem"></p-skeleton>
+          </div>
+          <div *ngFor="let i of [1,2,3,4,5,6,7,8]"
+            class="flex gap-3 align-items-center py-3 border-bottom-1 surface-border px-1">
+            <p-skeleton width="30%" height="1.2rem"></p-skeleton>
+            <p-skeleton width="20%" height="1.8rem" borderRadius="20px"></p-skeleton>
+            <p-skeleton width="20%" height="1.2rem"></p-skeleton>
+            <p-skeleton width="30%" height="2rem" borderRadius="8px"></p-skeleton>
+          </div>
+        </ng-container>
+        <p-table *ngIf="!loadingProducts" [value]="products" [paginator]="true" [rows]="10" class="custom-table">
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 30%">{{ 'ADMIN.PRODUCT_NAME' | translate }}</th>
+              <th style="width: 20%">{{ 'ADMIN.CATEGORY' | translate }}</th>
+              <th style="width: 20%">{{ 'ADMIN.PRICE' | translate }}</th>
+              <th style="width: 30%" class="text-center">{{ 'ADMIN.ACTIONS' | translate }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-product>
+            <tr>
+              <td class="font-medium">
+                <div class="flex align-items-center gap-2">
+                  {{ (translateService.currentLang === 'ar' && product.nameAr) ? product.nameAr : product.name }}
+                  <p-tag *ngIf="product.isHidden" severity="danger" [value]="(translateService.currentLang === 'ar' ? 'مخفي' : 'Hidden')" [rounded]="true" class="text-xs"></p-tag>
+                </div>
+              </td>
+              <td>
+                <span class="category-tag">
+                  {{ (translateService.currentLang === 'ar' && product.categoryAr) ? product.categoryAr : product.category }}
+                </span>
+              </td>
+              <td>
+                <div class="flex flex-column" *ngIf="settings$ | async as settings">
+                  <span class="font-bold text-lg">
+                    <ng-container *ngIf="translateService.currentLang === 'ar'">
+                      {{ product.price | number : '1.2-2' }} {{ settings.currencySymbol }}
+                    </ng-container>
+                    <ng-container *ngIf="translateService.currentLang !== 'ar'">
+                      {{ product.price | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                    </ng-container>
+                  </span>
+                  <span *ngIf="product.oldPrice && product.oldPrice > product.price"
+                    class="text-xs text-dim strikethrough opacity-60">
+                    <ng-container *ngIf="translateService.currentLang === 'ar'">
+                      {{ product.oldPrice | number : '1.2-2' }} {{ settings.currencySymbol }}
+                    </ng-container>
+                    <ng-container *ngIf="translateService.currentLang !== 'ar'">
+                      {{ product.oldPrice | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                    </ng-container>
+                  </span>
+                </div>
+              </td>
+              <td class="text-center">
+                <div class="flex justify-content-center gap-2">
+                  <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-warning"
+                    (click)="openEditProduct(product)" [pTooltip]="(translateService.currentLang === 'ar' ? 'تعديل' : 'Edit')"></button>
+                  <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
+                    (click)="deleteProduct(product.id)" [pTooltip]="(translateService.currentLang === 'ar' ? 'حذف' : 'Delete')"></button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <!-- Tab 4: Staff Management -->
+      <div *ngIf="activeTab === 'users'" class="tab-content animate-fade p-3 md:p-4">
+        <div class="flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+          <h2 class="m-0 flex align-items-center gap-2">
+            <i class="pi pi-users text-primary"></i>
+            {{ 'ADMIN.STAFF_MANAGEMENT' | translate }}
+          </h2>
+          <button pButton [label]="'ADMIN.ADD_NEW_STAFF' | translate" 
+                  icon="pi pi-plus" class="p-button-raised p-button-rounded p-button-success" (click)="userDialog = true"></button>
+        </div>
+
+        <p-table [value]="users" [loading]="loadingUsers" [rows]="10" [paginator]="true" class="custom-table staff-table shadow-2 border-round-xl">
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 20%">{{ 'ADMIN.EMPLOYEE_NAME' | translate }}</th>
+              <th style="width: 20%">{{ 'ADMIN.EMAIL' | translate }}</th>
+              <th style="width: 15%">{{ 'ADMIN.CURRENT_ROLE' | translate }}</th>
+              <th style="width: 15%">{{ 'ADMIN.CHANGE_ROLE' | translate }}</th>
+              <th style="width: 15%" class="text-center">{{ 'ADMIN.STATUS' | translate }}</th>
+              <th style="width: 15%" class="text-center">{{ 'ADMIN.ACTIONS' | translate }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-user>
+            <tr class="animate-fade">
+              <td class="font-bold">{{ user.displayName }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                <p-tag [severity]="user.role === 'Admin' ? 'danger' : (user.role === 'User' ? 'info' : 'warning')" 
+                       [value]="user.role"></p-tag>
+              </td>
+              <td>
+                <p-dropdown [options]="roleOptions" [(ngModel)]="user.role" 
+                   (onChange)="onRoleChange(user, $event.value)" appendTo="body" class="p-inputtext-sm w-full">
+                </p-dropdown>
+              </td>
+              <td class="text-center">
+                <p-button 
+                        [label]="(user.isBanned ? 'ADMIN.BANNED' : 'ADMIN.ACTIVE') | translate"
+                        [severity]="user.isBanned ? 'danger' : 'success'"
+                        [outlined]="true"
+                        [icon]="savingUserStatus ? 'pi pi-spin pi-spinner' : (user.isBanned ? 'pi pi-lock' : 'pi pi-lock-open')"
+                        [loading]="savingUserStatus"
+                        [disabled]="savingUserStatus"
+                        size="small"
+                        styleClass="border-round-xl"
+                        [pTooltip]="(user.isBanned ? 'ADMIN.CLICK_TO_ACTIVATE' : 'ADMIN.CLICK_TO_BAN') | translate"
+                        (click)="onToggleUserBan(user)">
+                </p-button>
+              </td>
+              <td class="text-center">
+                <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"
+                  (click)="onDeleteUser(user.id)" [pTooltip]="(translateService.currentLang === 'ar' ? 'حذف' : 'Delete')"></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <!-- User Dialog -->
+      <p-dialog [(visible)]="userDialog" [style]="{width: '450px'}" 
+                [header]="'ADMIN.ADD_NEW_STAFF' | translate" 
+                [modal]="true" styleClass="p-fluid glass-panel">
+        <ng-template pTemplate="content">
+          <div class="field mb-3">
+            <label for="name">{{ 'ADMIN.NAME' | translate }}</label>
+            <input type="text" pInputText id="name" [(ngModel)]="newUser.displayName" required autofocus />
+          </div>
+          <div class="field mb-3">
+            <label for="email">{{ 'ADMIN.EMAIL' | translate }}</label>
+            <input type="email" pInputText id="email" [(ngModel)]="newUser.email" required />
+          </div>
+          <div class="field mb-3">
+            <label for="password">{{ 'AUTH.PASSWORD' | translate }}</label>
+            <input type="password" pInputText id="password" [(ngModel)]="newUser.password" required />
+          </div>
+          <div class="field mb-3">
+            <label for="role">{{ 'ADMIN.ROLE' | translate }}</label>
+            <p-dropdown [options]="roleOptions" [(ngModel)]="selectedUserRole" id="role" appendTo="body"></p-dropdown>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+          <button pButton [label]="'ADMIN.CANCEL' | translate" 
+                  icon="pi pi-times" class="p-button-text" (click)="userDialog = false"></button>
+          <button pButton [label]="'ADMIN.SAVE' | translate" 
+                  [icon]="savingUserStatus ? 'pi pi-spin pi-spinner' : 'pi pi-check'" 
+                  [loading]="savingUserStatus"
+                  [disabled]="savingUserStatus"
+                  class="p-button-raised" (click)="saveUser()"></button>
+        </ng-template>
+      </p-dialog>
+
+      <!-- Tab 6: Category Management -->
+      <div *ngIf="activeTab === 'categories'" class="tab-content animate-fade p-3 md:p-4">
+        <div class="flex justify-content-between align-items-center mb-4">
+          <h2 class="m-0"><i class="pi pi-tags text-primary"></i> 
+              {{ (translateService.currentLang === 'ar' ? 'إدارة التصنيفات' : 'Category Management') }}
+          </h2>
+          <button pButton label="{{ (translateService.currentLang === 'ar' ? 'إضافة تصنيف' : 'Add Category') }}" 
+                  icon="pi pi-plus" class="p-button-rounded p-button-success" 
+                  (click)="openCreateItem('categories')"></button>
+        </div>
+
+        <p-table [value]="categoriesList" [loading]="loadingCategories" [rows]="10" [paginator]="true" class="custom-table">
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 30%">{{ (translateService.currentLang === 'ar' ? 'الاسم (EN)' : 'Name (EN)') }}</th>
+              <th style="width: 30%">{{ (translateService.currentLang === 'ar' ? 'الاسم (عربي)' : 'Name (AR)') }}</th>
+              <th style="width: 15%">{{ (translateService.currentLang === 'ar' ? 'الحالة' : 'Status') }}</th>
+              <th style="width: 25%" class="text-center">{{ 'ADMIN.ACTIONS' | translate }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-cat>
+            <tr>
+              <td>{{ cat.name }}</td>
+              <td>{{ cat.nameAr }}</td>
+              <td>
+                <span class="status-badge" [attr.data-status]="cat.isHidden ? 'Cancelled' : 'Completed'">
+                  {{ cat.isHidden ? (translateService.currentLang === 'ar' ? 'مخفي' : 'Hidden') : (translateService.currentLang === 'ar' ? 'نشط' : 'Active') }}
+                </span>
+              </td>
+              <td class="text-center">
+                <div class="flex justify-content-center gap-2">
+                  <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-warning"
+                    (click)="openEditItem(cat, 'categories')" [pTooltip]="'Edit'"></button>
+                  <button pButton [icon]="cat.isHidden ? 'pi pi-eye' : 'pi pi-eye-slash'" 
+                    class="p-button-rounded p-button-text" [class.p-button-secondary]="!cat.isHidden" [class.p-button-success]="cat.isHidden"
+                    (click)="toggleItemVisibility(cat.id, !cat.isHidden, 'categories')" 
+                    [pTooltip]="cat.isHidden ? 'Show' : 'Hide'"></button>
+                  <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
+                    (click)="deleteItem(cat.id, 'categories')" [pTooltip]="'Delete'"></button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <!-- Tab 7: Brand Management -->
+      <div *ngIf="activeTab === 'brands'" class="tab-content animate-fade p-3 md:p-4">
+        <div class="flex justify-content-between align-items-center mb-4">
+          <h2 class="m-0"><i class="pi pi-bookmark text-primary"></i> 
+              {{ (translateService.currentLang === 'ar' ? 'إدارة البراندات' : 'Brand Management') }}
+          </h2>
+          <button pButton label="{{ (translateService.currentLang === 'ar' ? 'إضافة براند' : 'Add Brand') }}" 
+                  icon="pi pi-plus" class="p-button-rounded p-button-success" 
+                  (click)="openCreateItem('brands')"></button>
+        </div>
+
+        <p-table [value]="brandsList" [loading]="loadingBrands" [rows]="10" [paginator]="true" class="custom-table">
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 30%">{{ (translateService.currentLang === 'ar' ? 'الاسم (EN)' : 'Name (EN)') }}</th>
+              <th style="width: 30%">{{ (translateService.currentLang === 'ar' ? 'الاسم (عربي)' : 'Name (AR)') }}</th>
+              <th style="width: 15%">{{ (translateService.currentLang === 'ar' ? 'الحالة' : 'Status') }}</th>
+              <th style="width: 25%" class="text-center">{{ 'ADMIN.ACTIONS' | translate }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-brand>
+            <tr>
+              <td>{{ brand.name }}</td>
+              <td>{{ brand.nameAr }}</td>
+              <td>
+                <span class="status-badge" [attr.data-status]="brand.isHidden ? 'Cancelled' : 'Completed'">
+                  {{ brand.isHidden ? (translateService.currentLang === 'ar' ? 'مخفي' : 'Hidden') : (translateService.currentLang === 'ar' ? 'نشط' : 'Active') }}
+                </span>
+              </td>
+              <td class="text-center">
+                <div class="flex justify-content-center gap-2">
+                  <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-warning"
+                    (click)="openEditItem(brand, 'brands')" [pTooltip]="'Edit'"></button>
+                  <button pButton [icon]="brand.isHidden ? 'pi pi-eye' : 'pi pi-eye-slash'" 
+                    class="p-button-rounded p-button-text" [class.p-button-secondary]="!brand.isHidden" [class.p-button-success]="brand.isHidden"
+                    (click)="toggleItemVisibility(brand.id, !brand.isHidden, 'brands')" 
+                    [pTooltip]="brand.isHidden ? 'Show' : 'Hide'"></button>
+                  <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
+                    (click)="deleteItem(brand.id, 'brands')" [pTooltip]="'Delete'"></button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <!-- Item Dialog (Shared for Cat/Brand) -->
+      <p-dialog [(visible)]="itemDialog" [style]="{width: '450px'}" 
+                [header]="(isCategoryMode ? (editingItem ? 'Edit Category' : 'Add Category') : (editingItem ? 'Edit Brand' : 'Add Brand'))" 
+                [modal]="true" styleClass="p-fluid glass-panel">
+        <ng-template pTemplate="content">
+          <div class="field mb-3">
+            <label>{{ (translateService.currentLang === 'ar' ? 'الاسم بالإنجليزية' : 'Name (EN)') }}</label>
+            <input type="text" pInputText [(ngModel)]="selectedItem.name" required />
+          </div>
+          <div class="field mb-3">
+            <label>{{ (translateService.currentLang === 'ar' ? 'الاسم بالعربية' : 'Name (AR)') }}</label>
+            <input type="text" pInputText [(ngModel)]="selectedItem.nameAr" dir="rtl" required />
+          </div>
+          <div class="field flex align-items-center gap-2 mb-3">
+            <p-checkbox [(ngModel)]="selectedItem.isHidden" [binary]="true" inputId="isHidden"></p-checkbox>
+            <label for="isHidden">{{ (translateService.currentLang === 'ar' ? 'إخفاء من المتجر' : 'Hide from store') }}</label>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+          <button pButton [label]="'ADMIN.CANCEL' | translate" 
+                  icon="pi pi-times" class="p-button-text" (click)="itemDialog = false"></button>
+          <button pButton [label]="'ADMIN.SAVE' | translate" 
+                  [icon]="savingItem ? 'pi pi-spin pi-spinner' : 'pi pi-check'" 
+                  [loading]="savingItem"
+                  [disabled]="savingItem"
+                  class="p-button-raised" (click)="saveItem()"></button>
+        </ng-template>
+      </p-dialog>
+
+      <!-- Tab 5: Site Settings -->
+      <div *ngIf="activeTab === 'settings'" class="tab-content animate-fade p-3 md:p-4">
+        <div class="settings-form max-w-5xl mx-auto">
+          <div class="flex justify-content-between align-items-center mb-5">
+            <div>
+              <h2 class="text-2xl font-bold mb-1">{{ 'ADMIN.SETTINGS_TITLE' | translate }}</h2>
+              <p class="text-dim text-sm">{{ 'ADMIN.SETTINGS_SUBTITLE' | translate }}</p>
+            </div>
+            <button pButton icon="pi pi-save" [label]="'ADMIN.SAVE_CHANGES' | translate" 
+                    class="p-button-warning p-button-raised" [loading]="savingSettings"
+                    (click)="saveSettings()"></button>
+          </div>
+
+          <div class="grid">
+            <!-- Restaurant Info -->
+            <div class="col-12 lg:col-6">
+              <div class="mg-card p-4 mb-4">
+                <h3 class="text-lg font-bold mb-4 primary-text border-bottom-1 surface-border pb-2">
+                  <i class="pi pi-info-circle mr-2"></i> {{ 'ADMIN.RESTAURANT_INFO' | translate }}
+                </h3>
+                <div class="field mb-3">
+                  <label class="block mb-2 font-medium">{{ 'ADMIN.RESTAURANT_NAME_EN' | translate }}</label>
+                  <input type="text" pInputText [(ngModel)]="siteSettings.restaurantName" class="w-full">
+                </div>
+                <div class="field mb-3">
+                  <label class="block mb-2 font-medium">{{ 'ADMIN.RESTAURANT_NAME_AR' | translate }}</label>
+                  <input type="text" pInputText [(ngModel)]="siteSettings.restaurantNameAr" dir="rtl" class="w-full">
+                </div>
+                <div class="field mb-3">
+                   <label class="block mb-2 font-medium">{{ 'ADMIN.EMAIL' | translate }}</label>
+                   <input type="text" pInputText [(ngModel)]="siteSettings.email" class="w-full">
+                </div>
+              </div>
+
+              <div class="mg-card p-4">
+                <h3 class="text-lg font-bold mb-4 primary-text border-bottom-1 surface-border pb-2">
+                  <i class="pi pi-phone mr-2"></i> {{ 'ADMIN.CONTACT_INFO' | translate }}
+                </h3>
+                <div class="field mb-3 grid">
+                  <div class="col-12 md:col-6">
+                    <label class="block mb-2 font-medium">{{ 'ADMIN.PHONE_1' | translate }}</label>
+                    <input type="text" pInputText [(ngModel)]="siteSettings.phone1" class="w-full">
+                  </div>
+                  <div class="col-12 md:col-6">
+                    <label class="block mb-2 font-medium">{{ 'ADMIN.PHONE_2' | translate }}</label>
+                    <input type="text" pInputText [(ngModel)]="siteSettings.phone2" class="w-full">
+                  </div>
+                </div>
+                <div class="field mb-3">
+                  <label class="block mb-2 font-medium">{{ 'ADMIN.ADDRESS_EN' | translate }}</label>
+                  <textarea pInputTextarea [(ngModel)]="siteSettings.address" rows="3" class="w-full"></textarea>
+                </div>
+                <div class="field mb-3">
+                  <label class="block mb-2 font-medium">{{ 'ADMIN.ADDRESS_AR' | translate }}</label>
+                  <textarea pInputTextarea [(ngModel)]="siteSettings.addressAr" rows="3" dir="rtl" class="w-full"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Configuration -->
+            <div class="col-12 lg:col-6">
+              <div class="mg-card p-4 mb-4">
+                <h3 class="text-lg font-bold mb-4 primary-text border-bottom-1 surface-border pb-2">
+                  <i class="pi pi-cog mr-2"></i> {{ 'ADMIN.GENERAL_CONFIG' | translate }}
+                </h3>
+                <div class="grid">
+                   <div class="col-12 md:col-6">
+                      <label class="block mb-2 font-medium">{{ 'ADMIN.CURRENCY_CODE' | translate }} (e.g., EGP)</label>
+                      <input type="text" pInputText [(ngModel)]="siteSettings.currencyCode" class="w-full">
+                   </div>
+                   <div class="col-12 md:col-6">
+                      <label class="block mb-2 font-medium">{{ 'ADMIN.CURRENCY_SYMBOL' | translate }} (e.g., ج.م)</label>
+                      <input type="text" pInputText [(ngModel)]="siteSettings.currencySymbol" class="w-full">
+                   </div>
+                </div>
+                <div class="field mt-3">
+                   <label class="block mb-2 font-medium">{{ 'ADMIN.DELIVERY_FEE' | translate }}</label>
+                   <input type="number" pInputText [(ngModel)]="siteSettings.deliveryFee" class="w-full">
+                </div>
+              </div>
+
+              <div class="mg-card p-4">
+                <h3 class="text-lg font-bold mb-4 primary-text border-bottom-1 surface-border pb-2">
+                  <i class="pi pi-share-alt mr-2"></i> {{ 'ADMIN.SOCIAL_LINKS' | translate }}
+                </h3>
+                <div class="field mb-3">
+                   <div class="p-inputgroup">
+                      <span class="p-inputgroup-addon"><i class="pi pi-facebook"></i></span>
+                      <input type="text" pInputText [(ngModel)]="siteSettings.facebookUrl" [placeholder]="'Facebook URL'">
+                   </div>
+                </div>
+                <div class="field mb-3">
+                   <div class="p-inputgroup">
+                      <span class="p-inputgroup-addon"><i class="pi pi-instagram"></i></span>
+                      <input type="text" pInputText [(ngModel)]="siteSettings.instagramUrl" [placeholder]="'Instagram URL'">
+                   </div>
+                </div>
+                <div class="field mb-3">
+                   <div class="p-inputgroup">
+                      <span class="p-inputgroup-addon"><i class="pi pi-twitter"></i></span>
+                      <input type="text" pInputText [(ngModel)]="siteSettings.twitterUrl" [placeholder]="'Twitter URL'">
+                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- End admin-content-card -->
+  </div> <!-- End admin-dashboard-wrapper -->
+</section>
+
+<!-- Product Dialog -->
+<p-dialog [(visible)]="productDialogVisible" [modal]="true"
+  [header]="(editingProductId ? 'ADMIN.EDIT_PRODUCT' : 'ADMIN.ADD_PRODUCT') | translate" class="custom-dialog"
+  [style]="{width: '700px'}" [breakpoints]="{'960px': '95vw'}">
+  <div class="p-fluid">
+    <!-- Image Click-to-Upload Section -->
+    <div class="field mb-4 pt-2">
+      <label class="font-bold block mb-2">{{ 'ADMIN.IMAGE_PREVIEW' | translate }} <span
+          class="text-red-500">*</span></label>
+      <div
+        class="img-upload-container border-round overflow-hidden shadow-sm bg-gray-100 flex align-items-center justify-content-center cursor-pointer relative"
+        style="height: 250px; border: 2px dashed #ddd; min-height: 250px;" (click)="fileUpload.click()">
+
+        <!-- Case 1: Always Visible Placeholder/Fallback -->
+        <div class="flex flex-column align-items-center justify-content-center text-gray-500 w-full h-full p-4">
+          <i class="pi pi-images text-6xl mb-3 text-red-500 opacity-60"></i>
+          <span class="text-2xl font-bold">Add Product Photo</span>
+          <span class="text-sm opacity-60">Click anywhere here to upload</span>
+        </div>
+
+        <!-- Case 2: Image as an overlay (Only shows if pictureUrl exists) -->
+        <img *ngIf="selectedProduct.pictureUrl" [src]="getImageUrl(selectedProduct.pictureUrl)"
+          [alt]="selectedProduct.name"
+          style="position: absolute; top:0; left:0; width: 100%; height: 100%; object-fit: contain; z-index: 5; background: #f8f9fa;" />
+
+        <!-- Case 3: Hover Overlay (Shows 'Change' text when an image exists) -->
+        <div *ngIf="selectedProduct.pictureUrl"
+          class="upload-overlay flex flex-column align-items-center justify-content-center" style="z-index: 10;">
+          <i class="pi pi-camera text-4xl mb-2"></i>
+          <span class="font-bold">Change Image</span>
+          <p class="text-sm mt-1" *ngIf="uploadingImage">Uploading...</p>
+        </div>
+
+        <input type="file" #fileUpload hidden (change)="onFileSelected($event)" accept="image/*" />
+      </div>
+    </div>
+
+    <!-- Row 1: Names -->
+    <div class="formgrid grid">
+      <div class="field col-12 md:col-6 mb-3">
+        <label for="name" class="font-bold block mb-2">{{ 'ADMIN.PRODUCT_NAME' | translate }} <span
+            class="text-red-500">*</span></label>
+        <input id="name" type="text" pInputText [(ngModel)]="selectedProduct.name" />
+      </div>
+      <div class="field col-12 md:col-6 mb-3">
+        <label for="nameAr" class="font-bold block mb-2">{{ 'ADMIN.PRODUCT_NAME_AR' | translate }} <span
+            class="text-red-500">*</span></label>
+        <input id="nameAr" type="text" pInputText [(ngModel)]="selectedProduct.nameAr" dir="rtl" />
+      </div>
+    </div>
+    <div class="formgrid grid">
+      <div class="field col-12 md:col-6 mb-3">
+        <label for="price" class="font-bold block mb-2">{{ 'ADMIN.PRICE' | translate }} <span
+            class="text-red-500">*</span></label>
+        <input id="price" type="number" pInputText [(ngModel)]="selectedProduct.price" />
+      </div>
+      <div class="field col-12 md:col-6 mb-3">
+        <label for="oldPrice" class="font-bold block mb-2">{{ 'ADMIN.OLD_PRICE' | translate }}</label>
+        <input id="oldPrice" type="number" pInputText [(ngModel)]="selectedProduct.oldPrice" />
+      </div>
+    </div>
+    <div class="formgrid grid">
+      <div class="field col-12 md:col-6 mb-3">
+        <label for="category" class="font-bold block mb-2">{{ 'ADMIN.CATEGORY' | translate }} <span
+            class="text-red-500">*</span></label>
+        <p-dropdown id="category" [options]="categories" [(ngModel)]="selectedProduct.categoryId" optionLabel="name"
+          optionValue="id" [placeholder]="'ADMIN.CATEGORY' | translate"></p-dropdown>
+      </div>
+      <div class="field col-12 md:col-6 mb-3">
+        <label for="brand" class="font-bold block mb-2">{{ 'ADMIN.BRAND' | translate }} <span
+            class="text-red-500">*</span></label>
+        <p-dropdown id="brand" [options]="brands" [(ngModel)]="selectedProduct.brandId" optionLabel="name"
+          optionValue="id" [placeholder]="'ADMIN.BRAND' | translate"></p-dropdown>
+      </div>
+    </div>
+    <div class="field flex align-items-center gap-2 mb-3">
+        <p-checkbox [(ngModel)]="selectedProduct.isHidden" [binary]="true" inputId="productHidden"></p-checkbox>
+        <label for="productHidden">{{ (translateService.currentLang === 'ar' ? 'إخفاء من المتجر' : 'Hide from store') }}</label>
+    </div>
+    <div class="field mb-4">
+      <label for="desc" class="font-bold block mb-2">{{ 'ADMIN.DESCRIPTION_EN' | translate }} <span
+          class="text-red-500">*</span></label>
+      <textarea id="desc" rows="8" pInputTextarea [(ngModel)]="selectedProduct.description"
+        class="w-full text-lg"></textarea>
+    </div>
+    <div class="field mb-4">
+      <label for="descAr" class="font-bold block mb-2">{{ 'ADMIN.DESCRIPTION_AR' | translate }} <span
+          class="text-red-500">*</span></label>
+      <textarea id="descAr" rows="8" pInputTextarea [(ngModel)]="selectedProduct.descriptionAr" dir="rtl"
+        class="w-full text-lg"></textarea>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton label="{{ 'ADMIN.CANCEL' | translate }}" icon="pi pi-times" class="p-button-text"
+      (click)="productDialogVisible = false"></button>
+    <button pButton label="{{ 'ADMIN.SAVE' | translate }}" 
+      [icon]="savingProduct ? 'pi pi-spin pi-spinner' : 'pi pi-check'" 
+      [loading]="savingProduct"
+      [disabled]="savingProduct || uploadingImage"
+      class="p-button-warning"
+      (click)="saveProduct()"></button>
+  </ng-template>
+</p-dialog>

@@ -1,6 +1,9 @@
-﻿using AutoMapper;
+using AutoMapper;
 using MangaRestaurant.APIs.Dtos;
 using MangaRestaurant.Core.Entities;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace MangaRestaurant.APIs.Helpers
 {
@@ -12,12 +15,19 @@ namespace MangaRestaurant.APIs.Helpers
         {
             _configuration = configuration;
         }
+
         public string Resolve(Product source, ProductToReturnDto destination, string destMember, ResolutionContext context)
         {
             if (!string.IsNullOrEmpty(source.PictureUrl))
+            {
+                if (source.PictureUrl.StartsWith("http"))
+                {
+                    return source.PictureUrl;
+                }
                 return $"{_configuration["BaseURL"]}/{source.PictureUrl}";
+            }
 
-            return String.Empty ;   
+            return null;
         }
     }
 }

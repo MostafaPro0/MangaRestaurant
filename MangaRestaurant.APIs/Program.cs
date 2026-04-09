@@ -15,6 +15,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Writers;
 using StackExchange.Redis;
 
+using MangaRestaurant.APIs.Hubs;
+
 namespace MangaRestaurant.APIs
 {
     public class Program
@@ -24,9 +26,11 @@ namespace MangaRestaurant.APIs
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddSwaggerServices();
+            builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             #region Configuration Service
             builder.Services.AddControllers();
+            builder.Services.AddSignalR(); 
 
             builder.Services.AddApplicationServices();
 
@@ -54,8 +58,8 @@ namespace MangaRestaurant.APIs
                 {
                     options.AllowAnyHeader();
                     options.AllowAnyMethod();
-                    options.AllowAnyOrigin();
-                    options.WithOrigins(builder.Configuration["FrontBaseURL"]);
+                    options.AllowCredentials();
+                    options.WithOrigins(builder.Configuration["FrontBaseURL"] ?? "http://localhost:4200");
                 });
             });
             #endregion
@@ -80,7 +84,8 @@ namespace MangaRestaurant.APIs
                 await StoreContextSeed.SeedAsync(_dbContext);
 
                 var userManager = services.GetRequiredService<UserManager<AppUser>>();
-                await AppIdentityDbContextSeed.SeedUserAsync(userManager);
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                await AppIdentityDbContextSeed.SeedUserAsync(userManager, roleManager);
             }
             catch (Exception ex)
             {
@@ -91,6 +96,15 @@ namespace MangaRestaurant.APIs
             #endregion
             #region Configure Kestrel Middlewares
             app.UseMiddleware<ExceptionMiddleware>();
+
+            var supportedCultures = new[] { "ar", "en" };
+            var localizationOptions = new RequestLocalizationOptions()
+                .SetDefaultCulture(supportedCultures[0])
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+
+            app.UseRequestLocalization(localizationOptions);
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -106,10 +120,11 @@ namespace MangaRestaurant.APIs
             app.UseAuthorization();
 
             app.MapControllers();
+            app.MapHub<NotificationHub>("/hub/notifications");
 
             #endregion
 
             app.Run();
         }
     }
-}
+}

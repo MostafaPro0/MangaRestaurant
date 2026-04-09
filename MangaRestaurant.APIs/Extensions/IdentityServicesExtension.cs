@@ -1,4 +1,4 @@
-﻿using MangaRestaurant.Core.Entities.Identity;
+using MangaRestaurant.Core.Entities.Identity;
 using MangaRestaurant.Core.Service;
 using MangaRestaurant.Repository.Identity;
 using MangaRestaurant.Service;
@@ -19,7 +19,8 @@ namespace MangaRestaurant.APIs.Extensions
             {
                 //   Oprions.Password.RequiredLength = 5;
 
-            }).AddEntityFrameworkStores<AppIdentityDbContext>();
+            }).AddEntityFrameworkStores<AppIdentityDbContext>()
+              .AddDefaultTokenProviders();
             services.AddAuthentication(Options=>
             {
                 Options.DefaultAuthenticateScheme= JwtBearerDefaults.AuthenticationScheme;

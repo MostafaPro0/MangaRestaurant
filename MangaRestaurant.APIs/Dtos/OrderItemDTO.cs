@@ -1,4 +1,4 @@
-﻿using MangaRestaurant.Core.Entities.Order;
+using MangaRestaurant.Core.Entities.Order;
 
 namespace MangaRestaurant.APIs.Dtos
 {
@@ -6,7 +6,9 @@ namespace MangaRestaurant.APIs.Dtos
     {
         public int ProductId { get; set; }
         public string ProductName { get; set; }
+        public string ProductNameAr { get; set; }
         public string PictureUrl { get; set; }
+        public string CurrentPictureUrl { get; set; }
         public decimal Price { get; set; }
 
         public decimal Quantity { get; set; }

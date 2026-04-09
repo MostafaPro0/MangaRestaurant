@@ -1,0 +1,70 @@
+.profile-pic-container {
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.profile-pic-container:hover {
+    transform: scale(1.05);
+}
+.profile-pic-container:hover .pic-overlay {
+    opacity: 1 !important;
+}
+
+/* Address Card Improvements */
+.address-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.3s ease;
+}
+
+.address-item:hover {
+    background: rgba(var(--primary-color-rgb), 0.05);
+    border-color: var(--primary-color);
+    box-shadow: 0 10px 30px -10px rgba(var(--primary-color-rgb), 0.2);
+}
+
+.address-actions {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.address-item:hover .address-actions {
+    opacity: 1;
+}
+
+/* Dialog Styles */
+:host ::ng-deep .manga-dialog .p-dialog-header {
+    background: var(--surface-card);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+}
+
+:host ::ng-deep .manga-dialog .p-dialog-content {
+    background: var(--surface-card);
+    padding: 2rem 1.5rem;
+}
+
+:host ::ng-deep .manga-dialog .p-dialog-footer {
+    background: var(--surface-card);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.25rem 1.5rem;
+}
+
+.form-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-color-secondary);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* RTL Specific Adjustments */
+html[dir="rtl"] .p-dialog-header-close {
+    margin-right: auto;
+    margin-left: 0;
+}
+
+html[dir="rtl"] .p-float-label label {
+    right: 0.75rem;
+    left: auto;
+}

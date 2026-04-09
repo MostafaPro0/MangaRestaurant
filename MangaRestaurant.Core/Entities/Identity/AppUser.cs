@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +10,11 @@ namespace MangaRestaurant.Core.Entities.Identity
     public class AppUser:IdentityUser
     {
         public string DisplayName { get; set; } 
+        public string? ProfilePictureUrl { get; set; }
+        public string? PhoneNumber2 { get; set; }
 
-        public UserAddress UserAddress { get; set; }
+        public bool IsBanned { get; set; } = false;
+        public ICollection<UserAddress> UserAddresses { get; set; } = new HashSet<UserAddress>();
         //Navigational Proporety
     }
 }

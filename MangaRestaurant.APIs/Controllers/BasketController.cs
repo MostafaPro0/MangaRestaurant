@@ -1,10 +1,13 @@
-﻿using AutoMapper;
+using AutoMapper;
 using MangaRestaurant.APIs.Dtos;
 using MangaRestaurant.APIs.Errors;
+using MangaRestaurant.Core;
 using MangaRestaurant.Core.Entities;
 using MangaRestaurant.Core.RepositoriesContract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using MangaRestaurant.APIs;
 
 namespace MangaRestaurant.APIs.Controllers
 {
@@ -12,18 +15,43 @@ namespace MangaRestaurant.APIs.Controllers
     {
         private readonly IBasketRepository _basketRepository;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public BasketController(IBasketRepository basketRepository, IMapper mapper)
+        public BasketController(IBasketRepository basketRepository, IMapper mapper, IUnitOfWork unitOfWork, IStringLocalizer<SharedResource> localizer)
         {
             _basketRepository = basketRepository;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
+            _localizer = localizer;
         }
         // GET Or ReCreate Basket
         [HttpGet]//GET OR Create
         public async Task<ActionResult<CustomerBasket>> GetCustomerBasket(string id)
         {
             var basket = await _basketRepository.GetBasketAsync(id);
-            return basket is null ? new CustomerBasket(id) : basket;
+            if (basket == null) return Ok(new CustomerBasket(id));
+
+            // Sync prices from DB for all items in the basket
+            var productRepo = _unitOfWork.Repository<Product>();
+
+            bool changed = false;
+            foreach (var item in basket.Items)
+            {
+                var product = await productRepo.GetAsync(item.Id);
+                if (product != null && product.Price != item.Price)
+                {
+                    item.Price = product.Price;
+                    changed = true;
+                }
+            }
+
+            if (changed)
+            {
+                await _basketRepository.UpdateBasketAsync(basket);
+            }
+
+            return Ok(basket);
         }
         // Create Or Update
         [HttpPost]
@@ -32,7 +60,7 @@ namespace MangaRestaurant.APIs.Controllers
             var mappedBasket = _mapper.Map<CustomerBasketDTO, CustomerBasket>(basket);
             var createdOrUpdated = await _basketRepository.UpdateBasketAsync(mappedBasket);
 
-            return createdOrUpdated is null ? BadRequest(new ApiResponse(400, "You Have Problem in your basket")) : Ok(createdOrUpdated);
+            return createdOrUpdated is null ? BadRequest(new ApiResponse(400, _localizer["BASKET_ERROR"])) : Ok(createdOrUpdated);
         }
         // Delete Basket
         [HttpDelete]
