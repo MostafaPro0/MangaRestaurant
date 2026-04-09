@@ -38,7 +38,7 @@ namespace MangaRestaurant.APIs.Controllers
             var name = User.FindFirstValue(ClaimTypes.GivenName) ?? User.FindFirstValue(ClaimTypes.Name);
 
             if (string.IsNullOrEmpty(email)) 
-                return BadRequest(new ApiResponse(400, "User email not found"));
+                return BadRequest(new ApiResponse(400, _localizer["USER_EMAIL_NOT_FOUND"]));
 
             // Optional: Check if product exists
             var product = await _unitOfWork.Repository<Product>().GetAsync(reviewDto.ProductId);

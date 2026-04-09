@@ -166,7 +166,7 @@ namespace MangaRestaurant.APIs.Controllers
                 return BadRequest(new ApiResponse(400, _localizer["INVALID_STATUS"]));
 
             var existing = await _orderService.GetOrderByIdAsync(orderId);
-            if (existing is null) return NotFound(new ApiResponse(404, $"Order {orderId} not found"));
+            if (existing is null) return NotFound(new ApiResponse(404, _localizer["ORDER_NOT_FOUND"]));
 
             var buyerEmail = User.FindFirstValue(ClaimTypes.Email);
             if (!User.IsInRole("Admin") && !string.Equals(existing.BuyerEmail, buyerEmail, StringComparison.OrdinalIgnoreCase))
@@ -175,8 +175,8 @@ namespace MangaRestaurant.APIs.Controllers
             }
 
             var ok = await _orderService.UpdateOrderStatusAsync(orderId, status);
-            if (!ok) return NotFound(new ApiResponse(404, $"Order {orderId} not updated"));
-            return Ok(new ApiResponse(200, "Order status updated successfully"));
+            if (!ok) return NotFound(new ApiResponse(404, _localizer["ORDER_STATUS_ERROR"]));
+            return Ok(new ApiResponse(200, _localizer["ORDER_STATUS_SUCCESS"]));
         }
 
         [HttpPut("{orderId}/assign-delivery")]
@@ -184,10 +184,10 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult<ApiResponse>> AssignDeliveryPerson(int orderId, [FromBody] AssignDeliveryRequest request)
         {
             if (request == null || string.IsNullOrEmpty(request.EmployeeId))
-                return BadRequest(new ApiResponse(400, "EmployeeId is required"));
+                return BadRequest(new ApiResponse(400, _localizer["EMPLOYEE_ID_REQUIRED"]));
 
             var user = await _userManager.FindByIdAsync(request.EmployeeId);
-            if (user == null) return NotFound(new ApiResponse(404, "Delivery person not found"));
+            if (user == null) return NotFound(new ApiResponse(404, _localizer["DELIVERY_PERSON_NOT_FOUND"]));
 
             var ok = await _orderService.AssignDeliveryPersonAsync(orderId, request.EmployeeId, user.DisplayName);
             if (!ok) return NotFound(new ApiResponse(404, _localizer["ORDER_STATUS_ERROR"]));
@@ -200,10 +200,10 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult<ApiResponse>> AssignWaiter(int orderId, [FromBody] AssignDeliveryRequest request)
         {
             if (request == null || string.IsNullOrEmpty(request.EmployeeId))
-                return BadRequest(new ApiResponse(400, "EmployeeId is required"));
+                return BadRequest(new ApiResponse(400, _localizer["EMPLOYEE_ID_REQUIRED"]));
 
             var user = await _userManager.FindByIdAsync(request.EmployeeId);
-            if (user == null) return NotFound(new ApiResponse(404, "Waiter not found"));
+            if (user == null) return NotFound(new ApiResponse(404, _localizer["WAITER_NOT_FOUND"]));
 
             var ok = await _orderService.AssignWaiterAsync(orderId, request.EmployeeId, user.DisplayName);
             if (!ok) return NotFound(new ApiResponse(404, _localizer["ORDER_STATUS_ERROR"]));

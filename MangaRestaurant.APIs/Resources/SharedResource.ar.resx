@@ -217,4 +217,58 @@
   <data name="INVALID_GOOGLE_TOKEN" xml:space="preserve">
     <value>صلاحية دخول Google غير صالحة</value>
   </data>
+  <data name="CATEGORY_CREATE_FAILED" xml:space="preserve">
+    <value>حدث خطأ أثناء إنشاء التصنيف</value>
+  </data>
+  <data name="CATEGORY_UPDATE_FAILED" xml:space="preserve">
+    <value>حدث خطأ أثناء تحديث التصنيف</value>
+  </data>
+  <data name="CATEGORY_DELETE_FAILED" xml:space="preserve">
+    <value>حدث خطأ أثناء حذف التصنيف</value>
+  </data>
+  <data name="CATEGORY_DELETE_SUCCESS" xml:space="preserve">
+    <value>تم حذف التصنيف بنجاح</value>
+  </data>
+  <data name="CATEGORY_HIDE_SUCCESS" xml:space="preserve">
+    <value>تم إخفاء التصنيف بنجاح</value>
+  </data>
+  <data name="CATEGORY_SHOW_SUCCESS" xml:space="preserve">
+    <value>تم إظهار التصنيف بنجاح</value>
+  </data>
+  <data name="BRAND_CREATE_FAILED" xml:space="preserve">
+    <value>حدث خطأ أثناء إنشاء البراند</value>
+  </data>
+  <data name="BRAND_UPDATE_FAILED" xml:space="preserve">
+    <value>حدث خطأ أثناء تحديث البراند</value>
+  </data>
+  <data name="BRAND_DELETE_FAILED" xml:space="preserve">
+    <value>حدث خطأ أثناء حذف البراند</value>
+  </data>
+  <data name="BRAND_DELETE_SUCCESS" xml:space="preserve">
+    <value>تم حذف البراند بنجاح</value>
+  </data>
+  <data name="BRAND_HIDE_SUCCESS" xml:space="preserve">
+    <value>تم إخفاء البراند بنجاح</value>
+  </data>
+  <data name="BRAND_SHOW_SUCCESS" xml:space="preserve">
+    <value>تم إظهار البراند بنجاح</value>
+  </data>
+  <data name="INVALID_REQUEST" xml:space="preserve">
+    <value>طلب غير صالح</value>
+  </data>
+  <data name="STATUS_UPDATE_FAILED" xml:space="preserve">
+    <value>فشل تحديث الحالة</value>
+  </data>
+  <data name="EMPLOYEE_ID_REQUIRED" xml:space="preserve">
+    <value>مطلوب رقم هوية الموظف</value>
+  </data>
+  <data name="DELIVERY_PERSON_NOT_FOUND" xml:space="preserve">
+    <value>موظف التوصيل غير موجود</value>
+  </data>
+  <data name="WAITER_NOT_FOUND" xml:space="preserve">
+    <value>الويتر غير موجود</value>
+  </data>
+  <data name="USER_EMAIL_NOT_FOUND" xml:space="preserve">
+    <value>لم يتم العثور على البريد الإلكتروني للمستخدم</value>
+  </data>
 </root>

@@ -306,7 +306,7 @@ namespace MangaRestaurant.APIs.Controllers
             user.IsBanned = !user.IsBanned;
             var result = await _userManager.UpdateAsync(user);
 
-            if (!result.Succeeded) return BadRequest(new ApiResponse(400, "Failed to update user status"));
+            if (!result.Succeeded) return BadRequest(new ApiResponse(400, _localizer["STATUS_UPDATE_FAILED"]));
 
             return Ok(new { isBanned = user.IsBanned });
         }
@@ -404,7 +404,7 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult> ResetPassword(ResetPasswordDto resetPasswordDto)
         {
             var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
-            if (user == null) return BadRequest(new ApiResponse(400, "Invalid request"));
+            if (user == null) return BadRequest(new ApiResponse(400, _localizer["INVALID_REQUEST"]));
 
             var result = await _userManager.ResetPasswordAsync(user, resetPasswordDto.Token, resetPasswordDto.NewPassword);
 

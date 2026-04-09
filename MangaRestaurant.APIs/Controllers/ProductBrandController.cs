@@ -69,7 +69,7 @@ namespace MangaRestaurant.APIs.Controllers
             await _unitOfWork.Repository<ProductBrand>().AddAsync(brand);
             var result = await _unitOfWork.CompleteAsync();
 
-            if (result <= 0) return BadRequest(new ApiResponse(400, "Problem creating brand"));
+            if (result <= 0) return BadRequest(new ApiResponse(400, _localizer["BRAND_CREATE_FAILED"]));
 
             return Ok(brand);
         }
@@ -88,7 +88,7 @@ namespace MangaRestaurant.APIs.Controllers
             _unitOfWork.Repository<ProductBrand>().Update(brand);
             var result = await _unitOfWork.CompleteAsync();
 
-            if (result <= 0) return BadRequest(new ApiResponse(400, "Problem updating brand"));
+            if (result <= 0) return BadRequest(new ApiResponse(400, _localizer["BRAND_UPDATE_FAILED"]));
 
             return Ok(brand);
         }
@@ -103,9 +103,9 @@ namespace MangaRestaurant.APIs.Controllers
             _unitOfWork.Repository<ProductBrand>().Delete(brand);
             var result = await _unitOfWork.CompleteAsync();
 
-            if (result <= 0) return BadRequest(new ApiResponse(400, "Problem deleting brand"));
+            if (result <= 0) return BadRequest(new ApiResponse(400, _localizer["BRAND_DELETE_FAILED"]));
 
-            return Ok(new ApiResponse(200, "Brand deleted successfully"));
+            return Ok(new ApiResponse(200, _localizer["BRAND_DELETE_SUCCESS"]));
         }
 
         [HttpPut("{id}/hide")]
@@ -119,7 +119,7 @@ namespace MangaRestaurant.APIs.Controllers
             _unitOfWork.Repository<ProductBrand>().Update(brand);
             await _unitOfWork.CompleteAsync();
 
-            return Ok(new ApiResponse(200, hide ? "Brand hidden successfully" : "Brand shown successfully"));
+            return Ok(new ApiResponse(200, hide ? _localizer["BRAND_HIDE_SUCCESS"] : _localizer["BRAND_SHOW_SUCCESS"]));
         }
     }
 }

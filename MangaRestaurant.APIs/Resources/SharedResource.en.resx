@@ -217,4 +217,58 @@
   <data name="INVALID_GOOGLE_TOKEN" xml:space="preserve">
     <value>Invalid Google Authentication Token</value>
   </data>
+  <data name="CATEGORY_CREATE_FAILED" xml:space="preserve">
+    <value>An error occurred while creating the category</value>
+  </data>
+  <data name="CATEGORY_UPDATE_FAILED" xml:space="preserve">
+    <value>An error occurred while updating the category</value>
+  </data>
+  <data name="CATEGORY_DELETE_FAILED" xml:space="preserve">
+    <value>An error occurred while deleting the category</value>
+  </data>
+  <data name="CATEGORY_DELETE_SUCCESS" xml:space="preserve">
+    <value>Category deleted successfully</value>
+  </data>
+  <data name="CATEGORY_HIDE_SUCCESS" xml:space="preserve">
+    <value>Category hidden successfully</value>
+  </data>
+  <data name="CATEGORY_SHOW_SUCCESS" xml:space="preserve">
+    <value>Category shown successfully</value>
+  </data>
+  <data name="BRAND_CREATE_FAILED" xml:space="preserve">
+    <value>An error occurred while creating the brand</value>
+  </data>
+  <data name="BRAND_UPDATE_FAILED" xml:space="preserve">
+    <value>An error occurred while updating the brand</value>
+  </data>
+  <data name="BRAND_DELETE_FAILED" xml:space="preserve">
+    <value>An error occurred while deleting the brand</value>
+  </data>
+  <data name="BRAND_DELETE_SUCCESS" xml:space="preserve">
+    <value>Brand deleted successfully</value>
+  </data>
+  <data name="BRAND_HIDE_SUCCESS" xml:space="preserve">
+    <value>Brand hidden successfully</value>
+  </data>
+  <data name="BRAND_SHOW_SUCCESS" xml:space="preserve">
+    <value>Brand shown successfully</value>
+  </data>
+  <data name="INVALID_REQUEST" xml:space="preserve">
+    <value>Invalid request</value>
+  </data>
+  <data name="STATUS_UPDATE_FAILED" xml:space="preserve">
+    <value>Failed to update status</value>
+  </data>
+  <data name="EMPLOYEE_ID_REQUIRED" xml:space="preserve">
+    <value>Employee ID is required</value>
+  </data>
+  <data name="DELIVERY_PERSON_NOT_FOUND" xml:space="preserve">
+    <value>Delivery person not found</value>
+  </data>
+  <data name="WAITER_NOT_FOUND" xml:space="preserve">
+    <value>Waiter not found</value>
+  </data>
+  <data name="USER_EMAIL_NOT_FOUND" xml:space="preserve">
+    <value>User email not found in authentication context</value>
+  </data>
 </root>

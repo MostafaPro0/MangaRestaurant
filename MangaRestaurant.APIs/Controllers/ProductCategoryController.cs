@@ -68,7 +68,7 @@ namespace MangaRestaurant.APIs.Controllers
             await _unitOfWork.Repository<ProductCategory>().AddAsync(category);
             var result = await _unitOfWork.CompleteAsync();
 
-            if (result <= 0) return BadRequest(new ApiResponse(400, "Problem creating category"));
+            if (result <= 0) return BadRequest(new ApiResponse(400, _localizer["CATEGORY_CREATE_FAILED"]));
 
             return Ok(category);
         }
@@ -87,7 +87,7 @@ namespace MangaRestaurant.APIs.Controllers
             _unitOfWork.Repository<ProductCategory>().Update(category);
             var result = await _unitOfWork.CompleteAsync();
 
-            if (result <= 0) return BadRequest(new ApiResponse(400, "Problem updating category"));
+            if (result <= 0) return BadRequest(new ApiResponse(400, _localizer["CATEGORY_UPDATE_FAILED"]));
 
             return Ok(category);
         }
@@ -102,9 +102,9 @@ namespace MangaRestaurant.APIs.Controllers
             _unitOfWork.Repository<ProductCategory>().Delete(category);
             var result = await _unitOfWork.CompleteAsync();
 
-            if (result <= 0) return BadRequest(new ApiResponse(400, "Problem deleting category"));
+            if (result <= 0) return BadRequest(new ApiResponse(400, _localizer["CATEGORY_DELETE_FAILED"]));
 
-            return Ok(new ApiResponse(200, "Category deleted successfully"));
+            return Ok(new ApiResponse(200, _localizer["CATEGORY_DELETE_SUCCESS"]));
         }
 
         [HttpPut("{id}/hide")]
@@ -118,7 +118,7 @@ namespace MangaRestaurant.APIs.Controllers
             _unitOfWork.Repository<ProductCategory>().Update(category);
             await _unitOfWork.CompleteAsync();
 
-            return Ok(new ApiResponse(200, hide ? "Category hidden successfully" : "Category shown successfully"));
+            return Ok(new ApiResponse(200, hide ? _localizer["CATEGORY_HIDE_SUCCESS"] : _localizer["CATEGORY_SHOW_SUCCESS"]));
         }
     }
 }
