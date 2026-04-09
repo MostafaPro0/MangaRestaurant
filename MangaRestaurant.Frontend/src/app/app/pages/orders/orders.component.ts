@@ -15,6 +15,8 @@ import { OrdersService } from '../../services/orders.service';
 
 import { SettingsService } from '../../services/settings.service';
 
+import { environment } from '../../../../environments/environment';
+
 @Component({
   selector: 'app-orders',
   standalone: true,
@@ -35,6 +37,12 @@ export class OrdersComponent implements OnInit {
     public translate: TranslateService,
     private settingsService: SettingsService
   ) {}
+
+  getImageUrl(url: string | null | undefined): string {
+    if (!url) return 'assets/images/products/placeholder.png';
+    if (url.startsWith('http')) return url;
+    return `${environment.apiUrl}${url}`;
+  }
 
   statusSeverity(status: string): 'success' | 'info' | 'warn' | 'danger' | 'secondary' {
     const s = (status || '').toLowerCase().replace(/\s+/g, '');
