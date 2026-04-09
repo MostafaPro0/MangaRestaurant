@@ -32,6 +32,10 @@ export class AdminService {
     return this.api.delete<any>(`Accounts/Admin/Delete/${userId}`);
   }
 
+  toggleUserBan(userId: string): Observable<any> {
+    return this.api.put<any>(`Accounts/Admin/ToggleBan/${userId}`, {});
+  }
+
   uploadProductImage(file: File): Observable<string> {
     const formData = new FormData();
     formData.append('file', file);

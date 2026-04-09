@@ -367,11 +367,12 @@
         <p-table [value]="users" [loading]="loadingUsers" [rows]="10" [paginator]="true" class="custom-table staff-table shadow-2 border-round-xl">
           <ng-template pTemplate="header">
             <tr>
-              <th style="width: 25%">{{ 'ADMIN.EMPLOYEE_NAME' | translate }}</th>
-              <th style="width: 25%">{{ 'ADMIN.EMAIL' | translate }}</th>
-              <th style="width: 20%">{{ 'ADMIN.CURRENT_ROLE' | translate }}</th>
-              <th style="width: 20%">{{ 'ADMIN.CHANGE_ROLE' | translate }}</th>
-              <th style="width: 10%" class="text-center">{{ 'ADMIN.ACTIONS' | translate }}</th>
+              <th style="width: 20%">{{ 'ADMIN.EMPLOYEE_NAME' | translate }}</th>
+              <th style="width: 20%">{{ 'ADMIN.EMAIL' | translate }}</th>
+              <th style="width: 15%">{{ 'ADMIN.CURRENT_ROLE' | translate }}</th>
+              <th style="width: 15%">{{ 'ADMIN.CHANGE_ROLE' | translate }}</th>
+              <th style="width: 15%" class="text-center">{{ 'ADMIN.STATUS' | translate }}</th>
+              <th style="width: 15%" class="text-center">{{ 'ADMIN.ACTIONS' | translate }}</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-user>
@@ -384,8 +385,20 @@
               </td>
               <td>
                 <p-dropdown [options]="roleOptions" [(ngModel)]="user.role" 
-                  (onChange)="onRoleChange(user, $event.value)" appendTo="body" class="p-inputtext-sm w-full">
+                   (onChange)="onRoleChange(user, $event.value)" appendTo="body" class="p-inputtext-sm w-full">
                 </p-dropdown>
+              </td>
+              <td class="text-center">
+                <p-button 
+                        [label]="(user.isBanned ? 'ADMIN.BANNED' : 'ADMIN.ACTIVE') | translate"
+                        [severity]="user.isBanned ? 'danger' : 'success'"
+                        [outlined]="true"
+                        [icon]="user.isBanned ? 'pi pi-lock' : 'pi pi-lock-open'"
+                        size="small"
+                        styleClass="border-round-xl"
+                        [pTooltip]="(user.isBanned ? 'ADMIN.CLICK_TO_ACTIVATE' : 'ADMIN.CLICK_TO_BAN') | translate"
+                        (click)="onToggleUserBan(user)">
+                </p-button>
               </td>
               <td class="text-center">
                 <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"

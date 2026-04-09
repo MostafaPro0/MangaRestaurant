@@ -200,6 +200,7 @@
   "TOAST": {
     "SUCCESS": "نجاح",
     "ERROR": "خطأ",
+    "ACCOUNT_BANNED": "هذا الحساب معطل حالياً. يرجى التواصل مع الإدارة.",
     "ORDER_SUCCESS": "تم تقديم الطلب بنجاح!",
     "ORDER_FAIL": "فشل في إنشاء الطلب.",
     "ORDERS_FAIL": "فشل تحميل الطلبات.",
@@ -334,7 +335,11 @@
     "HIDE": "إخفاء",
     "HIDE_FROM_STORE": "إخفاء من المتجر",
     "ACTIVE": "نشط",
-    "HIDDEN": "مخفي"
+    "HIDDEN": "مخفي",
+    "BANNED": "محظور",
+    "STATUS_UPDATED": "تم تحديث الحالة بنجاح",
+    "CLICK_TO_ACTIVATE": "اضغط لتنشيط الحساب",
+    "CLICK_TO_BAN": "اضغط لتعطيل الحساب"
   },
   "REVIEWS": {
     "TITLE": "آراء العملاء",

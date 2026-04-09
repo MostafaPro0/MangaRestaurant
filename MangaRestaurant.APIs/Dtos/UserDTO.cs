@@ -11,5 +11,6 @@ namespace MangaRestaurant.APIs.Dtos
         public string? ProfilePictureUrl { get; set; }
         public string Token { get; set; }
         public bool HasPassword { get; set; }
+        public bool IsBanned { get; set; }
     }
 }

@@ -196,9 +196,10 @@
     "PHONE_VAL": "+123 456 789",
     "ALL": "All"
   },
-  "TOAST": {
+    "TOAST": {
     "SUCCESS": "Success",
     "ERROR": "Error",
+    "ACCOUNT_BANNED": "This account has been deactivated. Please contact support.",
     "ORDER_SUCCESS": "Order has been placed successfully!",
     "ORDER_FAIL": "Failed to create order.",
     "ORDERS_FAIL": "Could not load orders.",
@@ -333,7 +334,11 @@
     "HIDE": "Hide",
     "HIDE_FROM_STORE": "Hide from store",
     "ACTIVE": "Active",
-    "HIDDEN": "Hidden"
+    "HIDDEN": "Hidden",
+    "BANNED": "Banned",
+    "STATUS_UPDATED": "Status updated successfully",
+    "CLICK_TO_ACTIVATE": "Click to activate user",
+    "CLICK_TO_BAN": "Click to deactivate user"
   },
   "REVIEWS": {
     "TITLE": "Customer Reviews",

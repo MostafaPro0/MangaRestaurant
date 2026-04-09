@@ -72,6 +72,9 @@ namespace MangaRestaurant.APIs.Controllers
             if (!result.Succeeded)
                 return Unauthorized(new ApiResponse(401, _localizer["INVALID_LOGIN"]));
 
+            if (user.IsBanned)
+                return Unauthorized(new ApiResponse(401, _localizer["ACCOUNT_BANNED"]));
+
             return Ok(await CreateUserDtoAsync(user));
         }
         [Authorize]
@@ -80,6 +83,12 @@ namespace MangaRestaurant.APIs.Controllers
         {
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
             var user = await _userManager.FindByEmailAsync(userEmail);
+
+            if (user != null && user.IsBanned)
+            {
+                return Unauthorized(new ApiResponse(401, _localizer["ACCOUNT_BANNED"]));
+            }
+
             return Ok(await CreateUserDtoAsync(user));
         }
         
@@ -280,6 +289,28 @@ namespace MangaRestaurant.APIs.Controllers
             return Ok(new ApiResponse(200, _localizer["USER_ROLE_UPDATED"]));
         }
 
+        [HttpPut("Admin/ToggleBan/{userId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> ToggleUserBan(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound(new ApiResponse(404, _localizer["USER_NOT_FOUND"]));
+
+            // Don't allow banning self
+            var currentUserEmail = User.FindFirstValue(ClaimTypes.Email);
+            if (user.Email == currentUserEmail)
+            {
+                return BadRequest(new ApiResponse(400, "You cannot ban yourself"));
+            }
+
+            user.IsBanned = !user.IsBanned;
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded) return BadRequest(new ApiResponse(400, "Failed to update user status"));
+
+            return Ok(new { isBanned = user.IsBanned });
+        }
+
         [HttpDelete("Admin/Delete/{userId}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteUser(string userId)
@@ -319,6 +350,9 @@ namespace MangaRestaurant.APIs.Controllers
 
                     await _userManager.AddToRoleAsync(user, "User");
                 }
+
+                if (user.IsBanned)
+                    return Unauthorized(new ApiResponse(401, _localizer["ACCOUNT_BANNED"]));
 
                 return Ok(await CreateUserDtoAsync(user));
             }

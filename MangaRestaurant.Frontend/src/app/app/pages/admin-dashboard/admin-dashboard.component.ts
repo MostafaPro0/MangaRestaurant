@@ -358,6 +358,26 @@ export class AdminDashboardComponent implements OnInit {
     }
   }
 
+  onToggleUserBan(user: any) {
+    this.adminService.toggleUserBan(user.id).subscribe({
+      next: (res) => {
+        user.isBanned = res.isBanned;
+        this.messageService.add({ 
+          severity: 'success', 
+          summary: this.translateService.instant('TOAST.SUCCESS'), 
+          detail: this.translateService.instant('ADMIN.STATUS_UPDATED') 
+        });
+      },
+      error: (err) => {
+        this.messageService.add({ 
+          severity: 'error', 
+          summary: 'Error', 
+          detail: err.error?.message || 'Failed to update status' 
+        });
+      }
+    });
+  }
+
   updateOrderDelivery(orderId: number) {
       const employeeId = this.orderDeliveryAssignee[orderId];
       if (!employeeId) return;
