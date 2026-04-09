@@ -114,7 +114,9 @@
             <img [src]="getImageUrl(item.pictureUrl)" [alt]="item.name" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" style="height: 250px" />
             
             <div class="absolute top-0 right-0 m-3 py-1 px-3 bg-red-600 text-white font-bold rounded-lg shadow-lg z-10" *ngIf="item.oldPrice > item.price">
-              -{{ ((item.oldPrice - item.price) / item.oldPrice * 100).toFixed(0) }}%
+              {{ translate.currentLanguage === 'ar' ? ( 'PRODUCTS.OFF' | translate ) : '' }} 
+              -{{ ((item.oldPrice - item.price) / item.oldPrice * 100).toFixed(0) }}% 
+              {{ translate.currentLanguage === 'en' ? ( 'PRODUCTS.OFF' | translate ) : '' }}
             </div>
           </div>
           
@@ -135,13 +137,23 @@
               {{ (translate.currentLanguage === 'ar' ? item.nameAr : item.name) || item.name }}
             </h3>
             
-            <div class="flex align-items-center justify-content-between pt-3 border-top-1 surface-border mt-auto">
+            <div class="flex align-items-center justify-content-between pt-3 border-top-1 surface-border mt-auto" *ngIf="settings$ | async as settings">
               <div>
-                <span class="text-2xl font-bold primary-text">{{ item.price | currency }}</span>
-                <span *ngIf="item.oldPrice > item.price" class="block text-sm text-dim strikethrough opacity-60">{{ item.oldPrice | currency }}</span>
+                <span class="text-2xl font-bold primary-text">{{ item.price | currency : settings.currencyCode : (translate.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}</span>
+                <span *ngIf="item.oldPrice > item.price" class="block text-sm text-dim strikethrough opacity-60">
+                    {{ item.oldPrice | currency : settings.currencyCode : (translate.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+                </span>
               </div>
               <button pButton icon="pi pi-cart-plus" class="p-button-rounded p-button-primary p-button-lg shadow-md" (click)="addToBasket(item)"></button>
             </div>
+            <!-- Fallback if settings not yet loaded -->
+            <div class="flex align-items-center justify-content-between pt-3 border-top-1 surface-border mt-auto" *ngIf="!(settings$ | async)">
+                <div>
+                  <span class="text-2xl font-bold primary-text">{{ item.price | currency }}</span>
+                  <span *ngIf="item.oldPrice > item.price" class="block text-sm text-dim strikethrough opacity-60">{{ item.oldPrice | currency }}</span>
+                </div>
+                <button pButton icon="pi pi-cart-plus" class="p-button-rounded p-button-primary p-button-lg shadow-md" (click)="addToBasket(item)"></button>
+              </div>
           </div>
         </div>
       </div>

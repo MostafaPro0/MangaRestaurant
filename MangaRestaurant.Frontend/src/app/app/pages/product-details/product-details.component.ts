@@ -15,6 +15,7 @@ import { ProductsService } from '../../services/products.service';
 import { BasketService } from '../../services/basket.service';
 import { TranslateService } from '../../services/translate.service';
 import { AuthService } from '../../services/auth.service';
+import { SettingsService } from '../../services/settings.service';
 
 @Component({
   selector: 'app-product-details',
@@ -33,6 +34,7 @@ export class ProductDetailsComponent implements OnInit {
   userRating: number = 0;
   userComment: string = '';
   submittingReview = false;
+  settings$! : any;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,10 +43,12 @@ export class ProductDetailsComponent implements OnInit {
     private basketService: BasketService,
     public translateService: TranslateService,
     public authService: AuthService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private settingsService: SettingsService
   ) {}
 
   ngOnInit(): void {
+    this.settings$ = this.settingsService.settings$;
     this.route.paramMap.subscribe(params => {
       const id = Number(params.get('id'));
       if (!id) return;

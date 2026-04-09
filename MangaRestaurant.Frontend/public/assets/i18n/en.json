@@ -62,7 +62,8 @@
     "PREP_TIME_VAL": "15-20 Min",
     "ORIGIN_VAL": "Fresh Garden",
     "NO_RELATED": "No related products found.",
-    "INCL_VAT": "incl. VAT"
+    "INCL_VAT": "incl. VAT",
+    "OFF": "OFF"
   },
   "AUTH": {
     "LOGIN": "Login",
@@ -288,7 +289,24 @@
     "TOTAL_EMPLOYEES": "Total Employees",
     "ORDERS": {
       "STATUS_UPDATE": "Update Status"
-    }
+    },
+    "SETTINGS": "Settings",
+    "SETTINGS_TITLE": "Global Site Settings",
+    "SETTINGS_SUBTITLE": "Control restaurant data, currency, delivery fees, and social links.",
+    "SAVE_CHANGES": "Save Changes",
+    "RESTAURANT_INFO": "Restaurant Information",
+    "RESTAURANT_NAME_EN": "Restaurant Name (EN)",
+    "RESTAURANT_NAME_AR": "Restaurant Name (AR)",
+    "CONTACT_INFO": "Contact Details",
+    "PHONE_1": "Phone Number 1",
+    "PHONE_2": "Phone Number 2 (Optional)",
+    "ADDRESS_EN": "Address (EN)",
+    "ADDRESS_AR": "Address (AR)",
+    "GENERAL_CONFIG": "General Configuration",
+    "CURRENCY_CODE": "Currency Code (ISO)",
+    "CURRENCY_SYMBOL": "Currency Symbol",
+    "DELIVERY_FEE": "Fixed Delivery Fee",
+    "SOCIAL_LINKS": "Social Media Links"
   },
   "REVIEWS": {
     "TITLE": "Customer Reviews",

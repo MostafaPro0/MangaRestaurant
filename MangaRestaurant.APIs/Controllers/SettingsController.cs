@@ -5,6 +5,8 @@ using MangaRestaurant.Core;
 using MangaRestaurant.Core.Entities;
 using MangaRestaurant.Core.Service;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace MangaRestaurant.APIs.Controllers
 {
@@ -42,7 +44,7 @@ namespace MangaRestaurant.APIs.Controllers
             if (existingSettings == null)
             {
                 existingSettings = _mapper.Map<SiteSettingsDto, SiteSettings>(settingsDto);
-                _unitOfWork.Repository<SiteSettings>().Add(existingSettings);
+                await _unitOfWork.Repository<SiteSettings>().AddAsync(existingSettings);
             }
             else
             {

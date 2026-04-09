@@ -102,14 +102,14 @@ namespace MangaRestaurant.Repository.Data
                     Phone1 = "+20 123 456 7890",
                     Phone2 = "+20 100 123 4567",
                     Email = "info@mangarestaurant.com",
-                    CurrencyCode = "USD",
-                    CurrencySymbol = "$",
+                    CurrencyCode = "EGP",
+                    CurrencySymbol = "ج.م",
                     FacebookUrl = "https://facebook.com/mangarestaurant",
                     InstagramUrl = "https://instagram.com/mangarestaurant",
                     TwitterUrl = "https://twitter.com/mangarestaurant",
                     OpeningHoursEn = "Mon-Sun: 10:00 AM - 11:00 PM",
                     OpeningHoursAr = "الإثنين-الأحد: 10:00 صباحاً - 11:00 مساءً",
-                    DeliveryFee = 5.0m
+                    DeliveryFee = 25.0m
                 };
 
                 _dbContext.SiteSettings.Add(settings);

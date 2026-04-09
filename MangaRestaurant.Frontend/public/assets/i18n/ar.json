@@ -62,7 +62,8 @@
     "PREP_TIME_VAL": "15-20 دقيقة",
     "ORIGIN_VAL": "مزارعنا الطازجة",
     "NO_RELATED": "لا توجد أصناف مشابهة.",
-    "INCL_VAT": "شامل الضريبة"
+    "INCL_VAT": "شامل الضريبة",
+    "OFF": "خصم"
   },
   "AUTH": {
     "LOGIN": "تسجيل الدخول",
@@ -288,7 +289,24 @@
     "TOTAL_EMPLOYEES": "إجمالي الموظفين",
     "ORDERS": {
       "STATUS_UPDATE": "تحديث الحالة"
-    }
+    },
+    "SETTINGS": "الإعدادات",
+    "SETTINGS_TITLE": "إعدادات الموقع العام",
+    "SETTINGS_SUBTITLE": "تحكم في بيانات المطعم، العملة، مصاريف التوصيل، وروابط التواصل الاجتماعي.",
+    "SAVE_CHANGES": "حفظ التغييرات",
+    "RESTAURANT_INFO": "معلومات المطعم",
+    "RESTAURANT_NAME_EN": "اسم المطعم (EN)",
+    "RESTAURANT_NAME_AR": "اسم المطعم (AR)",
+    "CONTACT_INFO": "بيانات الاتصال",
+    "PHONE_1": "رقم الهاتف 1",
+    "PHONE_2": "رقم الهاتف 2 (اختياري)",
+    "ADDRESS_EN": "العنوان (EN)",
+    "ADDRESS_AR": "العنوان (AR)",
+    "GENERAL_CONFIG": "الإعدادات العامة",
+    "CURRENCY_CODE": "رمز العملة العالمي",
+    "CURRENCY_SYMBOL": "رمز العملة (العرض)",
+    "DELIVERY_FEE": "رسوم التوصيل الثابتة",
+    "SOCIAL_LINKS": "روابط التواصل الاجتماعي"
   },
   "REVIEWS": {
     "TITLE": "آراء العملاء",

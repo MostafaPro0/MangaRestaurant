@@ -17,7 +17,9 @@ import { environment } from '../../../../environments/environment';
 import { AdminService } from '../../services/admin.service';
 import { ProductsService } from '../../services/products.service';
 import { OrdersService } from '../../services/orders.service';
+import { SettingsService } from '../../services/settings.service';
 import { MessageService } from 'primeng/api';
+import { SiteSettings } from '../../models/site-settings.model';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries | any;
@@ -74,6 +76,10 @@ export class AdminDashboardComponent implements OnInit {
   categories: any[] = [];
   brands: any[] = [];
   uploadingImage: boolean = false;
+  
+  // Settings
+  siteSettings: SiteSettings = {} as SiteSettings;
+  savingSettings: boolean = false;
 
   // Charts Options
   public salesChartOptions!: Partial<ChartOptions>;
@@ -109,12 +115,14 @@ export class AdminDashboardComponent implements OnInit {
     private adminService: AdminService,
     private productsService: ProductsService,
     private ordersService: OrdersService,
+    private settingsService: SettingsService,
     private messageService: MessageService,
     private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
     this.loadAllData();
+    this.loadSettings();
     
     // Auto-refresh charts when language changes
     this.translate.onLangChange.subscribe(() => {
@@ -336,5 +344,31 @@ export class AdminDashboardComponent implements OnInit {
     if (path.startsWith('http')) return path;
     const baseUrl = environment.apiUrl.replace('/api', '');
     return `${baseUrl}/${path}`;
+  }
+
+  loadSettings() {
+    this.settingsService.settings$.subscribe(settings => {
+      if (settings) {
+        this.siteSettings = { ...settings };
+      }
+    });
+  }
+
+  saveSettings() {
+    this.savingSettings = true;
+    this.settingsService.updateSettings(this.siteSettings).subscribe({
+      next: () => {
+        this.messageService.add({ 
+            severity: 'success', 
+            summary: this.translate.currentLang === 'ar' ? 'نجاح' : 'Success', 
+            detail: this.translate.currentLang === 'ar' ? 'تم تحديث الإعدادات' : 'Settings updated successfully' 
+        });
+        this.savingSettings = false;
+      },
+      error: () => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update failed' });
+        this.savingSettings = false;
+      }
+    });
   }
 }

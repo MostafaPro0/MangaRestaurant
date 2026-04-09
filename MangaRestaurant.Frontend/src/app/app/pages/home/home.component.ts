@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { ProductsService } from '../../services/products.service';
 import { BasketService } from '../../services/basket.service';
 import { TranslateService } from '../../services/translate.service';
+import { SettingsService } from '../../services/settings.service';
 import { environment } from '../../../../environments/environment';
 
 @Component({
@@ -22,14 +23,17 @@ export class HomeComponent implements OnInit {
   latestProducts: any[] = [];
   loadingDeals = true;
   loadingLatest = true;
+  settings$! : any;
 
   constructor(
     private productsService: ProductsService, 
     private basketService: BasketService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private settingsService: SettingsService
   ) {}
 
   ngOnInit(): void {
+    this.settings$ = this.settingsService.settings$;
     this.loadDeals();
     this.loadLatest();
   }

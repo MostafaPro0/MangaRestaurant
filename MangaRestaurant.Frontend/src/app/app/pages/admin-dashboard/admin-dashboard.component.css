@@ -229,3 +229,44 @@
 .img-upload-container .pi-image {
     color: #cbd5e0;
 }
+
+/* --- Settings Form Styles --- */
+.mg-card {
+    background: var(--glass);
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.mg-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-light);
+}
+
+.settings-form input.p-inputtext, 
+.settings-form textarea.p-inputtext {
+    border-radius: 12px !important;
+    border: 1px solid var(--glass-border) !important;
+    background: var(--bg-deep) !important;
+    color: var(--text-main) !important;
+    transition: all 0.2s ease;
+}
+
+.settings-form .p-inputgroup-addon {
+    background: var(--bg-soft);
+    border-color: var(--glass-border);
+    color: var(--text-dim);
+    border-radius: 12px 0 0 12px;
+}
+
+.settings-form .p-inputgroup input {
+    border-radius: 0 12px 12px 0 !important;
+}
+
+@media screen and (max-width: 991px) {
+    .settings-form .grid {
+        display: flex;
+        flex-direction: column;
+    }
+}

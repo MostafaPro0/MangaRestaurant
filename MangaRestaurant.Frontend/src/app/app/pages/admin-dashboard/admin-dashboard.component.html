@@ -29,6 +29,9 @@
       <button class="nav-btn" [class.active]="activeTab === 'users'" (click)="setActiveTab('users')">
         <i class="pi pi-users"></i> <span>{{ 'ADMIN.EMPLOYEES' | translate }}</span>
       </button>
+      <button class="nav-btn" [class.active]="activeTab === 'settings'" (click)="setActiveTab('settings')">
+        <i class="pi pi-cog"></i> <span>{{ 'ADMIN.SETTINGS' | translate }}</span>
+      </button>
     </div>
 
     <!-- 3. Dynamic Content Area -->
@@ -320,6 +323,115 @@
             </tr>
           </ng-template>
         </p-table>
+      </div>
+
+      <!-- Tab 5: Site Settings -->
+      <div *ngIf="activeTab === 'settings'" class="tab-content animate-fade p-3 md:p-4">
+        <div class="settings-form max-w-5xl mx-auto">
+          <div class="flex justify-content-between align-items-center mb-5">
+            <div>
+              <h2 class="text-2xl font-bold mb-1">{{ 'ADMIN.SETTINGS_TITLE' | translate }}</h2>
+              <p class="text-dim text-sm">{{ 'ADMIN.SETTINGS_SUBTITLE' | translate }}</p>
+            </div>
+            <button pButton icon="pi pi-save" [label]="'ADMIN.SAVE_CHANGES' | translate" 
+                    class="p-button-warning p-button-raised" [loading]="savingSettings"
+                    (click)="saveSettings()"></button>
+          </div>
+
+          <div class="grid">
+            <!-- Restaurant Info -->
+            <div class="col-12 lg:col-6">
+              <div class="mg-card p-4 mb-4">
+                <h3 class="text-lg font-bold mb-4 primary-text border-bottom-1 surface-border pb-2">
+                  <i class="pi pi-info-circle mr-2"></i> {{ 'ADMIN.RESTAURANT_INFO' | translate }}
+                </h3>
+                <div class="field mb-3">
+                  <label class="block mb-2 font-medium">{{ 'ADMIN.RESTAURANT_NAME_EN' | translate }}</label>
+                  <input type="text" pInputText [(ngModel)]="siteSettings.restaurantName" class="w-full">
+                </div>
+                <div class="field mb-3">
+                  <label class="block mb-2 font-medium">{{ 'ADMIN.RESTAURANT_NAME_AR' | translate }}</label>
+                  <input type="text" pInputText [(ngModel)]="siteSettings.restaurantNameAr" dir="rtl" class="w-full">
+                </div>
+                <div class="field mb-3">
+                   <label class="block mb-2 font-medium">{{ 'ADMIN.EMAIL' | translate }}</label>
+                   <input type="text" pInputText [(ngModel)]="siteSettings.email" class="w-full">
+                </div>
+              </div>
+
+              <div class="mg-card p-4">
+                <h3 class="text-lg font-bold mb-4 primary-text border-bottom-1 surface-border pb-2">
+                  <i class="pi pi-phone mr-2"></i> {{ 'ADMIN.CONTACT_INFO' | translate }}
+                </h3>
+                <div class="field mb-3 grid">
+                  <div class="col-12 md:col-6">
+                    <label class="block mb-2 font-medium">{{ 'ADMIN.PHONE_1' | translate }}</label>
+                    <input type="text" pInputText [(ngModel)]="siteSettings.phone1" class="w-full">
+                  </div>
+                  <div class="col-12 md:col-6">
+                    <label class="block mb-2 font-medium">{{ 'ADMIN.PHONE_2' | translate }}</label>
+                    <input type="text" pInputText [(ngModel)]="siteSettings.phone2" class="w-full">
+                  </div>
+                </div>
+                <div class="field mb-3">
+                  <label class="block mb-2 font-medium">{{ 'ADMIN.ADDRESS_EN' | translate }}</label>
+                  <textarea pInputTextarea [(ngModel)]="siteSettings.address" rows="3" class="w-full"></textarea>
+                </div>
+                <div class="field mb-3">
+                  <label class="block mb-2 font-medium">{{ 'ADMIN.ADDRESS_AR' | translate }}</label>
+                  <textarea pInputTextarea [(ngModel)]="siteSettings.addressAr" rows="3" dir="rtl" class="w-full"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Configuration -->
+            <div class="col-12 lg:col-6">
+              <div class="mg-card p-4 mb-4">
+                <h3 class="text-lg font-bold mb-4 primary-text border-bottom-1 surface-border pb-2">
+                  <i class="pi pi-cog mr-2"></i> {{ 'ADMIN.GENERAL_CONFIG' | translate }}
+                </h3>
+                <div class="grid">
+                   <div class="col-12 md:col-6">
+                      <label class="block mb-2 font-medium">{{ 'ADMIN.CURRENCY_CODE' | translate }} (e.g., EGP)</label>
+                      <input type="text" pInputText [(ngModel)]="siteSettings.currencyCode" class="w-full">
+                   </div>
+                   <div class="col-12 md:col-6">
+                      <label class="block mb-2 font-medium">{{ 'ADMIN.CURRENCY_SYMBOL' | translate }} (e.g., ج.م)</label>
+                      <input type="text" pInputText [(ngModel)]="siteSettings.currencySymbol" class="w-full">
+                   </div>
+                </div>
+                <div class="field mt-3">
+                   <label class="block mb-2 font-medium">{{ 'ADMIN.DELIVERY_FEE' | translate }}</label>
+                   <input type="number" pInputText [(ngModel)]="siteSettings.deliveryFee" class="w-full">
+                </div>
+              </div>
+
+              <div class="mg-card p-4">
+                <h3 class="text-lg font-bold mb-4 primary-text border-bottom-1 surface-border pb-2">
+                  <i class="pi pi-share-alt mr-2"></i> {{ 'ADMIN.SOCIAL_LINKS' | translate }}
+                </h3>
+                <div class="field mb-3">
+                   <div class="p-inputgroup">
+                      <span class="p-inputgroup-addon"><i class="pi pi-facebook"></i></span>
+                      <input type="text" pInputText [(ngModel)]="siteSettings.facebookUrl" [placeholder]="'Facebook URL'">
+                   </div>
+                </div>
+                <div class="field mb-3">
+                   <div class="p-inputgroup">
+                      <span class="p-inputgroup-addon"><i class="pi pi-instagram"></i></span>
+                      <input type="text" pInputText [(ngModel)]="siteSettings.instagramUrl" [placeholder]="'Instagram URL'">
+                   </div>
+                </div>
+                <div class="field mb-3">
+                   <div class="p-inputgroup">
+                      <span class="p-inputgroup-addon"><i class="pi pi-twitter"></i></span>
+                      <input type="text" pInputText [(ngModel)]="siteSettings.twitterUrl" [placeholder]="'Twitter URL'">
+                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
     </div> <!-- End admin-content-card -->

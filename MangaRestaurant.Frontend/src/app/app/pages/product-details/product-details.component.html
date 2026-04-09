@@ -14,11 +14,12 @@
         <!-- Backend Handlers physical existence checks -->
         <img [src]="product.pictureUrl" [alt]="product.name" />
 
-        <div style="position:absolute; top: 1rem; right: 1rem; display: flex; flex-direction: column; gap: 8px; align-items: flex-end;">
+        <div
+          style="position:absolute; top: 1rem; right: 1rem; display: flex; flex-direction: column; gap: 8px; align-items: flex-end;">
           <span class="badge-neon py-3 px-4 shadow-lg text-lg">{{ (translateService.currentLanguage === 'ar' ?
             product.categoryAr : product.category) || product.category }}</span>
-          <span *ngIf="product.discountPercentage && product.discountPercentage > 0" 
-                class="bg-primary text-white font-bold py-2 px-3 border-round shadow-lg text-sm">
+          <span *ngIf="product.discountPercentage && product.discountPercentage > 0"
+            class="bg-primary text-white font-bold py-2 px-3 border-round shadow-lg text-sm">
             -{{ product.discountPercentage }}% {{ 'PRODUCTS.OFF' | translate }}
           </span>
         </div>
@@ -27,23 +28,26 @@
 
     <!-- Info Panel (Responsive) -->
     <div class="col-12 lg:col-6">
-      <div class="mg-card h-full flex flex-column justify-content-center p-5 lg:p-8">
+      <div class="mg-card h-full flex flex-column justify-content-center p-5">
 
         <h1 class="display-font text-4xl lg:text-5xl mb-2 font-black uppercase tracking-1 text-main">{{
           (translateService.currentLanguage === 'ar' ? product.nameAr : product.name) || product.name }}</h1>
         <p class="primary-text text-xl font-bold uppercase tracking-2 mb-6">{{ (translateService.currentLanguage ===
           'ar' ? product.brandAr : product.brand) || product.brand }}</p>
 
-        <div class="flex align-items-center gap-4 mb-8">
+        <div class="flex align-items-center gap-4 mb-8" *ngIf="settings$ | async as settings">
           <div class="flex flex-column">
-            <span class="primary-text text-5xl font-black line-height-1">{{ product.price | currency }}</span>
-            <span *ngIf="product.oldPrice && product.oldPrice > product.price" 
-                  class="text-xl text-dim strikethrough opacity-60 mt-1">
-              {{ product.oldPrice | currency }}
+            <span class="primary-text text-5xl font-black line-height-1">
+                {{ product.price | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+            </span>
+            <span *ngIf="product.oldPrice && product.oldPrice > product.price"
+              class="text-xl text-dim strikethrough opacity-60 mt-1">
+              {{ product.oldPrice | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
             </span>
           </div>
           <div class="flex flex-wrap gap-2">
-            <span class="text-sm font-bold bg-soft px-3 py-2 rounded-lg opacity-60">{{ 'PRODUCTS.READY_IN' | translate }}</span>
+            <span class="text-sm font-bold bg-soft px-3 py-2 rounded-lg opacity-60">{{ 'PRODUCTS.READY_IN' | translate
+              }}</span>
             <span class="text-sm font-bold bg-soft px-3 py-2 rounded-lg opacity-60 flex align-items-center gap-2">
               <i class="pi pi-eye"></i>
               {{ product.views || 0 }}
@@ -76,7 +80,8 @@
             <span class="block font-black text-xl">{{ 'PRODUCTS.SERVINGS_VAL' | translate }}</span>
           </div>
           <div class="col-4 text-center">
-            <span class="block text-muted text-xs font-bold uppercase mb-2">{{ 'PRODUCTS.PREP_TIME' | translate }}</span>
+            <span class="block text-muted text-xs font-bold uppercase mb-2">{{ 'PRODUCTS.PREP_TIME' | translate
+              }}</span>
             <span class="block font-black text-xl">{{ 'PRODUCTS.PREP_TIME_VAL' | translate }}</span>
           </div>
           <div class="col-4 text-right">
@@ -121,8 +126,9 @@
 
       <!-- Review Form -->
       <div class="col-12 lg:col-5">
-        <div class="mg-card p-6 lg:p-8 h-full">
-          <h3 class="display-font text-2xl font-bold mb-6 text-main uppercase italic">{{ 'REVIEWS.FORM_TITLE' | translate }}</h3>
+        <div class="mg-card p-6 h-full">
+          <h3 class="display-font text-2xl font-bold mb-6 text-main uppercase italic">{{ 'REVIEWS.FORM_TITLE' |
+            translate }}</h3>
 
           <div *ngIf="authService.isAuthenticated(); else loginToReview" class="flex flex-column gap-6">
             <div class="flex flex-column gap-2">
@@ -137,7 +143,8 @@
                 class="w-full bg-soft border-1 border-white-alpha-10 p-3 rounded-lg text-lg"></textarea>
             </div>
 
-            <button pButton [label]="submittingReview ? ('REVIEWS.SUBMITTING' | translate) : ('REVIEWS.SUBMIT' | translate)"
+            <button pButton
+              [label]="submittingReview ? ('REVIEWS.SUBMITTING' | translate) : ('REVIEWS.SUBMIT' | translate)"
               [icon]="submittingReview ? 'pi pi-spin pi-spinner' : 'pi pi-send'" [disabled]="submittingReview"
               (click)="submitReview()" class="p-button-lg w-full py-4 text-xl font-black mt-2"></button>
           </div>
@@ -209,12 +216,14 @@
                 {{ (translateService.currentLanguage === 'ar' ? item.brandAr : item.brand) || item.brand }}
               </span>
             </div>
-            <div class="flex align-items-center justify-content-between">
+            <div class="flex align-items-center justify-content-between" *ngIf="settings$ | async as settings">
               <div class="flex flex-column">
-                <span class="primary-text text-2xl font-black line-height-1">{{ item.price | currency }}</span>
-                <span *ngIf="item.oldPrice && item.oldPrice > item.price" 
-                      class="text-xs text-dim strikethrough opacity-60">
-                  {{ item.oldPrice | currency }}
+                <span class="primary-text text-2xl font-black line-height-1">
+                   {{ item.price | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+                </span>
+                <span *ngIf="item.oldPrice && item.oldPrice > item.price"
+                  class="text-xs text-dim strikethrough opacity-60">
+                   {{ item.oldPrice | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
                 </span>
               </div>
               <button pButton icon="pi pi-cart-plus" class="p-button-sm p-button-rounded"
