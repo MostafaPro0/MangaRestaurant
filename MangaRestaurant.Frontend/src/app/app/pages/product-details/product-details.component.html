@@ -36,13 +36,23 @@
           'ar' ? product.brandAr : product.brand) || product.brand }}</p>
 
         <div class="flex align-items-center gap-4 mb-8" *ngIf="settings$ | async as settings">
-          <div class="flex flex-column">
+          <div class="flex flex-column" *ngIf="settings$ | async as settings">
             <span class="primary-text text-5xl font-black line-height-1">
-                {{ product.price | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+              <ng-container *ngIf="translateService.currentLanguage === 'ar'">
+                {{ product.price | number : '1.2-2' }} {{ settings.currencySymbol }}
+              </ng-container>
+              <ng-container *ngIf="translateService.currentLanguage !== 'ar'">
+                {{ product.price | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+              </ng-container>
             </span>
             <span *ngIf="product.oldPrice && product.oldPrice > product.price"
               class="text-xl text-dim strikethrough opacity-60 mt-1">
-              {{ product.oldPrice | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+              <ng-container *ngIf="translateService.currentLanguage === 'ar'">
+                {{ product.oldPrice | number : '1.2-2' }} {{ settings.currencySymbol }}
+              </ng-container>
+              <ng-container *ngIf="translateService.currentLanguage !== 'ar'">
+                {{ product.oldPrice | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+              </ng-container>
             </span>
           </div>
           <div class="flex flex-wrap gap-2">
@@ -225,11 +235,21 @@
             <div class="flex align-items-center justify-content-between" *ngIf="settings$ | async as settings">
               <div class="flex flex-column">
                 <span class="primary-text text-2xl font-black line-height-1">
-                   {{ item.price | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+                  <ng-container *ngIf="translateService.currentLanguage === 'ar'">
+                    {{ item.price | number : '1.2-2' }} {{ settings.currencySymbol }}
+                  </ng-container>
+                  <ng-container *ngIf="translateService.currentLanguage !== 'ar'">
+                    {{ item.price | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                  </ng-container>
                 </span>
                 <span *ngIf="item.oldPrice && item.oldPrice > item.price"
                   class="text-xs text-dim strikethrough opacity-60">
-                   {{ item.oldPrice | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+                  <ng-container *ngIf="translateService.currentLanguage === 'ar'">
+                    {{ item.oldPrice | number : '1.2-2' }} {{ settings.currencySymbol }}
+                  </ng-container>
+                  <ng-container *ngIf="translateService.currentLanguage !== 'ar'">
+                    {{ item.oldPrice | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                  </ng-container>
                 </span>
               </div>
               <button pButton icon="pi pi-cart-plus" class="p-button-sm p-button-rounded"

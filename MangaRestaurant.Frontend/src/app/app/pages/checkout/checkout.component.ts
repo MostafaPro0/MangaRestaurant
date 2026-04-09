@@ -11,6 +11,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MessageService } from 'primeng/api';
 import { CheckboxModule } from 'primeng/checkbox';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { SettingsService } from '../../services/settings.service';
 import { BasketService } from '../../services/basket.service';
 import { OrdersService } from '../../services/orders.service';
 import { UserAddress } from '../../models/user-address.model';
@@ -33,6 +34,7 @@ export class CheckoutComponent implements OnInit {
   loading = false;
   saveAddressToProfile = false;
   addressMode: 'saved' | 'new' = 'new';
+  settings$: any;
 
   constructor(
     private basketService: BasketService,
@@ -40,10 +42,12 @@ export class CheckoutComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private messageService: MessageService,
-    private translate: TranslateService
+    public translate: TranslateService,
+    private settingsService: SettingsService
   ) { }
 
   ngOnInit(): void {
+    this.settings$ = this.settingsService.settings$;
     this.basketService.basket$.subscribe((basket) => (this.basket = basket));
     this.ordersService.getDeliveryMethods().subscribe((methods) => (this.deliveryMethods = methods));
     this.loadSavedAddresses();

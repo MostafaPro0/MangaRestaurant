@@ -199,8 +199,16 @@ export class AdminDashboardComponent implements OnInit {
 
   formatCurrency(value: number, settings?: SiteSettings) {
     const s = settings || this.siteSettings;
+    const isAr = this.translate.currentLang === 'ar';
     if (s && s.currencyCode) {
-        return new Intl.NumberFormat(this.translate.currentLang === 'ar' ? 'ar-EG' : 'en-US', { 
+        if (isAr) {
+            const formattedNum = new Intl.NumberFormat('en-US', { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2 
+            }).format(value);
+            return `${formattedNum} ${s.currencySymbol || 'ج.م'}`;
+        }
+        return new Intl.NumberFormat('en-US', { 
             style: 'currency', 
             currency: s.currencyCode 
         }).format(value);
@@ -220,6 +228,16 @@ export class AdminDashboardComponent implements OnInit {
       chart: { type: 'area', height: 350, ...chartBaseConfig },
       theme: { mode: themeMode as 'light' | 'dark' },
       xaxis: { categories: report.salesLast7Days.map((d: any) => d.date) },
+      yaxis: {
+        labels: {
+          formatter: (val: number) => this.formatCurrency(val)
+        }
+      },
+      tooltip: {
+        y: {
+          formatter: (val: number) => this.formatCurrency(val)
+        }
+      },
       colors: ['#ff3e3e'],
       stroke: { curve: 'smooth', width: 3 },
       fill: { type: 'gradient', gradient: { opacityFrom: 0.6, opacityTo: 0.1 } }

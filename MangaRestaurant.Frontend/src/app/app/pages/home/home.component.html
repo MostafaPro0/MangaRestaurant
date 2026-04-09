@@ -139,21 +139,25 @@
             
             <div class="flex align-items-center justify-content-between pt-3 border-top-1 surface-border mt-auto" *ngIf="settings$ | async as settings">
               <div>
-                <span class="text-2xl font-bold primary-text">{{ item.price | currency : settings.currencyCode : (translate.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}</span>
+                <span class="text-2xl font-bold primary-text">
+                  <ng-container *ngIf="translate.currentLanguage === 'ar'">
+                    {{ item.price | number : '1.2-2' }} {{ settings.currencySymbol }}
+                  </ng-container>
+                  <ng-container *ngIf="translate.currentLanguage !== 'ar'">
+                    {{ item.price | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                  </ng-container>
+                </span>
                 <span *ngIf="item.oldPrice > item.price" class="block text-sm text-dim strikethrough opacity-60">
-                    {{ item.oldPrice | currency : settings.currencyCode : (translate.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+                   <ng-container *ngIf="translate.currentLanguage === 'ar'">
+                    {{ item.oldPrice | number : '1.2-2' }} {{ settings.currencySymbol }}
+                  </ng-container>
+                  <ng-container *ngIf="translate.currentLanguage !== 'ar'">
+                    {{ item.oldPrice | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                  </ng-container>
                 </span>
               </div>
-              <button pButton icon="pi pi-cart-plus" class="p-button-rounded p-button-primary p-button-lg shadow-md" (click)="addToBasket(item)"></button>
-            </div>
-            <!-- Fallback if settings not yet loaded -->
-            <div class="flex align-items-center justify-content-between pt-3 border-top-1 surface-border mt-auto" *ngIf="!(settings$ | async)">
-                <div>
-                  <span class="text-2xl font-bold primary-text">{{ item.price | currency }}</span>
-                  <span *ngIf="item.oldPrice > item.price" class="block text-sm text-dim strikethrough opacity-60">{{ item.oldPrice | currency }}</span>
-                </div>
                 <button pButton icon="pi pi-cart-plus" class="p-button-rounded p-button-primary p-button-lg shadow-md" (click)="addToBasket(item)"></button>
-              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -211,19 +215,21 @@
             <div class="flex align-items-center justify-content-between pt-3 border-top-1 surface-border mt-auto" *ngIf="settings$ | async as settings">
               <div class="flex flex-column">
                 <span class="text-2xl font-bold primary-text">
-                  {{ item.price | currency : settings.currencyCode : (translate.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+                  <ng-container *ngIf="translate.currentLanguage === 'ar'">
+                    {{ item.price | number : '1.2-2' }} {{ settings.currencySymbol }}
+                  </ng-container>
+                  <ng-container *ngIf="translate.currentLanguage !== 'ar'">
+                    {{ item.price | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                  </ng-container>
                 </span>
                 <span *ngIf="item.oldPrice > item.price" class="text-xs text-dim strikethrough opacity-60">
-                  {{ item.oldPrice | currency : settings.currencyCode : (translate.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+                  <ng-container *ngIf="translate.currentLanguage === 'ar'">
+                    {{ item.oldPrice | number : '1.2-2' }} {{ settings.currencySymbol }}
+                  </ng-container>
+                  <ng-container *ngIf="translate.currentLanguage !== 'ar'">
+                    {{ item.oldPrice | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                  </ng-container>
                 </span>
-              </div>
-              <button pButton icon="pi pi-cart-plus" class="p-button-rounded p-button-warning p-button-lg shadow-md" (click)="addToBasket(item)"></button>
-            </div>
-            <!-- Fallback -->
-            <div class="flex align-items-center justify-content-between pt-3 border-top-1 surface-border mt-auto" *ngIf="!(settings$ | async)">
-              <div class="flex flex-column">
-                <span class="text-2xl font-bold primary-text">{{ item.price | currency }}</span>
-                <span *ngIf="item.oldPrice > item.price" class="text-xs text-dim strikethrough opacity-60">{{ item.oldPrice | currency }}</span>
               </div>
               <button pButton icon="pi pi-cart-plus" class="p-button-rounded p-button-warning p-button-lg shadow-md" (click)="addToBasket(item)"></button>
             </div>

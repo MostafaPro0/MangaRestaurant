@@ -40,8 +40,12 @@
                 </div>
               </td>
               <td class="p-4 text-center text-dim">
-                {{ item.price | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ?
-                settings.currencySymbol : 'symbol') : '1.2-2' }}
+                <ng-container *ngIf="translateService.currentLanguage === 'ar'">
+                  {{ item.price | number : '1.2-2' }} ج.م
+                </ng-container>
+                <ng-container *ngIf="translateService.currentLanguage !== 'ar'">
+                  {{ item.price | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                </ng-container>
               </td>
               <td class="p-4 text-center">
                 <div class="flex align-items-center justify-content-center gap-2">
@@ -54,8 +58,12 @@
                 </div>
               </td>
               <td class="p-4 text-center font-bold text-primary">
-                {{ item.price * item.quantity | currency : settings.currencyCode : (translateService.currentLanguage ===
-                'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+                <ng-container *ngIf="translateService.currentLanguage === 'ar'">
+                  {{ item.price * item.quantity | number : '1.2-2' }} ج.م
+                </ng-container>
+                <ng-container *ngIf="translateService.currentLanguage !== 'ar'">
+                  {{ item.price * item.quantity | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                </ng-container>
               </td>
               <td class="p-4 text-right">
                 <button pButton icon="pi pi-eye" class="p-button-rounded p-button-text p-button-secondary"
@@ -89,8 +97,12 @@
           <div class="flex justify-content-between p-3 bg-soft rounded-lg mb-1">
             <span class="text-dim font-bold">{{ 'BASKET.SUBTOTAL' | translate }}</span>
             <span class="font-bold">
-              {{ total | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ?
-              settings.currencySymbol : 'symbol') : '1.2-2' }}
+              <ng-container *ngIf="translateService.currentLanguage === 'ar'">
+                {{ total | number : '1.2-2' }} ج.م
+              </ng-container>
+              <ng-container *ngIf="translateService.currentLanguage !== 'ar'">
+                {{ total | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+              </ng-container>
             </span>
           </div>
           <div class="flex justify-content-between p-3 bg-soft rounded-lg">
@@ -101,8 +113,12 @@
           <div class="flex justify-content-between p-3 mt-2 border-top-1 border-white-alpha-10">
             <span class="text-xl font-bold">{{ 'BASKET.GRAND_TOTAL' | translate }}</span>
             <span class="text-2xl font-bold text-primary">
-              {{ total | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ?
-              settings.currencySymbol : 'symbol') : '1.2-2' }}
+              <ng-container *ngIf="translateService.currentLanguage === 'ar'">
+                {{ total | number : '1.2-2' }} ج.م
+              </ng-container>
+              <ng-container *ngIf="translateService.currentLanguage !== 'ar'">
+                {{ total | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+              </ng-container>
             </span>
           </div>
         </div>
@@ -144,12 +160,20 @@
             <div class="flex align-items-center justify-content-between">
               <div class="flex flex-column">
                 <span class="primary-text font-black text-xl">
-                  {{ product.price | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ?
-                  settings.currencySymbol : 'symbol') : '1.1-1' }}
+                  <ng-container *ngIf="translateService.currentLanguage === 'ar'">
+                    {{ product.price | number : '1.1-1' }} ج.م
+                  </ng-container>
+                  <ng-container *ngIf="translateService.currentLanguage !== 'ar'">
+                    {{ product.price | currency : settings.currencyCode : 'symbol' : '1.1-1' }}
+                  </ng-container>
                 </span>
                 <span class="text-xs text-dim strikethrough opacity-50">
-                  {{ product.oldPrice | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ?
-                  settings.currencySymbol : 'symbol') : '1.1-1' }}
+                   <ng-container *ngIf="translateService.currentLanguage === 'ar'">
+                    {{ product.oldPrice | number : '1.1-1' }} ج.م
+                  </ng-container>
+                  <ng-container *ngIf="translateService.currentLanguage !== 'ar'">
+                    {{ product.oldPrice | currency : settings.currencyCode : 'symbol' : '1.1-1' }}
+                  </ng-container>
                 </span>
               </div>
               <button pButton icon="pi pi-cart-plus" class="p-button-rounded p-button-primary shadow-sm"

@@ -31,7 +31,14 @@
               </span>
             </td>
             <td class="p-4 text-dim">{{ order.orderDate | date:'mediumDate' }}</td>
-            <td class="p-4 font-bold text-xl">{{ order.total | currency }}</td>
+            <td class="p-4 font-bold text-xl" *ngIf="settings$ | async as settings">
+              <ng-container *ngIf="translate.currentLang === 'ar'">
+                {{ order.total | number : '1.2-2' }} {{ settings.currencySymbol }}
+              </ng-container>
+              <ng-container *ngIf="translate.currentLang !== 'ar'">
+                {{ order.total | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+              </ng-container>
+            </td>
             <td class="p-4 text-center">
               <p-badge [value]="'ORDER_STATUS.' + (getDisplayStatus(order) | uppercase) | translate" [severity]="statusSeverity(getDisplayStatus(order))"></p-badge>
             </td>
@@ -116,28 +123,64 @@
                     </div>
                     <div>
                       <div class="font-bold">{{ (translate.currentLang === 'ar' ? item.productNameAr : item.productName) || item.productName }}</div>
-                      <div class="text-xs text-dim">{{ item.price | currency }} x {{ item.quantity }}</div>
+                      <div class="text-xs text-dim" *ngIf="settings$ | async as settings">
+                        <ng-container *ngIf="translate.currentLang === 'ar'">
+                          {{ item.price | number : '1.2-2' }} {{ settings.currencySymbol }}
+                        </ng-container>
+                        <ng-container *ngIf="translate.currentLang !== 'ar'">
+                          {{ item.price | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                        </ng-container>
+                        x {{ item.quantity }}
+                      </div>
                     </div>
                   </div>
-                  <div class="font-bold text-primary">{{ (item.price * item.quantity) | currency }}</div>
+                  <div class="font-bold text-primary" *ngIf="settings$ | async as settings">
+                    <ng-container *ngIf="translate.currentLang === 'ar'">
+                      {{ (item.price * item.quantity) | number : '1.2-2' }} {{ settings.currencySymbol }}
+                    </ng-container>
+                    <ng-container *ngIf="translate.currentLang !== 'ar'">
+                      {{ (item.price * item.quantity) | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                    </ng-container>
+                  </div>
                 </div>
               </div>
             </div>
 
             <!-- Summary -->
-            <div class="summary-section border-top-1 border-white-alpha-10 pt-4 flex flex-column gap-2">
+            <div class="summary-section border-top-1 border-white-alpha-10 pt-4 flex flex-column gap-2" *ngIf="settings$ | async as settings">
               <div class="flex justify-content-between text-dim">
                 <span>{{ 'BASKET.SUBTOTAL' | translate }}</span>
-                <span>{{ selectedOrder.subtotal | currency }}</span>
+                <span>
+                  <ng-container *ngIf="translate.currentLang === 'ar'">
+                    {{ selectedOrder.subtotal | number : '1.2-2' }} {{ settings.currencySymbol }}
+                  </ng-container>
+                  <ng-container *ngIf="translate.currentLang !== 'ar'">
+                    {{ selectedOrder.subtotal | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                  </ng-container>
+                </span>
               </div>
               <div class="flex justify-content-between text-dim mt-2">
                 <span>{{ 'BASKET.DELIVERY' | translate }} ({{ selectedOrder.deliveryMethod }})</span>
-                <span>{{ selectedOrder.shippingPrice | currency }}</span>
+                <span>
+                  <ng-container *ngIf="translate.currentLang === 'ar'">
+                    {{ selectedOrder.shippingPrice | number : '1.2-2' }} {{ settings.currencySymbol }}
+                  </ng-container>
+                  <ng-container *ngIf="translate.currentLang !== 'ar'">
+                    {{ selectedOrder.shippingPrice | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                  </ng-container>
+                </span>
               </div>
               <div
                 class="flex justify-content-between text-2xl font-black primary-text mt-2 pt-2 border-top-1 border-white-alpha-05">
                 <span>{{ 'BASKET.TOTAL' | translate }}</span>
-                <span>{{ selectedOrder.total | currency }}</span>
+                <span>
+                 <ng-container *ngIf="translate.currentLang === 'ar'">
+                    {{ selectedOrder.total | number : '1.2-2' }} {{ settings.currencySymbol }}
+                  </ng-container>
+                  <ng-container *ngIf="translate.currentLang !== 'ar'">
+                    {{ selectedOrder.total | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                  </ng-container>
+                </span>
               </div>
             </div>
           </div>

@@ -61,11 +61,12 @@
           <img [src]="product.pictureUrl" [alt]="product.name" />
 
           <!-- Category Pin -->
-          <div style="position:absolute; top: 0; right: 0; display: flex; flex-direction: column; gap: 5px; align-items: flex-end;">
+          <div
+            style="position:absolute; top: 0; right: 0; display: flex; flex-direction: column; gap: 5px; align-items: flex-end;">
             <span class="badge-neon py-2 px-3 m-0 shadow-lg">{{ (translateService.currentLanguage === 'ar' ?
               product.categoryAr : product.category) || product.category }}</span>
-            <span *ngIf="product.discountPercentage && product.discountPercentage > 0" 
-                  class="bg-primary text-white font-bold py-1 px-2 border-round-sm text-xs shadow-lg">
+            <span *ngIf="product.discountPercentage && product.discountPercentage > 0"
+              class="bg-primary text-white font-bold py-1 px-2 border-round-sm text-xs shadow-lg">
               -{{ product.discountPercentage }}%
             </span>
           </div>
@@ -81,13 +82,23 @@
           </div>
 
           <div class="flex align-items-center justify-content-between mb-4">
-            <div class="flex flex-column">
-              <span class="primary-text text-3xl font-black">
-                {{ product.price | currency:(settings$ | async)?.currencyCode || 'USD':'symbol':'1.2-2' }}
+            <div class="flex flex-column" *ngIf="settings$ | async as settings">
+              <span class="primary-text text-2xl font-black">
+                <ng-container *ngIf="translateService.currentLanguage === 'ar'">
+                  {{ product.price | number : '1.2-2' }} {{ settings.currencySymbol }}
+                </ng-container>
+                <ng-container *ngIf="translateService.currentLanguage !== 'ar'">
+                  {{ product.price | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                </ng-container>
               </span>
-              <span *ngIf="product.oldPrice && product.oldPrice > product.price" 
-                    class="text-xs text-dim strikethrough opacity-60">
-                {{ product.oldPrice | currency:(settings$ | async)?.currencyCode || 'USD':'symbol':'1.2-2' }}
+              <span *ngIf="product.oldPrice && product.oldPrice > product.price"
+                class="text-xs text-dim strikethrough opacity-60">
+                <ng-container *ngIf="translateService.currentLanguage === 'ar'">
+                  {{ product.oldPrice | number : '1.2-2' }} {{ settings.currencySymbol }}
+                </ng-container>
+                <ng-container *ngIf="translateService.currentLanguage !== 'ar'">
+                  {{ product.oldPrice | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                </ng-container>
               </span>
             </div>
             <span class="text-xs text-muted font-bold opacity-60">{{ 'PRODUCTS.INCL_VAT' | translate }}</span>

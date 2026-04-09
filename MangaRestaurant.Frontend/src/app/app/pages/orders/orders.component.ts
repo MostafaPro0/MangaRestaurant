@@ -13,6 +13,8 @@ import { DividerModule } from 'primeng/divider';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { OrdersService } from '../../services/orders.service';
 
+import { SettingsService } from '../../services/settings.service';
+
 @Component({
   selector: 'app-orders',
   standalone: true,
@@ -25,8 +27,14 @@ export class OrdersComponent implements OnInit {
   selectedOrder: Order | null = null;
   orderDialogVisible = false;
   loading = false;
+  settings$: any;
 
-  constructor(private ordersService: OrdersService, private messageService: MessageService, private translate: TranslateService) {}
+  constructor(
+    private ordersService: OrdersService, 
+    private messageService: MessageService, 
+    public translate: TranslateService,
+    private settingsService: SettingsService
+  ) {}
 
   statusSeverity(status: string): 'success' | 'info' | 'warn' | 'danger' | 'secondary' {
     const s = (status || '').toLowerCase().replace(/\s+/g, '');
@@ -74,6 +82,7 @@ export class OrdersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.settings$ = this.settingsService.settings$;
     this.loading = true;
     this.ordersService.getOrders().subscribe({
       next: (data) => {
