@@ -11,6 +11,7 @@ import { InputTextarea } from 'primeng/inputtextarea';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { Title, Meta } from '@angular/platform-browser';
 import { ProductsService } from '../../services/products.service';
 import { BasketService } from '../../services/basket.service';
 import { TranslateService } from '../../services/translate.service';
@@ -44,7 +45,9 @@ export class ProductDetailsComponent implements OnInit {
     public translateService: TranslateService,
     public authService: AuthService,
     private messageService: MessageService,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    private title: Title,
+    private meta: Meta
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +57,52 @@ export class ProductDetailsComponent implements OnInit {
       if (!id) return;
       this.loadProduct(id);
     });
+
+    // Language change listener for SEO
+    this.translateService.onLangChange?.subscribe(() => {
+      if (this.product) this.updateSeo(this.product);
+    });
+  }
+
+  updateSeo(product: any) {
+    const isAr = this.translateService.currentLanguage === 'ar';
+    const name = isAr ? (product.nameAr || product.name) : product.name;
+    const desc = isAr ? (product.descriptionAr || product.description) : product.description;
+    const siteTitle = isAr ? 'مطعم مانجا' : 'Manga Restaurant';
+    
+    // Dynamic Page Title
+    this.title.setTitle(`${siteTitle} - ${name}`);
+
+    // Meta Tags
+    this.meta.updateTag({ name: 'description', content: desc });
+    this.meta.updateTag({ property: 'og:title', content: `${siteTitle} - ${name}` });
+    this.meta.updateTag({ property: 'og:description', content: desc });
+    this.meta.updateTag({ property: 'og:image', content: product.pictureUrl });
+    this.meta.updateTag({ property: 'og:type', content: 'website' });
+  }
+
+  shareProduct() {
+     if (navigator.share) {
+        const isAr = this.translateService.currentLanguage === 'ar';
+        const name = isAr ? (this.product.nameAr || this.product.name) : this.product.name;
+        navigator.share({
+           title: name,
+           text: isAr ? `اكتشف ${name} في مطعم مانجا!` : `Discover ${name} at Manga Restaurant!`,
+           url: window.location.href
+        }).catch(() => {});
+     } else {
+        this.copyLink();
+     }
+  }
+
+  copyLink() {
+     navigator.clipboard.writeText(window.location.href).then(() => {
+        this.messageService.add({
+           severity: 'success',
+           summary: this.translateService.instant('TOAST.SUCCESS'),
+           detail: this.translateService.instant('PRODUCTS.LINK_COPIED')
+        });
+     });
   }
 
   loadProduct(id: number): void {
@@ -66,6 +115,7 @@ export class ProductDetailsComponent implements OnInit {
       next: (product) => {
         this.product = product;
         this.loading = false;
+        this.updateSeo(product);
         this.loadRecommended(product, id);
       },
       error: () => (this.loading = false)

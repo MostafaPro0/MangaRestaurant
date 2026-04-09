@@ -15,7 +15,9 @@ import { SettingsService } from './app/services/settings.service';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+import { Title, Meta } from '@angular/platform-browser';
+import { filter } from 'rxjs/operators';
 import { User } from './app/models/user.model';
 import { SiteSettings } from './app/models/site-settings.model';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
@@ -59,11 +61,26 @@ export class AppComponent {
     private basketService: BasketService,
     private router: Router,
     public notificationService: NotificationService,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    private titleService: Title,
+    private metaService: Meta
   ) {
     this.settings$ = this.settingsService.settings$;
     this.settingsService.loadSettings();
     this.notificationService.createHubConnection();
+
+    // Listen to router events for Dynamic Titles and SEO
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.updatePageInfo();
+    });
+
+    // Listen to language changes
+    this.translateService.onLangChange.subscribe(() => {
+      this.updatePageInfo();
+    });
+    
     this.notificationService.unreadCount$.subscribe(count => {
        this.notificationCount.set(count);
     });
@@ -81,6 +98,42 @@ export class AppComponent {
       this.initProfileMenu();
     });
     this.applyTheme(this.currentTheme());
+  }
+
+  updatePageInfo(): void {
+    const isAr = this.translateService.currentLanguage === 'ar';
+    const siteName = isAr ? 'مطعم مانجا' : 'Manga Restaurant';
+    const currentUrl = this.router.url;
+    
+    let pageTitle = '';
+    
+    if (currentUrl === '/' || currentUrl === '/home') {
+      pageTitle = isAr ? 'الرئيسية' : 'Home';
+    } else if (currentUrl.includes('/products') && !currentUrl.includes('/product/')) {
+      pageTitle = isAr ? 'القائمة' : 'Menu';
+    } else if (currentUrl.includes('/basket')) {
+      pageTitle = isAr ? 'سلّة المشتريات' : 'Shopping Cart';
+    } else if (currentUrl.includes('/checkout')) {
+      pageTitle = isAr ? 'إتمام الدفع' : 'Checkout';
+    } else if (currentUrl.includes('/admin')) {
+      pageTitle = isAr ? 'لوحة التحكم' : 'Admin Control';
+    } else if (currentUrl.includes('/profile')) {
+      pageTitle = isAr ? 'الملف الشخصي' : 'Profile';
+    } else if (currentUrl.includes('/orders')) {
+      pageTitle = isAr ? 'طلباتي' : 'My Orders';
+    }
+
+    if (pageTitle) {
+      this.titleService.setTitle(`${siteName} - ${pageTitle}`);
+    } else if (!currentUrl.includes('/product/')) {
+       this.titleService.setTitle(siteName);
+    }
+    
+    // Global Meta Description
+    const siteDesc = isAr 
+      ? 'مطعم مانجا - تجربة الطعم الياباني الأصيل من أفخر أنواع الرامن والسوشي.' 
+      : 'Manga Restaurant - Authentic Japanese taste from the finest Ramen and Sushi.';
+    this.metaService.updateTag({ name: 'description', content: siteDesc });
   }
 
   initProfileMenu(): void {

@@ -71,7 +71,13 @@
           <button pButton class="p-button-lg px-8 py-5 text-2xl flex-grow-1" icon="pi pi-shopping-cart"
             [label]="'PRODUCTS.ADD_TO_CART' | translate" (click)="addToBasket()"></button>
 
-          <button pButton class="p-button-outlined p-button-lg px-5" icon="pi pi-heart"></button>
+          <div class="flex gap-2">
+            <button pButton class="p-button-outlined p-button-lg p-button-secondary px-4" 
+                    icon="pi pi-share-alt" [pTooltip]="'PRODUCTS.SHARE' | translate" (click)="shareProduct()"></button>
+            <button pButton class="p-button-outlined p-button-lg p-button-secondary px-4" 
+                    icon="pi pi-copy" [pTooltip]="'PRODUCTS.COPY_LINK' | translate" (click)="copyLink()"></button>
+            <button pButton class="p-button-outlined p-button-lg px-4" icon="pi pi-heart"></button>
+          </div>
         </div>
 
         <div class="mt-10 grid grid-nogutter border-top-1 border-white-alpha-10 pt-8 opacity-70">

@@ -63,7 +63,10 @@
     "ORIGIN_VAL": "Fresh Garden",
     "NO_RELATED": "No related products found.",
     "INCL_VAT": "incl. VAT",
-    "OFF": "OFF"
+    "OFF": "OFF",
+    "SHARE": "Share Product",
+    "COPY_LINK": "Copy Link",
+    "LINK_COPIED": "Link copied successfully!"
   },
   "AUTH": {
     "LOGIN": "Login",
