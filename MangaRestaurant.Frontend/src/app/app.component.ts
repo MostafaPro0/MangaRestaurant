@@ -11,12 +11,15 @@ import { AuthService } from './app/services/auth.service';
 import { TranslateService } from './app/services/translate.service';
 import { BasketService } from './app/services/basket.service';
 import { NotificationService } from './app/services/notification.service';
+import { SettingsService } from './app/services/settings.service';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { User } from './app/models/user.model';
+import { SiteSettings } from './app/models/site-settings.model';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -46,6 +49,7 @@ export class AppComponent {
   notificationCount = signal(0);
   notifications = signal<any[]>([]);
   mobileMenuOpened = signal(false);
+  settings$! : Observable<SiteSettings | null>;
 
   profileMenuItems: MenuItem[] = [];
 
@@ -54,8 +58,11 @@ export class AppComponent {
     private translateService: TranslateService, 
     private basketService: BasketService,
     private router: Router,
-    public notificationService: NotificationService
+    public notificationService: NotificationService,
+    private settingsService: SettingsService
   ) {
+    this.settings$ = this.settingsService.settings$;
+    this.settingsService.loadSettings();
     this.notificationService.createHubConnection();
     this.notificationService.unreadCount$.subscribe(count => {
        this.notificationCount.set(count);

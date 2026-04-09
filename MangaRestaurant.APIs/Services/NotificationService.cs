@@ -138,5 +138,11 @@ namespace MangaRestaurant.APIs.Services
             
             System.Console.WriteLine($"[SignalR] Broadcasted PriceUpdated for Product {productId}: {newPrice}");
         }
+
+        public async Task SendSettingsUpdatedNotification()
+        {
+            await _hubContext.Clients.All.SendAsync("SettingsUpdated");
+            System.Console.WriteLine($"[SignalR] Broadcasted SettingsUpdated");
+        }
     }
 }

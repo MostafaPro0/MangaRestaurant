@@ -8,6 +8,7 @@ import { TranslateService } from './translate.service';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { BasketService } from './basket.service';
+import { SettingsService } from './settings.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,8 @@ export class NotificationService {
     private translateService: TranslateService,
     private router: Router,
     private http: HttpClient,
-    private basketService: BasketService
+    private basketService: BasketService,
+    private settingsService: SettingsService
   ) {}
 
   loadNotifications() {
@@ -115,6 +117,21 @@ export class NotificationService {
           }
         });
       }
+    });
+
+    this.hubConnection.on('SettingsUpdated', () => {
+      console.log('[SignalR] Site settings updated. Refreshing...');
+      this.settingsService.loadSettings();
+      
+      const isAr = this.translateService.currentLanguage === 'ar';
+      this.messageService.add({
+        severity: 'info',
+        summary: isAr ? '⚙️ تحديث الإعدادات' : '⚙️ Settings Updated',
+        detail: isAr 
+          ? 'تم تحديث إعدادات الموقع بنجاح' 
+          : 'Site settings have been updated in real-time',
+        life: 3000
+      });
     });
 
     this.authService.user.subscribe(user => {

@@ -1,4 +1,4 @@
-﻿using MangaRestaurant.Core.Entities;
+using MangaRestaurant.Core.Entities;
 using MangaRestaurant.Core.Entities.Order;
 using System;
 using System.Collections.Generic;
@@ -89,6 +89,31 @@ namespace MangaRestaurant.Repository.Data
                     }
                     await _dbContext.SaveChangesAsync();
                 }
+            }
+
+            if (!_dbContext.SiteSettings.Any())
+            {
+                var settings = new SiteSettings
+                {
+                    RestaurantName = "Manga Restaurant",
+                    RestaurantNameAr = "مطعم مانجا",
+                    Address = "123 Manga Street, Cairo, Egypt",
+                    AddressAr = "123 شارع مانجا، القاهرة، مصر",
+                    Phone1 = "+20 123 456 7890",
+                    Phone2 = "+20 100 123 4567",
+                    Email = "info@mangarestaurant.com",
+                    CurrencyCode = "USD",
+                    CurrencySymbol = "$",
+                    FacebookUrl = "https://facebook.com/mangarestaurant",
+                    InstagramUrl = "https://instagram.com/mangarestaurant",
+                    TwitterUrl = "https://twitter.com/mangarestaurant",
+                    OpeningHoursEn = "Mon-Sun: 10:00 AM - 11:00 PM",
+                    OpeningHoursAr = "الإثنين-الأحد: 10:00 صباحاً - 11:00 مساءً",
+                    DeliveryFee = 5.0m
+                };
+
+                _dbContext.SiteSettings.Add(settings);
+                await _dbContext.SaveChangesAsync();
             }
         }
     }

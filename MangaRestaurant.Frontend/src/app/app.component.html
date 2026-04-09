@@ -5,7 +5,11 @@
     <div class="nav-container">
 
       <!-- Brand & Home Link -->
-      <a routerLink="/" class="manga-brand">
+      <a routerLink="/" class="manga-brand" *ngIf="settings$ | async as settings">
+        <div class="brand-bolt">🥭</div>
+        <span class="brand-text">{{ lang() === 'ar' ? settings.restaurantNameAr : settings.restaurantName }}</span>
+      </a>
+      <a routerLink="/" class="manga-brand" *ngIf="!(settings$ | async)">
         <div class="brand-bolt">🥭</div>
         <span class="brand-text">{{ lang() === 'ar' ? 'مطعم مانجا' : 'MANGARESTO' }}</span>
       </a>
@@ -202,19 +206,19 @@
     <router-outlet></router-outlet>
   </main>
 
-  <footer class="manga-footer mt-5">
+  <footer class="manga-footer mt-5" *ngIf="settings$ | async as settings">
     <div class="container py-4">
       <div class="grid align-items-start">
         <div class="col-12 md:col-4 mb-6 md:mb-0">
           <div class="manga-brand mb-4">
             <div class="brand-bolt">🥭</div>
-            <span class="brand-text">{{ lang() === 'ar' ? 'مطعم مانجا' : 'MANGARESTO' }}</span>
+            <span class="brand-text">{{ lang() === 'ar' ? settings.restaurantNameAr : settings.restaurantName }}</span>
           </div>
-          <p class="text-dim pr-6" [innerHTML]="'COMMON.FOOTER_DESC' | translate"></p>
+          <p class="text-dim pr-6" [innerHTML]="lang() === 'ar' ? 'أفضل مطعم يقدم أطباقاً شهية بجودة عالية.' : 'The best restaurant offering delicious dishes with premium quality.'"></p>
           <div class="flex gap-3 mt-6">
-            <a href="#" class="social-icon"><i class="pi pi-facebook"></i></a>
-            <a href="#" class="social-icon"><i class="pi pi-instagram"></i></a>
-            <a href="#" class="social-icon"><i class="pi pi-twitter"></i></a>
+            <a [href]="settings.facebookUrl" target="_blank" class="social-icon" *ngIf="settings.facebookUrl"><i class="pi pi-facebook"></i></a>
+            <a [href]="settings.instagramUrl" target="_blank" class="social-icon" *ngIf="settings.instagramUrl"><i class="pi pi-instagram"></i></a>
+            <a [href]="settings.twitterUrl" target="_blank" class="social-icon" *ngIf="settings.twitterUrl"><i class="pi pi-twitter"></i></a>
           </div>
         </div>
 
@@ -232,10 +236,14 @@
         <div class="col-12 md:col-4">
           <h4 class="manga-font mb-4 primary-text text-xl">{{ 'COMMON.CONTACT_US' | translate }}</h4>
           <ul class="flex flex-column gap-3 text-dim font-medium">
-            <li class="flex align-items-center gap-3"><i class="pi pi-map-marker primary-text"></i> {{ 'COMMON.ADDRESS_VAL' | translate }}</li>
-            <li class="flex align-items-center gap-3"><i class="pi pi-phone primary-text"></i> {{ 'COMMON.PHONE_VAL' | translate }}</li>
+            <li class="flex align-items-center gap-3"><i class="pi pi-map-marker primary-text"></i> 
+                {{ lang() === 'ar' ? settings.addressAr : settings.address }}
+            </li>
+            <li class="flex align-items-center gap-3"><i class="pi pi-phone primary-text"></i> 
+                {{ settings.phone1 }} <span *ngIf="settings.phone2">/ {{ settings.phone2 }}</span>
+            </li>
             <li class="flex align-items-center gap-3"><i class="pi pi-envelope primary-text"></i>
-              {{ 'COMMON.EMAIL_VAL' | translate }}</li>
+              {{ settings.email }}</li>
           </ul>
         </div>
       </div>

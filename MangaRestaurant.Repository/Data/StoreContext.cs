@@ -41,5 +41,6 @@ namespace MangaRestaurant.Repository.Data
         public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
         public DbSet<ProductReview> ProductReviews { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<SiteSettings> SiteSettings { get; set; }
     }
 }

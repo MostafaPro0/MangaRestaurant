@@ -41,6 +41,8 @@ namespace MangaRestaurant.APIs.Helpers
                 
             CreateMap<Notification, NotificationToReturnDto>()
                 .ForMember(d => d.Type, o => o.MapFrom(s => s.Type.ToString()));
+                
+            CreateMap<SiteSettings, SiteSettingsDto>().ReverseMap();
         }
     }
 }
