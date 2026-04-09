@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using MangaRestaurant.APIs.Dtos;
 using MangaRestaurant.APIs.Errors;
@@ -138,6 +140,30 @@ namespace MangaRestaurant.APIs.Controllers
             if (result <= 0) return BadRequest(new ApiResponse(400, "Problem Deleting Product"));
 
             return Ok(new ApiResponse(200, "Product deleted successfully"));
+        }
+
+        [HttpGet("deals")]
+        [CashedAttribute(30)]
+        public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetDeals()
+        {
+            var spec = new ProductWithBrandAndCategorySpecs();
+            var products = await _unitOfWork.Repository<Product>().GetAllAsyncWithSpecAsync(spec);
+            
+            var deals = products.Where(p => p.OldPrice > p.Price).Take(8).ToList();
+            
+            return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(deals));
+        }
+
+        [HttpGet("latest")]
+        [CashedAttribute(30)]
+        public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetLatestProducts()
+        {
+            var spec = new ProductWithBrandAndCategorySpecs(); // In a real app, you'd add ordering to the spec
+            var products = await _unitOfWork.Repository<Product>().GetAllAsyncWithSpecAsync(spec);
+            
+            var latest = products.OrderByDescending(p => p.Id).Take(8).ToList();
+            
+            return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(latest));
         }
     }
 }

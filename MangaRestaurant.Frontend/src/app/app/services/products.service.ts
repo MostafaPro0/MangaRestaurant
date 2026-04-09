@@ -46,6 +46,14 @@ export class ProductsService {
     return this.api.get<any[]>('ProductBrand');
   }
 
+  getDeals(): Observable<any[]> {
+    return this.api.get<any[]>('Products/deals');
+  }
+
+  getLatestProducts(): Observable<any[]> {
+    return this.api.get<any[]>('Products/latest');
+  }
+
   addReview(review: Review): Observable<Review> {
     return this.api.post<Review>('Reviews', review);
   }

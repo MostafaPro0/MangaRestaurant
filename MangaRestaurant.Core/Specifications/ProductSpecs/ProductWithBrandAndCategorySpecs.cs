@@ -9,6 +9,13 @@ namespace MangaRestaurant.Core.Specifications.ProductSpecs
 {
     public class ProductWithBrandAndCategorySpecs : BaseSpecifications<Product>
     {
+        // Parameterless constructor for internal use or getting all without filters
+        public ProductWithBrandAndCategorySpecs() : base()
+        {
+            AddIncludes();
+            AddOrderBy(P => P.Name);
+        }
+
         // This Constructor will be Used for Creating an Object, That will be Used to Get All Products 
         public ProductWithBrandAndCategorySpecs(ProductSpecParams specParams)
         :base(P => (string.IsNullOrEmpty( specParams.Search) || P.Name.ToLower().Contains(specParams.Search.ToLower()) || P.NameAr.ToLower().Contains(specParams.Search.ToLower())) &&

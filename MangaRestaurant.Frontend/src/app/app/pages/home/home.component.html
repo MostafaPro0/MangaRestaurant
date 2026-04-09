@@ -41,7 +41,7 @@
 
   <div class="grid mt-8">
     <div class="col-12 md:col-6 lg:col-3">
-      <div class="mg-card h-full text-left" style="min-height: 300px">
+      <div class="mg-card h-full text-start" style="min-height: 300px">
         <div class="badge-neon mb-4" style="background:var(--primary); color:#fff; border:none; padding:1.25rem; border-radius:12px; font-size:1.5rem">
            <i class="pi pi-bolt"></i> 
         </div>
@@ -51,7 +51,7 @@
     </div>
     
     <div class="col-12 md:col-6 lg:col-3">
-      <div class="mg-card h-full text-left" style="min-height: 300px">
+      <div class="mg-card h-full text-start" style="min-height: 300px">
         <div class="badge-neon mb-4" style="background:var(--primary); color:#fff; border:none; padding:1.25rem; border-radius:12px; font-size:1.5rem">
            <i class="pi pi-star-fill"></i>
         </div>
@@ -61,7 +61,7 @@
     </div>
 
     <div class="col-12 md:col-6 lg:col-3">
-      <div class="mg-card h-full text-left" style="min-height: 300px">
+      <div class="mg-card h-full text-start" style="min-height: 300px">
         <div class="badge-neon mb-4" style="background:var(--primary); color:#fff; border:none; padding:1.25rem; border-radius:12px; font-size:1.5rem">
            <i class="pi pi-shield"></i>
         </div>
@@ -71,7 +71,7 @@
     </div>
 
     <div class="col-12 md:col-6 lg:col-3">
-      <div class="mg-card h-full text-left" style="min-height: 300px">
+      <div class="mg-card h-full text-start" style="min-height: 300px">
         <div class="badge-neon mb-4" style="background:var(--primary); color:#fff; border:none; padding:1.25rem; border-radius:12px; font-size:1.5rem">
            <i class="pi pi-heart-fill"></i>
         </div>
@@ -81,6 +81,134 @@
     </div>
   </div>
 </div>
+
+<!-- Special Deals Section -->
+<section class="section-pad bg-soft">
+  <div class="container">
+    <div class="section-header-v2 mb-8">
+      <span class="section-tag">{{ 'HOME.DEALS_TAG' | translate }}</span>
+      <h2 class="section-title-v2 mt-3">{{ 'HOME.DEALS_TITLE' | translate }}</h2>
+    </div>
+
+    <!-- Skeleton Loading for Deals -->
+    <div class="grid" *ngIf="loadingDeals">
+      <div class="col-12 sm:col-6 lg:col-3" *ngFor="let i of [1,2,3,4]">
+        <div class="mg-card p-0 overflow-hidden">
+          <p-skeleton width="100%" height="250px"></p-skeleton>
+          <div class="p-4">
+            <p-skeleton width="40%" height="1rem" styleClass="mb-2"></p-skeleton>
+            <p-skeleton width="80%" height="1.5rem" styleClass="mb-3"></p-skeleton>
+            <div class="flex justify-content-between align-items-center">
+              <p-skeleton width="30%" height="2rem"></p-skeleton>
+              <p-skeleton shape="circle" size="3rem"></p-skeleton>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid" *ngIf="!loadingDeals && deals.length > 0">
+      <div class="col-12 sm:col-6 lg:col-3" *ngFor="let item of deals">
+        <div class="product-card-v2 mg-card h-full p-0 overflow-hidden group">
+          <div class="product-img-wrapper relative overflow-hidden" routerLink="/product/{{item.id}}" style="cursor:pointer">
+            <img [src]="getImageUrl(item.pictureUrl)" [alt]="item.name" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" style="height: 250px" />
+            
+            <div class="absolute top-0 right-0 m-3 py-1 px-3 bg-red-600 text-white font-bold rounded-lg shadow-lg z-10" *ngIf="item.oldPrice > item.price">
+              -{{ ((item.oldPrice - item.price) / item.oldPrice * 100).toFixed(0) }}%
+            </div>
+          </div>
+          
+          <div class="p-4">
+            <div class="flex justify-content-between align-items-start mb-2">
+              <span class="text-dim text-sm uppercase tracking-wider font-bold">
+                {{ (translate.currentLanguage === 'ar' ? item.categoryAr : item.category) || item.category }}
+              </span>
+              <div class="flex gap-1 text-primary">
+                 <i class="pi pi-star-fill text-xs"></i>
+                 <i class="pi pi-star-fill text-xs"></i>
+                 <i class="pi pi-star-fill text-xs"></i>
+                 <i class="pi pi-star-fill text-xs"></i>
+              </div>
+            </div>
+            
+            <h3 class="text-xl font-bold mb-3 truncate hover:text-primary transition-colors cursor-pointer" routerLink="/product/{{item.id}}">
+              {{ (translate.currentLanguage === 'ar' ? item.nameAr : item.name) || item.name }}
+            </h3>
+            
+            <div class="flex align-items-center justify-content-between pt-3 border-top-1 surface-border mt-auto">
+              <div>
+                <span class="text-2xl font-bold primary-text">{{ item.price | currency }}</span>
+                <span *ngIf="item.oldPrice > item.price" class="block text-sm text-dim strikethrough opacity-60">{{ item.oldPrice | currency }}</span>
+              </div>
+              <button pButton icon="pi pi-cart-plus" class="p-button-rounded p-button-primary p-button-lg shadow-md" (click)="addToBasket(item)"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="text-center mt-6" *ngIf="!loadingDeals && deals.length === 0">
+      <p class="text-dim italic">{{ 'PRODUCTS.EMPTY' | translate }}</p>
+    </div>
+  </div>
+</section>
+
+<!-- Latest Arrivals Section -->
+<section class="section-pad">
+  <div class="container">
+    <div class="section-header-v2 mb-8">
+      <span class="section-tag">{{ 'HOME.LATEST_TAG' | translate }}</span>
+      <h2 class="section-title-v2 mt-3">{{ 'HOME.LATEST_TITLE' | translate }}</h2>
+    </div>
+
+    <!-- Skeleton Loading for Latest -->
+    <div class="grid" *ngIf="loadingLatest">
+      <div class="col-12 sm:col-6 lg:col-3" *ngFor="let i of [1,2,3,4]">
+        <div class="mg-card p-0 overflow-hidden">
+          <p-skeleton width="100%" height="250px"></p-skeleton>
+          <div class="p-4">
+            <p-skeleton width="30%" height="1rem" styleClass="mb-2"></p-skeleton>
+            <p-skeleton width="70%" height="1.5rem" styleClass="mb-3"></p-skeleton>
+            <div class="flex justify-content-between align-items-center">
+              <p-skeleton width="40%" height="2rem"></p-skeleton>
+              <p-skeleton shape="circle" size="3rem"></p-skeleton>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid" *ngIf="!loadingLatest && latestProducts.length > 0">
+      <div class="col-12 sm:col-6 lg:col-3" *ngFor="let item of latestProducts">
+        <div class="product-card-v2 mg-card h-full p-0 overflow-hidden group">
+          <div class="product-img-wrapper relative overflow-hidden" routerLink="/product/{{item.id}}" style="cursor:pointer">
+            <img [src]="getImageUrl(item.pictureUrl)" [alt]="item.name" class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110" style="height: 250px" />
+            <div class="absolute top-0 left-0 m-3 py-1 px-3 bg-primary text-white font-bold rounded-lg shadow-lg z-10 text-xs uppercase">
+              {{ 'HOME.LATEST_TAG' | translate }}
+            </div>
+          </div>
+          
+          <div class="p-4">
+            <span class="text-dim text-sm uppercase tracking-wider font-bold mb-2 block">
+                {{ (translate.currentLanguage === 'ar' ? item.categoryAr : item.category) || item.category }}
+            </span>
+            <h3 class="text-xl font-bold mb-3 truncate hover:text-primary transition-colors cursor-pointer" routerLink="/product/{{item.id}}">
+              {{ (translate.currentLanguage === 'ar' ? item.nameAr : item.name) || item.name }}
+            </h3>
+            
+            <div class="flex align-items-center justify-content-between pt-3 border-top-1 surface-border mt-auto">
+              <div class="flex flex-column">
+                <span class="text-2xl font-bold primary-text">{{ item.price | currency }}</span>
+                <span *ngIf="item.oldPrice > item.price" class="text-xs text-dim strikethrough opacity-60">{{ item.oldPrice | currency }}</span>
+              </div>
+              <button pButton icon="pi pi-cart-plus" class="p-button-rounded p-button-warning p-button-lg shadow-md" (click)="addToBasket(item)"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- Modern Delivery Promo -->
 <section class="section-pad" style="background: var(--bg-soft); position: relative; overflow: hidden; border-top: 1px solid var(--glass-border)">

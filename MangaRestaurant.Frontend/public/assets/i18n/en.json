@@ -33,7 +33,11 @@
     "BASKET_BTN": "Go to Cart",
     "CTA_TITLE_1": "Order Your",
     "CTA_TITLE_2": "Fave Meal Now",
-    "CTA_BTN": "Join Us"
+    "CTA_BTN": "Join Us",
+    "DEALS_TAG": "Limited Time",
+    "DEALS_TITLE": "Special Offers & Discounts",
+    "LATEST_TAG": "What's New?",
+    "LATEST_TITLE": "Our Fresh Arrivals"
   },
   "PRODUCTS": {
     "TITLE": "Our Menu",

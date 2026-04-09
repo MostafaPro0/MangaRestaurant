@@ -1,3 +1,42 @@
 :host {
   display: block;
 }
+
+.product-card-v2 {
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px solid var(--glass-border);
+}
+
+.product-card-v2:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15) !important;
+    border-color: var(--primary);
+}
+
+.group:hover .group-hover\:scale-110 {
+    transform: scale(1.1);
+}
+
+.strikethrough {
+    text-decoration: line-through;
+}
+
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bg-soft {
+    background-color: var(--bg-soft);
+}
+
+.section-pad {
+    padding: 8rem 0;
+}
+
+@media (max-width: 768px) {
+    .section-pad {
+        padding: 4rem 0;
+    }
+}
