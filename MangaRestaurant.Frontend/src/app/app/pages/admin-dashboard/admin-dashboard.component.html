@@ -257,10 +257,13 @@
                     optionLabel="displayName" optionValue="id" [placeholder]="(translateService.currentLang === 'ar' ? 'اختر عامل' : 'Select Driver')"
                     class="p-inputtext-sm w-full">
                   </p-dropdown>
-                  <button pButton icon="pi pi-user-plus" class="p-button-rounded p-button-text p-button-info p-button-sm"
+                  <button pButton 
+                    [icon]="savingOrderStatus ? 'pi pi-spin pi-spinner' : 'pi pi-user-plus'" 
+                    [loading]="savingOrderStatus"
+                    class="p-button-rounded p-button-text p-button-info p-button-sm"
                     (click)="updateOrderDelivery(order.id)" 
                     [pTooltip]="(translateService.currentLang === 'ar' ? 'تعيين' : 'Assign')"
-                    [disabled]="!orderDeliveryAssignee[order.id]"></button>
+                    [disabled]="!orderDeliveryAssignee[order.id] || savingOrderStatus"></button>
                 </div>
                 <span class="text-dim italic" *ngIf="order.orderType === 'DineIn'">N/A</span>
               </td>
@@ -269,7 +272,11 @@
                   <p-dropdown [options]="orderStatusOptions" [(ngModel)]="orderStatusDraft[order.id]" appendTo="body"
                     class="p-inputtext-sm">
                   </p-dropdown>
-                  <button pButton icon="pi pi-save" class="p-button-rounded p-button-warning"
+                  <button pButton 
+                    [icon]="savingOrderStatus ? 'pi pi-spin pi-spinner' : 'pi pi-save'" 
+                    [loading]="savingOrderStatus"
+                    [disabled]="savingOrderStatus"
+                    class="p-button-rounded p-button-warning"
                     (click)="updateOrderStatus(order.id)"
                     [pTooltip]="(translateService.currentLang === 'ar' ? 'حفظ الحالة' : 'Save Status')"></button>
                 </div>
@@ -393,7 +400,9 @@
                         [label]="(user.isBanned ? 'ADMIN.BANNED' : 'ADMIN.ACTIVE') | translate"
                         [severity]="user.isBanned ? 'danger' : 'success'"
                         [outlined]="true"
-                        [icon]="user.isBanned ? 'pi pi-lock' : 'pi pi-lock-open'"
+                        [icon]="savingUserStatus ? 'pi pi-spin pi-spinner' : (user.isBanned ? 'pi pi-lock' : 'pi pi-lock-open')"
+                        [loading]="savingUserStatus"
+                        [disabled]="savingUserStatus"
                         size="small"
                         styleClass="border-round-xl"
                         [pTooltip]="(user.isBanned ? 'ADMIN.CLICK_TO_ACTIVATE' : 'ADMIN.CLICK_TO_BAN') | translate"
@@ -435,7 +444,10 @@
           <button pButton [label]="'ADMIN.CANCEL' | translate" 
                   icon="pi pi-times" class="p-button-text" (click)="userDialog = false"></button>
           <button pButton [label]="'ADMIN.SAVE' | translate" 
-                  icon="pi pi-check" class="p-button-raised" (click)="saveUser()"></button>
+                  [icon]="savingUserStatus ? 'pi pi-spin pi-spinner' : 'pi pi-check'" 
+                  [loading]="savingUserStatus"
+                  [disabled]="savingUserStatus"
+                  class="p-button-raised" (click)="saveUser()"></button>
         </ng-template>
       </p-dialog>
 
@@ -554,7 +566,10 @@
           <button pButton [label]="'ADMIN.CANCEL' | translate" 
                   icon="pi pi-times" class="p-button-text" (click)="itemDialog = false"></button>
           <button pButton [label]="'ADMIN.SAVE' | translate" 
-                  icon="pi pi-check" class="p-button-raised" (click)="saveItem()"></button>
+                  [icon]="savingItem ? 'pi pi-spin pi-spinner' : 'pi pi-check'" 
+                  [loading]="savingItem"
+                  [disabled]="savingItem"
+                  class="p-button-raised" (click)="saveItem()"></button>
         </ng-template>
       </p-dialog>
 
@@ -766,7 +781,11 @@
   <ng-template pTemplate="footer">
     <button pButton label="{{ 'ADMIN.CANCEL' | translate }}" icon="pi pi-times" class="p-button-text"
       (click)="productDialogVisible = false"></button>
-    <button pButton label="{{ 'ADMIN.SAVE' | translate }}" icon="pi pi-check" class="p-button-warning"
+    <button pButton label="{{ 'ADMIN.SAVE' | translate }}" 
+      [icon]="savingProduct ? 'pi pi-spin pi-spinner' : 'pi pi-check'" 
+      [loading]="savingProduct"
+      [disabled]="savingProduct || uploadingImage"
+      class="p-button-warning"
       (click)="saveProduct()"></button>
   </ng-template>
 </p-dialog>

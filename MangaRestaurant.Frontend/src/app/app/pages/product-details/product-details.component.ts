@@ -36,6 +36,7 @@ export class ProductDetailsComponent implements OnInit {
   userRating: number = 0;
   userComment: string = '';
   submittingReview = false;
+  addingToBasket = false;
   settings$! : any;
 
   constructor(
@@ -192,8 +193,14 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToBasket(): void {
-    if (!this.product) return;
+    if (!this.product || this.addingToBasket) return;
+    this.addingToBasket = true;
     this.basketService.addItem(this.product, 1);
+    
+    // Tiny delay for UX feedback
+    setTimeout(() => {
+      this.addingToBasket = false;
+    }, 600);
   }
 
   addRecommendedToBasket(product: any): void {

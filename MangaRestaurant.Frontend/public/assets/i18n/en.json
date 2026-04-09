@@ -104,7 +104,8 @@
     "DELIVERY": "Delivery",
     "SUBTOTAL": "Subtotal",
     "VIEW_PRODUCT": "View Product",
-    "DEALS_TITLE": "Special Offers for You"
+    "DEALS_TITLE": "Special Offers for You",
+    "ADDING": "Adding..."
   },
   "CHECKOUT": {
     "TITLE": "Secure Checkout",

@@ -143,7 +143,10 @@
         </div>
 
         <button pButton class="p-button-primary p-button-lg w-full py-4 text-xl"
-          [label]="'CHECKOUT.CREATE_ORDER' | translate" icon="pi pi-check-circle" (click)="createOrder()"
+          [label]="'CHECKOUT.CREATE_ORDER' | translate" 
+          [icon]="loading ? 'pi pi-spin pi-spinner' : 'pi pi-check-circle'" 
+          [loading]="loading"
+          (click)="createOrder()"
           [disabled]="!checkoutForm.valid || loading"></button>
 
         <div class="mt-6 flex flex-column gap-3 opacity-60">

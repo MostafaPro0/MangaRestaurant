@@ -28,6 +28,7 @@ export class RegisterComponent implements AfterViewInit {
   password = '';
   phoneNumber = '';
   error = '';
+  loading = false;
 
   constructor(
     private authService: AuthService, 
@@ -80,8 +81,10 @@ export class RegisterComponent implements AfterViewInit {
 
   handleGoogleCredentialResponse(response: any) {
     if (response && response.credential) {
+      this.loading = true;
       this.authService.googleLogin(response.credential).subscribe({
         next: (user) => {
+          this.loading = false;
           this.messageService.add({
             severity: 'success',
             summary: this.translate.instant('TOAST.SUCCESS') || 'Success',
@@ -91,6 +94,7 @@ export class RegisterComponent implements AfterViewInit {
           this.router.navigate([this.authService.isAdmin(user?.token ?? null) ? '/admin' : '/']);
         },
         error: (err) => {
+          this.loading = false;
           this.error = 'Failed to continue via Google';
           this.messageService.add({
             severity: 'error',
@@ -104,9 +108,12 @@ export class RegisterComponent implements AfterViewInit {
   }
 
   register(): void {
+    if (this.loading) return;
     this.error = '';
+    this.loading = true;
     this.authService.register(this.displayName, this.email, this.password, this.phoneNumber).subscribe({
       next: () => {
+        this.loading = false;
         this.messageService.add({
           severity: 'success',
           summary: this.translate.instant('TOAST.SUCCESS'),
@@ -116,6 +123,7 @@ export class RegisterComponent implements AfterViewInit {
         setTimeout(() => this.router.navigate(['/']), 1000);
       },
       error: (err) => {
+        this.loading = false;
         this.messageService.add({
           severity: 'error',
           summary: this.translate.instant('TOAST.ERROR'),

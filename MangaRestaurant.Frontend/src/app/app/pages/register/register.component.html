@@ -46,7 +46,11 @@
       </div>
 
       <button pButton class="p-button-primary p-button-lg w-full mt-3" 
-              [label]="'REGISTER.SUBMIT' | translate" icon="pi pi-user-plus" (click)="register()"></button>
+              [label]="'REGISTER.SUBMIT' | translate" 
+              [icon]="loading ? 'pi pi-spin pi-spinner' : 'pi pi-user-plus'" 
+              [loading]="loading"
+              [disabled]="loading"
+              (click)="register()"></button>
     </div>
 
     <!-- Google Login -->

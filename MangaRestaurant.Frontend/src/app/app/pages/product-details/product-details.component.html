@@ -78,8 +78,11 @@
 
         <!-- Actions (Responsive) -->
         <div class="flex flex-column sm:flex-row gap-3 mt-4">
-          <button pButton class="p-button-lg flex-grow-1 main-cart-btn" icon="pi pi-shopping-cart"
-            [label]="'PRODUCTS.ADD_TO_CART' | translate" (click)="addToBasket()"></button>
+          <button pButton class="p-button-lg flex-grow-1 main-cart-btn" 
+            [icon]="addingToBasket ? 'pi pi-spin pi-spinner' : 'pi pi-shopping-cart'"
+            [loading]="addingToBasket"
+            [disabled]="addingToBasket"
+            [label]="(addingToBasket ? 'BASKET.ADDING' : 'PRODUCTS.ADD_TO_CART') | translate" (click)="addToBasket()"></button>
 
           <div class="flex gap-2">
             <button pButton class="p-button-outlined p-button-lg p-button-secondary action-icon-btn" 

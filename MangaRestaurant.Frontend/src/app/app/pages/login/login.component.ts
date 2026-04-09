@@ -24,6 +24,7 @@ export class LoginComponent implements AfterViewInit {
   email = '';
   password = '';
   error = '';
+  loading = false;
 
   constructor(
     private authService: AuthService, 
@@ -78,8 +79,10 @@ export class LoginComponent implements AfterViewInit {
 
   handleGoogleCredentialResponse(response: any) {
     if (response && response.credential) {
+      this.loading = true;
       this.authService.googleLogin(response.credential).subscribe({
         next: (user) => {
+          this.loading = false;
           this.messageService.add({
             severity: 'success',
             summary: this.translate.instant('TOAST.SUCCESS') || 'Success',
@@ -89,6 +92,7 @@ export class LoginComponent implements AfterViewInit {
           this.router.navigate([this.authService.isAdmin(user?.token ?? null) ? '/admin' : '/']);
         },
         error: (err) => {
+          this.loading = false;
           const errorMsg = err?.error?.message || 'Failed to login via Google';
           this.error = errorMsg;
           this.messageService.add({
@@ -103,9 +107,12 @@ export class LoginComponent implements AfterViewInit {
   }
 
   login(): void {
+    if (this.loading) return;
     this.error = '';
+    this.loading = true;
     this.authService.login(this.email, this.password).subscribe({
       next: (user) => {
+        this.loading = false;
         this.messageService.add({
           severity: 'success',
           summary: this.translate.instant('TOAST.SUCCESS') || 'Success',
@@ -115,6 +122,7 @@ export class LoginComponent implements AfterViewInit {
         this.router.navigate([this.authService.isAdmin(user?.token ?? null) ? '/admin' : '/']);
       },
       error: (err) => {
+        this.loading = false;
         let errorMsg = err?.error?.message || 'Failed to login: ' + (err?.message || err);
         
         // Translate known backend error texts or 401 status to correct language

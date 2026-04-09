@@ -33,7 +33,11 @@
       </div>
 
       <button pButton class="p-button-primary p-button-lg w-full mt-2" 
-              [label]="'LOGIN.SUBMIT' | translate" icon="pi pi-sign-in" (click)="login()"></button>
+              [label]="'LOGIN.SUBMIT' | translate" 
+              [icon]="loading ? 'pi pi-spin pi-spinner' : 'pi pi-sign-in'" 
+              [loading]="loading"
+              [disabled]="loading"
+              (click)="login()"></button>
     </div>
 
     <!-- Google Login -->

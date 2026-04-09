@@ -111,6 +111,10 @@ export class AdminDashboardComponent implements OnInit {
   productDialogVisible: boolean = false;
   editingProductId: number | null = null;
   selectedProduct: any = {};
+  savingProduct = false;
+  savingItem = false;
+  savingUserStatus = false;
+  savingOrderStatus = false;
 
   // Charts Options
   public salesChartOptions!: Partial<ChartOptions>;
@@ -274,27 +278,39 @@ export class AdminDashboardComponent implements OnInit {
     }
 
     if (this.isCategoryMode) {
+      this.savingItem = true;
       const obs = this.editingItem 
         ? this.productsService.updateCategory(this.editingItem.id, this.selectedItem)
         : this.productsService.createCategory(this.selectedItem);
       
       obs.subscribe({
         next: () => {
+          this.savingItem = false;
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Category saved' });
           this.itemDialog = false;
           this.loadCategories();
+        },
+        error: () => {
+          this.savingItem = false;
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Save failed' });
         }
       });
     } else {
+      this.savingItem = true;
       const obs = this.editingItem 
         ? this.productsService.updateBrand(this.editingItem.id, this.selectedItem)
         : this.productsService.createBrand(this.selectedItem);
       
       obs.subscribe({
         next: () => {
+          this.savingItem = false;
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Brand saved' });
           this.itemDialog = false;
           this.loadBrands();
+        },
+        error: () => {
+          this.savingItem = false;
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Save failed' });
         }
       });
     }
@@ -329,13 +345,18 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   saveUser() {
+    this.savingUserStatus = true;
     this.adminService.createUser(this.newUser, this.selectedUserRole).subscribe({
       next: () => {
+        this.savingUserStatus = false;
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User created' });
         this.userDialog = false;
         this.loadUsers();
       },
-      error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to create user' })
+      error: () => {
+        this.savingUserStatus = false;
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to create user' });
+      }
     });
   }
 
@@ -382,8 +403,10 @@ export class AdminDashboardComponent implements OnInit {
       const employeeId = this.orderDeliveryAssignee[orderId];
       if (!employeeId) return;
 
+      this.savingOrderStatus = true;
       this.ordersService.assignDelivery(orderId, employeeId).subscribe({
           next: () => {
+              this.savingOrderStatus = false;
               this.messageService.add({ 
                   severity: 'success', 
                   summary: 'Success', 
@@ -391,6 +414,7 @@ export class AdminDashboardComponent implements OnInit {
               });
           },
           error: () => {
+            this.savingOrderStatus = false;
             this.messageService.add({ 
                 severity: 'error', 
                 summary: 'Error', 
@@ -520,9 +544,17 @@ export class AdminDashboardComponent implements OnInit {
   // --- ACTIONS ---
   updateOrderStatus(orderId: number) {
     const status = this.orderStatusDraft[orderId];
-    this.ordersService.updateOrderStatus(orderId, status).subscribe(() => {
-      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Order updated' });
-      this.loadAllData();
+    this.savingOrderStatus = true;
+    this.ordersService.updateOrderStatus(orderId, status).subscribe({
+      next: () => {
+        this.savingOrderStatus = false;
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Order updated' });
+        this.loadAllData();
+      },
+      error: () => {
+        this.savingOrderStatus = false;
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update failed' });
+      }
     });
   }
 
@@ -568,17 +600,20 @@ export class AdminDashboardComponent implements OnInit {
       return;
     }
 
+    this.savingProduct = true;
     const operation = this.editingProductId 
       ? this.productsService.updateProduct(this.editingProductId, this.selectedProduct)
       : this.productsService.createProduct(this.selectedProduct);
 
     operation.subscribe({
       next: () => {
+        this.savingProduct = false;
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product saved' });
         this.productDialogVisible = false;
         this.loadAllData();
       },
       error: (err) => {
+        this.savingProduct = false;
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Save failed' });
       }
     });
