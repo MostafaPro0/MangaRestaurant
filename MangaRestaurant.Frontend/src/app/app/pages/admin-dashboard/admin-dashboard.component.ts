@@ -40,6 +40,8 @@ export type ChartOptions = {
   theme: ApexTheme;
 };
 
+import { TooltipModule } from 'primeng/tooltip';
+
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
@@ -57,7 +59,8 @@ export type ChartOptions = {
     InputTextarea,
     TagModule,
     SkeletonModule,
-    NgApexchartsModule
+    NgApexchartsModule,
+    TooltipModule
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css'],

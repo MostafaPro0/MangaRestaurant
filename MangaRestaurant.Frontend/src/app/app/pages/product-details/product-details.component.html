@@ -77,31 +77,32 @@
         </div>
 
         <!-- Actions (Responsive) -->
-        <div class="flex flex-column sm:flex-row gap-4">
-          <button pButton class="p-button-lg px-8 py-5 text-2xl flex-grow-1" icon="pi pi-shopping-cart"
+        <div class="flex flex-column sm:flex-row gap-3 mt-4">
+          <button pButton class="p-button-lg flex-grow-1 main-cart-btn" icon="pi pi-shopping-cart"
             [label]="'PRODUCTS.ADD_TO_CART' | translate" (click)="addToBasket()"></button>
 
           <div class="flex gap-2">
-            <button pButton class="p-button-outlined p-button-lg p-button-secondary px-4" 
+            <button pButton class="p-button-outlined p-button-lg p-button-secondary action-icon-btn" 
                     icon="pi pi-share-alt" [pTooltip]="'PRODUCTS.SHARE' | translate" (click)="shareProduct()"></button>
-            <button pButton class="p-button-outlined p-button-lg p-button-secondary px-4" 
+            <button pButton class="p-button-outlined p-button-lg p-button-secondary action-icon-btn" 
                     icon="pi pi-copy" [pTooltip]="'PRODUCTS.COPY_LINK' | translate" (click)="copyLink()"></button>
-            <button pButton class="p-button-outlined p-button-lg px-4" icon="pi pi-heart"></button>
+            <button pButton class="p-button-outlined p-button-lg action-icon-btn" icon="pi pi-heart"
+                    [pTooltip]="(translateService.currentLanguage === 'ar' ? 'إضافة للمفضلة' : 'Add to Wishlist')"></button>
           </div>
         </div>
 
-        <div class="mt-10 grid grid-nogutter border-top-1 border-white-alpha-10 pt-8 opacity-70">
+        <div class="mt-10 grid grid-nogutter border-top-1 border-white-alpha-10 pt-8 opacity-90">
           <div class="col-4">
-            <span class="block text-muted text-xs font-bold uppercase mb-2">{{ 'PRODUCTS.SERVINGS' | translate }}</span>
+            <span class="block text-muted text-xs font-bold uppercase mb-2"><i class="pi pi-users primary-text mr-1"></i> {{ 'PRODUCTS.SERVINGS' | translate }}</span>
             <span class="block font-black text-xl">{{ 'PRODUCTS.SERVINGS_VAL' | translate }}</span>
           </div>
           <div class="col-4 text-center">
-            <span class="block text-muted text-xs font-bold uppercase mb-2">{{ 'PRODUCTS.PREP_TIME' | translate
+            <span class="block text-muted text-xs font-bold uppercase mb-2"><i class="pi pi-clock primary-text mr-1"></i> {{ 'PRODUCTS.PREP_TIME' | translate
               }}</span>
             <span class="block font-black text-xl">{{ 'PRODUCTS.PREP_TIME_VAL' | translate }}</span>
           </div>
           <div class="col-4 text-right">
-            <span class="block text-muted text-xs font-bold uppercase mb-2">{{ 'PRODUCTS.ORIGIN' | translate }}</span>
+            <span class="block text-muted text-xs font-bold uppercase mb-2"><i class="pi pi-map-marker primary-text mr-1"></i> {{ 'PRODUCTS.ORIGIN' | translate }}</span>
             <span class="block font-black text-xl">{{ 'PRODUCTS.ORIGIN_VAL' | translate }}</span>
           </div>
         </div>

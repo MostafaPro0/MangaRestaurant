@@ -14,10 +14,12 @@ import { BasketService } from '../../services/basket.service';
 import { TranslateService } from '../../services/translate.service';
 import { SettingsService } from '../../services/settings.service';
 
+import { TooltipModule } from 'primeng/tooltip';
+
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, ButtonModule, CardModule, ProgressSpinnerModule, InputTextModule, BadgeModule, TranslateModule, SkeletonModule],
+  imports: [CommonModule, FormsModule, RouterLink, ButtonModule, CardModule, ProgressSpinnerModule, InputTextModule, BadgeModule, TranslateModule, SkeletonModule, TooltipModule],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'
 })

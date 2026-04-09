@@ -14,10 +14,12 @@ import { ProductsService } from '../../services/products.service';
 import { CustomerBasket } from '../../models/basket.model';
 import { environment } from '../../../../environments/environment';
 
+import { TooltipModule } from 'primeng/tooltip';
+
 @Component({
   selector: 'app-basket',
   standalone: true,
-  imports: [CommonModule, ButtonModule, CardModule, TableModule, RouterLink, TranslateModule, CarouselModule, SkeletonModule],
+  imports: [CommonModule, ButtonModule, CardModule, TableModule, RouterLink, TranslateModule, CarouselModule, SkeletonModule, TooltipModule],
   templateUrl: './basket.component.html',
   styleUrl: './basket.component.css'
 })

@@ -32,7 +32,8 @@
         <div class="manga-toggle-group">
           <button (click)="setLang('ar')" class="manga-toggle-btn" [class.active]="lang() === 'ar'">AR</button>
           <button (click)="setLang('en')" class="manga-toggle-btn" [class.active]="lang() === 'en'">EN</button>
-          <button (click)="toggleTheme()" class="manga-toggle-btn">
+          <button (click)="toggleTheme()" class="manga-toggle-btn" 
+                  [pTooltip]="(lang() === 'ar' ? 'تبديل الوضع' : 'Toggle Theme')">
             <i [class]="currentTheme() === 'light' ? 'pi pi-moon' : 'pi pi-sun'"></i>
           </button>
         </div>
@@ -142,7 +143,8 @@
              </div>
           </div>
         </p-overlayPanel>
-        <a routerLink="/basket" class="relative text-2xl nav-item p-0" style="color:var(--text-main)">
+        <a routerLink="/basket" class="relative text-2xl nav-item p-0" style="color:var(--text-main)" 
+           [pTooltip]="(lang() === 'ar' ? 'السلة' : 'Basket')">
           <i class="pi pi-shopping-cart"></i>
           <span class="basket-badge" style="top:-8px; right:-8px" *ngIf="basketCount() > 0">{{basketCount()}}</span>
         </a>

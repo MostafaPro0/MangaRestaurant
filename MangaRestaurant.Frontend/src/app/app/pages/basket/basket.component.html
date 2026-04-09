@@ -50,11 +50,13 @@
               <td class="p-4 text-center">
                 <div class="flex align-items-center justify-content-center gap-2">
                   <button pButton icon="pi pi-minus" class="p-button-rounded p-button-text p-button-sm"
-                    (click)="updateQuantity(item.productId, item.quantity, -1)"></button>
+                    (click)="updateQuantity(item.productId, item.quantity, -1)"
+                    [pTooltip]="(translateService.currentLanguage === 'ar' ? 'تقليل' : 'Decrease')"></button>
                   <span class="px-3 py-2 bg-soft font-bold rounded-lg min-w-min"
                     style="display:inline-block; width: 40px; text-align: center;">{{ item.quantity }}</span>
                   <button pButton icon="pi pi-plus" class="p-button-rounded p-button-text p-button-sm"
-                    (click)="updateQuantity(item.productId, item.quantity, 1)"></button>
+                    (click)="updateQuantity(item.productId, item.quantity, 1)"
+                    [pTooltip]="(translateService.currentLanguage === 'ar' ? 'زيادة' : 'Increase')"></button>
                 </div>
               </td>
               <td class="p-4 text-center font-bold text-primary">
@@ -177,7 +179,8 @@
                 </span>
               </div>
               <button pButton icon="pi pi-cart-plus" class="p-button-rounded p-button-primary shadow-sm"
-                (click)="addToBasket(product)"></button>
+                (click)="addToBasket(product)" 
+                [pTooltip]="(translateService.currentLanguage === 'ar' ? 'إضافة للسلة' : 'Add to Basket')"></button>
             </div>
           </div>
         </div>

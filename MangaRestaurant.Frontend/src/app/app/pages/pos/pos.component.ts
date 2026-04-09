@@ -17,6 +17,8 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { Router } from '@angular/router';
 
+import { TooltipModule } from 'primeng/tooltip';
+
 @Component({
   selector: 'app-pos',
   standalone: true,
@@ -29,7 +31,8 @@ import { Router } from '@angular/router';
     BadgeModule, 
     SkeletonModule, 
     TranslateModule,
-    ToastModule
+    ToastModule,
+    TooltipModule
   ],
   providers: [MessageService],
   templateUrl: './pos.component.html',

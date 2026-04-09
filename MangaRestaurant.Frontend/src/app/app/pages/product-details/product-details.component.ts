@@ -17,11 +17,12 @@ import { BasketService } from '../../services/basket.service';
 import { TranslateService } from '../../services/translate.service';
 import { AuthService } from '../../services/auth.service';
 import { SettingsService } from '../../services/settings.service';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule, RouterLink, ButtonModule, ProgressSpinnerModule, TranslateModule, SkeletonModule, BadgeModule, Rating, InputTextarea, FormsModule, ToastModule],
+  imports: [CommonModule, RouterLink, ButtonModule, ProgressSpinnerModule, TranslateModule, SkeletonModule, BadgeModule, Rating, InputTextarea, FormsModule, ToastModule, TooltipModule],
   providers: [MessageService],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css'

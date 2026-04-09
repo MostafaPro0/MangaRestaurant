@@ -32,7 +32,9 @@
       <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'settings'" [routerLink]="['/admin', 'settings']">
         <i class="pi pi-cog"></i> <span>{{ 'ADMIN.SETTINGS' | translate }}</span>
       </a>
-      <a class="nav-btn no-underline cursor-pointer bg-primary-reverse" routerLink="/pos" target="_blank" style="background: rgba(255, 62, 62, 0.1); color: #ff3e3e;">
+      <a class="nav-btn no-underline cursor-pointer bg-primary-reverse" routerLink="/pos" target="_blank" 
+         style="background: rgba(255, 62, 62, 0.1); color: #ff3e3e;"
+         [pTooltip]="(translate.currentLang === 'ar' ? 'فتح نظام الكاشير' : 'Open POS System')">
         <i class="pi pi-desktop"></i> <span>POS System</span>
       </a>
     </div>
@@ -232,7 +234,8 @@
                     class="p-inputtext-sm">
                   </p-dropdown>
                   <button pButton icon="pi pi-save" class="p-button-rounded p-button-warning"
-                    (click)="updateOrderStatus(order.id)"></button>
+                    (click)="updateOrderStatus(order.id)"
+                    [pTooltip]="(translate.currentLang === 'ar' ? 'حفظ الحالة' : 'Save Status')"></button>
                 </div>
               </td>
             </tr>
@@ -301,9 +304,9 @@
               <td class="text-center">
                 <div class="flex justify-content-center gap-2">
                   <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-warning"
-                    (click)="openEditProduct(product)"></button>
+                    (click)="openEditProduct(product)" [pTooltip]="(translate.currentLang === 'ar' ? 'تعديل' : 'Edit')"></button>
                   <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
-                    (click)="deleteProduct(product.id)"></button>
+                    (click)="deleteProduct(product.id)" [pTooltip]="(translate.currentLang === 'ar' ? 'حذف' : 'Delete')"></button>
                 </div>
               </td>
             </tr>
