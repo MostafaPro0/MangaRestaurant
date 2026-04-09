@@ -292,6 +292,7 @@
     "CHART_STATUS": "Order Status Distribution",
     "CHART_PEAK_HOURS": "Peak Hours (Order Distribution)",
     "CHART_TOP_SELLERS": "Top Selling Categories",
+    "CHART_TOP_PRODUCTS": "Top Selling Products",
     "CHART_DRIVERS": "Top Delivery Drivers",
     "TOTAL_ORDERS": "Total Orders",
     "TOTAL_REVENUE": "Total Revenue",
