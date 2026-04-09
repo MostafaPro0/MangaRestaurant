@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import { TranslateService } from './translate.service';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
+import { BasketService } from './basket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,8 @@ export class NotificationService {
     private authService: AuthService,
     private translateService: TranslateService,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private basketService: BasketService
   ) {}
 
   loadNotifications() {
@@ -79,6 +81,36 @@ export class NotificationService {
         icon: this.getNotificationIcon(notification.type),
         data: notification
       });
+    });
+
+    // Listen for real-time price updates and sync basket items accordingly
+    this.hubConnection.on('PriceUpdated', (data: { productId: number; productName: string; newPrice: number }) => {
+      const current = this.basketService.getCurrentBasket();
+      const affectedItem = current.items.find(item => item.productId === data.productId);
+
+      if (affectedItem) {
+        // Update the price for the affected item
+        const updatedItems = current.items.map(item =>
+          item.productId === data.productId ? { ...item, price: data.newPrice } : item
+        );
+        const updatedBasket = { ...current, items: updatedItems };
+
+        // Persist the updated price to Redis
+        this.basketService.updateBasket(updatedBasket).subscribe();
+
+        // Notify the user
+        const isAr = this.translateService.currentLanguage === 'ar';
+        const productLabel = isAr ? (affectedItem.productNameAr || data.productName) : data.productName;
+        this.messageService.add({
+          severity: 'warn',
+          summary: isAr ? '⚠️ تحديث سعر' : '⚠️ Price Updated',
+          detail: isAr
+            ? `تم تحديث سعر "${productLabel}" في سلتك إلى $${data.newPrice.toFixed(2)}`
+            : `Price of "${productLabel}" in your cart updated to $${data.newPrice.toFixed(2)}`,
+          life: 6000,
+          icon: 'pi pi-tag'
+        });
+      }
     });
 
     this.authService.user.subscribe(user => {

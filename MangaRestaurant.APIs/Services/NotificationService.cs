@@ -123,5 +123,16 @@ namespace MangaRestaurant.APIs.Services
                 Type = NotificationType.NewReview.ToString()
             });
         }
+
+        public async Task SendPriceUpdatedNotification(int productId, string productName, decimal newPrice)
+        {
+            // Broadcast to ALL connected clients so they can update their basket in real-time
+            await _hubContext.Clients.All.SendAsync("PriceUpdated", new
+            {
+                ProductId = productId,
+                ProductName = productName,
+                NewPrice = newPrice
+            });
+        }
     }
 }

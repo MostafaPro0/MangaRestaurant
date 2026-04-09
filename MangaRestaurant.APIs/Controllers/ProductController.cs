@@ -95,6 +95,9 @@ namespace MangaRestaurant.APIs.Controllers
             var product = await _unitOfWork.Repository<Product>().GetAsync(id);
             if (product == null) return NotFound(new ApiResponse(404));
 
+            // Capture old price before mapping
+            var oldPrice = product.Price;
+
             // Preserve the existing picture URL because updates are handled by a separate upload endpoint
             var existingPictureUrl = product.PictureUrl;
 
@@ -107,6 +110,12 @@ namespace MangaRestaurant.APIs.Controllers
             var result = await _unitOfWork.CompleteAsync();
 
             if (result <= 0) return BadRequest(new ApiResponse(400, "Problem Updating Product"));
+
+            // Notify all clients if the price has changed so they can update their baskets in real-time
+            if (product.Price != oldPrice)
+            {
+                await _notificationService.SendPriceUpdatedNotification(product.Id, product.Name, product.Price);
+            }
 
             // Re-fetch with relations for proper DTO return
             var spec = new ProductWithBrandAndCategorySpecs(id);
