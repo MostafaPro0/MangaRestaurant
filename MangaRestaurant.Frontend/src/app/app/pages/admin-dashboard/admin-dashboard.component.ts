@@ -12,6 +12,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputTextarea } from 'primeng/inputtextarea';
 import { TagModule } from 'primeng/tag';
 import { SkeletonModule } from 'primeng/skeleton';
+import { SelectButtonModule } from 'primeng/selectbutton';
 import { NgApexchartsModule, ChartComponent, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexTitleSubtitle, ApexStroke, ApexDataLabels, ApexFill, ApexGrid, ApexYAxis, ApexTooltip, ApexLegend, ApexPlotOptions, ApexResponsive, ApexTheme } from "ng-apexcharts";
 import { environment } from '../../../../environments/environment';
 import { AdminService } from '../../services/admin.service';
@@ -60,7 +61,8 @@ import { TooltipModule } from 'primeng/tooltip';
     TagModule,
     SkeletonModule,
     NgApexchartsModule,
-    TooltipModule
+    TooltipModule,
+    SelectButtonModule
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css'],
@@ -94,20 +96,43 @@ export class AdminDashboardComponent implements OnInit {
 
   get orderStatusOptions() {
     return [
-      { label: this.translate.instant('ORDER_STATUS.PENDING'), value: 'Pending' },
-      { label: this.translate.instant('ORDER_STATUS.PAYMENTRECEIVED'), value: 'PaymentReceived' },
-      { label: this.translate.instant('ORDER_STATUS.PAYMENTFAILED'), value: 'PaymentFailed' },
-      { label: this.translate.instant('ORDER_STATUS.CONFIRMED'), value: 'Confirmed' },
-      { label: this.translate.instant('ORDER_STATUS.PROCESSING'), value: 'Processing' },
-      { label: this.translate.instant('ORDER_STATUS.SHIPPED'), value: 'Shipped' },
-      { label: this.translate.instant('ORDER_STATUS.DELIVERED'), value: 'Delivered' },
-      { label: this.translate.instant('ORDER_STATUS.COMPLETED'), value: 'Completed' },
-      { label: this.translate.instant('ORDER_STATUS.CANCELLED'), value: 'Cancelled' },
-      { label: this.translate.instant('ORDER_STATUS.REFUNDED'), value: 'Refunded' }
+      { label: this.translateService.instant('ORDER_STATUS.PENDING'), value: 'Pending' },
+      { label: this.translateService.instant('ORDER_STATUS.PAYMENTRECEIVED'), value: 'PaymentReceived' },
+      { label: this.translateService.instant('ORDER_STATUS.PAYMENTFAILED'), value: 'PaymentFailed' },
+      { label: this.translateService.instant('ORDER_STATUS.CONFIRMED'), value: 'Confirmed' },
+      { label: this.translateService.instant('ORDER_STATUS.PROCESSING'), value: 'Processing' },
+      { label: this.translateService.instant('ORDER_STATUS.SHIPPED'), value: 'Shipped' },
+      { label: this.translateService.instant('ORDER_STATUS.DELIVERED'), value: 'Delivered' },
+      { label: this.translateService.instant('ORDER_STATUS.COMPLETED'), value: 'Completed' },
+      { label: this.translateService.instant('ORDER_STATUS.CANCELLED'), value: 'Cancelled' },
+      { label: this.translateService.instant('ORDER_STATUS.REFUNDED'), value: 'Refunded' }
     ];
   }
   
   orderStatusDraft: { [key: number]: string } = {};
+
+  selectedOrderType: string = 'All';
+  
+  get orderTypeOptions() {
+    return [
+      { label: this.translateService.currentLang === 'ar' ? 'الكل' : 'All', value: 'All' },
+      { label: this.translateService.currentLang === 'ar' ? 'داخل المطعم' : 'Dine-In', value: 'Dine-In' },
+      { label: this.translateService.currentLang === 'ar' ? 'توصيل/سفري' : 'Delivery/TakeAway', value: 'Delivery' }
+    ];
+  }
+
+  get filteredOrders() {
+    if (this.selectedOrderType === 'All') return this.orders;
+    
+    return this.orders.filter(o => {
+      const method = (o.deliveryMethod || '').toLowerCase();
+      if (this.selectedOrderType === 'Dine-In') {
+        return method.includes('dine') || method.includes('pos');
+      } else {
+        return !method.includes('dine') && !method.includes('pos');
+      }
+    });
+  }
 
   // Dialog Control
   productDialogVisible: boolean = false;
@@ -121,7 +146,7 @@ export class AdminDashboardComponent implements OnInit {
     private ordersService: OrdersService,
     private settingsService: SettingsService,
     private messageService: MessageService,
-    public translate: TranslateService,
+    public translateService: TranslateService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -144,7 +169,7 @@ export class AdminDashboardComponent implements OnInit {
     this.loadSettings();
     
     // Auto-refresh charts when language changes
-    this.translate.onLangChange.subscribe(() => {
+    this.translateService.onLangChange.subscribe(() => {
       if (this.reportData) {
         this.updateCharts(this.reportData);
       }
@@ -202,7 +227,7 @@ export class AdminDashboardComponent implements OnInit {
 
   formatCurrency(value: number, settings?: SiteSettings) {
     const s = settings || this.siteSettings;
-    const isAr = this.translate.currentLang === 'ar';
+    const isAr = this.translateService.currentLang === 'ar';
     if (s && s.currencyCode) {
         if (isAr) {
             const formattedNum = new Intl.NumberFormat('en-US', { 
@@ -220,14 +245,14 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   updateCharts(report: any) {
-    const isAr = this.translate.currentLang === 'ar';
+    const isAr = this.translateService.currentLang === 'ar';
     const isDark = document.body.classList.contains('theme-dark');
     const themeMode = isDark ? 'dark' : 'light';
     const chartBaseConfig = { background: 'transparent', toolbar: { show: false } };
 
     // 1. Sales Trend
     this.salesChartOptions = {
-      series: [{ name: this.translate.instant('ADMIN.TOTAL_REVENUE'), data: report.salesLast7Days.map((d: any) => d.revenue) }],
+      series: [{ name: this.translateService.instant('ADMIN.TOTAL_REVENUE'), data: report.salesLast7Days.map((d: any) => d.revenue) }],
       chart: { type: 'area', height: 350, ...chartBaseConfig },
       theme: { mode: themeMode as 'light' | 'dark' },
       xaxis: { categories: report.salesLast7Days.map((d: any) => d.date) },
@@ -250,9 +275,9 @@ export class AdminDashboardComponent implements OnInit {
     this.statusChartOptions = {
       series: [report.pendingOrders, report.paymentReceivedOrders, report.paymentFailedOrders],
       labels: [
-        this.translate.instant('ORDER_STATUS.PENDING'),
-        this.translate.instant('ORDER_STATUS.PAYMENTRECEIVED'),
-        this.translate.instant('ORDER_STATUS.PAYMENTFAILED')
+        this.translateService.instant('ORDER_STATUS.PENDING'),
+        this.translateService.instant('ORDER_STATUS.PAYMENTRECEIVED'),
+        this.translateService.instant('ORDER_STATUS.PAYMENTFAILED')
       ],
       chart: { type: 'donut', height: 350, background: 'transparent' },
       theme: { mode: themeMode as 'light' | 'dark' },
@@ -262,7 +287,7 @@ export class AdminDashboardComponent implements OnInit {
 
     // 3. Peak Hours
     this.peakHoursChartOptions = {
-      series: [{ name: this.translate.instant('ORDERS.TITLE'), data: report.peakHours.map((h: any) => h.count) }],
+      series: [{ name: this.translateService.instant('ORDERS.TITLE'), data: report.peakHours.map((h: any) => h.count) }],
       chart: { type: 'bar', height: 350, ...chartBaseConfig },
       theme: { mode: themeMode as 'light' | 'dark' },
       xaxis: { categories: report.peakHours.map((h: any) => `${h.hour}:00`) },
@@ -281,7 +306,7 @@ export class AdminDashboardComponent implements OnInit {
 
     // 5. Top Products
     this.topProductsChartOptions = {
-      series: [{ name: this.translate.instant('BASKET.QUANTITY'), data: report.topProducts.map((p: any) => p.quantity) }],
+      series: [{ name: this.translateService.instant('BASKET.QUANTITY'), data: report.topProducts.map((p: any) => p.quantity) }],
       chart: { type: 'bar', height: 350, ...chartBaseConfig },
       theme: { mode: themeMode as 'light' | 'dark' },
       xaxis: { categories: report.topProducts.map((p: any) => isAr ? (p.nameAr || p.name) : p.name) },
@@ -328,7 +353,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   deleteProduct(id: number) {
-    if (confirm(this.translate.instant('ADMIN.DELETE_CONFIRM'))) {
+    if (confirm(this.translateService.instant('ADMIN.DELETE_CONFIRM'))) {
       this.productsService.deleteProduct(id).subscribe(() => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product deleted' });
         this.loadAllData();
@@ -344,8 +369,8 @@ export class AdminDashboardComponent implements OnInit {
         !this.selectedProduct.descriptionAr || !this.selectedProduct.pictureUrl) {
       this.messageService.add({ 
         severity: 'error', 
-        summary: this.translate.instant('TOAST.ERROR'), 
-        detail: this.translate.currentLang === 'ar' ? 'يرجى ملء جميع الحقول المطلوبة' : 'Please fill all required fields' 
+        summary: this.translateService.instant('TOAST.ERROR'), 
+        detail: this.translateService.currentLang === 'ar' ? 'يرجى ملء جميع الحقول المطلوبة' : 'Please fill all required fields' 
       });
       return;
     }
@@ -405,8 +430,8 @@ export class AdminDashboardComponent implements OnInit {
       next: () => {
         this.messageService.add({ 
             severity: 'success', 
-            summary: this.translate.currentLang === 'ar' ? 'نجاح' : 'Success', 
-            detail: this.translate.currentLang === 'ar' ? 'تم تحديث الإعدادات' : 'Settings updated successfully' 
+            summary: this.translateService.currentLang === 'ar' ? 'نجاح' : 'Success', 
+            detail: this.translateService.currentLang === 'ar' ? 'تم تحديث الإعدادات' : 'Settings updated successfully' 
         });
         this.savingSettings = false;
       },

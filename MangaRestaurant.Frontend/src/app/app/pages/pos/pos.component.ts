@@ -16,6 +16,7 @@ import { Product } from '../../models/product.model';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { Router } from '@angular/router';
+import { OrdersService } from '../../services/orders.service';
 
 import { TooltipModule } from 'primeng/tooltip';
 
@@ -51,6 +52,7 @@ export class PosComponent implements OnInit {
     public productsService: ProductsService,
     public basketService: BasketService,
     public translate: TranslateService,
+    private ordersService: OrdersService,
     private settingsService: SettingsService,
     private messageService: MessageService,
     private router: Router
@@ -118,6 +120,68 @@ export class PosComponent implements OnInit {
     if (currentBasket.id) {
       this.basketService.deleteBasket(currentBasket.id).subscribe();
     }
+  }
+
+  submitOrder() {
+    const basket = this.basketService.getCurrentBasket();
+    if (!basket || basket.items.length === 0) {
+      this.messageService.add({ 
+        severity: 'warn', 
+        summary: 'Warning', 
+        detail: (this.translate.currentLanguage === 'ar' ? 'يرجى إضافة أصناف أولاً' : 'Please add items first')
+      });
+      return;
+    }
+
+    this.loading = true;
+    // 1. Get Delivery Methods to find "Dine-In"
+    this.ordersService.getDeliveryMethods().subscribe({
+      next: (methods) => {
+        const dineInMethod = methods.find(m => 
+          m.shortName.toLowerCase().includes('dine') || 
+          m.shortName.toLowerCase().includes('pos')
+        ) || methods[0];
+
+        // 2. Submit Order
+        const orderPayload = {
+          basketId: basket.id,
+          deliveryMethodId: dineInMethod.id,
+          shippingAddress: {
+            firstName: 'Dine-In',
+            lastName: 'Customer',
+            street: 'Restaurant Table',
+            city: 'Inside',
+            state: 'POS',
+            zipCode: '0000',
+            country: 'Inside'
+          }
+        };
+
+        this.ordersService.createOrder(orderPayload).subscribe({
+          next: () => {
+            this.messageService.add({ 
+              severity: 'success', 
+              summary: 'Success', 
+              detail: (this.translate.currentLanguage === 'ar' ? 'تم إرسال طلبك بنجاح!' : 'Order submitted successfully!') 
+            });
+            this.basketService.deleteBasket(basket.id).subscribe();
+            this.loading = false;
+          },
+          error: () => {
+            this.messageService.add({ 
+              severity: 'error', 
+              summary: 'Error', 
+              detail: (this.translate.currentLanguage === 'ar' ? 'فشل إرسال الطلب' : 'Failed to submit order') 
+            });
+            this.loading = false;
+          }
+        });
+      },
+      error: () => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Could not fetch delivery methods' });
+        this.loading = false;
+      }
+    });
   }
 
   onCheckout() {

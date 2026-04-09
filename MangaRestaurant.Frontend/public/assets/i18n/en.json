@@ -327,5 +327,11 @@
     "LOGIN_BTN": "Sign In to Review",
     "SUCCESS": "Review submitted successfully!",
     "FAIL": "Failed to submit review."
+  },
+  "POS": {
+    "PLACE_ORDER": "Submit Dine-In Order",
+    "SUCCESS": "Order has been placed successfully!",
+    "ERROR": "Failed to place order. Please try again.",
+    "EMPTY": "Please add items to your tray first."
   }
 }

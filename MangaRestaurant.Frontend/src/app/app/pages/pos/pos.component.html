@@ -14,7 +14,7 @@
         </span>
       </div>
       
-      <div class="category-strip flex gap-2 overflow-x-auto no-scrollbar pb-2">
+      <div class="category-strip flex flex-nowrap align-items-center gap-2 overflow-x-auto no-scrollbar pb-2">
         <button pButton [label]="'COMMON.ALL' | translate" 
           class="cat-chip" [class.active]="selectedCategoryId === 0"
           (click)="filterByCategory(0)"></button>
@@ -37,7 +37,8 @@
               </div>
             </div>
             <div class="p-3">
-              <h3 class="text-xl font-bold mb-1 white-space-nowrap overflow-hidden text-overflow-ellipsis">
+              <h3 class="text-xl font-bold mb-1 white-space-nowrap overflow-hidden text-overflow-ellipsis"
+                  [pTooltip]="(translate.currentLanguage === 'ar' ? product.nameAr : product.name) || product.name">
                 {{ (translate.currentLanguage === 'ar' ? product.nameAr : product.name) || product.name }}
               </h3>
               <div class="text-primary font-black text-xl" *ngIf="settings$ | async as settings">
@@ -87,7 +88,8 @@
         <div *ngFor="let item of basket.items" class="cart-item glass-card-sm p-2 flex align-items-center gap-3 animate-slide-in">
           <img [src]="getImageUrl(item.pictureUrl)" class="item-thumb" />
           <div class="flex-grow-1 min-w-0">
-            <h4 class="m-0 font-bold white-space-nowrap overflow-hidden text-overflow-ellipsis">
+            <h4 class="m-0 font-bold white-space-nowrap overflow-hidden text-overflow-ellipsis"
+                [pTooltip]="(translate.currentLanguage === 'ar' ? item.productNameAr : item.productName) || item.productName">
               {{ (translate.currentLanguage === 'ar' ? item.productNameAr : item.productName) || item.productName }}
             </h4>
             <div class="text-primary font-bold" *ngIf="settings$ | async as settings">
@@ -142,11 +144,12 @@
           </ng-container>
         </span>
       </div>
-      <button pButton [label]="'BASKET.CHECKOUT' | translate" 
+      <button pButton [label]="'POS.PLACE_ORDER' | translate" 
         icon="pi pi-check-circle" 
         class="w-full p-button-lg p-button-raised vibrant-gradient checkout-btn-pos" 
         [disabled]="basket.items.length === 0"
-        (click)="onCheckout()"></button>
+        [loading]="loading"
+        (click)="submitOrder()"></button>
     </div>
   </aside>
 </div>

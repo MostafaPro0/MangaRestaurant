@@ -34,7 +34,7 @@
       </a>
       <a class="nav-btn no-underline cursor-pointer bg-primary-reverse" routerLink="/pos" target="_blank" 
          style="background: rgba(255, 62, 62, 0.1); color: #ff3e3e;"
-         [pTooltip]="(translate.currentLang === 'ar' ? 'فتح نظام الكاشير' : 'Open POS System')">
+         [pTooltip]="(translateService.currentLang === 'ar' ? 'فتح نظام الكاشير' : 'Open POS System')">
         <i class="pi pi-desktop"></i> <span>POS System</span>
       </a>
     </div>
@@ -201,13 +201,24 @@
             <p-skeleton width="25%" height="2.5rem" borderRadius="8px"></p-skeleton>
           </div>
         </ng-container>
-        <p-table *ngIf="!loadingOrders" [value]="orders" [rows]="10" [paginator]="true" class="custom-table">
+        <div class="flex justify-content-between align-items-center mb-4 gap-3 bg-glass-light p-3 border-radius-md border-1 surface-border" *ngIf="!loadingOrders">
+          <div class="flex align-items-center gap-3">
+             <i class="pi pi-filter primary-text text-xl"></i>
+             <p-selectButton [options]="orderTypeOptions" [(ngModel)]="selectedOrderType" class="p-buttonset-sm"></p-selectButton>
+          </div>
+          <div class="text-dim font-bold">
+            {{ filteredOrders.length }} {{ (translateService.currentLang === 'ar' ? 'طلب معروض' : 'Orders showing') }}
+          </div>
+        </div>
+
+        <p-table *ngIf="!loadingOrders" [value]="filteredOrders" [rows]="10" [paginator]="true" class="custom-table">
           <ng-template pTemplate="header">
             <tr>
-              <th style="width: 15%">{{ 'ORDERS.ID' | translate }}</th>
-              <th style="width: 25%">{{ 'ORDERS.DATE' | translate }}</th>
+              <th style="width: 10%">{{ 'ORDERS.ID' | translate }}</th>
+              <th style="width: 20%">{{ 'ORDERS.DATE' | translate }}</th>
               <th style="width: 15%">{{ 'ORDERS.TOTAL' | translate }}</th>
-              <th style="width: 20%">{{ 'ORDERS.STATUS' | translate }}</th>
+              <th style="width: 15%">{{ 'ORDERS.STATUS' | translate }}</th>
+              <th style="width: 15%">{{ (translateService.currentLang === 'ar' ? 'النوع' : 'Type') }}</th>
               <th style="width: 25%" class="text-center">{{ 'ADMIN.ORDERS.STATUS_UPDATE' | translate }}</th>
             </tr>
           </ng-template>
@@ -216,10 +227,10 @@
               <td><span class="badge-id">#{{ order.id }}</span></td>
               <td>{{ order.orderDate | date:'medium' }}</td>
               <td class="font-bold text-primary" *ngIf="settings$ | async as settings">
-                <ng-container *ngIf="translate.currentLang === 'ar'">
+                <ng-container *ngIf="translateService.currentLang === 'ar'">
                   {{ order.total | number : '1.2-2' }} {{ settings.currencySymbol }}
                 </ng-container>
-                <ng-container *ngIf="translate.currentLang !== 'ar'">
+                <ng-container *ngIf="translateService.currentLang !== 'ar'">
                   {{ order.total | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
                 </ng-container>
               </td>
@@ -228,6 +239,12 @@
                   {{ 'ORDER_STATUS.' + ((orderStatusDraft[order.id] || 'Pending') | uppercase) | translate }}
                 </span>
               </td>
+              <td>
+                <p-tag [severity]="(order.deliveryMethod || '').toLowerCase().includes('dine') ? 'warning' : 'info'" 
+                       [value]="((order.deliveryMethod || '').toLowerCase().includes('dine') ? (translateService.currentLang === 'ar' ? 'داخل المطعم' : 'Dine-In') : (translateService.currentLang === 'ar' ? 'توصيل' : 'Delivery'))"
+                       [rounded]="true" class="font-bold">
+                </p-tag>
+              </td>
               <td class="text-center">
                 <div class="flex align-items-center justify-content-center gap-2">
                   <p-dropdown [options]="orderStatusOptions" [(ngModel)]="orderStatusDraft[order.id]" appendTo="body"
@@ -235,7 +252,7 @@
                   </p-dropdown>
                   <button pButton icon="pi pi-save" class="p-button-rounded p-button-warning"
                     (click)="updateOrderStatus(order.id)"
-                    [pTooltip]="(translate.currentLang === 'ar' ? 'حفظ الحالة' : 'Save Status')"></button>
+                    [pTooltip]="(translateService.currentLang === 'ar' ? 'حفظ الحالة' : 'Save Status')"></button>
                 </div>
               </td>
             </tr>
@@ -273,29 +290,29 @@
           <ng-template pTemplate="body" let-product>
             <tr>
               <td class="font-medium">
-                {{ (translate.currentLang === 'ar' && product.nameAr) ? product.nameAr : product.name }}
+                {{ (translateService.currentLang === 'ar' && product.nameAr) ? product.nameAr : product.name }}
               </td>
               <td>
                 <span class="category-tag">
-                  {{ (translate.currentLang === 'ar' && product.categoryAr) ? product.categoryAr : product.category }}
+                  {{ (translateService.currentLang === 'ar' && product.categoryAr) ? product.categoryAr : product.category }}
                 </span>
               </td>
               <td>
                 <div class="flex flex-column" *ngIf="settings$ | async as settings">
                   <span class="font-bold text-lg">
-                    <ng-container *ngIf="translate.currentLang === 'ar'">
+                    <ng-container *ngIf="translateService.currentLang === 'ar'">
                       {{ product.price | number : '1.2-2' }} {{ settings.currencySymbol }}
                     </ng-container>
-                    <ng-container *ngIf="translate.currentLang !== 'ar'">
+                    <ng-container *ngIf="translateService.currentLang !== 'ar'">
                       {{ product.price | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
                     </ng-container>
                   </span>
                   <span *ngIf="product.oldPrice && product.oldPrice > product.price"
                     class="text-xs text-dim strikethrough opacity-60">
-                    <ng-container *ngIf="translate.currentLang === 'ar'">
+                    <ng-container *ngIf="translateService.currentLang === 'ar'">
                       {{ product.oldPrice | number : '1.2-2' }} {{ settings.currencySymbol }}
                     </ng-container>
-                    <ng-container *ngIf="translate.currentLang !== 'ar'">
+                    <ng-container *ngIf="translateService.currentLang !== 'ar'">
                       {{ product.oldPrice | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
                     </ng-container>
                   </span>
@@ -304,9 +321,9 @@
               <td class="text-center">
                 <div class="flex justify-content-center gap-2">
                   <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-warning"
-                    (click)="openEditProduct(product)" [pTooltip]="(translate.currentLang === 'ar' ? 'تعديل' : 'Edit')"></button>
+                    (click)="openEditProduct(product)" [pTooltip]="(translateService.currentLang === 'ar' ? 'تعديل' : 'Edit')"></button>
                   <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
-                    (click)="deleteProduct(product.id)" [pTooltip]="(translate.currentLang === 'ar' ? 'حذف' : 'Delete')"></button>
+                    (click)="deleteProduct(product.id)" [pTooltip]="(translateService.currentLang === 'ar' ? 'حذف' : 'Delete')"></button>
                 </div>
               </td>
             </tr>
