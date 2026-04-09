@@ -110,6 +110,7 @@ export class AdminDashboardComponent implements OnInit {
   productDialogVisible: boolean = false;
   editingProductId: number | null = null;
   selectedProduct: any = {};
+  settings$: any;
 
   constructor(
     private adminService: AdminService,
@@ -121,6 +122,7 @@ export class AdminDashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.settings$ = this.settingsService.settings$;
     this.loadAllData();
     this.loadSettings();
     
