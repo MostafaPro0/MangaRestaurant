@@ -30,15 +30,18 @@
                     *ngIf="!item.pictureUrl">
                     <i class="pi pi-box"></i>
                   </div>
-                  <img *ngIf="item.pictureUrl" [src]="getImageUrl(item.pictureUrl)" [alt]="(translateService.currentLanguage === 'ar' ? item.productNameAr : item.productName) || item.productName"
+                  <img *ngIf="item.pictureUrl" [src]="getImageUrl(item.pictureUrl)"
+                    [alt]="(translateService.currentLanguage === 'ar' ? item.productNameAr : item.productName) || item.productName"
                     style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;">
                   <span class="font-bold text-lg cursor-pointer" routerLink="/products/{{item.productId}}">
-                    {{ (translateService.currentLanguage === 'ar' ? item.productNameAr : item.productName) || item.productName }}
+                    {{ (translateService.currentLanguage === 'ar' ? item.productNameAr : item.productName) ||
+                    item.productName }}
                   </span>
                 </div>
               </td>
               <td class="p-4 text-center text-dim">
-                {{ item.price | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+                {{ item.price | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ?
+                settings.currencySymbol : 'symbol') : '1.2-2' }}
               </td>
               <td class="p-4 text-center">
                 <div class="flex align-items-center justify-content-center gap-2">
@@ -51,7 +54,8 @@
                 </div>
               </td>
               <td class="p-4 text-center font-bold text-primary">
-                {{ item.price * item.quantity | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+                {{ item.price * item.quantity | currency : settings.currencyCode : (translateService.currentLanguage ===
+                'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
               </td>
               <td class="p-4 text-right">
                 <button pButton icon="pi pi-eye" class="p-button-rounded p-button-text p-button-secondary"
@@ -74,44 +78,6 @@
         </p-table>
       </div>
 
-      <!-- Offers Carousel Section -->
-      <div class="mt-8 animate-fade" *ngIf="deals.length > 0">
-        <div class="flex align-items-center gap-4 mb-4">
-          <h2 class="display-font text-2xl font-bold text-main">{{ 'BASKET.DEALS_TITLE' | translate }}</h2>
-          <div class="flex-grow-1 border-top-1 border-white-alpha-10"></div>
-        </div>
-        
-        <p-carousel [value]="deals" [numVisible]="3" [numScroll]="1" [responsiveOptions]="responsiveOptions" 
-                    [circular]="true" [autoplayInterval]="4000" [showIndicators]="false">
-          <ng-template let-product pTemplate="item">
-            <div class="mg-card mx-2 p-0 overflow-hidden h-full flex flex-column shadow-sm border-white-alpha-10">
-              <div class="relative overflow-hidden cursor-pointer" routerLink="/products/{{product.id}}">
-                <img [src]="getImageUrl(product.pictureUrl)" class="w-full h-150px object-cover hover-zoom">
-                <span class="absolute top-0 right-0 bg-primary text-white text-xs font-bold px-2 py-1 m-2 rounded shadow-lg">
-                  -{{ product.discountPercentage }}%
-                </span>
-              </div>
-              <div class="p-3 flex-grow-1 flex flex-column justify-content-between">
-                <h4 class="m-0 text-md font-bold truncate text-main mb-2">
-                  {{ (translateService.currentLanguage === 'ar' ? product.nameAr : product.name) || product.name }}
-                </h4>
-                <div class="flex align-items-center justify-content-between">
-                  <div class="flex flex-column">
-                    <span class="primary-text font-black text-lg">
-                      {{ product.price | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.1-1' }}
-                    </span>
-                    <span class="text-xs text-dim strikethrough opacity-50">
-                      {{ product.oldPrice | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.1-1' }}
-                    </span>
-                  </div>
-                  <button pButton icon="pi pi-plus" class="p-button-rounded p-button-primary p-button-sm shadow-sm" 
-                          (click)="addToBasket(product)"></button>
-                </div>
-              </div>
-            </div>
-          </ng-template>
-        </p-carousel>
-      </div>
     </div>
 
     <!-- Summary Sidebar -->
@@ -123,17 +89,20 @@
           <div class="flex justify-content-between p-3 bg-soft rounded-lg mb-1">
             <span class="text-dim font-bold">{{ 'BASKET.SUBTOTAL' | translate }}</span>
             <span class="font-bold">
-              {{ total | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+              {{ total | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ?
+              settings.currencySymbol : 'symbol') : '1.2-2' }}
             </span>
           </div>
           <div class="flex justify-content-between p-3 bg-soft rounded-lg">
             <span class="text-dim font-bold">{{ 'BASKET.DELIVERY' | translate }}</span>
-            <span class="text-primary font-bold">{{ (translateService.currentLanguage === 'ar' ? 'مجاني' : 'FREE') }}</span>
+            <span class="text-primary font-bold">{{ (translateService.currentLanguage === 'ar' ? 'مجاني' : 'FREE')
+              }}</span>
           </div>
           <div class="flex justify-content-between p-3 mt-2 border-top-1 border-white-alpha-10">
             <span class="text-xl font-bold">{{ 'BASKET.GRAND_TOTAL' | translate }}</span>
             <span class="text-2xl font-bold text-primary">
-              {{ total | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+              {{ total | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ?
+              settings.currencySymbol : 'symbol') : '1.2-2' }}
             </span>
           </div>
         </div>
@@ -148,5 +117,47 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Offers Carousel Section (Full Width below grid) -->
+  <div class="mt-2 animate-fade" *ngIf="deals.length > 0 && (settings$ | async) as settings">
+    <div class="flex align-items-center gap-4 mb-4">
+      <h2 class="display-font text-3xl font-bold text-main">{{ 'BASKET.DEALS_TITLE' | translate }}</h2>
+      <div class="flex-grow-1 border-top-1 border-white-alpha-10"></div>
+    </div>
+
+    <p-carousel [value]="deals" [numVisible]="4" [numScroll]="1" [responsiveOptions]="responsiveOptions"
+      [circular]="true" [autoplayInterval]="4000" [showIndicators]="true">
+      <ng-template let-product pTemplate="item">
+        <div class="mg-card mx-2 p-0 overflow-hidden h-full flex flex-column shadow-sm border-white-alpha-10">
+          <div class="relative overflow-hidden cursor-pointer" routerLink="/products/{{product.id}}">
+            <img [src]="getImageUrl(product.pictureUrl)" class="w-full h-150px object-cover hover-zoom">
+            <span
+              class="absolute top-0 right-0 bg-primary text-white text-xs font-bold px-2 py-1 m-2 rounded shadow-lg">
+              -{{ product.discountPercentage }}%
+            </span>
+          </div>
+          <div class="p-4 flex-grow-1 flex flex-column justify-content-between">
+            <h4 class="m-0 text-md font-bold truncate text-main mb-2">
+              {{ (translateService.currentLanguage === 'ar' ? product.nameAr : product.name) || product.name }}
+            </h4>
+            <div class="flex align-items-center justify-content-between">
+              <div class="flex flex-column">
+                <span class="primary-text font-black text-xl">
+                  {{ product.price | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ?
+                  settings.currencySymbol : 'symbol') : '1.1-1' }}
+                </span>
+                <span class="text-xs text-dim strikethrough opacity-50">
+                  {{ product.oldPrice | currency : settings.currencyCode : (translateService.currentLanguage === 'ar' ?
+                  settings.currencySymbol : 'symbol') : '1.1-1' }}
+                </span>
+              </div>
+              <button pButton icon="pi pi-cart-plus" class="p-button-rounded p-button-primary shadow-sm"
+                (click)="addToBasket(product)"></button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-carousel>
   </div>
 </div>

@@ -208,7 +208,19 @@
               {{ (translate.currentLanguage === 'ar' ? item.nameAr : item.name) || item.name }}
             </h3>
             
-            <div class="flex align-items-center justify-content-between pt-3 border-top-1 surface-border mt-auto">
+            <div class="flex align-items-center justify-content-between pt-3 border-top-1 surface-border mt-auto" *ngIf="settings$ | async as settings">
+              <div class="flex flex-column">
+                <span class="text-2xl font-bold primary-text">
+                  {{ item.price | currency : settings.currencyCode : (translate.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+                </span>
+                <span *ngIf="item.oldPrice > item.price" class="text-xs text-dim strikethrough opacity-60">
+                  {{ item.oldPrice | currency : settings.currencyCode : (translate.currentLanguage === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+                </span>
+              </div>
+              <button pButton icon="pi pi-cart-plus" class="p-button-rounded p-button-warning p-button-lg shadow-md" (click)="addToBasket(item)"></button>
+            </div>
+            <!-- Fallback -->
+            <div class="flex align-items-center justify-content-between pt-3 border-top-1 surface-border mt-auto" *ngIf="!(settings$ | async)">
               <div class="flex flex-column">
                 <span class="text-2xl font-bold primary-text">{{ item.price | currency }}</span>
                 <span *ngIf="item.oldPrice > item.price" class="text-xs text-dim strikethrough opacity-60">{{ item.oldPrice | currency }}</span>

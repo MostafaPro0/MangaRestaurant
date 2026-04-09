@@ -172,15 +172,23 @@ export class AdminDashboardComponent implements OnInit {
 
   getSummaryStats() {
     if (!this.reportData) return [];
+    const settings = this.siteSettings;
     return [
       { label: 'ADMIN.TOTAL_ORDERS', value: this.reportData.totalOrders, icon: 'pi pi-shopping-bag', colorClass: 'sales' },
-      { label: 'ADMIN.TOTAL_REVENUE', value: this.formatCurrency(this.reportData.revenue), icon: 'pi pi-money-bill', colorClass: 'revenue' },
-      { label: 'ADMIN.AVG_ORDER_VALUE', value: this.formatCurrency(this.reportData.averageOrderValue), icon: 'pi pi-chart-bar', colorClass: 'avg' },
+      { label: 'ADMIN.TOTAL_REVENUE', value: this.formatCurrency(this.reportData.revenue, settings), icon: 'pi pi-money-bill', colorClass: 'revenue' },
+      { label: 'ADMIN.AVG_ORDER_VALUE', value: this.formatCurrency(this.reportData.averageOrderValue, settings), icon: 'pi pi-chart-bar', colorClass: 'avg' },
       { label: 'ADMIN.TOTAL_EMPLOYEES', value: this.employees.length, icon: 'pi pi-users', colorClass: 'users' }
     ];
   }
 
-  formatCurrency(value: number) {
+  formatCurrency(value: number, settings?: SiteSettings) {
+    const s = settings || this.siteSettings;
+    if (s && s.currencyCode) {
+        return new Intl.NumberFormat(this.translate.currentLang === 'ar' ? 'ar-EG' : 'en-US', { 
+            style: 'currency', 
+            currency: s.currencyCode 
+        }).format(value);
+    }
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
   }
 

@@ -210,7 +210,12 @@
             <tr>
               <td><span class="badge-id">#{{ order.id }}</span></td>
               <td>{{ order.orderDate | date:'medium' }}</td>
-              <td class="font-bold text-primary">{{ order.total | currency }}</td>
+              <td class="font-bold text-primary" *ngIf="settings$ | async as settings">
+                {{ order.total | currency : settings.currencyCode : (translate.currentLang === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+              </td>
+              <td class="font-bold text-primary" *ngIf="!(settings$ | async)">
+                {{ order.total | currency }}
+              </td>
               <td>
                 <span class="status-badge" [attr.data-status]="orderStatusDraft[order.id]">
                   {{ 'ORDER_STATUS.' + ((orderStatusDraft[order.id] || 'Pending') | uppercase) | translate }}
@@ -268,7 +273,16 @@
                 </span>
               </td>
               <td>
-                <div class="flex flex-column">
+                <div class="flex flex-column" *ngIf="settings$ | async as settings">
+                  <span class="font-bold text-lg">
+                    {{ product.price | currency : settings.currencyCode : (translate.currentLang === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+                  </span>
+                  <span *ngIf="product.oldPrice && product.oldPrice > product.price"
+                    class="text-xs text-dim strikethrough opacity-60">
+                    {{ product.oldPrice | currency : settings.currencyCode : (translate.currentLang === 'ar' ? settings.currencySymbol : 'symbol') : '1.2-2' }}
+                  </span>
+                </div>
+                <div class="flex flex-column" *ngIf="!(settings$ | async)">
                   <span class="font-bold text-lg">{{ product.price | currency }}</span>
                   <span *ngIf="product.oldPrice && product.oldPrice > product.price"
                     class="text-xs text-dim strikethrough opacity-60">
