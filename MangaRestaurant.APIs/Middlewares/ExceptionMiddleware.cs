@@ -2,7 +2,6 @@ using MangaRestaurant.APIs.Errors;
 using System.Net;
 using System.Text.Json;
 using Microsoft.Extensions.Localization;
-using MangaRestaurant.APIs.Resources;
 
 namespace MangaRestaurant.APIs.Middlewares
 {

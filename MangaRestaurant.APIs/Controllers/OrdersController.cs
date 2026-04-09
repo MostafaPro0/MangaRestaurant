@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using MangaRestaurant.Core.Entities.Identity;
 using System.Security.Claims;
 using Microsoft.Extensions.Localization;
-using MangaRestaurant.APIs.Resources;
+using MangaRestaurant.APIs;
 
 namespace MangaRestaurant.APIs.Controllers
 {

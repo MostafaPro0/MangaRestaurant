@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using Microsoft.Extensions.Localization;
-using MangaRestaurant.APIs.Resources;
+using MangaRestaurant.APIs;
 
 namespace MangaRestaurant.APIs.Controllers
 {

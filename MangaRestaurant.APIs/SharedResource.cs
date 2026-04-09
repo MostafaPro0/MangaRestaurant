@@ -1,4 +1,4 @@
-namespace MangaRestaurant.APIs.Resources
+namespace MangaRestaurant.APIs
 {
     public class SharedResource
     {

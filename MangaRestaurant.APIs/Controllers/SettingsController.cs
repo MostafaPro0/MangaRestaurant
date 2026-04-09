@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Localization;
-using MangaRestaurant.APIs.Resources;
+using MangaRestaurant.APIs;
 
 namespace MangaRestaurant.APIs.Controllers
 {
