@@ -1,4 +1,4 @@
-﻿using MangaRestaurant.Core.Entities.Order;
+using MangaRestaurant.Core.Entities.Order;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +15,8 @@ namespace MangaRestaurant.Core.Service
         Task<IReadOnlyList<Order>> GetAllOrdersAsync();
         Task<Order> GetOrderByIdAsync(int orderId);
         Task<bool> UpdateOrderStatusAsync(int orderId, OrderStatus status);
+        Task<bool> AssignDeliveryPersonAsync(int orderId, string deliveryPersonId, string deliveryPersonName);
+        Task<bool> AssignWaiterAsync(int orderId, string waiterId, string waiterName);
         Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync();
     }
 }

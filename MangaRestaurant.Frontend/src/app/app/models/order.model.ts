@@ -28,8 +28,10 @@ export interface Order {
   orderStatus: OrderStatus;
   status?: OrderStatus;
   orderItems: OrderItem[];
-  subtotal: number;
+  discount: number;
   total: number;
+  deliveryPersonId?: number;
+  deliveryPersonName?: string;
 }
 
 export interface DeliveryMethod {

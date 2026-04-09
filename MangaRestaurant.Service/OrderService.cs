@@ -152,5 +152,28 @@ namespace MangaRestaurant.Service
 
             return result > 0;
         }
+
+        public async Task<bool> AssignDeliveryPersonAsync(int orderId, string deliveryPersonId, string deliveryPersonName)
+        {
+            var order = await _unitOfWork.Repository<Order>().GetAsync(orderId);
+            if (order == null) return false;
+
+            order.DeliveryPersonId = deliveryPersonId;
+            order.DeliveryPersonName = deliveryPersonName;
+            _unitOfWork.Repository<Order>().Update(order);
+            var result = await _unitOfWork.CompleteAsync();
+            return result > 0;
+        }
+
+        public async Task<bool> AssignWaiterAsync(int orderId, string waiterId, string waiterName)
+        {
+            var order = await _unitOfWork.Repository<Order>().GetAsync(orderId);
+            if (order == null) return false;
+
+            order.WaiterId = waiterId;
+            order.WaiterName = waiterName;
+            _unitOfWork.Repository<Order>().Update(order);
+            return await _unitOfWork.CompleteAsync() > 0;
+        }
     }
 }

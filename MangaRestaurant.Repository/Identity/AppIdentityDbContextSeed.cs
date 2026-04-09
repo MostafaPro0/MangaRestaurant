@@ -15,15 +15,20 @@ namespace MangaRestaurant.Repository.Identity
             var adminRoleName = "Admin";
             var userRoleName = "User";
 
-            if (!await roleManager.RoleExistsAsync(adminRoleName))
+            var cashierRoleName = "Cashier";
+            var deliveryRoleName = "Delivery";
+            var waiterRoleName = "Waiter";
+
+            var roles = new List<string> { adminRoleName, userRoleName, cashierRoleName, deliveryRoleName, waiterRoleName };
+
+            foreach (var role in roles)
             {
-                await roleManager.CreateAsync(new IdentityRole(adminRoleName));
+                if (!await roleManager.RoleExistsAsync(role))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(role));
+                }
             }
 
-            if (!await roleManager.RoleExistsAsync(userRoleName))
-            {
-                await roleManager.CreateAsync(new IdentityRole(userRoleName));
-            }
 
             // Seed default admin user (MostafaPro0@yahoo.com)
             if (!userManager.Users.Any(u => u.Email == "MostafaPro0@yahoo.com"))
@@ -41,6 +46,27 @@ namespace MangaRestaurant.Repository.Identity
                 if (createResult.Succeeded)
                 {
                     await userManager.AddToRoleAsync(adminUser, adminRoleName);
+                }
+            }
+
+            // Seed Staff Members
+            var staffMembers = new List<(AppUser user, string role, string password)>
+            {
+                (new AppUser { DisplayName = "أحمد محمد", Email = "ahmed_cashier@manga.com", UserName = "ahmed_cashier" }, cashierRoleName, "Ahmed123@"),
+                (new AppUser { DisplayName = "محمد صبحي", Email = "moh_delivery@manga.com", UserName = "moh_delivery" }, deliveryRoleName, "Mohamed123@"),
+                (new AppUser { DisplayName = "محمود حسن", Email = "mah_delivery@manga.com", UserName = "mah_delivery" }, deliveryRoleName, "Mahmoud123@"),
+                (new AppUser { DisplayName = "علي إبراهيم", Email = "ali_waiter@manga.com", UserName = "ali_waiter" }, waiterRoleName, "Ali123@")
+            };
+
+            foreach (var staff in staffMembers)
+            {
+                if (!userManager.Users.Any(u => u.Email == staff.user.Email))
+                {
+                    var result = await userManager.CreateAsync(staff.user, staff.password);
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(staff.user, staff.role);
+                    }
                 }
             }
 

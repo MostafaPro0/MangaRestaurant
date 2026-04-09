@@ -1,4 +1,4 @@
-﻿using MangaRestaurant.Core.Entities.Order;
+using MangaRestaurant.Core.Entities.Order;
 
 namespace MangaRestaurant.APIs.Dtos
 {
@@ -21,5 +21,14 @@ namespace MangaRestaurant.APIs.Dtos
         public decimal Total { get; set; }
 
         public string PaymentIntentId { get; set; }
+        
+        public string? CashierId { get; set; }
+        public string? CashierName { get; set; }
+
+        public string? DeliveryPersonId { get; set; }
+        public string? DeliveryPersonName { get; set; }
+
+        public string? WaiterId { get; set; }
+        public string? WaiterName { get; set; }
     }
 }

@@ -29,7 +29,10 @@ namespace MangaRestaurant.APIs.Helpers
             CreateMap<BasketItemDTO, BasketItem>().ReverseMap();
             CreateMap<Order, OrderToReturnDTO>()
                 .ForMember(D => D.DeliveryMethod, O => O.MapFrom(S => S.DeliveryMethod.ShortName))
-                .ForMember(D => D.DeliveryMethodCost, O => O.MapFrom(S => S.DeliveryMethod.Cost));
+                .ForMember(D => D.DeliveryMethodCost, O => O.MapFrom(S => S.DeliveryMethod.Cost))
+                .ForMember(D => D.DeliveryPersonName, O => O.MapFrom(S => S.DeliveryPersonName))
+                .ForMember(D => D.WaiterName, O => O.MapFrom(S => S.WaiterName))
+                .ForMember(D => D.CashierName, O => O.MapFrom(S => S.CashierName));
             CreateMap<OrderItem, OrderItemDTO>()
                 .ForMember(OI => OI.ProductId, O => O.MapFrom(S => S.ProductItemOrder.ProductId))
                 .ForMember(OI => OI.ProductName, O => O.MapFrom(S => S.ProductItemOrder.ProductName))

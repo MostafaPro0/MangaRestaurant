@@ -7,7 +7,9 @@ using MangaRestaurant.Core.Entities.Order;
 using MangaRestaurant.Core.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MangaRestaurant.Core.Entities.Identity;
 using System.Security.Claims;
 
 namespace MangaRestaurant.APIs.Controllers
@@ -18,13 +20,15 @@ namespace MangaRestaurant.APIs.Controllers
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _configuration;
+        private readonly UserManager<AppUser> _userManager;
 
-        public OrdersController(IOrderService orderService, IMapper mapper, IUnitOfWork unitOfWork, IConfiguration configuration)
+        public OrdersController(IOrderService orderService, IMapper mapper, IUnitOfWork unitOfWork, IConfiguration configuration, UserManager<AppUser> userManager)
         {
             _orderService = orderService;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _configuration = configuration;
+            _userManager = userManager;
         }
 
         private async Task EnrichOrderImages(OrderToReturnDTO mappedOrder)
@@ -169,6 +173,38 @@ namespace MangaRestaurant.APIs.Controllers
             var ok = await _orderService.UpdateOrderStatusAsync(orderId, status);
             if (!ok) return NotFound(new ApiResponse(404, $"Order {orderId} not updated"));
             return Ok(new ApiResponse(200, "Order status updated successfully"));
+        }
+
+        [HttpPut("{orderId}/assign-delivery")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<ApiResponse>> AssignDeliveryPerson(int orderId, [FromBody] AssignDeliveryRequest request)
+        {
+            if (request == null || string.IsNullOrEmpty(request.EmployeeId))
+                return BadRequest(new ApiResponse(400, "EmployeeId is required"));
+
+            var user = await _userManager.FindByIdAsync(request.EmployeeId);
+            if (user == null) return NotFound(new ApiResponse(404, "Delivery person not found"));
+
+            var ok = await _orderService.AssignDeliveryPersonAsync(orderId, request.EmployeeId, user.DisplayName);
+            if (!ok) return NotFound(new ApiResponse(404, $"Order {orderId} not updated"));
+
+            return Ok(new ApiResponse(200, "Delivery person assigned successfully"));
+        }
+
+        [HttpPut("{orderId}/assign-waiter")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<ApiResponse>> AssignWaiter(int orderId, [FromBody] AssignDeliveryRequest request)
+        {
+            if (request == null || string.IsNullOrEmpty(request.EmployeeId))
+                return BadRequest(new ApiResponse(400, "EmployeeId is required"));
+
+            var user = await _userManager.FindByIdAsync(request.EmployeeId);
+            if (user == null) return NotFound(new ApiResponse(404, "Waiter not found"));
+
+            var ok = await _orderService.AssignWaiterAsync(orderId, request.EmployeeId, user.DisplayName);
+            if (!ok) return NotFound(new ApiResponse(404, $"Order {orderId} not updated"));
+
+            return Ok(new ApiResponse(200, "Waiter assigned successfully"));
         }
 
         [ProducesResponseType(typeof(AdminReportDTO), StatusCodes.Status200OK)]

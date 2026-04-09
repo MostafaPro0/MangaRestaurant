@@ -12,12 +12,24 @@ export class AdminService {
     return this.api.get<any>('Orders/Admin/Report');
   }
 
-  getEmployees(): Observable<any> {
-    return this.api.get<any>('Employee');
+  getUsers(): Observable<any[]> {
+    return this.api.get<any[]>('Accounts/All');
   }
 
-  getEmployee(id: number): Observable<any> {
-    return this.api.get<any>(`Employee/${id}`);
+  getUsersByRole(role: string): Observable<any[]> {
+    return this.api.get<any[]>(`Accounts/ListByRole?role=${role}`);
+  }
+
+  createUser(user: any, role: string): Observable<any> {
+    return this.api.post<any>(`Accounts/Admin/Create?role=${role}`, user);
+  }
+
+  updateUserRole(userId: string, role: string): Observable<any> {
+    return this.api.put<any>(`Accounts/Admin/UpdateRole?userId=${userId}&role=${role}`, {});
+  }
+
+  deleteUser(userId: string): Observable<any> {
+    return this.api.delete<any>(`Accounts/Admin/Delete/${userId}`);
   }
 
   uploadProductImage(file: File): Observable<string> {

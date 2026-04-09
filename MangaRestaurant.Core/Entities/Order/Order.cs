@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -39,5 +39,14 @@ namespace MangaRestaurant.Core.Entities.Order
         public decimal GetTotal() => (SubTotal - Discount) + DeliveryMethod.Cost;
 
         public string PaymentIntentId { get; set; }
+
+        public string? CashierId { get; set; }
+        public string? CashierName { get; set; }
+
+        public string? DeliveryPersonId { get; set; }
+        public string? DeliveryPersonName { get; set; }
+
+        public string? WaiterId { get; set; }
+        public string? WaiterName { get; set; }
     }
 }

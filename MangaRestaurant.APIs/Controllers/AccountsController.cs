@@ -210,6 +210,89 @@ namespace MangaRestaurant.APIs.Controllers
             return await _userManager.FindByEmailAsync(email) is not null;
         }
 
+        [HttpGet("ListByRole")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> ListByRole(string role)
+        {
+            var users = await _userManager.GetUsersInRoleAsync(role);
+            var dtos = new List<UserDTO>();
+            foreach (var user in users)
+            {
+                var dto = await CreateUserDtoAsync(user);
+                dto.Role = role;
+                dtos.Add(dto);
+            }
+            return Ok(dtos);
+        }
+
+        [HttpGet("All")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
+        {
+            var users = _userManager.Users.ToList();
+            var dtos = new List<UserDTO>();
+            foreach (var user in users)
+            {
+                var dto = await CreateUserDtoAsync(user);
+                var roles = await _userManager.GetRolesAsync(user);
+                dto.Role = roles.FirstOrDefault();
+                dtos.Add(dto);
+            }
+            return Ok(dtos);
+        }
+
+        [HttpPost("Admin/Create")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<UserDTO>> CreateUserByAdmin(RegisterDTO model, [FromQuery] string role = "User")
+        {
+            if (await CheclEmailExist(model.Email).ContinueWith(t => t.Result.Value))
+                return BadRequest(new ApiResponse(400, "Email already exists"));
+
+            var user = new AppUser
+            {
+                DisplayName = model.DisplayName,
+                Email = model.Email,
+                UserName = model.Email.Split('@')[0],
+                PhoneNumber = model.PhoneNumber
+            };
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded) return BadRequest(new ApiResponse(400, "Failed to create user"));
+
+            await _userManager.AddToRoleAsync(user, role);
+
+            var dto = await CreateUserDtoAsync(user);
+            dto.Role = role;
+            return Ok(dto);
+        }
+
+        [HttpPut("Admin/UpdateRole")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> UpdateUserRole([FromQuery] string userId, [FromQuery] string role)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound(new ApiResponse(404, "User not found"));
+
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, currentRoles);
+            await _userManager.AddToRoleAsync(user, role);
+
+            return Ok(new ApiResponse(200, "User role updated successfully"));
+        }
+
+        [HttpDelete("Admin/Delete/{userId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> DeleteUser(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound(new ApiResponse(404, "User not found"));
+
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded) return BadRequest(new ApiResponse(400, "Failed to delete user"));
+
+            return Ok(new ApiResponse(200, "User deleted successfully"));
+        }
+
         [HttpPost("GoogleLogin")]
         public async Task<ActionResult<UserDTO>> GoogleLogin(GoogleLoginDTO googleAuth)
         {

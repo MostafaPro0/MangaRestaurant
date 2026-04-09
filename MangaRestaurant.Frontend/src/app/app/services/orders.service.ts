@@ -93,5 +93,9 @@ export class OrdersService {
     // API expects a DTO with PascalCase 'Status' property
     return this.api.put<Order>(`Orders/${orderId}/status`, { Status: status });
   }
+
+  assignDelivery(orderId: number, employeeId: number): Observable<any> {
+    return this.api.put(`Orders/${orderId}/assign-delivery`, { EmployeeId: employeeId });
+  }
 }
 

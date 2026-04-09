@@ -214,12 +214,13 @@
         <p-table *ngIf="!loadingOrders" [value]="filteredOrders" [rows]="10" [paginator]="true" class="custom-table">
           <ng-template pTemplate="header">
             <tr>
-              <th style="width: 10%">{{ 'ORDERS.ID' | translate }}</th>
-              <th style="width: 20%">{{ 'ORDERS.DATE' | translate }}</th>
-              <th style="width: 15%">{{ 'ORDERS.TOTAL' | translate }}</th>
+              <th style="width: 8%">{{ 'ORDERS.ID' | translate }}</th>
+              <th style="width: 15%">{{ 'ORDERS.DATE' | translate }}</th>
+              <th style="width: 12%">{{ 'ORDERS.TOTAL' | translate }}</th>
               <th style="width: 15%">{{ 'ORDERS.STATUS' | translate }}</th>
-              <th style="width: 15%">{{ (translateService.currentLang === 'ar' ? 'النوع' : 'Type') }}</th>
-              <th style="width: 25%" class="text-center">{{ 'ADMIN.ORDERS.STATUS_UPDATE' | translate }}</th>
+              <th style="width: 12%">{{ (translateService.currentLang === 'ar' ? 'النوع' : 'Type') }}</th>
+              <th style="width: 18%">{{ (translateService.currentLang === 'ar' ? 'مسؤول التوصيل' : 'Delivery Person') }}</th>
+              <th style="width: 20%" class="text-center">{{ 'ADMIN.ORDERS.STATUS_UPDATE' | translate }}</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-order>
@@ -244,6 +245,19 @@
                        [value]="((order.deliveryMethod || '').toLowerCase().includes('dine') ? (translateService.currentLang === 'ar' ? 'داخل المطعم' : 'Dine-In') : (translateService.currentLang === 'ar' ? 'توصيل' : 'Delivery'))"
                        [rounded]="true" class="font-bold">
                 </p-tag>
+              </td>
+              <td>
+                <div class="flex align-items-center gap-2" *ngIf="!(order.deliveryMethod || '').toLowerCase().includes('dine')">
+                  <p-dropdown [options]="deliveryEmployees" [(ngModel)]="orderDeliveryAssignee[order.id]" 
+                    optionLabel="name" optionValue="id" [placeholder]="(translateService.currentLang === 'ar' ? 'اختر عامل' : 'Select Driver')"
+                    appendTo="body" class="p-inputtext-sm w-full">
+                  </p-dropdown>
+                  <button pButton icon="pi pi-user-plus" class="p-button-rounded p-button-text p-button-info p-button-sm"
+                    (click)="updateOrderDelivery(order.id)" 
+                    [pTooltip]="(translateService.currentLang === 'ar' ? 'تعيين' : 'Assign')"
+                    [disabled]="!orderDeliveryAssignee[order.id]"></button>
+                </div>
+                <span class="text-dim italic" *ngIf="(order.deliveryMethod || '').toLowerCase().includes('dine')">N/A</span>
               </td>
               <td class="text-center">
                 <div class="flex align-items-center justify-content-center gap-2">
@@ -331,42 +345,78 @@
         </p-table>
       </div>
 
-      <!-- Tab 4: Employees -->
+      <!-- Tab 4: Staff Management -->
       <div *ngIf="activeTab === 'users'" class="tab-content animate-fade p-3 md:p-4">
-        <!-- Skeleton for employees table -->
-        <ng-container *ngIf="loadingEmployees">
-          <div class="flex gap-3 mb-3 px-1">
-            <p-skeleton width="40%" height="1rem"></p-skeleton>
-            <p-skeleton width="40%" height="1rem"></p-skeleton>
-            <p-skeleton width="20%" height="1rem"></p-skeleton>
-          </div>
-          <div *ngFor="let i of [1,2,3,4,5]"
-            class="flex gap-3 align-items-center py-3 border-bottom-1 surface-border px-1">
-            <p-skeleton width="40%" height="1.2rem"></p-skeleton>
-            <p-skeleton width="40%" height="1.2rem"></p-skeleton>
-            <p-skeleton width="20%" height="1.8rem" borderRadius="20px"></p-skeleton>
-          </div>
-        </ng-container>
-        <p-table *ngIf="!loadingEmployees" [value]="employees" [paginator]="true" [rows]="10" class="custom-table">
+        <div class="flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+          <h2 class="m-0 flex align-items-center gap-2">
+            <i class="pi pi-users text-primary"></i>
+            {{ (translateService.currentLang === 'ar' ? 'إدارة الموظفين' : 'Staff Management') }}
+          </h2>
+          <button pButton label="{{ (translateService.currentLang === 'ar' ? 'إضافة موظف جديد' : 'Add New Staff') }}" 
+                  icon="pi pi-plus" class="p-button-raised p-button-rounded p-button-success" (click)="userDialog = true"></button>
+        </div>
+
+        <p-table [value]="users" [loading]="loadingUsers" [rows]="10" [paginator]="true" class="custom-table staff-table shadow-2 border-round-xl">
           <ng-template pTemplate="header">
             <tr>
-              <th style="width: 40%">{{ 'ADMIN.EMPLOYEE_NAME' | translate }}</th>
-              <th style="width: 40%">{{ 'ADMIN.EMAIL' | translate }}</th>
-              <th style="width: 20%" class="text-center">{{ 'ADMIN.ROLE' | translate }}</th>
+              <th style="width: 25%">{{ (translateService.currentLang === 'ar' ? 'الاسم' : 'Name') }}</th>
+              <th style="width: 25%">{{ (translateService.currentLang === 'ar' ? 'البريد الإلكتروني' : 'Email') }}</th>
+              <th style="width: 20%">{{ (translateService.currentLang === 'ar' ? 'الدور الحالي' : 'Current Role') }}</th>
+              <th style="width: 20%">{{ (translateService.currentLang === 'ar' ? 'تغيير الدور' : 'Change Role') }}</th>
+              <th style="width: 10%" class="text-center">{{ (translateService.currentLang === 'ar' ? 'إجراءات' : 'Actions') }}</th>
             </tr>
           </ng-template>
-          <ng-template pTemplate="body" let-employee>
-            <tr>
-              <td>{{ employee.userName }}</td>
-              <td>{{ employee.email }}</td>
+          <ng-template pTemplate="body" let-user>
+            <tr class="animate-fade">
+              <td class="font-bold">{{ user.displayName }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                <p-tag [severity]="user.role === 'Admin' ? 'danger' : (user.role === 'User' ? 'info' : 'warning')" 
+                       [value]="user.role"></p-tag>
+              </td>
+              <td>
+                <p-dropdown [options]="roleOptions" [(ngModel)]="user.role" 
+                  (onChange)="onRoleChange(user, $event.value)" appendTo="body" class="p-inputtext-sm w-full">
+                </p-dropdown>
+              </td>
               <td class="text-center">
-                <span class="p-tag p-tag-success">{{ 'ADMIN.ROLE_ADMIN' | translate }}</span>
+                <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"
+                  (click)="onDeleteUser(user.id)" [pTooltip]="(translateService.currentLang === 'ar' ? 'حذف' : 'Delete')"></button>
               </td>
             </tr>
           </ng-template>
         </p-table>
       </div>
+      <!-- User Dialog -->
+      <p-dialog [(visible)]="userDialog" [style]="{width: '450px'}" 
+                [header]="(translateService.currentLang === 'ar' ? 'إضافة موظف جديد' : 'Add New Staff')" 
+                [modal]="true" styleClass="p-fluid glass-panel">
+        <ng-template pTemplate="content">
+          <div class="field mb-3">
+            <label for="name">{{ (translateService.currentLang === 'ar' ? 'الاسم' : 'Name') }}</label>
+            <input type="text" pInputText id="name" [(ngModel)]="newUser.displayName" required autofocus />
+          </div>
+          <div class="field mb-3">
+            <label for="email">{{ (translateService.currentLang === 'ar' ? 'البريد الإلكتروني' : 'Email') }}</label>
+            <input type="email" pInputText id="email" [(ngModel)]="newUser.email" required />
+          </div>
+          <div class="field mb-3">
+            <label for="password">{{ (translateService.currentLang === 'ar' ? 'كلمة المرور' : 'Password') }}</label>
+            <input type="password" pInputText id="password" [(ngModel)]="newUser.password" required />
+          </div>
+          <div class="field mb-3">
+            <label for="role">{{ (translateService.currentLang === 'ar' ? 'الدور الوظيفي' : 'Functional Role') }}</label>
+            <p-dropdown [options]="roleOptions" [(ngModel)]="selectedUserRole" id="role" appendTo="body"></p-dropdown>
+          </div>
+        </ng-template>
 
+        <ng-template pTemplate="footer">
+          <button pButton label="{{ (translateService.currentLang === 'ar' ? 'إلغاء' : 'Cancel') }}" 
+                  icon="pi pi-times" class="p-button-text" (click)="userDialog = false"></button>
+          <button pButton label="{{ (translateService.currentLang === 'ar' ? 'حفظ' : 'Save') }}" 
+                  icon="pi pi-check" class="p-button-raised" (click)="saveUser()"></button>
+        </ng-template>
+      </p-dialog>
       <!-- Tab 5: Site Settings -->
       <div *ngIf="activeTab === 'settings'" class="tab-content animate-fade p-3 md:p-4">
         <div class="settings-form max-w-5xl mx-auto">

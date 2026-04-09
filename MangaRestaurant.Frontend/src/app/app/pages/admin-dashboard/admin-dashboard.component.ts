@@ -73,11 +73,21 @@ export class AdminDashboardComponent implements OnInit {
   reportData: any = null;
   orders: any[] = [];
   products: any[] = [];
-  employees: any[] = [];
+  users: any[] = [];
   loadingOrders: boolean = false;
   loadingReports: boolean = false;
   loadingProducts: boolean = false;
-  loadingEmployees: boolean = false;
+  loadingUsers: boolean = false;
+  userDialog: boolean = false;
+  newUser: any = { displayName: '', email: '', password: '', phoneNumber: '' };
+  selectedUserRole: string = 'User';
+  roleOptions: any[] = [
+    { label: 'Admin', value: 'Admin' },
+    { label: 'Cashier', value: 'Cashier' },
+    { label: 'Delivery', value: 'Delivery' },
+    { label: 'Waiter', value: 'Waiter' },
+    { label: 'User', value: 'User' }
+  ];
   categories: any[] = [];
   brands: any[] = [];
   uploadingImage: boolean = false;
@@ -110,6 +120,8 @@ export class AdminDashboardComponent implements OnInit {
   }
   
   orderStatusDraft: { [key: number]: string } = {};
+  deliveryEmployees: any[] = [];
+  orderDeliveryAssignee: { [key: number]: number } = {};
 
   selectedOrderType: string = 'All';
   
@@ -187,7 +199,12 @@ export class AdminDashboardComponent implements OnInit {
     this.loadingOrders = true;
     this.ordersService.getAllOrdersAdmin().subscribe(orders => {
       this.orders = orders;
-      orders.forEach(o => this.orderStatusDraft[o.id] = o.orderStatus || o.status || 'Pending');
+      orders.forEach(o => {
+          this.orderStatusDraft[o.id] = o.orderStatus || o.status || 'Pending';
+          if (o.deliveryPersonId) {
+              this.orderDeliveryAssignee[o.id] = o.deliveryPersonId;
+          }
+      });
       this.loadingOrders = false;
     });
 
@@ -197,14 +214,67 @@ export class AdminDashboardComponent implements OnInit {
       this.loadingProducts = false;
     });
 
-    this.loadingEmployees = true;
-    this.adminService.getEmployees().subscribe(e => {
-      this.employees = e;
-      this.loadingEmployees = false;
+    this.loadingUsers = true;
+    this.adminService.getUsers().subscribe(u => {
+      this.users = u;
+      this.deliveryEmployees = u.filter((user: any) => user.role === 'Delivery');
+      this.loadingUsers = false;
     });
 
     this.productsService.getCategories().subscribe(c => this.categories = c);
     this.productsService.getBrands().subscribe(b => this.brands = b);
+  }
+
+  saveUser() {
+    this.adminService.createUser(this.newUser, this.selectedUserRole).subscribe({
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User created' });
+        this.userDialog = false;
+        this.loadAllData();
+      },
+      error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to create user' })
+    });
+  }
+
+  onRoleChange(user: any, newRole: string) {
+    this.adminService.updateUserRole(user.id, newRole).subscribe({
+      next: () => this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Role updated' }),
+      error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update role' })
+    });
+  }
+
+  onDeleteUser(userId: string) {
+    if (confirm('Are you sure you want to delete this user?')) {
+      this.adminService.deleteUser(userId).subscribe({
+        next: () => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User deleted' });
+          this.loadAllData();
+        },
+        error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete user' })
+      });
+    }
+  }
+
+  updateOrderDelivery(orderId: number) {
+      const employeeId = this.orderDeliveryAssignee[orderId];
+      if (!employeeId) return;
+
+      this.ordersService.assignDelivery(orderId, employeeId).subscribe({
+          next: () => {
+              this.messageService.add({ 
+                  severity: 'success', 
+                  summary: 'Success', 
+                  detail: this.translateService.currentLang === 'ar' ? 'تم تعيين عامل التوصيل بنجاح' : 'Delivery person assigned' 
+              });
+          },
+          error: () => {
+            this.messageService.add({ 
+                severity: 'error', 
+                summary: 'Error', 
+                detail: this.translateService.currentLang === 'ar' ? 'فشل التعيين' : 'Assignment failed' 
+            });
+          }
+      });
   }
 
   setActiveTab(tab: string) {
@@ -221,7 +291,7 @@ export class AdminDashboardComponent implements OnInit {
       { label: 'ADMIN.TOTAL_ORDERS', value: this.reportData.totalOrders, icon: 'pi pi-shopping-bag', colorClass: 'sales' },
       { label: 'ADMIN.TOTAL_REVENUE', value: this.formatCurrency(this.reportData.revenue, settings), icon: 'pi pi-money-bill', colorClass: 'revenue' },
       { label: 'ADMIN.AVG_ORDER_VALUE', value: this.formatCurrency(this.reportData.averageOrderValue, settings), icon: 'pi pi-chart-bar', colorClass: 'avg' },
-      { label: 'ADMIN.TOTAL_EMPLOYEES', value: this.employees.length, icon: 'pi pi-users', colorClass: 'users' }
+      { label: 'ADMIN.TOTAL_USERS', value: this.users.length, icon: 'pi pi-users', colorClass: 'users' }
     ];
   }
 
