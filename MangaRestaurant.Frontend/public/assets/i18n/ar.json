@@ -293,7 +293,7 @@
     "CHART_STATUS": "توزيع حالات الطلبات",
     "CHART_PEAK_HOURS": "ساعات الذروة (توقيت الطلبات)",
     "CHART_TOP_SELLERS": "الأصناف الأكثر مبيعاً",
-    "CHART_DELIVERY": "طرق التوصيل المفضلة",
+    "CHART_DRIVERS": "أفضل مناديب التوصيل",
     "TOTAL_ORDERS": "إجمالي الطلبات",
     "TOTAL_REVENUE": "إجمالي الإيرادات",
     "AVG_ORDER_VALUE": "متوسط قيمة الطلب",

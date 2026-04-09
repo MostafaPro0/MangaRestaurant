@@ -11,7 +11,7 @@ namespace MangaRestaurant.APIs.Dtos
         public List<DailySalesDTO> SalesLast7Days { get; set; } = new();
         public List<TopProductDTO> TopProducts { get; set; } = new();
         public List<TopCategoryDTO> TopCategories { get; set; } = new();
-        public List<TopDeliveryDTO> TopDeliveryMethods { get; set; } = new();
+        public List<TopDriverDTO> TopDrivers { get; set; } = new();
         public List<PeakHourDTO> PeakHours { get; set; } = new();
         public List<TopEmployeeDTO> TopEmployees { get; set; } = new();
     }
@@ -23,7 +23,7 @@ namespace MangaRestaurant.APIs.Dtos
         public decimal TotalRevenue { get; set; }
     }
 
-    public class TopDeliveryDTO
+    public class TopDriverDTO
     {
         public string Name { get; set; }
         public int Count { get; set; }

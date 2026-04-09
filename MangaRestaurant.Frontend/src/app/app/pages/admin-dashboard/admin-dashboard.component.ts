@@ -118,7 +118,7 @@ export class AdminDashboardComponent implements OnInit {
   public peakHoursChartOptions!: Partial<ChartOptions>;
   public categoryChartOptions!: Partial<ChartOptions>;
   public topProductsChartOptions!: Partial<ChartOptions>;
-  public deliveryChartOptions!: Partial<ChartOptions>;
+  public driversChartOptions!: Partial<ChartOptions>;
 
   get orderStatusOptions() {
     return [
@@ -487,13 +487,13 @@ export class AdminDashboardComponent implements OnInit {
       plotOptions: { bar: { horizontal: true, borderRadius: 4 } }
     };
 
-    // 6. Delivery
-    this.deliveryChartOptions = {
-      series: report.topDeliveryMethods.map((d: any) => d.count),
-      labels: report.topDeliveryMethods.map((d: any) => isAr ? (d.nameAr || d.name) : d.name),
+    // 6. Drivers
+    this.driversChartOptions = {
+      series: report.topDrivers.map((d: any) => d.count),
+      labels: report.topDrivers.map((d: any) => d.name),
       chart: { type: 'donut', height: 300, background: 'transparent' },
       theme: { mode: themeMode as 'light' | 'dark' },
-      colors: ['#27ae60', '#f1c40f', '#e74c3c']
+      colors: ['#27ae60', '#f1c40f', '#e74c3c', '#2980b9', '#8e44ad']
     };
   }
 

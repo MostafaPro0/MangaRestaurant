@@ -109,7 +109,8 @@ namespace MangaRestaurant.Service
 
         public async Task<IReadOnlyList<Order>> GetAllOrdersAsync()
         {
-            return await _unitOfWork.Repository<Order>().GetAllAsync();
+            var spec = new OrderSpecificationsForAdmin();
+            return await _unitOfWork.Repository<Order>().GetAllAsyncWithSpecAsync(spec);
         }
 
         public async Task<Order> GetOrderByIdAsync(int orderId)

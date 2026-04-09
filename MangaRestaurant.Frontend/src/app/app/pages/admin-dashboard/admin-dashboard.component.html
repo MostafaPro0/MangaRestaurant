@@ -174,13 +174,12 @@
             </div>
           </div>
 
-          <!-- Row 5: Delivery Methods (Donut) -->
           <div class="col-12 lg:col-4">
             <div class="chart-container p-4 shadow-sm border-round-xl mb-4 h-full">
-              <h3 class="chart-title"><i class="pi pi-truck"></i> {{ 'ADMIN.CHART_DELIVERY' | translate }}</h3>
-              <apx-chart *ngIf="deliveryChartOptions" [series]="deliveryChartOptions.series!"
-                [chart]="deliveryChartOptions.chart!" [labels]="deliveryChartOptions.labels!"
-                [colors]="deliveryChartOptions.colors!">
+              <h3 class="chart-title"><i class="pi pi-id-card"></i> {{ 'ADMIN.CHART_DRIVERS' | translate }}</h3>
+              <apx-chart *ngIf="driversChartOptions" [series]="driversChartOptions.series!"
+                [chart]="driversChartOptions.chart!" [labels]="driversChartOptions.labels!"
+                [colors]="driversChartOptions.colors!">
               </apx-chart>
             </div>
           </div>

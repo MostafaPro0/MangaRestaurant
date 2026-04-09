@@ -273,14 +273,17 @@ namespace MangaRestaurant.APIs.Controllers
                 .Take(5)
                 .ToList();
 
-            // Calculate Delivery Types
-            var topDelivery = orders
-                .GroupBy(o => o.OrderType.ToString())
-                .Select(g => new TopDeliveryDTO
+            // Calculate Top Drivers (Most orders delivered)
+            var topDrivers = orders
+                .Where(o => !string.IsNullOrEmpty(o.DeliveryPersonId))
+                .GroupBy(o => o.DeliveryPersonName ?? o.DeliveryPersonId)
+                .Select(g => new TopDriverDTO
                 {
                     Name = g.Key,
                     Count = g.Count()
                 })
+                .OrderByDescending(x => x.Count)
+                .Take(5)
                 .ToList();
 
             // Calculate Peak Hours (from OrderDate)
@@ -305,7 +308,7 @@ namespace MangaRestaurant.APIs.Controllers
                 SalesLast7Days = last7Days,
                 TopProducts = topProducts,
                 TopCategories = topCategories,
-                TopDeliveryMethods = topDelivery,
+                TopDrivers = topDrivers,
                 PeakHours = peakHours,
                 TopEmployees = orders
                     .GroupBy(o => o.BuyerEmail)
