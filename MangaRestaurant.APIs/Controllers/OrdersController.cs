@@ -17,12 +17,49 @@ namespace MangaRestaurant.APIs.Controllers
         private readonly IOrderService _orderService;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IConfiguration _configuration;
 
-        public OrdersController(IOrderService orderService, IMapper mapper, IUnitOfWork unitOfWork)
+        public OrdersController(IOrderService orderService, IMapper mapper, IUnitOfWork unitOfWork, IConfiguration configuration)
         {
             _orderService = orderService;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _configuration = configuration;
+        }
+
+        private async Task EnrichOrderImages(OrderToReturnDTO mappedOrder)
+        {
+            if (mappedOrder == null) return;
+            var allProducts = await _unitOfWork.Repository<Product>().GetAllAsync();
+            var baseUrl = _configuration["BaseURL"];
+
+            foreach (var item in mappedOrder.Items)
+            {
+                var product = allProducts.FirstOrDefault(p => p.Id == item.ProductId);
+                if (product != null && !string.IsNullOrEmpty(product.PictureUrl))
+                {
+                    item.CurrentPictureUrl = $"{baseUrl}/{product.PictureUrl}";
+                }
+            }
+        }
+
+        private async Task EnrichOrderImages(IEnumerable<OrderToReturnDTO> mappedOrders)
+        {
+            if (mappedOrders == null || !mappedOrders.Any()) return;
+            var allProducts = await _unitOfWork.Repository<Product>().GetAllAsync();
+            var baseUrl = _configuration["BaseURL"];
+
+            foreach (var order in mappedOrders)
+            {
+                foreach (var item in order.Items)
+                {
+                    var product = allProducts.FirstOrDefault(p => p.Id == item.ProductId);
+                    if (product != null && !string.IsNullOrEmpty(product.PictureUrl))
+                    {
+                        item.CurrentPictureUrl = $"{baseUrl}/{product.PictureUrl}";
+                    }
+                }
+            }
         }
         //Create Order
         [ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
@@ -48,6 +85,7 @@ namespace MangaRestaurant.APIs.Controllers
             var orders = await _orderService.GetOrdersForSpecificUserAsync(buyerEmail);
             if (orders is null) return NotFound(new ApiResponse(404, "There is no Order for this User"));
             var mappedOrders = _mapper.Map<IReadOnlyList<Order>, IReadOnlyList<OrderToReturnDTO>>(orders);
+            await EnrichOrderImages(mappedOrders);
             return Ok(mappedOrders);
         }
 
@@ -61,6 +99,7 @@ namespace MangaRestaurant.APIs.Controllers
             var orders = await _orderService.GetOrderByIdForSpecificUserAsync(buyerEmail, orderId);
             if (orders is null) return NotFound(new ApiResponse(404, $"There is no Order with id={orderId}"));
             var mappedOrder = _mapper.Map<Order, OrderToReturnDTO>(orders);
+            await EnrichOrderImages(mappedOrder);
             return Ok(mappedOrder);
         }
 
@@ -72,6 +111,7 @@ namespace MangaRestaurant.APIs.Controllers
         {
             var orders = await _orderService.GetAllOrdersAsync();
             var mapped = _mapper.Map<IReadOnlyList<Order>, IReadOnlyList<OrderToReturnDTO>>(orders);
+            await EnrichOrderImages(mapped);
             return Ok(mapped);
         }
 
@@ -83,7 +123,9 @@ namespace MangaRestaurant.APIs.Controllers
         {
             var order = await _orderService.GetOrderByIdAsync(orderId);
             if (order is null) return NotFound(new ApiResponse(404, $"Order {orderId} not found"));
-            return Ok(_mapper.Map<Order, OrderToReturnDTO>(order));
+            var mappedOrder = _mapper.Map<Order, OrderToReturnDTO>(order);
+            await EnrichOrderImages(mappedOrder);
+            return Ok(mappedOrder);
         }
 
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]

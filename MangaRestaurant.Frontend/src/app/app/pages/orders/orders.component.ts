@@ -32,16 +32,37 @@ export class OrdersComponent implements OnInit {
   settings$: any;
 
   constructor(
-    private ordersService: OrdersService, 
-    private messageService: MessageService, 
+    private ordersService: OrdersService,
+    private messageService: MessageService,
     public translate: TranslateService,
     private settingsService: SettingsService
-  ) {}
+  ) { }
 
   getImageUrl(url: string | null | undefined): string {
-    if (!url) return 'assets/images/products/placeholder.png';
+    if (!url) return 'assets/images/placeholder.png';
     if (url.startsWith('http')) return url;
     return `${environment.apiUrl}${url}`;
+  }
+
+  onImageError(event: any, item: any) {
+    const img = event.target;
+    const placeholder = 'assets/images/placeholder.png'; // Updated path
+    
+    // Prevent infinite loop: if the current image is already the placeholder or a transparent dot, stop.
+    if (img.src.includes('data:image/gif;base64')) return;
+
+    // 1. Try current product image if old version fails
+    if (item.currentPictureUrl && img.src !== item.currentPictureUrl) {
+      img.src = item.currentPictureUrl;
+    } 
+    // 2. Try local placeholder if current image also fails
+    else if (!img.src.endsWith(placeholder)) {
+      img.src = placeholder;
+    } 
+    // 3. Absolute last resort: transparent 1x1 pixel to stop all loops
+    else {
+      img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+    }
   }
 
   statusSeverity(status: string): 'success' | 'info' | 'warn' | 'danger' | 'secondary' {

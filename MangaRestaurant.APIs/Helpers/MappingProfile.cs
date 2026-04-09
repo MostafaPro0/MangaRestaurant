@@ -34,7 +34,8 @@ namespace MangaRestaurant.APIs.Helpers
                 .ForMember(OI => OI.ProductId, O => O.MapFrom(S => S.ProductItemOrder.ProductId))
                 .ForMember(OI => OI.ProductName, O => O.MapFrom(S => S.ProductItemOrder.ProductName))
                 .ForMember(OI => OI.ProductNameAr, O => O.MapFrom(S => S.ProductItemOrder.ProductNameAr))
-                .ForMember(OI => OI.PictureUrl, O => O.MapFrom<OrderItemPictureUrlResolver>());
+                .ForMember(OI => OI.PictureUrl, O => O.MapFrom<OrderItemPictureUrlResolver>())
+                .ForMember(OI => OI.CurrentPictureUrl, O => O.Ignore());
 
             CreateMap<AppUser, UserDTO>()
                 .ForMember(d => d.ProfilePictureUrl, o => o.MapFrom<ProfilePictureUrlResolver>());
