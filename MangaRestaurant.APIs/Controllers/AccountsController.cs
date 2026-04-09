@@ -346,7 +346,7 @@ namespace MangaRestaurant.APIs.Controllers
                     };
 
                     var result = await _userManager.CreateAsync(user);
-                    if (!result.Succeeded) return BadRequest(new ApiResponse(400, "Failed to create user account"));
+                    if (!result.Succeeded) return BadRequest(new ApiResponse(400, _localizer["ACCOUNT_CREATE_FAILED"]));
 
                     await _userManager.AddToRoleAsync(user, "User");
                 }
@@ -358,7 +358,7 @@ namespace MangaRestaurant.APIs.Controllers
             }
             catch (Exception)
             {
-                return Unauthorized(new ApiResponse(401, "Invalid Google Token"));
+                return Unauthorized(new ApiResponse(401, _localizer["INVALID_GOOGLE_TOKEN"]));
             }
         }
 

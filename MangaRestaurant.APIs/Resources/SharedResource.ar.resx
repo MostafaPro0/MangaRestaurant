@@ -211,4 +211,10 @@
   <data name="INVALID_FILE_TYPE" xml:space="preserve">
     <value>نوع الملف غير صالح، يرجى اختيار صورة بصيغة (JPG, PNG أو WebP)</value>
   </data>
+  <data name="ACCOUNT_BANNED" xml:space="preserve">
+    <value>هذا الحساب معطل حاليا. يرجى التواصل مع الإدارة.</value>
+  </data>
+  <data name="INVALID_GOOGLE_TOKEN" xml:space="preserve">
+    <value>صلاحية دخول Google غير صالحة</value>
+  </data>
 </root>
