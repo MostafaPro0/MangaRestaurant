@@ -116,7 +116,13 @@ export class AppComponent {
     } else if (currentUrl.includes('/checkout')) {
       pageTitle = isAr ? 'إتمام الدفع' : 'Checkout';
     } else if (currentUrl.includes('/admin')) {
-      pageTitle = isAr ? 'لوحة التحكم' : 'Admin Control';
+      const tab = currentUrl.split('/').pop();
+      if (tab === 'reports') pageTitle = isAr ? 'التقارير' : 'Reports';
+      else if (tab === 'orders') pageTitle = isAr ? 'سجل الطلبات' : 'Order Log';
+      else if (tab === 'products') pageTitle = isAr ? 'المنتجات' : 'Products';
+      else if (tab === 'users') pageTitle = isAr ? 'الموظفين' : 'Employees';
+      else if (tab === 'settings') pageTitle = isAr ? 'الإعدادات' : 'Settings';
+      else pageTitle = isAr ? 'لوحة التحكم' : 'Admin Control';
     } else if (currentUrl.includes('/profile')) {
       pageTitle = isAr ? 'الملف الشخصي' : 'Profile';
     } else if (currentUrl.includes('/orders')) {

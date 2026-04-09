@@ -17,21 +17,21 @@
     <!-- 2. CUSTOM SYSTEM NAV -->
     <div class="custom-admin-nav p-3 border-bottom-1 flex-wrap gap-2"
       style="border-color: var(--glass-border) !important;">
-      <button class="nav-btn" [class.active]="activeTab === 'reports'" (click)="setActiveTab('reports')">
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'reports'" [routerLink]="['/admin', 'reports']">
         <i class="pi pi-chart-bar"></i> <span>{{ 'ADMIN.REPORTS' | translate }}</span>
-      </button>
-      <button class="nav-btn" [class.active]="activeTab === 'orders'" (click)="setActiveTab('orders')">
+      </a>
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'orders'" [routerLink]="['/admin', 'orders']">
         <i class="pi pi-shopping-cart"></i> <span>{{ 'ADMIN.ORDER_LOG' | translate }}</span>
-      </button>
-      <button class="nav-btn" [class.active]="activeTab === 'products'" (click)="setActiveTab('products')">
+      </a>
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'products'" [routerLink]="['/admin', 'products']">
         <i class="pi pi-box"></i> <span>{{ 'ADMIN.PRODUCTS' | translate }}</span>
-      </button>
-      <button class="nav-btn" [class.active]="activeTab === 'users'" (click)="setActiveTab('users')">
+      </a>
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'users'" [routerLink]="['/admin', 'users']">
         <i class="pi pi-users"></i> <span>{{ 'ADMIN.EMPLOYEES' | translate }}</span>
-      </button>
-      <button class="nav-btn" [class.active]="activeTab === 'settings'" (click)="setActiveTab('settings')">
+      </a>
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'settings'" [routerLink]="['/admin', 'settings']">
         <i class="pi pi-cog"></i> <span>{{ 'ADMIN.SETTINGS' | translate }}</span>
-      </button>
+      </a>
     </div>
 
     <!-- 3. Dynamic Content Area -->

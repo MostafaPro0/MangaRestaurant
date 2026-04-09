@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
@@ -118,11 +118,25 @@ export class AdminDashboardComponent implements OnInit {
     private ordersService: OrdersService,
     private settingsService: SettingsService,
     private messageService: MessageService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.settings$ = this.settingsService.settings$;
+    
+    // Listen to route params for tab sync
+    this.route.paramMap.subscribe(params => {
+      const tab = params.get('tab');
+      if (tab) {
+        this.activeTab = tab;
+        if (tab === 'reports' && this.reportData) {
+            setTimeout(() => this.updateCharts(this.reportData), 100);
+        }
+      }
+    });
+
     this.loadAllData();
     this.loadSettings();
     
