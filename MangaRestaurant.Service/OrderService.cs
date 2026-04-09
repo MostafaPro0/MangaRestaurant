@@ -78,7 +78,7 @@ namespace MangaRestaurant.Service
                 _unitOfWork.Repository<Order>().Delete(exOrder);
             }
 
-            var order = new Order(buyerEmail, orderShippingAddress, deliveryFee, orderItems, subTotal, basket.Discount, basket.PaymentIntentId, orderType);
+            var order = new Order(buyerEmail, orderShippingAddress, deliveryFee, orderItems, subTotal, 0, basket.PaymentIntentId, orderType);
 
             await _unitOfWork.Repository<Order>().AddAsync(order);
 
@@ -105,12 +105,6 @@ namespace MangaRestaurant.Service
             var spec = new OrderSpecifications(buyerEmail);
             var orders = _unitOfWork.Repository<Order>().GetAllAsyncWithSpecAsync(spec);
             return orders;
-        }
-
-        public async Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync()
-        {
-            var deliveryMethods = await _unitOfWork.Repository<DeliveryMethod>().GetAllAsync();
-            return deliveryMethods;
         }
 
         public async Task<IReadOnlyList<Order>> GetAllOrdersAsync()

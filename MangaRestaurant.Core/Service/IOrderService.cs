@@ -17,6 +17,5 @@ namespace MangaRestaurant.Core.Service
         Task<bool> UpdateOrderStatusAsync(int orderId, OrderStatus status);
         Task<bool> AssignDeliveryPersonAsync(int orderId, string deliveryPersonId, string deliveryPersonName);
         Task<bool> AssignWaiterAsync(int orderId, string waiterId, string waiterName);
-        Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync();
     }
 }

@@ -1,8 +1,8 @@
-﻿using MangaRestaurant.APIs.Errors;
+using MangaRestaurant.APIs.Errors;
 using MangaRestaurant.Core;
 using MangaRestaurant.Core.Entities;
 using MangaRestaurant.Core.RepositoriesContract;
-using MangaRestaurant.Core.Specifications.EmployeeSpecs;
+using MangaRestaurant.Core.Specifications.ProductCategorySpecs;
 using MangaRestaurant.Core.Specifications.ProductSpecs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

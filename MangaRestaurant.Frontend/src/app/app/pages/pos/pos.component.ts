@@ -139,7 +139,6 @@ export class PosComponent implements OnInit {
     // 2. Submit Order
     const orderPayload: OrderCreateRequest = {
       basketId: basket.id,
-      deliveryMethodId: 0, // No delivery method needed for Dine-In
       orderType: 1, // DineIn
       shippingAddress: {
         firstName: 'Dine-In',

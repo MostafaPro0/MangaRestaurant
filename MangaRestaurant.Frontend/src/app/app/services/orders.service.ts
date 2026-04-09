@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
-import { Order, OrderStatus, OrderCreateRequest, OrderItem, DeliveryMethod } from '../models/order.model';
+import { Order, OrderStatus, OrderCreateRequest, OrderItem } from '../models/order.model';
 import { map } from 'rxjs/operators';
 
 @Injectable({

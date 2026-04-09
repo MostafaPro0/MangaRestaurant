@@ -128,7 +128,7 @@ export class AdminDashboardComponent implements OnInit {
   get orderTypeOptions() {
     return [
       { label: this.translateService.currentLang === 'ar' ? 'الكل' : 'All', value: 'All' },
-      { label: this.translateService.currentLang === 'ar' ? 'داخل المطعم' : 'Dine-In', value: 'Dine-In' },
+      { label: this.translateService.currentLang === 'ar' ? 'داخل المطعم' : 'Dine-In', value: 'DineIn' },
       { label: this.translateService.currentLang === 'ar' ? 'توصيل/سفري' : 'Delivery/TakeAway', value: 'Delivery' }
     ];
   }
@@ -136,14 +136,7 @@ export class AdminDashboardComponent implements OnInit {
   get filteredOrders() {
     if (this.selectedOrderType === 'All') return this.orders;
     
-    return this.orders.filter(o => {
-      const method = (o.deliveryMethod || '').toLowerCase();
-      if (this.selectedOrderType === 'Dine-In') {
-        return method.includes('dine') || method.includes('pos');
-      } else {
-        return !method.includes('dine') && !method.includes('pos');
-      }
-    });
+    return this.orders.filter(o => o.orderType === this.selectedOrderType);
   }
 
   // Dialog Control

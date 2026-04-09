@@ -1,4 +1,4 @@
-﻿using MangaRestaurant.Core;
+using MangaRestaurant.Core;
 using MangaRestaurant.Core.Entities;
 using MangaRestaurant.Core.Entities.Order;
 using MangaRestaurant.Core.RepositoriesContract;
@@ -32,12 +32,8 @@ namespace MangaRestaurant.Service
             StripeConfiguration.ApiKey = _configuration["StripeKeys:SecretKey"];
             var basket = await _basketRepository.GetBasketAsync(basketId);
             if (basket is null) return null;
-            var shippingCost = 0M;
-            if (basket.DeliveryMethodId.HasValue)
-            {
-                var deliveryMethod = await _unitOfWork.Repository<DeliveryMethod>().GetAsync(basket.DeliveryMethodId.Value);
-                shippingCost = deliveryMethod.Cost;
-            }
+            var settings = await _unitOfWork.Repository<SiteSettings>().GetAllAsync();
+            var shippingCost = settings.FirstOrDefault()?.DeliveryFee ?? 0;
             if (basket.Items.Count > 0)
             {
                 foreach (var item in basket.Items)

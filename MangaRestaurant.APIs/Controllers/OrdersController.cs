@@ -269,9 +269,9 @@ namespace MangaRestaurant.APIs.Controllers
                 .Take(5)
                 .ToList();
 
-            // Calculate Delivery Methods
+            // Calculate Delivery Types
             var topDelivery = orders
-                .GroupBy(o => o.DeliveryMethod.ShortName)
+                .GroupBy(o => o.OrderType.ToString())
                 .Select(g => new TopDeliveryDTO
                 {
                     Name = g.Key,
@@ -316,15 +316,6 @@ namespace MangaRestaurant.APIs.Controllers
                     .ToList()
             };
             return Ok(report);
-        }
-
-        [ProducesResponseType(typeof(IReadOnlyList<DeliveryMethod>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-        [HttpGet("DeliveryMethods")]
-        public async Task<ActionResult<IReadOnlyList<DeliveryMethod>>> GetDeliveryMethods()
-        {
-            var deliveryMethod = await _orderService.GetDeliveryMethodsAsync();
-            return Ok(deliveryMethod);
         }
     }
 }

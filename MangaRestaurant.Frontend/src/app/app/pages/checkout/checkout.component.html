@@ -130,7 +130,7 @@
             </span>
           </div>
           <div class="pt-4 mt-2 border-top-1 border-white-alpha-10 flex justify-content-between align-items-center">
-            <span class="text-xl font-bold">{{ 'CHECKOUT.TOTAL' | translate || 'Total' }}</span>
+            <span class="text-xl font-bold">{{ 'CHECKOUT.TOTAL' | translate }}</span>
             <span class="text-3xl font-bold text-primary">
               <ng-container *ngIf="translate.currentLanguage === 'ar'">
                 {{ (subtotal + settings.deliveryFee) | number : '1.2-2' }} {{ settings.currencySymbol }}
