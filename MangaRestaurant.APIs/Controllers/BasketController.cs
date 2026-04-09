@@ -6,6 +6,8 @@ using MangaRestaurant.Core.Entities;
 using MangaRestaurant.Core.RepositoriesContract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using MangaRestaurant.APIs.Resources;
 
 namespace MangaRestaurant.APIs.Controllers
 {
@@ -14,12 +16,14 @@ namespace MangaRestaurant.APIs.Controllers
         private readonly IBasketRepository _basketRepository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public BasketController(IBasketRepository basketRepository, IMapper mapper, IUnitOfWork unitOfWork)
+        public BasketController(IBasketRepository basketRepository, IMapper mapper, IUnitOfWork unitOfWork, IStringLocalizer<SharedResource> localizer)
         {
             _basketRepository = basketRepository;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _localizer = localizer;
         }
         // GET Or ReCreate Basket
         [HttpGet]//GET OR Create
@@ -56,7 +60,7 @@ namespace MangaRestaurant.APIs.Controllers
             var mappedBasket = _mapper.Map<CustomerBasketDTO, CustomerBasket>(basket);
             var createdOrUpdated = await _basketRepository.UpdateBasketAsync(mappedBasket);
 
-            return createdOrUpdated is null ? BadRequest(new ApiResponse(400, "You Have Problem in your basket")) : Ok(createdOrUpdated);
+            return createdOrUpdated is null ? BadRequest(new ApiResponse(400, _localizer["BASKET_ERROR"])) : Ok(createdOrUpdated);
         }
         // Delete Basket
         [HttpDelete]

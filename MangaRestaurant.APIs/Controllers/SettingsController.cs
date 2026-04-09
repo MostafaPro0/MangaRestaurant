@@ -7,6 +7,8 @@ using MangaRestaurant.Core.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Localization;
+using MangaRestaurant.APIs.Resources;
 
 namespace MangaRestaurant.APIs.Controllers
 {
@@ -15,12 +17,14 @@ namespace MangaRestaurant.APIs.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly INotificationService _notificationService;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public SettingsController(IUnitOfWork unitOfWork, IMapper mapper, INotificationService notificationService)
+        public SettingsController(IUnitOfWork unitOfWork, IMapper mapper, INotificationService notificationService, IStringLocalizer<SharedResource> localizer)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _notificationService = notificationService;
+            _localizer = localizer;
         }
 
         [HttpGet]
@@ -54,7 +58,7 @@ namespace MangaRestaurant.APIs.Controllers
 
             var result = await _unitOfWork.CompleteAsync();
 
-            if (result <= 0) return BadRequest(new ApiResponse(400, "Problem updating settings"));
+            if (result <= 0) return BadRequest(new ApiResponse(400, _localizer["SETTINGS_UPDATE_FAILED"]));
 
             // Notify ALL users about the settings update via SignalR
             await _notificationService.SendSettingsUpdatedNotification();

@@ -85,4 +85,130 @@
   <data name="ADDRESS_SAVED" xml:space="preserve">
     <value>Address saved successfully</value>
   </data>
+  <data name="ORDER_NOT_FOUND" xml:space="preserve">
+    <value>Sorry, this order was not found</value>
+  </data>
+  <data name="USER_ORDERS_NOT_FOUND" xml:space="preserve">
+    <value>No orders found for this user</value>
+  </data>
+  <data name="ORDER_SUCCESS" xml:space="preserve">
+    <value>Your order has been created successfully</value>
+  </data>
+  <data name="ORDER_STATUS_SUCCESS" xml:space="preserve">
+    <value>Order status updated successfully</value>
+  </data>
+  <data name="DELIVERY_ASSIGN_SUCCESS" xml:space="preserve">
+    <value>Delivery person assigned successfully</value>
+  </data>
+  <data name="WAITER_ASSIGN_SUCCESS" xml:space="preserve">
+    <value>Waiter assigned successfully</value>
+  </data>
+  <data name="ORDER_ERROR" xml:space="preserve">
+    <value>There was a problem processing your order</value>
+  </data>
+  <data name="ORDER_STATUS_ERROR" xml:space="preserve">
+    <value>Order status could not be updated</value>
+  </data>
+  <data name="REQUIRED_FIELD" xml:space="preserve">
+    <value>This field is required</value>
+  </data>
+  <data name="INVALID_STATUS" xml:space="preserve">
+    <value>Invalid order status</value>
+  </data>
+  <data name="FORBIDDEN_ACCESS" xml:space="preserve">
+    <value>You do not have permission to access this order</value>
+  </data>
+  <data name="IDENTICAL_PHONE_ERROR" xml:space="preserve">
+    <value>Entered phone numbers cannot be identical</value>
+  </data>
+  <data name="PROFILE_UPDATE_FAILED" xml:space="preserve">
+    <value>Failed to update profile information</value>
+  </data>
+  <data name="NO_FILE_UPLOADED" xml:space="preserve">
+    <value>No file selected for upload</value>
+  </data>
+  <data name="ADDRESS_ADD_FAILED" xml:space="preserve">
+    <value>An error occurred while adding the new address</value>
+  </data>
+  <data name="ADDRESS_NOT_FOUND" xml:space="preserve">
+    <value>Sorry, this address is not registered in our system</value>
+  </data>
+  <data name="ADDRESS_UPDATE_FAILED" xml:space="preserve">
+    <value>An error occurred while updating address information</value>
+  </data>
+  <data name="ADDRESS_DELETE_FAILED" xml:space="preserve">
+    <value>An error occurred while trying to delete the address</value>
+  </data>
+  <data name="USER_NOT_FOUND" xml:space="preserve">
+    <value>The requested user was not found</value>
+  </data>
+  <data name="USER_ROLE_UPDATED" xml:space="preserve">
+    <value>User permissions updated successfully</value>
+  </data>
+  <data name="USER_DELETED_SUCCESS" xml:space="preserve">
+    <value>User account deleted successfully</value>
+  </data>
+  <data name="PASSWORD_ADD_FAILED" xml:space="preserve">
+    <value>Failed to add the new password</value>
+  </data>
+  <data name="HAS_PASSWORD_ERROR" xml:space="preserve">
+    <value>This user already has a registered password, please use the change password feature</value>
+  </data>
+  <data name="ACCOUNT_CREATE_FAILED" xml:space="preserve">
+    <value>An error occurred while creating the new account</value>
+  </data>
+  <data name="PRODUCT_NOT_FOUND" xml:space="preserve">
+    <value>Sorry, this product is currently unavailable</value>
+  </data>
+  <data name="PRODUCT_UPDATE_FAILED" xml:space="preserve">
+    <value>Failed to update product information</value>
+  </data>
+  <data name="CATEGORY_NOT_FOUND" xml:space="preserve">
+    <value>The requested category was not found</value>
+  </data>
+  <data name="BRAND_NOT_FOUND" xml:space="preserve">
+    <value>The requested brand was not found</value>
+  </data>
+  <data name="PRODUCT_CREATE_FAILED" xml:space="preserve">
+    <value>An error occurred while trying to add the new product</value>
+  </data>
+  <data name="PRODUCT_DELETE_SUCCESS" xml:space="preserve">
+    <value>Product deleted successfully from the system</value>
+  </data>
+  <data name="PRODUCT_DELETE_FAILED" xml:space="preserve">
+    <value>Could not delete the product, please try again</value>
+  </data>
+  <data name="BASKET_ERROR" xml:space="preserve">
+    <value>A problem occurred while processing your shopping basket</value>
+  </data>
+  <data name="REVIEW_ADD_FAILED" xml:space="preserve">
+    <value>Sorry, we encountered a problem adding your review</value>
+  </data>
+  <data name="PAYMENT_INTENT_ERROR" xml:space="preserve">
+    <value>An error occurred while setting up the payment process</value>
+  </data>
+  <data name="ERROR_400" xml:space="preserve">
+    <value>Bad Request</value>
+  </data>
+  <data name="ERROR_401" xml:space="preserve">
+    <value>Unauthorized</value>
+  </data>
+  <data name="ERROR_403" xml:space="preserve">
+    <value>Forbidden</value>
+  </data>
+  <data name="ERROR_404" xml:space="preserve">
+    <value>Not Found</value>
+  </data>
+  <data name="ERROR_500" xml:space="preserve">
+    <value>Internal Server Error</value>
+  </data>
+  <data name="SETTINGS_UPDATE_FAILED" xml:space="preserve">
+    <value>Failed to update system settings</value>
+  </data>
+  <data name="SETTINGS_UPDATE_SUCCESS" xml:space="preserve">
+    <value>Settings updated successfully</value>
+  </data>
+  <data name="INVALID_FILE_TYPE" xml:space="preserve">
+    <value>Invalid file type. Only JPG, PNG and WebP are allowed</value>
+  </data>
 </root>

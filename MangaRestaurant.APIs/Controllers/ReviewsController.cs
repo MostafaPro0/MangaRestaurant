@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.Extensions.Localization;
+using MangaRestaurant.APIs.Resources;
 
 namespace MangaRestaurant.APIs.Controllers
 {
@@ -16,12 +18,14 @@ namespace MangaRestaurant.APIs.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly INotificationService _notificationService;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public ReviewsController(IUnitOfWork unitOfWork, IMapper mapper, INotificationService notificationService)
+        public ReviewsController(IUnitOfWork unitOfWork, IMapper mapper, INotificationService notificationService, IStringLocalizer<SharedResource> localizer)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _notificationService = notificationService;
+            _localizer = localizer;
         }
 
         [HttpPost]
@@ -38,7 +42,7 @@ namespace MangaRestaurant.APIs.Controllers
 
             // Optional: Check if product exists
             var product = await _unitOfWork.Repository<Product>().GetAsync(reviewDto.ProductId);
-            if (product == null) return NotFound(new ApiResponse(404, "Product not found"));
+            if (product == null) return NotFound(new ApiResponse(404, _localizer["PRODUCT_NOT_FOUND"]));
 
             var review = _mapper.Map<ProductReviewCreateDto, ProductReview>(reviewDto);
             review.Email = email;
@@ -47,7 +51,7 @@ namespace MangaRestaurant.APIs.Controllers
             await _unitOfWork.Repository<ProductReview>().AddAsync(review);
             var result = await _unitOfWork.CompleteAsync();
 
-            if (result <= 0) return BadRequest(new ApiResponse(400, "Problem adding review"));
+            if (result <= 0) return BadRequest(new ApiResponse(400, _localizer["REVIEW_ADD_FAILED"]));
 
             // Notify Admin
             await _notificationService.NotifyAdminNewReview(product.Name, review.UserName, review.Rating);

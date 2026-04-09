@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using MangaRestaurant.APIs.Resources;
 
 namespace MangaRestaurant.APIs.Controllers
 {
@@ -22,12 +24,14 @@ namespace MangaRestaurant.APIs.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly INotificationService _notificationService;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public ProductsController(IUnitOfWork unitOfWork, IMapper mapper, INotificationService notificationService)
+        public ProductsController(IUnitOfWork unitOfWork, IMapper mapper, INotificationService notificationService, IStringLocalizer<SharedResource> localizer)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _notificationService = notificationService;
+            _localizer = localizer;
         }
 
         [ProducesResponseType(typeof(ProductToReturnDto), StatusCodes.Status200OK)]
@@ -59,7 +63,7 @@ namespace MangaRestaurant.APIs.Controllers
             var product = await _unitOfWork.Repository<Product>().GetEntityWithSpecAsync(spec);
 
             if (product == null)
-                return NotFound(new ApiResponse(404, "Product Not Found"));
+                return NotFound(new ApiResponse(404, _localizer["PRODUCT_NOT_FOUND"]));
 
             // Increment Views Count
             product.Views++;
@@ -78,7 +82,7 @@ namespace MangaRestaurant.APIs.Controllers
             await _unitOfWork.Repository<Product>().AddAsync(product);
             var result = await _unitOfWork.CompleteAsync();
 
-            if (result <= 0) return BadRequest(new ApiResponse(400, "Problem Creating Product"));
+            if (result <= 0) return BadRequest(new ApiResponse(400, _localizer["PRODUCT_CREATE_FAILED"]));
 
             await _notificationService.SendNewProductNotification(product.Name);
 
@@ -95,7 +99,7 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult<ProductToReturnDto>> UpdateProduct(int id, ProductCreateDto productDto)
         {
             var product = await _unitOfWork.Repository<Product>().GetAsync(id);
-            if (product == null) return NotFound(new ApiResponse(404));
+            if (product == null) return NotFound(new ApiResponse(404, _localizer["PRODUCT_NOT_FOUND"]));
 
             // Capture old price before mapping
             var oldPrice = product.Price;
@@ -111,7 +115,7 @@ namespace MangaRestaurant.APIs.Controllers
             _unitOfWork.Repository<Product>().Update(product);
             var result = await _unitOfWork.CompleteAsync();
 
-            if (result <= 0) return BadRequest(new ApiResponse(400, "Problem Updating Product"));
+            if (result <= 0) return BadRequest(new ApiResponse(400, _localizer["PRODUCT_UPDATE_FAILED"]));
 
             // Notify all clients if the price has changed so they can update their baskets in real-time
             if (product.Price != oldPrice)
@@ -132,14 +136,14 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult> DeleteProduct(int id)
         {
             var product = await _unitOfWork.Repository<Product>().GetAsync(id);
-            if (product == null) return NotFound(new ApiResponse(404));
+            if (product == null) return NotFound(new ApiResponse(404, _localizer["PRODUCT_NOT_FOUND"]));
 
             _unitOfWork.Repository<Product>().Delete(product);
             var result = await _unitOfWork.CompleteAsync();
 
-            if (result <= 0) return BadRequest(new ApiResponse(400, "Problem Deleting Product"));
+            if (result <= 0) return BadRequest(new ApiResponse(400, _localizer["PRODUCT_DELETE_FAILED"]));
 
-            return Ok(new ApiResponse(200, "Product deleted successfully"));
+            return Ok(new ApiResponse(200, _localizer["PRODUCT_DELETE_SUCCESS"]));
         }
 
         [HttpGet("deals")]

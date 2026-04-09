@@ -7,16 +7,20 @@ using MangaRestaurant.Core.Specifications.ProductSpecs;
 using MangaRestaurant.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using MangaRestaurant.APIs.Resources;
 
 namespace MangaRestaurant.APIs.Controllers
 {
     public class ProductBrandController : BaseApiController
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public ProductBrandController(IUnitOfWork unitOfWork)
+        public ProductBrandController(IUnitOfWork unitOfWork, IStringLocalizer<SharedResource> localizer)
         {
             _unitOfWork = unitOfWork;
+            _localizer = localizer;
         }
 
         [ProducesResponseType(typeof(ProductBrand), StatusCodes.Status200OK)]
@@ -42,7 +46,7 @@ namespace MangaRestaurant.APIs.Controllers
             var productBrand = await _unitOfWork.Repository<ProductBrand>().GetEntityWithSpecAsync(spec);
 
             if (productBrand == null)
-                return NotFound(new ApiResponse(404, "Product Brand Not Found"));
+                return NotFound(new ApiResponse(404, _localizer["BRAND_NOT_FOUND"]));
 
             return Ok(productBrand);
         }

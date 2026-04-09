@@ -85,4 +85,130 @@
   <data name="ADDRESS_SAVED" xml:space="preserve">
     <value>تم حفظ العنوان بنجاح</value>
   </data>
+  <data name="ORDER_NOT_FOUND" xml:space="preserve">
+    <value>العذر، هذا الطلب غير موجود</value>
+  </data>
+  <data name="USER_ORDERS_NOT_FOUND" xml:space="preserve">
+    <value>لا توجد أي طلبات مسجلة لهذا المستخدم</value>
+  </data>
+  <data name="ORDER_SUCCESS" xml:space="preserve">
+    <value>تم إنشاء طلبك بنجاح</value>
+  </data>
+  <data name="ORDER_STATUS_SUCCESS" xml:space="preserve">
+    <value>تم تحديث حالة الطلب بنجاح</value>
+  </data>
+  <data name="DELIVERY_ASSIGN_SUCCESS" xml:space="preserve">
+    <value>تم تعيين عامل التوصيل بنجاح</value>
+  </data>
+  <data name="WAITER_ASSIGN_SUCCESS" xml:space="preserve">
+    <value>تم تعيين النادل بنجاح</value>
+  </data>
+  <data name="ORDER_ERROR" xml:space="preserve">
+    <value>حدثت مشكلة أثناء معالجة الطلب</value>
+  </data>
+  <data name="ORDER_STATUS_ERROR" xml:space="preserve">
+    <value>لا يمكن تحديث حالة هذا الطلب حالياً</value>
+  </data>
+  <data name="REQUIRED_FIELD" xml:space="preserve">
+    <value>هذا الحقل مطلوب</value>
+  </data>
+  <data name="INVALID_STATUS" xml:space="preserve">
+    <value>حالة الطلب غير صالحة</value>
+  </data>
+  <data name="FORBIDDEN_ACCESS" xml:space="preserve">
+    <value>ليس لديك صلاحية للوصول لهذا الطلب</value>
+  </data>
+  <data name="IDENTICAL_PHONE_ERROR" xml:space="preserve">
+    <value>أرقام الجوال المدخلة لا يمكن أن تكون متطابقة</value>
+  </data>
+  <data name="PROFILE_UPDATE_FAILED" xml:space="preserve">
+    <value>فشل في تحديث بيانات الملف الشخصي</value>
+  </data>
+  <data name="NO_FILE_UPLOADED" xml:space="preserve">
+    <value>لم يتم اختيار أي ملف للتحميل</value>
+  </data>
+  <data name="ADDRESS_ADD_FAILED" xml:space="preserve">
+    <value>حدث خطأ أثناء إضافة العنوان الجديد</value>
+  </data>
+  <data name="ADDRESS_NOT_FOUND" xml:space="preserve">
+    <value>العفو، هذا العنوان غير مسجل لدينا</value>
+  </data>
+  <data name="ADDRESS_UPDATE_FAILED" xml:space="preserve">
+    <value>حدث خطأ أثناء تحديث بيانات العنوان</value>
+  </data>
+  <data name="ADDRESS_DELETE_FAILED" xml:space="preserve">
+    <value>حدث خطأ أثناء محاولة حذف العنوان</value>
+  </data>
+  <data name="USER_NOT_FOUND" xml:space="preserve">
+    <value>المستخدم المطلوب غير موجود</value>
+  </data>
+  <data name="USER_ROLE_UPDATED" xml:space="preserve">
+    <value>تم تحديث صلاحيات المستخدم بنجاح</value>
+  </data>
+  <data name="USER_DELETED_SUCCESS" xml:space="preserve">
+    <value>تم حذف حساب المستخدم بنجاح</value>
+  </data>
+  <data name="PASSWORD_ADD_FAILED" xml:space="preserve">
+    <value>فشل في إضافة كلمة المرور الجديدة</value>
+  </data>
+  <data name="HAS_PASSWORD_ERROR" xml:space="preserve">
+    <value>هذا المستخدم لديه كلمة مرور مسجلة بالفعل، يرجى استخدام خاصية تغيير كلمة المرور</value>
+  </data>
+  <data name="ACCOUNT_CREATE_FAILED" xml:space="preserve">
+    <value>حدث خطأ أثناء إنشاء الحساب الجديد</value>
+  </data>
+  <data name="PRODUCT_NOT_FOUND" xml:space="preserve">
+    <value>العذر، هذا المنتج غير متوفر حالياً</value>
+  </data>
+  <data name="PRODUCT_UPDATE_FAILED" xml:space="preserve">
+    <value>فشل في تحديث بيانات المنتج</value>
+  </data>
+  <data name="CATEGORY_NOT_FOUND" xml:space="preserve">
+    <value>القسم المطلوب غير موجود</value>
+  </data>
+  <data name="BRAND_NOT_FOUND" xml:space="preserve">
+    <value>العلامة التجارية المطلوبة غير موجودة</value>
+  </data>
+  <data name="PRODUCT_CREATE_FAILED" xml:space="preserve">
+    <value>حدث خطأ أثناء محاولة إضافة المنتج الجديد</value>
+  </data>
+  <data name="PRODUCT_DELETE_SUCCESS" xml:space="preserve">
+    <value>تم حذف المنتج من النظام بنجاح</value>
+  </data>
+  <data name="PRODUCT_DELETE_FAILED" xml:space="preserve">
+    <value>تعذر حذف المنتج، يرجى المحاولة مرة أخرى</value>
+  </data>
+  <data name="BASKET_ERROR" xml:space="preserve">
+    <value>حدثت مشكلة أثناء معالجة سلة المشتريات الخاصة بك</value>
+  </data>
+  <data name="REVIEW_ADD_FAILED" xml:space="preserve">
+    <value>أسفين، واجهنا مشكلة أثناء إضافة تقييمك</value>
+  </data>
+  <data name="PAYMENT_INTENT_ERROR" xml:space="preserve">
+    <value>حدث خطأ أثناء إعداد عملية الدفع الإلكتروني</value>
+  </data>
+  <data name="ERROR_400" xml:space="preserve">
+    <value>طلب غير صالح (Bad Request)</value>
+  </data>
+  <data name="ERROR_401" xml:space="preserve">
+    <value>غير مصرح لك بالدخول (Unauthorized)</value>
+  </data>
+  <data name="ERROR_403" xml:space="preserve">
+    <value>ليس لديك صلاحية للوصول (Forbidden)</value>
+  </data>
+  <data name="ERROR_404" xml:space="preserve">
+    <value>المورد المطلوب غير موجود (Not Found)</value>
+  </data>
+  <data name="ERROR_500" xml:space="preserve">
+    <value>حدث خطأ داخلي في الخادم (Internal Server Error)</value>
+  </data>
+  <data name="SETTINGS_UPDATE_FAILED" xml:space="preserve">
+    <value>فشل في تحديث إعدادات النظام</value>
+  </data>
+  <data name="SETTINGS_UPDATE_SUCCESS" xml:space="preserve">
+    <value>تم تحديث الإعدادات بنجاح</value>
+  </data>
+  <data name="INVALID_FILE_TYPE" xml:space="preserve">
+    <value>نوع الملف غير صالح، يرجى اختيار صورة بصيغة (JPG, PNG أو WebP)</value>
+  </data>
 </root>

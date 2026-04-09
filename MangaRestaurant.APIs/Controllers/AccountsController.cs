@@ -96,7 +96,7 @@ namespace MangaRestaurant.APIs.Controllers
                 !string.IsNullOrEmpty(updatedProfile.PhoneNumber2) && 
                 updatedProfile.PhoneNumber == updatedProfile.PhoneNumber2)
             {
-                return BadRequest(new ApiResponse(400, "Phone number and secondary phone number cannot be identical"));
+                return BadRequest(new ApiResponse(400, _localizer["IDENTICAL_PHONE_ERROR"]));
             }
 
             user.DisplayName = updatedProfile.DisplayName;
@@ -110,7 +110,7 @@ namespace MangaRestaurant.APIs.Controllers
 
             var result = await _userManager.UpdateAsync(user);
 
-            if (!result.Succeeded) return BadRequest(new ApiResponse(400, "Failed to update profile"));
+            if (!result.Succeeded) return BadRequest(new ApiResponse(400, _localizer["PROFILE_UPDATE_FAILED"]));
 
             return Ok(await CreateUserDtoAsync(user));
         }
@@ -119,7 +119,7 @@ namespace MangaRestaurant.APIs.Controllers
         [HttpPost("UploadImage")]
         public async Task<ActionResult<string>> UploadProfileImage(IFormFile file)
         {
-            if (file == null || file.Length == 0) return BadRequest("No file uploaded");
+            if (file == null || file.Length == 0) return BadRequest(_localizer["NO_FILE_UPLOADED"].Value);
 
             var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "profiles");
             if (!Directory.Exists(folderPath))
@@ -163,7 +163,7 @@ namespace MangaRestaurant.APIs.Controllers
             user.UserAddresses.Add(address);
 
             var result = await _userManager.UpdateAsync(user);
-            if (!result.Succeeded) return BadRequest(new ApiResponse(400, "Could not add address"));
+            if (!result.Succeeded) return BadRequest(new ApiResponse(400, _localizer["ADDRESS_ADD_FAILED"]));
 
             return Ok(_mapper.Map<UserAddress, UserAddressDto>(address));
         }
@@ -176,12 +176,12 @@ namespace MangaRestaurant.APIs.Controllers
             if (user == null) return Unauthorized(new ApiResponse(401));
 
             var address = user.UserAddresses.FirstOrDefault(a => a.Id == addressDto.Id);
-            if (address == null) return NotFound(new ApiResponse(404, "Address not found"));
+            if (address == null) return NotFound(new ApiResponse(404, _localizer["ADDRESS_NOT_FOUND"]));
 
             _mapper.Map(addressDto, address);
 
             var result = await _userManager.UpdateAsync(user);
-            if (!result.Succeeded) return BadRequest(new ApiResponse(400, "Could not update address"));
+            if (!result.Succeeded) return BadRequest(new ApiResponse(400, _localizer["ADDRESS_UPDATE_FAILED"]));
 
             return Ok(_mapper.Map<UserAddress, UserAddressDto>(address));
         }
@@ -194,12 +194,12 @@ namespace MangaRestaurant.APIs.Controllers
             if (user == null) return Unauthorized(new ApiResponse(401));
 
             var address = user.UserAddresses.FirstOrDefault(a => a.Id == id);
-            if (address == null) return NotFound(new ApiResponse(404, "Address not found"));
+            if (address == null) return NotFound(new ApiResponse(404, _localizer["ADDRESS_NOT_FOUND"]));
 
             user.UserAddresses.Remove(address);
 
             var result = await _userManager.UpdateAsync(user);
-            if (!result.Succeeded) return BadRequest(new ApiResponse(400, "Could not delete address"));
+            if (!result.Succeeded) return BadRequest(new ApiResponse(400, _localizer["ADDRESS_DELETE_FAILED"]));
 
             return Ok();
         }
@@ -246,7 +246,7 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult<UserDTO>> CreateUserByAdmin(RegisterDTO model, [FromQuery] string role = "User")
         {
             if (await CheclEmailExist(model.Email).ContinueWith(t => t.Result.Value))
-                return BadRequest(new ApiResponse(400, "Email already exists"));
+                return BadRequest(new ApiResponse(400, _localizer["DUPLICATE_EMAIL"]));
 
             var user = new AppUser
             {
@@ -257,7 +257,7 @@ namespace MangaRestaurant.APIs.Controllers
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
-            if (!result.Succeeded) return BadRequest(new ApiResponse(400, "Failed to create user"));
+            if (!result.Succeeded) return BadRequest(new ApiResponse(400, _localizer["ACCOUNT_CREATE_FAILED"]));
 
             await _userManager.AddToRoleAsync(user, role);
 
@@ -271,13 +271,13 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult> UpdateUserRole([FromQuery] string userId, [FromQuery] string role)
         {
             var user = await _userManager.FindByIdAsync(userId);
-            if (user == null) return NotFound(new ApiResponse(404, "User not found"));
+            if (user == null) return NotFound(new ApiResponse(404, _localizer["USER_NOT_FOUND"]));
 
             var currentRoles = await _userManager.GetRolesAsync(user);
             await _userManager.RemoveFromRolesAsync(user, currentRoles);
             await _userManager.AddToRoleAsync(user, role);
 
-            return Ok(new ApiResponse(200, "User role updated successfully"));
+            return Ok(new ApiResponse(200, _localizer["USER_ROLE_UPDATED"]));
         }
 
         [HttpDelete("Admin/Delete/{userId}")]
@@ -285,12 +285,12 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult> DeleteUser(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
-            if (user == null) return NotFound(new ApiResponse(404, "User not found"));
+            if (user == null) return NotFound(new ApiResponse(404, _localizer["USER_NOT_FOUND"]));
 
             var result = await _userManager.DeleteAsync(user);
-            if (!result.Succeeded) return BadRequest(new ApiResponse(400, "Failed to delete user"));
+            if (!result.Succeeded) return BadRequest(new ApiResponse(400, _localizer["PROFILE_UPDATE_FAILED"]));
 
-            return Ok(new ApiResponse(200, "User deleted successfully"));
+            return Ok(new ApiResponse(200, _localizer["USER_DELETED_SUCCESS"]));
         }
 
         [HttpPost("GoogleLogin")]
@@ -412,7 +412,7 @@ namespace MangaRestaurant.APIs.Controllers
 
             if (await _userManager.HasPasswordAsync(user))
             {
-                return BadRequest(new ApiResponse(400, "User already has a password. Use ChangePassword instead."));
+                return BadRequest(new ApiResponse(400, _localizer["HAS_PASSWORD_ERROR"]));
             }
 
             var result = await _userManager.AddPasswordAsync(user, addPasswordDto.NewPassword);

@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MangaRestaurant.Core.Entities.Identity;
 using System.Security.Claims;
+using Microsoft.Extensions.Localization;
+using MangaRestaurant.APIs.Resources;
 
 namespace MangaRestaurant.APIs.Controllers
 {
@@ -21,14 +23,16 @@ namespace MangaRestaurant.APIs.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _configuration;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public OrdersController(IOrderService orderService, IMapper mapper, IUnitOfWork unitOfWork, IConfiguration configuration, UserManager<AppUser> userManager)
+        public OrdersController(IOrderService orderService, IMapper mapper, IUnitOfWork unitOfWork, IConfiguration configuration, UserManager<AppUser> userManager, IStringLocalizer<SharedResource> localizer)
         {
             _orderService = orderService;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _configuration = configuration;
             _userManager = userManager;
+            _localizer = localizer;
         }
 
         private async Task EnrichOrderImages(OrderToReturnDTO mappedOrder)
@@ -75,7 +79,7 @@ namespace MangaRestaurant.APIs.Controllers
             var buyerEmail = User.FindFirstValue(ClaimTypes.Email);
             var mappedAddress = _mapper.Map<UserAddressDto, OrderAddress>(orderDTO.ShippingAddress);
             var order = await _orderService.CreateOrderAsync(buyerEmail, orderDTO.BasketId, mappedAddress, orderDTO.OrderType);
-            if (order is null) return BadRequest(new ApiResponse(400, "There is a Problem With Your Order"));
+            if (order is null) return BadRequest(new ApiResponse(400, _localizer["ORDER_ERROR"]));
             return Ok(order);
         }
 
@@ -87,7 +91,7 @@ namespace MangaRestaurant.APIs.Controllers
         {
             var buyerEmail = User.FindFirstValue(ClaimTypes.Email);
             var orders = await _orderService.GetOrdersForSpecificUserAsync(buyerEmail);
-            if (orders is null) return NotFound(new ApiResponse(404, "There is no Order for this User"));
+            if (orders is null || !orders.Any()) return NotFound(new ApiResponse(404, _localizer["USER_ORDERS_NOT_FOUND"]));
             var mappedOrders = _mapper.Map<IReadOnlyList<Order>, IReadOnlyList<OrderToReturnDTO>>(orders);
             await EnrichOrderImages(mappedOrders);
             return Ok(mappedOrders);
@@ -101,7 +105,7 @@ namespace MangaRestaurant.APIs.Controllers
         {
             var buyerEmail = User.FindFirstValue(ClaimTypes.Email);
             var orders = await _orderService.GetOrderByIdForSpecificUserAsync(buyerEmail, orderId);
-            if (orders is null) return NotFound(new ApiResponse(404, $"There is no Order with id={orderId}"));
+            if (orders is null) return NotFound(new ApiResponse(404, _localizer["ORDER_NOT_FOUND"]));
             var mappedOrder = _mapper.Map<Order, OrderToReturnDTO>(orders);
             await EnrichOrderImages(mappedOrder);
             return Ok(mappedOrder);
@@ -139,8 +143,8 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult<ApiResponse>> UpdateOrderStatusAdmin(int orderId, [FromBody] OrderStatus status)
         {
             var ok = await _orderService.UpdateOrderStatusAsync(orderId, status);
-            if (!ok) return NotFound(new ApiResponse(404, $"Order {orderId} not found or not updated"));
-            return Ok(new ApiResponse(200, "Order status updated successfully"));
+            if (!ok) return NotFound(new ApiResponse(404, _localizer["ORDER_STATUS_ERROR"]));
+            return Ok(new ApiResponse(200, _localizer["ORDER_STATUS_SUCCESS"]));
         }
 
         public class UpdateOrderStatusRequest
@@ -156,10 +160,10 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult<ApiResponse>> UpdateOrderStatus(int orderId, [FromBody] UpdateOrderStatusRequest request)
         {
             if (request == null || string.IsNullOrWhiteSpace(request.Status))
-                return BadRequest(new ApiResponse(400, "Status is required"));
+                return BadRequest(new ApiResponse(400, _localizer["REQUIRED_FIELD"]));
 
             if (!Enum.TryParse<OrderStatus>(request.Status, true, out var status))
-                return BadRequest(new ApiResponse(400, "Invalid order status"));
+                return BadRequest(new ApiResponse(400, _localizer["INVALID_STATUS"]));
 
             var existing = await _orderService.GetOrderByIdAsync(orderId);
             if (existing is null) return NotFound(new ApiResponse(404, $"Order {orderId} not found"));
@@ -186,9 +190,9 @@ namespace MangaRestaurant.APIs.Controllers
             if (user == null) return NotFound(new ApiResponse(404, "Delivery person not found"));
 
             var ok = await _orderService.AssignDeliveryPersonAsync(orderId, request.EmployeeId, user.DisplayName);
-            if (!ok) return NotFound(new ApiResponse(404, $"Order {orderId} not updated"));
+            if (!ok) return NotFound(new ApiResponse(404, _localizer["ORDER_STATUS_ERROR"]));
 
-            return Ok(new ApiResponse(200, "Delivery person assigned successfully"));
+            return Ok(new ApiResponse(200, _localizer["DELIVERY_ASSIGN_SUCCESS"]));
         }
 
         [HttpPut("{orderId}/assign-waiter")]
@@ -202,9 +206,9 @@ namespace MangaRestaurant.APIs.Controllers
             if (user == null) return NotFound(new ApiResponse(404, "Waiter not found"));
 
             var ok = await _orderService.AssignWaiterAsync(orderId, request.EmployeeId, user.DisplayName);
-            if (!ok) return NotFound(new ApiResponse(404, $"Order {orderId} not updated"));
+            if (!ok) return NotFound(new ApiResponse(404, _localizer["ORDER_STATUS_ERROR"]));
 
-            return Ok(new ApiResponse(200, "Waiter assigned successfully"));
+            return Ok(new ApiResponse(200, _localizer["WAITER_ASSIGN_SUCCESS"]));
         }
 
         [ProducesResponseType(typeof(AdminReportDTO), StatusCodes.Status200OK)]
