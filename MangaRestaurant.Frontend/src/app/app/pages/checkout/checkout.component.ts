@@ -104,7 +104,12 @@ export class CheckoutComponent implements OnInit {
       });
     }
 
-    this.ordersService.createOrder({ basketId: currentBasket.id, deliveryMethodId: this.deliveryMethodId, shippingAddress: this.address }).subscribe({
+    this.ordersService.createOrder({ 
+      basketId: currentBasket.id, 
+      deliveryMethodId: this.deliveryMethodId, 
+      orderType: 2, // Delivery
+      shippingAddress: this.address 
+    }).subscribe({
       next: (order) => {
         this.loading = false;
         console.log('Order created successfully:', order);

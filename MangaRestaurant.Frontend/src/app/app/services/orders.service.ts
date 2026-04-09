@@ -14,6 +14,7 @@ export class OrdersService {
     return this.api.post<Order>('Orders', {
       basketId: payload.basketId,
       deliveryMethodId: payload.deliveryMethodId,
+      orderType: payload.orderType,
       shippingAddress: payload.shippingAddress
     });
   }
@@ -94,7 +95,7 @@ export class OrdersService {
     return this.api.put<Order>(`Orders/${orderId}/status`, { Status: status });
   }
 
-  assignDelivery(orderId: number, employeeId: number): Observable<any> {
+  assignDelivery(orderId: number, employeeId: string): Observable<any> {
     return this.api.put(`Orders/${orderId}/assign-delivery`, { EmployeeId: employeeId });
   }
 }

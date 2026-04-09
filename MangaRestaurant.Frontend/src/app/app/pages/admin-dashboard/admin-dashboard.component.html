@@ -241,13 +241,13 @@
                 </span>
               </td>
               <td>
-                <p-tag [severity]="(order.deliveryMethod || '').toLowerCase().includes('dine') ? 'warning' : 'info'" 
-                       [value]="((order.deliveryMethod || '').toLowerCase().includes('dine') ? (translateService.currentLang === 'ar' ? 'داخل المطعم' : 'Dine-In') : (translateService.currentLang === 'ar' ? 'توصيل' : 'Delivery'))"
+                <p-tag [severity]="order.orderType === 'DineIn' ? 'warning' : 'info'" 
+                       [value]="order.orderType === 'DineIn' ? (translateService.currentLang === 'ar' ? 'داخل المطعم' : 'Dine-In') : (translateService.currentLang === 'ar' ? 'توصيل' : 'Delivery')"
                        [rounded]="true" class="font-bold">
                 </p-tag>
               </td>
               <td>
-                <div class="flex align-items-center gap-2" *ngIf="!(order.deliveryMethod || '').toLowerCase().includes('dine')">
+                <div class="flex align-items-center gap-2" *ngIf="order.orderType !== 'DineIn'">
                   <p-dropdown [options]="deliveryEmployees" [(ngModel)]="orderDeliveryAssignee[order.id]" 
                     optionLabel="displayName" optionValue="id" [placeholder]="(translateService.currentLang === 'ar' ? 'اختر عامل' : 'Select Driver')"
                     class="p-inputtext-sm w-full">
@@ -257,7 +257,7 @@
                     [pTooltip]="(translateService.currentLang === 'ar' ? 'تعيين' : 'Assign')"
                     [disabled]="!orderDeliveryAssignee[order.id]"></button>
                 </div>
-                <span class="text-dim italic" *ngIf="(order.deliveryMethod || '').toLowerCase().includes('dine')">N/A</span>
+                <span class="text-dim italic" *ngIf="order.orderType === 'DineIn'">N/A</span>
               </td>
               <td class="text-center">
                 <div class="flex align-items-center justify-content-center gap-2">

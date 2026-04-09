@@ -28,8 +28,9 @@ namespace MangaRestaurant.APIs.Helpers
             CreateMap<CustomerBasketDTO, CustomerBasket>().ReverseMap();
             CreateMap<BasketItemDTO, BasketItem>().ReverseMap();
             CreateMap<Order, OrderToReturnDTO>()
-                .ForMember(D => D.DeliveryMethod, O => O.MapFrom(S => S.DeliveryMethod.ShortName))
-                .ForMember(D => D.DeliveryMethodCost, O => O.MapFrom(S => S.DeliveryMethod.Cost))
+                .ForMember(D => D.DeliveryMethod, O => O.MapFrom(S => S.DeliveryMethod != null ? S.DeliveryMethod.ShortName : "None"))
+                .ForMember(D => D.DeliveryMethodCost, O => O.MapFrom(S => S.DeliveryMethod != null ? S.DeliveryMethod.Cost : 0))
+                .ForMember(D => D.OrderType, O => O.MapFrom(S => S.OrderType.ToString()))
                 .ForMember(D => D.DeliveryPersonName, O => O.MapFrom(S => S.DeliveryPersonName))
                 .ForMember(D => D.WaiterName, O => O.MapFrom(S => S.WaiterName))
                 .ForMember(D => D.CashierName, O => O.MapFrom(S => S.CashierName));

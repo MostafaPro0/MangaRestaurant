@@ -30,6 +30,7 @@ export interface Order {
   orderItems: OrderItem[];
   discount: number;
   total: number;
+  orderType: string;
   cashierId?: string;
   cashierName?: string;
   deliveryPersonId?: string;
@@ -48,5 +49,6 @@ export interface DeliveryMethod {
 export interface OrderCreateRequest {
   basketId: string;
   deliveryMethodId: number;
+  orderType: number;
   shippingAddress: UserAddress;
 }

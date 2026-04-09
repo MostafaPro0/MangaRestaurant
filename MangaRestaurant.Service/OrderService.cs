@@ -28,10 +28,12 @@ namespace MangaRestaurant.Service
             _notificationService = notificationService;
         }
 
-        public async Task<Order?> CreateOrderAsync(string buyerEmail, string basketId, int methodId, OrderAddress orderShippingAddress)
+        public async Task<Order?> CreateOrderAsync(string buyerEmail, string basketId, int methodId, OrderAddress orderShippingAddress, OrderType orderType = OrderType.Delivery)
         {
             // Get Basket From Basket Repo.
             var basket = await _basketRepository.GetBasketAsync(basketId);
+            if (basket == null) return null;
+
             var orderItems = new List<OrderItem>();
 
             // Get selected item at basket from product repo
@@ -49,29 +51,25 @@ namespace MangaRestaurant.Service
                 }
             }
 
+            if (orderItems.Count == 0) return null;
+
             // Get SubTotal
             var subTotal = orderItems.Sum(item => item.Price * item.Quantity);
 
             // Get Delivery Method from Delivery Method Repo
-            var deliveryMethod = await _unitOfWork.Repository<DeliveryMethod>().GetAsync(methodId);
-            if (deliveryMethod == null)
-                return null;
-
-            //Discount when add it i will add it (Mostafa)
-            decimal Disount = 0;
-
-            if (basket == null)
-                return null;
-
-            // Set basket delivery method so payment intent calculation matches selected delivery method
-            if (basket.DeliveryMethodId != methodId)
+            DeliveryMethod? deliveryMethod = null;
+            if (orderType == OrderType.Delivery)
             {
-                basket.DeliveryMethodId = methodId;
-                await _basketRepository.UpdateBasketAsync(basket);
-            }
+                deliveryMethod = await _unitOfWork.Repository<DeliveryMethod>().GetAsync(methodId);
+                if (deliveryMethod == null) return null;
 
-            if (orderItems.Count == 0)
-                return null;
+                // Set basket delivery method so payment intent calculation matches selected delivery method
+                if (basket.DeliveryMethodId != methodId)
+                {
+                    basket.DeliveryMethodId = methodId;
+                    await _basketRepository.UpdateBasketAsync(basket);
+                }
+            }
 
             // Ensure payment intent exists and is populated in basket
             await _paymentService.CreateOrUpdatePaymentIntent(basketId);
@@ -87,7 +85,7 @@ namespace MangaRestaurant.Service
                 _unitOfWork.Repository<Order>().Delete(exOrder);
             }
 
-            var order = new Order(buyerEmail, orderShippingAddress, deliveryMethod, orderItems, subTotal, Disount, basket.PaymentIntentId);
+            var order = new Order(buyerEmail, orderShippingAddress, deliveryMethod, orderItems, subTotal, basket.Discount, basket.PaymentIntentId, orderType);
 
             await _unitOfWork.Repository<Order>().AddAsync(order);
 

@@ -17,6 +17,7 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { Router } from '@angular/router';
 import { OrdersService } from '../../services/orders.service';
+import { OrderCreateRequest } from '../../models/order.model';
 
 import { TooltipModule } from 'primeng/tooltip';
 
@@ -134,28 +135,22 @@ export class PosComponent implements OnInit {
     }
 
     this.loading = true;
-    // 1. Get Delivery Methods to find "Dine-In"
-    this.ordersService.getDeliveryMethods().subscribe({
-      next: (methods) => {
-        const dineInMethod = methods.find(m => 
-          m.shortName.toLowerCase().includes('dine') || 
-          m.shortName.toLowerCase().includes('pos')
-        ) || methods[0];
-
-        // 2. Submit Order
-        const orderPayload = {
-          basketId: basket.id,
-          deliveryMethodId: dineInMethod.id,
-          shippingAddress: {
-            firstName: 'Dine-In',
-            lastName: 'Customer',
-            street: 'Restaurant Table',
-            city: 'Inside',
-            state: 'POS',
-            zipCode: '0000',
-            country: 'Inside'
-          }
-        };
+    
+    // 2. Submit Order
+    const orderPayload: OrderCreateRequest = {
+      basketId: basket.id,
+      deliveryMethodId: 0, // No delivery method needed for Dine-In
+      orderType: 1, // DineIn
+      shippingAddress: {
+        firstName: 'Dine-In',
+        lastName: 'Customer',
+        street: 'Restaurant Table',
+        city: 'Inside',
+        state: 'POS',
+        zipCode: '0000',
+        country: 'Inside'
+      }
+    };
 
         this.ordersService.createOrder(orderPayload).subscribe({
           next: () => {
@@ -176,12 +171,6 @@ export class PosComponent implements OnInit {
             this.loading = false;
           }
         });
-      },
-      error: () => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Could not fetch delivery methods' });
-        this.loading = false;
-      }
-    });
   }
 
   onCheckout() {
