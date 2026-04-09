@@ -34,14 +34,18 @@ namespace MangaRestaurant.APIs.Controllers
             _localizer = localizer;
         }
 
-        [ProducesResponseType(typeof(ProductToReturnDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Pagination<ProductToReturnDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         //GET : /api/Products
         [HttpGet]
-        //    [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
-      [CashedAttribute(30)]
-        public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetAllProducts([FromQuery]ProductSpecParams specParams)
+        public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts([FromQuery] ProductSpecParams specParams)
         {
+            // Only Admins can see hidden products/categories/brands
+            if (specParams.ShowHidden && !User.IsInRole("Admin"))
+            {
+                specParams.ShowHidden = false;
+            }
+
             var spec = new ProductWithBrandAndCategorySpecs(specParams);
 
             var products = await _unitOfWork.Repository<Product>().GetAllAsyncWithSpecAsync(spec);

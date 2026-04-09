@@ -29,6 +29,12 @@
       <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'users'" (click)="setActiveTab('users')">
         <i class="pi pi-users"></i> <span>{{ 'ADMIN.STAFF_MANAGEMENT' | translate }}</span>
       </a>
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'categories'" (click)="setActiveTab('categories')">
+        <i class="pi pi-tags"></i> <span>{{ (translateService.currentLang === 'ar' ? 'التصنيفات' : 'Categories') }}</span>
+      </a>
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'brands'" (click)="setActiveTab('brands')">
+        <i class="pi pi-bookmark"></i> <span>{{ (translateService.currentLang === 'ar' ? 'البراندات' : 'Brands') }}</span>
+      </a>
       <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'settings'" [routerLink]="['/admin', 'settings']">
         <i class="pi pi-cog"></i> <span>{{ 'ADMIN.SETTINGS' | translate }}</span>
       </a>
@@ -304,7 +310,10 @@
           <ng-template pTemplate="body" let-product>
             <tr>
               <td class="font-medium">
-                {{ (translateService.currentLang === 'ar' && product.nameAr) ? product.nameAr : product.name }}
+                <div class="flex align-items-center gap-2">
+                  {{ (translateService.currentLang === 'ar' && product.nameAr) ? product.nameAr : product.name }}
+                  <p-tag *ngIf="product.isHidden" severity="danger" [value]="(translateService.currentLang === 'ar' ? 'مخفي' : 'Hidden')" [rounded]="true" class="text-xs"></p-tag>
+                </div>
               </td>
               <td>
                 <span class="category-tag">
@@ -417,6 +426,126 @@
                   icon="pi pi-check" class="p-button-raised" (click)="saveUser()"></button>
         </ng-template>
       </p-dialog>
+
+      <!-- Tab 6: Category Management -->
+      <div *ngIf="activeTab === 'categories'" class="tab-content animate-fade p-3 md:p-4">
+        <div class="flex justify-content-between align-items-center mb-4">
+          <h2 class="m-0"><i class="pi pi-tags text-primary"></i> 
+              {{ (translateService.currentLang === 'ar' ? 'إدارة التصنيفات' : 'Category Management') }}
+          </h2>
+          <button pButton label="{{ (translateService.currentLang === 'ar' ? 'إضافة تصنيف' : 'Add Category') }}" 
+                  icon="pi pi-plus" class="p-button-rounded p-button-success" 
+                  (click)="openCreateItem('categories')"></button>
+        </div>
+
+        <p-table [value]="categoriesList" [loading]="loadingCategories" [rows]="10" [paginator]="true" class="custom-table">
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 30%">{{ (translateService.currentLang === 'ar' ? 'الاسم (EN)' : 'Name (EN)') }}</th>
+              <th style="width: 30%">{{ (translateService.currentLang === 'ar' ? 'الاسم (عربي)' : 'Name (AR)') }}</th>
+              <th style="width: 15%">{{ (translateService.currentLang === 'ar' ? 'الحالة' : 'Status') }}</th>
+              <th style="width: 25%" class="text-center">{{ 'ADMIN.ACTIONS' | translate }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-cat>
+            <tr>
+              <td>{{ cat.name }}</td>
+              <td>{{ cat.nameAr }}</td>
+              <td>
+                <span class="status-badge" [attr.data-status]="cat.isHidden ? 'Cancelled' : 'Completed'">
+                  {{ cat.isHidden ? (translateService.currentLang === 'ar' ? 'مخفي' : 'Hidden') : (translateService.currentLang === 'ar' ? 'نشط' : 'Active') }}
+                </span>
+              </td>
+              <td class="text-center">
+                <div class="flex justify-content-center gap-2">
+                  <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-warning"
+                    (click)="openEditItem(cat, 'categories')" [pTooltip]="'Edit'"></button>
+                  <button pButton [icon]="cat.isHidden ? 'pi pi-eye' : 'pi pi-eye-slash'" 
+                    class="p-button-rounded p-button-text" [class.p-button-secondary]="!cat.isHidden" [class.p-button-success]="cat.isHidden"
+                    (click)="toggleItemVisibility(cat.id, !cat.isHidden, 'categories')" 
+                    [pTooltip]="cat.isHidden ? 'Show' : 'Hide'"></button>
+                  <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
+                    (click)="deleteItem(cat.id, 'categories')" [pTooltip]="'Delete'"></button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <!-- Tab 7: Brand Management -->
+      <div *ngIf="activeTab === 'brands'" class="tab-content animate-fade p-3 md:p-4">
+        <div class="flex justify-content-between align-items-center mb-4">
+          <h2 class="m-0"><i class="pi pi-bookmark text-primary"></i> 
+              {{ (translateService.currentLang === 'ar' ? 'إدارة البراندات' : 'Brand Management') }}
+          </h2>
+          <button pButton label="{{ (translateService.currentLang === 'ar' ? 'إضافة براند' : 'Add Brand') }}" 
+                  icon="pi pi-plus" class="p-button-rounded p-button-success" 
+                  (click)="openCreateItem('brands')"></button>
+        </div>
+
+        <p-table [value]="brandsList" [loading]="loadingBrands" [rows]="10" [paginator]="true" class="custom-table">
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 30%">{{ (translateService.currentLang === 'ar' ? 'الاسم (EN)' : 'Name (EN)') }}</th>
+              <th style="width: 30%">{{ (translateService.currentLang === 'ar' ? 'الاسم (عربي)' : 'Name (AR)') }}</th>
+              <th style="width: 15%">{{ (translateService.currentLang === 'ar' ? 'الحالة' : 'Status') }}</th>
+              <th style="width: 25%" class="text-center">{{ 'ADMIN.ACTIONS' | translate }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-brand>
+            <tr>
+              <td>{{ brand.name }}</td>
+              <td>{{ brand.nameAr }}</td>
+              <td>
+                <span class="status-badge" [attr.data-status]="brand.isHidden ? 'Cancelled' : 'Completed'">
+                  {{ brand.isHidden ? (translateService.currentLang === 'ar' ? 'مخفي' : 'Hidden') : (translateService.currentLang === 'ar' ? 'نشط' : 'Active') }}
+                </span>
+              </td>
+              <td class="text-center">
+                <div class="flex justify-content-center gap-2">
+                  <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-warning"
+                    (click)="openEditItem(brand, 'brands')" [pTooltip]="'Edit'"></button>
+                  <button pButton [icon]="brand.isHidden ? 'pi pi-eye' : 'pi pi-eye-slash'" 
+                    class="p-button-rounded p-button-text" [class.p-button-secondary]="!brand.isHidden" [class.p-button-success]="brand.isHidden"
+                    (click)="toggleItemVisibility(brand.id, !brand.isHidden, 'brands')" 
+                    [pTooltip]="brand.isHidden ? 'Show' : 'Hide'"></button>
+                  <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
+                    (click)="deleteItem(brand.id, 'brands')" [pTooltip]="'Delete'"></button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <!-- Item Dialog (Shared for Cat/Brand) -->
+      <p-dialog [(visible)]="itemDialog" [style]="{width: '450px'}" 
+                [header]="(isCategoryMode ? (editingItem ? 'Edit Category' : 'Add Category') : (editingItem ? 'Edit Brand' : 'Add Brand'))" 
+                [modal]="true" styleClass="p-fluid glass-panel">
+        <ng-template pTemplate="content">
+          <div class="field mb-3">
+            <label>{{ (translateService.currentLang === 'ar' ? 'الاسم بالإنجليزية' : 'Name (EN)') }}</label>
+            <input type="text" pInputText [(ngModel)]="selectedItem.name" required />
+          </div>
+          <div class="field mb-3">
+            <label>{{ (translateService.currentLang === 'ar' ? 'الاسم بالعربية' : 'Name (AR)') }}</label>
+            <input type="text" pInputText [(ngModel)]="selectedItem.nameAr" dir="rtl" required />
+          </div>
+          <div class="field flex align-items-center gap-2 mb-3">
+            <p-checkbox [(ngModel)]="selectedItem.isHidden" [binary]="true" inputId="isHidden"></p-checkbox>
+            <label for="isHidden">{{ (translateService.currentLang === 'ar' ? 'إخفاء من المتجر' : 'Hide from store') }}</label>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+          <button pButton [label]="'ADMIN.CANCEL' | translate" 
+                  icon="pi pi-times" class="p-button-text" (click)="itemDialog = false"></button>
+          <button pButton [label]="'ADMIN.SAVE' | translate" 
+                  icon="pi pi-check" class="p-button-raised" (click)="saveItem()"></button>
+        </ng-template>
+      </p-dialog>
+
       <!-- Tab 5: Site Settings -->
       <div *ngIf="activeTab === 'settings'" class="tab-content animate-fade p-3 md:p-4">
         <div class="settings-form max-w-5xl mx-auto">
@@ -604,6 +733,10 @@
         <p-dropdown id="brand" [options]="brands" [(ngModel)]="selectedProduct.brandId" optionLabel="name"
           optionValue="id" [placeholder]="'ADMIN.BRAND' | translate"></p-dropdown>
       </div>
+    </div>
+    <div class="field flex align-items-center gap-2 mb-3">
+        <p-checkbox [(ngModel)]="selectedProduct.isHidden" [binary]="true" inputId="productHidden"></p-checkbox>
+        <label for="productHidden">{{ (translateService.currentLang === 'ar' ? 'إخفاء من المتجر' : 'Hide from store') }}</label>
     </div>
     <div class="field mb-4">
       <label for="desc" class="font-bold block mb-2">{{ 'ADMIN.DESCRIPTION_EN' | translate }} <span

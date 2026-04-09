@@ -318,7 +318,21 @@
     "CURRENCY_CODE": "Currency Code (ISO)",
     "CURRENCY_SYMBOL": "Currency Symbol",
     "DELIVERY_FEE": "Fixed Delivery Fee",
-    "SOCIAL_LINKS": "Social Media Links"
+    "SOCIAL_LINKS": "Social Media Links",
+    "CATEGORIES": "Categories",
+    "BRANDS": "Brands",
+    "CATEGORY_MANAGEMENT": "Category Management",
+    "BRAND_MANAGEMENT": "Brand Management",
+    "ADD_CATEGORY": "Add Category",
+    "ADD_BRAND": "Add Brand",
+    "NAME_EN": "Name (EN)",
+    "NAME_AR": "Name (AR)",
+    "STATUS": "Status",
+    "SHOW": "Show",
+    "HIDE": "Hide",
+    "HIDE_FROM_STORE": "Hide from store",
+    "ACTIVE": "Active",
+    "HIDDEN": "Hidden"
   },
   "REVIEWS": {
     "TITLE": "Customer Reviews",

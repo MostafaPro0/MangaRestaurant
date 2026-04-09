@@ -15,9 +15,9 @@ namespace MangaRestaurant.Core.Specifications
         public ProductWithFiltrationForCountAsync(ProductSpecParams specParams)
             : base(P =>
                     (string.IsNullOrEmpty(specParams.Search) || P.Name.ToLower().Contains(specParams.Search) || P.NameAr.ToLower().Contains(specParams.Search)) &&
-                    (!specParams.BrandId.HasValue || P.BrandId == specParams.BrandId)
-                    &&
-                    (!specParams.CategoryId.HasValue || P.CategoryId == specParams.CategoryId))
+                    (!specParams.BrandId.HasValue || P.BrandId == specParams.BrandId) &&
+                    (!specParams.CategoryId.HasValue || P.CategoryId == specParams.CategoryId) &&
+                    (specParams.ShowHidden || (!P.IsHidden && !P.Category.IsHidden && !P.Brand.IsHidden)))
         {
 
         }

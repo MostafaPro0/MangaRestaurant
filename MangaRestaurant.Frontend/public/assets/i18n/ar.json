@@ -319,7 +319,21 @@
     "CURRENCY_CODE": "رمز العملة العالمي",
     "CURRENCY_SYMBOL": "رمز العملة (العرض)",
     "DELIVERY_FEE": "رسوم التوصيل الثابتة",
-    "SOCIAL_LINKS": "روابط التواصل الاجتماعي"
+    "SOCIAL_LINKS": "روابط التواصل الاجتماعي",
+    "CATEGORIES": "التصنيفات",
+    "BRANDS": "الماركات",
+    "CATEGORY_MANAGEMENT": "إدارة التصنيفات",
+    "BRAND_MANAGEMENT": "إدارة الماركات",
+    "ADD_CATEGORY": "إضافة تصنيف",
+    "ADD_BRAND": "إضافة ماركة",
+    "NAME_EN": "الاسم (EN)",
+    "NAME_AR": "الاسم (AR)",
+    "STATUS": "الحالة",
+    "SHOW": "إظهار",
+    "HIDE": "إخفاء",
+    "HIDE_FROM_STORE": "إخفاء من المتجر",
+    "ACTIVE": "نشط",
+    "HIDDEN": "مخفي"
   },
   "REVIEWS": {
     "TITLE": "آراء العملاء",

@@ -10,8 +10,8 @@ namespace MangaRestaurant.Core.Specifications.ProductCategorySpecs
 {
     public class ProductCategorySpecs : BaseSpecifications<ProductCategory>
     {
-        public ProductCategorySpecs(string Sort)
-        : base()
+        public ProductCategorySpecs(string Sort, bool showHidden = false)
+        : base(x => showHidden || !x.IsHidden)
         {
             AddSort(Sort);
         }

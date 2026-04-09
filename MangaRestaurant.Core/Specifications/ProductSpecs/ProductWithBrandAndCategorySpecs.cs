@@ -19,9 +19,9 @@ namespace MangaRestaurant.Core.Specifications.ProductSpecs
         // This Constructor will be Used for Creating an Object, That will be Used to Get All Products 
         public ProductWithBrandAndCategorySpecs(ProductSpecParams specParams)
         :base(P => (string.IsNullOrEmpty( specParams.Search) || P.Name.ToLower().Contains(specParams.Search.ToLower()) || P.NameAr.ToLower().Contains(specParams.Search.ToLower())) &&
-                    (!specParams.BrandId.HasValue || P.BrandId == specParams.BrandId)
-                    &&
-                    (!specParams.CategoryId.HasValue || P.CategoryId== specParams.CategoryId))
+                    (!specParams.BrandId.HasValue || P.BrandId == specParams.BrandId) &&
+                    (!specParams.CategoryId.HasValue || P.CategoryId== specParams.CategoryId) &&
+                    (specParams.ShowHidden || (!P.IsHidden && !P.Category.IsHidden && !P.Brand.IsHidden)))
         {
             AddIncludes();
             AddSort(specParams.Sort);

@@ -13,6 +13,7 @@ import { InputTextarea } from 'primeng/inputtextarea';
 import { TagModule } from 'primeng/tag';
 import { SkeletonModule } from 'primeng/skeleton';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { CheckboxModule } from 'primeng/checkbox';
 import { NgApexchartsModule, ChartComponent, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexTitleSubtitle, ApexStroke, ApexDataLabels, ApexFill, ApexGrid, ApexYAxis, ApexTooltip, ApexLegend, ApexPlotOptions, ApexResponsive, ApexTheme } from "ng-apexcharts";
 import { environment } from '../../../../environments/environment';
 import { AdminService } from '../../services/admin.service';
@@ -62,7 +63,8 @@ import { TooltipModule } from 'primeng/tooltip';
     SkeletonModule,
     NgApexchartsModule,
     TooltipModule,
-    SelectButtonModule
+    SelectButtonModule,
+    CheckboxModule
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css'],
@@ -92,9 +94,23 @@ export class AdminDashboardComponent implements OnInit {
   brands: any[] = [];
   uploadingImage: boolean = false;
   
+  // Category & Brand management
+  categoriesList: any[] = [];
+  brandsList: any[] = [];
+  loadingCategories = false;
+  loadingBrands = false;
+  itemDialog = false;
+  isCategoryMode = true; 
+  editingItem: any = null;
+  selectedItem: any = { name: '', nameAr: '', isHidden: false };
+
   // Settings
   siteSettings: SiteSettings = {} as SiteSettings;
   savingSettings: boolean = false;
+  settings$: any;
+  productDialogVisible: boolean = false;
+  editingProductId: number | null = null;
+  selectedProduct: any = {};
 
   // Charts Options
   public salesChartOptions!: Partial<ChartOptions>;
@@ -139,16 +155,10 @@ export class AdminDashboardComponent implements OnInit {
     return this.orders.filter(o => o.orderType === this.selectedOrderType);
   }
 
-  // Dialog Control
-  productDialogVisible: boolean = false;
-  editingProductId: number | null = null;
-  selectedProduct: any = {};
-  settings$: any;
-
   constructor(
-    private adminService: AdminService,
     private productsService: ProductsService,
     private ordersService: OrdersService,
+    private adminService: AdminService,
     private settingsService: SettingsService,
     private messageService: MessageService,
     public translateService: TranslateService,
@@ -202,20 +212,120 @@ export class AdminDashboardComponent implements OnInit {
     });
 
     this.loadingProducts = true;
-    this.productsService.getProducts(1).subscribe(p => {
+    this.productsService.getProducts(1, 10, '', null, null, true).subscribe(p => {
       this.products = p.data;
       this.loadingProducts = false;
     });
 
+    this.loadUsers();
+    this.loadCategories();
+    this.loadBrands();
+  }
+
+  loadUsers() {
     this.loadingUsers = true;
     this.adminService.getUsers().subscribe(u => {
       this.users = u;
       this.deliveryEmployees = u.filter((user: any) => user.role?.toLowerCase() === 'delivery');
       this.loadingUsers = false;
     });
+  }
 
-    this.productsService.getCategories().subscribe(c => this.categories = c);
-    this.productsService.getBrands().subscribe(b => this.brands = b);
+  loadCategories() {
+    this.loadingCategories = true;
+    this.productsService.getCategories(true).subscribe({
+      next: (res) => {
+        this.categoriesList = res;
+        this.loadingCategories = false;
+      },
+      error: () => (this.loadingCategories = false)
+    });
+  }
+
+  loadBrands() {
+    this.loadingBrands = true;
+    this.productsService.getBrands(true).subscribe({
+      next: (res) => {
+        this.brandsList = res;
+        this.loadingBrands = false;
+      },
+      error: () => (this.loadingBrands = false)
+    });
+  }
+
+  openCreateItem(mode: 'categories' | 'brands') {
+    this.isCategoryMode = mode === 'categories';
+    this.editingItem = null;
+    this.selectedItem = { name: '', nameAr: '', isHidden: false };
+    this.itemDialog = true;
+  }
+
+  openEditItem(item: any, mode: 'categories' | 'brands') {
+    this.isCategoryMode = mode === 'categories';
+    this.editingItem = item;
+    this.selectedItem = { ...item };
+    this.itemDialog = true;
+  }
+
+  saveItem() {
+    if (!this.selectedItem.name || !this.selectedItem.nameAr) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please fill all required fields' });
+      return;
+    }
+
+    if (this.isCategoryMode) {
+      const obs = this.editingItem 
+        ? this.productsService.updateCategory(this.editingItem.id, this.selectedItem)
+        : this.productsService.createCategory(this.selectedItem);
+      
+      obs.subscribe({
+        next: () => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Category saved' });
+          this.itemDialog = false;
+          this.loadCategories();
+        }
+      });
+    } else {
+      const obs = this.editingItem 
+        ? this.productsService.updateBrand(this.editingItem.id, this.selectedItem)
+        : this.productsService.createBrand(this.selectedItem);
+      
+      obs.subscribe({
+        next: () => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Brand saved' });
+          this.itemDialog = false;
+          this.loadBrands();
+        }
+      });
+    }
+  }
+
+  deleteItem(id: number, mode: 'categories' | 'brands') {
+    if (confirm('Are you sure you want to delete this item?')) {
+      const obs = mode === 'categories' 
+        ? this.productsService.deleteCategory(id)
+        : this.productsService.deleteBrand(id);
+      
+      obs.subscribe({
+        next: () => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Deleted successfully' });
+          mode === 'categories' ? this.loadCategories() : this.loadBrands();
+        }
+      });
+    }
+  }
+
+  toggleItemVisibility(id: number, hide: boolean, mode: 'categories' | 'brands') {
+    const obs = mode === 'categories'
+      ? this.productsService.toggleCategoryVisibility(id, hide)
+      : this.productsService.toggleBrandVisibility(id, hide);
+    
+    obs.subscribe({
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: hide ? 'Hidden' : 'Shown' });
+        mode === 'categories' ? this.loadCategories() : this.loadBrands();
+      }
+    });
   }
 
   saveUser() {
@@ -223,7 +333,7 @@ export class AdminDashboardComponent implements OnInit {
       next: () => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User created' });
         this.userDialog = false;
-        this.loadAllData();
+        this.loadUsers();
       },
       error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to create user' })
     });

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,5 +30,6 @@ namespace MangaRestaurant.Core.Specifications
         }
 
         public int PageIndex { get; set; } = 1;
+        public bool ShowHidden { get; set; } = false;
     }
 }

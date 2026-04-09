@@ -10,6 +10,7 @@ namespace MangaRestaurant.Core.Entities
     {
         public string Name { get; set; }
         public string NameAr { get; set; }
+        public bool IsHidden { get; set; } = false;
 
       //  public ICollection<Product> Products { get; set; } = new HashSet<Product>();
     }

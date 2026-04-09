@@ -22,6 +22,8 @@ namespace MangaRestaurant.APIs.Dtos
 
         public decimal? OldPrice { get; set; }
 
+        public bool IsHidden { get; set; } = false;
+
         [Required]
         public int BrandId { get; set; }
 

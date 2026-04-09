@@ -16,6 +16,7 @@ namespace MangaRestaurant.Core.Entities
         public string PictureUrl { get; set; }
         public decimal Price { get; set; }
         public decimal? OldPrice { get; set; }
+        public bool IsHidden { get; set; } = false;
         public int BrandId { get; set; }
         public ProductBrand Brand { get; set; }
         public int CategoryId { get; set; }//Foriegn Key Column >> ProudctBrand
