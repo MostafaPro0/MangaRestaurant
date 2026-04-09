@@ -13,11 +13,11 @@ namespace MangaRestaurant.Core.Entities.Order
         {
 
         }
-        public Order(string buyerEmail, OrderAddress shippingAddress, DeliveryMethod? deliveryMethod, ICollection<OrderItem> items, decimal subTotal, decimal discount, string paymentIntentId, OrderType orderType = OrderType.Delivery)
+        public Order(string buyerEmail, OrderAddress shippingAddress, decimal deliveryFee, ICollection<OrderItem> items, decimal subTotal, decimal discount, string paymentIntentId, OrderType orderType = OrderType.Delivery)
         {
             BuyerEmail = buyerEmail;
             ShippingAddress = shippingAddress;
-            DeliveryMethod = deliveryMethod;
+            DeliveryFee = deliveryFee;
             Items = items;
             SubTotal = subTotal;
             Discount = discount;
@@ -30,7 +30,7 @@ namespace MangaRestaurant.Core.Entities.Order
         public OrderStatus OrderStatus { get; set; } = OrderStatus.Pending;
         public OrderType OrderType { get; set; } = OrderType.Delivery;
         public OrderAddress ShippingAddress { get; set; }
-        public DeliveryMethod? DeliveryMethod { get; set; }
+        public decimal DeliveryFee { get; set; }
 
         public ICollection<OrderItem> Items { get; set; } = new HashSet<OrderItem>();
 
@@ -38,7 +38,7 @@ namespace MangaRestaurant.Core.Entities.Order
 
         public decimal Discount { get; set; }
 
-        public decimal GetTotal() => (SubTotal - Discount) + (DeliveryMethod?.Cost ?? 0);
+        public decimal GetTotal() => (SubTotal - Discount) + DeliveryFee;
 
         public string? PaymentIntentId { get; set; }
 

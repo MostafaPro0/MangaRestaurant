@@ -9,7 +9,7 @@ namespace MangaRestaurant.Core.Service
 {
     public interface IOrderService
     {
-        Task<Order?> CreateOrderAsync(string buyerEmail, string basketId, int methodId, OrderAddress orderShippingAddress, OrderType orderType = OrderType.Delivery);
+        Task<Order?> CreateOrderAsync(string buyerEmail, string basketId, OrderAddress orderShippingAddress, OrderType orderType = OrderType.Delivery);
         Task<IReadOnlyList<Order>> GetOrdersForSpecificUserAsync(string buyerEmail);
         Task<Order> GetOrderByIdForSpecificUserAsync(string buyerEmail, int orderId);
         Task<IReadOnlyList<Order>> GetAllOrdersAsync();

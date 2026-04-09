@@ -11,13 +11,11 @@ namespace MangaRestaurant.Core.Specifications.OrderSpecs
     {
         public OrderSpecifications(string buyerEmail) : base(O => O.BuyerEmail == buyerEmail)
         {
-            Includes.Add(O => O.DeliveryMethod);
             Includes.Add(O => O.Items);
             AddOrderByDescending(O => O.OrderDate);
         }
         public OrderSpecifications(string buyerEmail, int orderId) : base(O => O.BuyerEmail == buyerEmail && O.Id == orderId)
         {
-            Includes.Add(O => O.DeliveryMethod);
             Includes.Add(O => O.Items);
         }
     }
@@ -25,7 +23,6 @@ namespace MangaRestaurant.Core.Specifications.OrderSpecs
     {
         public OrderWithPaymentIntentSpecifications(string PaymentIntentId) : base(O => O.PaymentIntentId == PaymentIntentId)
         {
-            Includes.Add(O => O.DeliveryMethod);
             Includes.Add(O => O.Items);
             AddOrderByDescending(O => O.OrderDate);
         }
@@ -35,14 +32,12 @@ namespace MangaRestaurant.Core.Specifications.OrderSpecs
     {
         public OrderSpecificationsForAdmin() : base(o => true)
         {
-            Includes.Add(o => o.DeliveryMethod);
             Includes.Add(o => o.Items);
             AddOrderByDescending(o => o.OrderDate);
         }
 
         public OrderSpecificationsForAdmin(int orderId) : base(o => o.Id == orderId)
         {
-            Includes.Add(o => o.DeliveryMethod);
             Includes.Add(o => o.Items);
         }
     }

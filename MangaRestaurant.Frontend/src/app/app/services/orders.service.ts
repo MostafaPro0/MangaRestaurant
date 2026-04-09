@@ -13,7 +13,6 @@ export class OrdersService {
   createOrder(payload: OrderCreateRequest): Observable<Order> {
     return this.api.post<Order>('Orders', {
       basketId: payload.basketId,
-      deliveryMethodId: payload.deliveryMethodId,
       orderType: payload.orderType,
       shippingAddress: payload.shippingAddress
     });
@@ -68,10 +67,6 @@ export class OrdersService {
         } as Order;
       })
     );
-  }
-
-  getDeliveryMethods(): Observable<DeliveryMethod[]> {
-    return this.api.get<DeliveryMethod[]>('Orders/DeliveryMethods');
   }
 
   getAllOrdersAdmin(): Observable<Order[]> {

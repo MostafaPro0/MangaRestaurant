@@ -7,7 +7,6 @@ namespace MangaRestaurant.APIs.Dtos
     {
         [Required]
         public string BasketId { get; set; }
-        public int DeliveryMethodId { get; set; }
         public OrderType OrderType { get; set; } = OrderType.Delivery;
 
         public UserAddressDto ShippingAddress { get; set; }

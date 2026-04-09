@@ -95,15 +95,7 @@
             </div>
           </div>
 
-          <!-- Delivery Speed -->
-          <div class="mt-4 border-top-1 border-white-alpha-10">
-            <h3 class="display-font text-2xl mb-4 font-bold">
-              <i class="pi pi-truck text-primary mr-2"></i> {{ 'CHECKOUT.DELIVERY_SPEED' | translate }}
-            </h3>
-            <p-dropdown [(ngModel)]="deliveryMethodId" name="deliveryMethod" [options]="deliveryMethods"
-              optionLabel="shortName" optionValue="id" styleClass="w-full p-input-lg shadow-sm"
-              placeholder="{{ 'CHECKOUT.SELECT_DELIVERY' | translate }}"></p-dropdown>
-          </div>
+          <!-- No longer needed -->
         </form>
       </div>
     </div>
@@ -119,7 +111,7 @@
             <span class="text-dim font-bold">{{ 'CHECKOUT.SUBTOTAL' | translate }}</span>
             <span class="font-bold">
               <ng-container *ngIf="translate.currentLanguage === 'ar'">
-                {{ subtotal | number : '1.2-2' }} ج.م
+                {{ subtotal | number : '1.2-2' }} {{ settings.currencySymbol }}
               </ng-container>
               <ng-container *ngIf="translate.currentLanguage !== 'ar'">
                 {{ subtotal | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
@@ -128,16 +120,23 @@
           </div>
           <div class="flex justify-content-between p-3 bg-soft rounded-lg">
             <span class="text-primary font-bold">{{ 'BASKET.DELIVERY' | translate }}</span>
-            <span class="font-bold">{{ (translate.currentLanguage === 'ar' ? 'مجاني' : 'FREE') }}</span>
-          </div>
-          <div class="pt-4 mt-2 border-top-1 border-white-alpha-10 flex justify-content-between align-items-center">
-            <span class="text-xl font-bold">Total</span>
-            <span class="text-3xl font-bold text-primary">
+            <span class="font-bold">
               <ng-container *ngIf="translate.currentLanguage === 'ar'">
-                {{ subtotal | number : '1.2-2' }} ج.م
+                {{ settings.deliveryFee | number : '1.2-2' }} {{ settings.currencySymbol }}
               </ng-container>
               <ng-container *ngIf="translate.currentLanguage !== 'ar'">
-                {{ subtotal | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+                {{ settings.deliveryFee | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
+              </ng-container>
+            </span>
+          </div>
+          <div class="pt-4 mt-2 border-top-1 border-white-alpha-10 flex justify-content-between align-items-center">
+            <span class="text-xl font-bold">{{ 'CHECKOUT.TOTAL' | translate || 'Total' }}</span>
+            <span class="text-3xl font-bold text-primary">
+              <ng-container *ngIf="translate.currentLanguage === 'ar'">
+                {{ (subtotal + settings.deliveryFee) | number : '1.2-2' }} {{ settings.currencySymbol }}
+              </ng-container>
+              <ng-container *ngIf="translate.currentLanguage !== 'ar'">
+                {{ (subtotal + settings.deliveryFee) | currency : settings.currencyCode : 'symbol' : '1.2-2' }}
               </ng-container>
             </span>
           </div>

@@ -76,37 +76,6 @@ namespace MangaRestaurant.Repository.Data
                     await _dbContext.SaveChangesAsync();
                 }
             }
-            if (!_dbContext.Set<DeliveryMethod>().Any(m => m.ShortName == "Dine-In"))
-            {
-                var dineIn = new DeliveryMethod
-                {
-                    ShortName = "Dine-In",
-                    Description = "Eat inside the restaurant",
-                    DeliveryTime = "Immediate",
-                    Cost = 0
-                };
-                _dbContext.Set<DeliveryMethod>().Add(dineIn);
-                await _dbContext.SaveChangesAsync();
-            }
-
-            if (!_dbContext.Set<DeliveryMethod>().Any())
-            {
-                var deliveryData = File.ReadAllText("../MangaRestaurant.Repository/Data/DataSeed/delivery.json");
-                var deliveries = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryData);
-
-                if (deliveries?.Count() > 0)
-                {
-                    foreach (var delivery in deliveries)
-                    {
-                        if (!_dbContext.Set<DeliveryMethod>().Any(m => m.ShortName == delivery.ShortName))
-                        {
-                            _dbContext.Set<DeliveryMethod>().Add(delivery);
-                        }
-                    }
-                    await _dbContext.SaveChangesAsync();
-                }
-            }
-
             if (!_dbContext.SiteSettings.Any())
             {
                 var settings = new SiteSettings

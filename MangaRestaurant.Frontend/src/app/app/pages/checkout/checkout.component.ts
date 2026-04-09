@@ -29,8 +29,6 @@ export class CheckoutComponent implements OnInit {
   savedAddresses: any[] = [];
   selectedAddress: any = null;
   address: UserAddress = { firstName: '', lastName: '', street: '', city: '', state: '', zipCode: '', country: '' };
-  deliveryMethodId = 1;
-  deliveryMethods: any[] = [];
   loading = false;
   saveAddressToProfile = false;
   addressMode: 'saved' | 'new' = 'new';
@@ -49,7 +47,6 @@ export class CheckoutComponent implements OnInit {
   ngOnInit(): void {
     this.settings$ = this.settingsService.settings$;
     this.basketService.basket$.subscribe((basket) => (this.basket = basket));
-    this.ordersService.getDeliveryMethods().subscribe((methods) => (this.deliveryMethods = methods));
     this.loadSavedAddresses();
   }
 
@@ -106,7 +103,6 @@ export class CheckoutComponent implements OnInit {
 
     this.ordersService.createOrder({ 
       basketId: currentBasket.id, 
-      deliveryMethodId: this.deliveryMethodId, 
       orderType: 2, // Delivery
       shippingAddress: this.address 
     }).subscribe({

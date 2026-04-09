@@ -23,8 +23,7 @@ export interface Order {
   orderDate: string;
   shipToAddress?: UserAddress;
   shippingAddress?: UserAddress;
-  deliveryMethod: string;
-  shippingPrice: number;
+  deliveryFee: number;
   orderStatus: OrderStatus;
   status?: OrderStatus;
   orderItems: OrderItem[];
@@ -39,16 +38,8 @@ export interface Order {
   waiterName?: string;
 }
 
-export interface DeliveryMethod {
-  id: number;
-  shortName: string;
-  description: string;
-  price: number;
-}
-
 export interface OrderCreateRequest {
   basketId: string;
-  deliveryMethodId: number;
   orderType: number;
   shippingAddress: UserAddress;
 }

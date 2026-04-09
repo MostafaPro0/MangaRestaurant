@@ -74,7 +74,7 @@ namespace MangaRestaurant.APIs.Controllers
         {
             var buyerEmail = User.FindFirstValue(ClaimTypes.Email);
             var mappedAddress = _mapper.Map<UserAddressDto, OrderAddress>(orderDTO.ShippingAddress);
-            var order = await _orderService.CreateOrderAsync(buyerEmail, orderDTO.BasketId, orderDTO.DeliveryMethodId, mappedAddress, orderDTO.OrderType);
+            var order = await _orderService.CreateOrderAsync(buyerEmail, orderDTO.BasketId, mappedAddress, orderDTO.OrderType);
             if (order is null) return BadRequest(new ApiResponse(400, "There is a Problem With Your Order"));
             return Ok(order);
         }

@@ -28,7 +28,7 @@ namespace MangaRestaurant.Service
             _notificationService = notificationService;
         }
 
-        public async Task<Order?> CreateOrderAsync(string buyerEmail, string basketId, int methodId, OrderAddress orderShippingAddress, OrderType orderType = OrderType.Delivery)
+        public async Task<Order?> CreateOrderAsync(string buyerEmail, string basketId, OrderAddress orderShippingAddress, OrderType orderType = OrderType.Delivery)
         {
             // Get Basket From Basket Repo.
             var basket = await _basketRepository.GetBasketAsync(basketId);
@@ -56,19 +56,12 @@ namespace MangaRestaurant.Service
             // Get SubTotal
             var subTotal = orderItems.Sum(item => item.Price * item.Quantity);
 
-            // Get Delivery Method from Delivery Method Repo
-            DeliveryMethod? deliveryMethod = null;
+            // Calculate Delivery Fee from Settings
+            decimal deliveryFee = 0;
             if (orderType == OrderType.Delivery)
             {
-                deliveryMethod = await _unitOfWork.Repository<DeliveryMethod>().GetAsync(methodId);
-                if (deliveryMethod == null) return null;
-
-                // Set basket delivery method so payment intent calculation matches selected delivery method
-                if (basket.DeliveryMethodId != methodId)
-                {
-                    basket.DeliveryMethodId = methodId;
-                    await _basketRepository.UpdateBasketAsync(basket);
-                }
+                var settings = await _unitOfWork.Repository<SiteSettings>().GetAllAsync();
+                deliveryFee = settings.FirstOrDefault()?.DeliveryFee ?? 0;
             }
 
             // Ensure payment intent exists and is populated in basket
@@ -85,7 +78,7 @@ namespace MangaRestaurant.Service
                 _unitOfWork.Repository<Order>().Delete(exOrder);
             }
 
-            var order = new Order(buyerEmail, orderShippingAddress, deliveryMethod, orderItems, subTotal, basket.Discount, basket.PaymentIntentId, orderType);
+            var order = new Order(buyerEmail, orderShippingAddress, deliveryFee, orderItems, subTotal, basket.Discount, basket.PaymentIntentId, orderType);
 
             await _unitOfWork.Repository<Order>().AddAsync(order);
 
@@ -122,9 +115,7 @@ namespace MangaRestaurant.Service
 
         public async Task<IReadOnlyList<Order>> GetAllOrdersAsync()
         {
-            var spec = new OrderSpecificationsForAdmin();
-            var orders = await _unitOfWork.Repository<Order>().GetAllAsyncWithSpecAsync(spec);
-            return orders;
+            return await _unitOfWork.Repository<Order>().GetAllAsync();
         }
 
         public async Task<Order> GetOrderByIdAsync(int orderId)
