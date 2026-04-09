@@ -82,10 +82,12 @@
 
           <div class="flex align-items-center justify-content-between mb-4">
             <div class="flex flex-column">
-              <span class="primary-text text-3xl font-black">{{ product.price | currency }}</span>
+              <span class="primary-text text-3xl font-black">
+                {{ product.price | currency:(settings$ | async)?.currencyCode || 'USD':'symbol':'1.2-2' }}
+              </span>
               <span *ngIf="product.oldPrice && product.oldPrice > product.price" 
                     class="text-xs text-dim strikethrough opacity-60">
-                {{ product.oldPrice | currency }}
+                {{ product.oldPrice | currency:(settings$ | async)?.currencyCode || 'USD':'symbol':'1.2-2' }}
               </span>
             </div>
             <span class="text-xs text-muted font-bold opacity-60">{{ 'PRODUCTS.INCL_VAT' | translate }}</span>

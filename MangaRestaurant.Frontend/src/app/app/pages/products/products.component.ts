@@ -12,6 +12,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { ProductsService } from '../../services/products.service';
 import { BasketService } from '../../services/basket.service';
 import { TranslateService } from '../../services/translate.service';
+import { SettingsService } from '../../services/settings.service';
 
 @Component({
   selector: 'app-products',
@@ -26,14 +27,17 @@ export class ProductsComponent implements OnInit {
   loading = false;
   search = '';
   selectedCategoryId = 0;
+  settings$! : any;
 
   constructor(
     private productsService: ProductsService, 
     private basketService: BasketService,
-    public translateService: TranslateService
+    public translateService: TranslateService,
+    private settingsService: SettingsService
   ) {}
 
   ngOnInit(): void {
+    this.settings$ = this.settingsService.settings$;
     this.loadProducts();
     this.loadCategories();
   }
