@@ -89,11 +89,12 @@ export class LoginComponent implements AfterViewInit {
           this.router.navigate([this.authService.isAdmin(user?.token ?? null) ? '/admin' : '/']);
         },
         error: (err) => {
-          this.error = 'Failed to login via Google';
+          const errorMsg = err?.error?.message || 'Failed to login via Google';
+          this.error = errorMsg;
           this.messageService.add({
             severity: 'error',
-            summary: 'Error',
-            detail: this.error,
+            summary: this.translate.instant('TOAST.ERROR') || 'Error',
+            detail: errorMsg,
             life: 3000
           });
         }
