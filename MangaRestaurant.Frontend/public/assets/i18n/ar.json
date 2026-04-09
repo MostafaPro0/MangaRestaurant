@@ -98,7 +98,8 @@
     "FREE": "مجاني",
     "DELIVERY": "التوصيل",
     "SUBTOTAL": "المجموع الفرعي",
-    "VIEW_PRODUCT": "عرض المنتج"
+    "VIEW_PRODUCT": "عرض المنتج",
+    "DEALS_TITLE": "عروض قد تنال إعجابك"
   },
   "CHECKOUT": {
     "TITLE": "تأكيد الطلب",

@@ -98,7 +98,8 @@
     "FREE": "FREE",
     "DELIVERY": "Delivery",
     "SUBTOTAL": "Subtotal",
-    "VIEW_PRODUCT": "View Product"
+    "VIEW_PRODUCT": "View Product",
+    "DEALS_TITLE": "Special Offers for You"
   },
   "CHECKOUT": {
     "TITLE": "Secure Checkout",
