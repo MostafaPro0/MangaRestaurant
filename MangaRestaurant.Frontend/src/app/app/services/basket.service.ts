@@ -211,4 +211,12 @@ export class BasketService {
       error: (err) => console.error('Basket update removed item failed', err)
     });
   }
+
+  calculateTotals() {
+    const current = this.basket.value;
+    if (!current || !current.items) return { subtotal: 0, total: 0 };
+    const subtotal = current.items.reduce((a, b) => (b.price * b.quantity) + a, 0);
+    const total = subtotal; 
+    return { subtotal, total };
+  }
 }

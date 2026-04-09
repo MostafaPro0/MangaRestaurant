@@ -17,5 +17,6 @@ export const routes: Route[] = [
   { path: 'account/reset-password', canActivate: [guestGuard], loadComponent: () => import('./app/pages/reset-password/reset-password.component').then(m => m.ResetPasswordComponent) },
   { path: 'login', canActivate: [guestGuard], loadComponent: () => import('./app/pages/login/login.component').then(m => m.LoginComponent) },
   { path: 'register', canActivate: [guestGuard], loadComponent: () => import('./app/pages/register/register.component').then(m => m.RegisterComponent) },
+  { path: 'pos', loadComponent: () => import('./app/pages/pos/pos.component').then(m => m.PosComponent) },
   { path: '**', loadComponent: () => import('./app/pages/not-found/not-found.component').then(m => m.NotFoundComponent) }
 ];
