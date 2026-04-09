@@ -1,27 +1,27 @@
 import { Component, signal } from '@angular/core';
 import { environment } from '../environments/environment';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, NavigationEnd, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { Title, Meta } from '@angular/platform-browser';
+import { filter } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { MenuItem } from 'primeng/api';
+import { AvatarModule } from 'primeng/avatar';
+import { MenuModule } from 'primeng/menu';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+
 import { AuthService } from './app/services/auth.service';
 import { TranslateService } from './app/services/translate.service';
 import { BasketService } from './app/services/basket.service';
 import { NotificationService } from './app/services/notification.service';
 import { SettingsService } from './app/services/settings.service';
-import { AvatarModule } from 'primeng/avatar';
-import { MenuModule } from 'primeng/menu';
-import { MenuItem } from 'primeng/api';
-import { Router, NavigationEnd } from '@angular/router';
-import { Title, Meta } from '@angular/platform-browser';
-import { filter } from 'rxjs/operators';
 import { User } from './app/models/user.model';
 import { SiteSettings } from './app/models/site-settings.model';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -217,4 +217,3 @@ export class AppComponent {
     return environment.apiUrl.replace('/api/', '') + url;
   }
 }
-
