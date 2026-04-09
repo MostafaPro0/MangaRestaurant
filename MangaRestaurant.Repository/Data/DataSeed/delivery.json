@@ -1,5 +1,11 @@
 [
   {
+    "ShortName": "Dine-In",
+    "Description": "Eat inside the restaurant",
+    "DeliveryTime": "Immediate",
+    "Cost": 0
+  },
+  {
     "ShortName": "UPS1",
     "Description": "Fastest delivery time",
     "DeliveryTime": "1-2 Days",

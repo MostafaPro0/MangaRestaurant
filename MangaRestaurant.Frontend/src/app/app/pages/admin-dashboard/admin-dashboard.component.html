@@ -26,8 +26,8 @@
       <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'products'" [routerLink]="['/admin', 'products']">
         <i class="pi pi-box"></i> <span>{{ 'ADMIN.PRODUCTS' | translate }}</span>
       </a>
-      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'users'" [routerLink]="['/admin', 'users']">
-        <i class="pi pi-users"></i> <span>{{ 'ADMIN.EMPLOYEES' | translate }}</span>
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'users'" (click)="setActiveTab('users')">
+        <i class="pi pi-users"></i> <span>{{ 'ADMIN.STAFF_MANAGEMENT' | translate }}</span>
       </a>
       <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'settings'" [routerLink]="['/admin', 'settings']">
         <i class="pi pi-cog"></i> <span>{{ 'ADMIN.SETTINGS' | translate }}</span>
@@ -249,8 +249,8 @@
               <td>
                 <div class="flex align-items-center gap-2" *ngIf="!(order.deliveryMethod || '').toLowerCase().includes('dine')">
                   <p-dropdown [options]="deliveryEmployees" [(ngModel)]="orderDeliveryAssignee[order.id]" 
-                    optionLabel="name" optionValue="id" [placeholder]="(translateService.currentLang === 'ar' ? 'اختر عامل' : 'Select Driver')"
-                    appendTo="body" class="p-inputtext-sm w-full">
+                    optionLabel="displayName" optionValue="id" [placeholder]="(translateService.currentLang === 'ar' ? 'اختر عامل' : 'Select Driver')"
+                    class="p-inputtext-sm w-full">
                   </p-dropdown>
                   <button pButton icon="pi pi-user-plus" class="p-button-rounded p-button-text p-button-info p-button-sm"
                     (click)="updateOrderDelivery(order.id)" 
@@ -350,20 +350,20 @@
         <div class="flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
           <h2 class="m-0 flex align-items-center gap-2">
             <i class="pi pi-users text-primary"></i>
-            {{ (translateService.currentLang === 'ar' ? 'إدارة الموظفين' : 'Staff Management') }}
+            {{ 'ADMIN.STAFF_MANAGEMENT' | translate }}
           </h2>
-          <button pButton label="{{ (translateService.currentLang === 'ar' ? 'إضافة موظف جديد' : 'Add New Staff') }}" 
+          <button pButton [label]="'ADMIN.ADD_NEW_STAFF' | translate" 
                   icon="pi pi-plus" class="p-button-raised p-button-rounded p-button-success" (click)="userDialog = true"></button>
         </div>
 
         <p-table [value]="users" [loading]="loadingUsers" [rows]="10" [paginator]="true" class="custom-table staff-table shadow-2 border-round-xl">
           <ng-template pTemplate="header">
             <tr>
-              <th style="width: 25%">{{ (translateService.currentLang === 'ar' ? 'الاسم' : 'Name') }}</th>
-              <th style="width: 25%">{{ (translateService.currentLang === 'ar' ? 'البريد الإلكتروني' : 'Email') }}</th>
-              <th style="width: 20%">{{ (translateService.currentLang === 'ar' ? 'الدور الحالي' : 'Current Role') }}</th>
-              <th style="width: 20%">{{ (translateService.currentLang === 'ar' ? 'تغيير الدور' : 'Change Role') }}</th>
-              <th style="width: 10%" class="text-center">{{ (translateService.currentLang === 'ar' ? 'إجراءات' : 'Actions') }}</th>
+              <th style="width: 25%">{{ 'ADMIN.EMPLOYEE_NAME' | translate }}</th>
+              <th style="width: 25%">{{ 'ADMIN.EMAIL' | translate }}</th>
+              <th style="width: 20%">{{ 'ADMIN.CURRENT_ROLE' | translate }}</th>
+              <th style="width: 20%">{{ 'ADMIN.CHANGE_ROLE' | translate }}</th>
+              <th style="width: 10%" class="text-center">{{ 'ADMIN.ACTIONS' | translate }}</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-user>
@@ -389,31 +389,31 @@
       </div>
       <!-- User Dialog -->
       <p-dialog [(visible)]="userDialog" [style]="{width: '450px'}" 
-                [header]="(translateService.currentLang === 'ar' ? 'إضافة موظف جديد' : 'Add New Staff')" 
+                [header]="'ADMIN.ADD_NEW_STAFF' | translate" 
                 [modal]="true" styleClass="p-fluid glass-panel">
         <ng-template pTemplate="content">
           <div class="field mb-3">
-            <label for="name">{{ (translateService.currentLang === 'ar' ? 'الاسم' : 'Name') }}</label>
+            <label for="name">{{ 'ADMIN.NAME' | translate }}</label>
             <input type="text" pInputText id="name" [(ngModel)]="newUser.displayName" required autofocus />
           </div>
           <div class="field mb-3">
-            <label for="email">{{ (translateService.currentLang === 'ar' ? 'البريد الإلكتروني' : 'Email') }}</label>
+            <label for="email">{{ 'ADMIN.EMAIL' | translate }}</label>
             <input type="email" pInputText id="email" [(ngModel)]="newUser.email" required />
           </div>
           <div class="field mb-3">
-            <label for="password">{{ (translateService.currentLang === 'ar' ? 'كلمة المرور' : 'Password') }}</label>
+            <label for="password">{{ 'AUTH.PASSWORD' | translate }}</label>
             <input type="password" pInputText id="password" [(ngModel)]="newUser.password" required />
           </div>
           <div class="field mb-3">
-            <label for="role">{{ (translateService.currentLang === 'ar' ? 'الدور الوظيفي' : 'Functional Role') }}</label>
+            <label for="role">{{ 'ADMIN.ROLE' | translate }}</label>
             <p-dropdown [options]="roleOptions" [(ngModel)]="selectedUserRole" id="role" appendTo="body"></p-dropdown>
           </div>
         </ng-template>
 
         <ng-template pTemplate="footer">
-          <button pButton label="{{ (translateService.currentLang === 'ar' ? 'إلغاء' : 'Cancel') }}" 
+          <button pButton [label]="'ADMIN.CANCEL' | translate" 
                   icon="pi pi-times" class="p-button-text" (click)="userDialog = false"></button>
-          <button pButton label="{{ (translateService.currentLang === 'ar' ? 'حفظ' : 'Save') }}" 
+          <button pButton [label]="'ADMIN.SAVE' | translate" 
                   icon="pi pi-check" class="p-button-raised" (click)="saveUser()"></button>
         </ng-template>
       </p-dialog>

@@ -121,7 +121,7 @@ export class AdminDashboardComponent implements OnInit {
   
   orderStatusDraft: { [key: number]: string } = {};
   deliveryEmployees: any[] = [];
-  orderDeliveryAssignee: { [key: number]: number } = {};
+  orderDeliveryAssignee: { [key: number]: string } = {};
 
   selectedOrderType: string = 'All';
   
@@ -217,7 +217,7 @@ export class AdminDashboardComponent implements OnInit {
     this.loadingUsers = true;
     this.adminService.getUsers().subscribe(u => {
       this.users = u;
-      this.deliveryEmployees = u.filter((user: any) => user.role === 'Delivery');
+      this.deliveryEmployees = u.filter((user: any) => user.role?.toLowerCase() === 'delivery');
       this.loadingUsers = false;
     });
 

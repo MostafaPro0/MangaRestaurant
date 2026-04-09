@@ -284,6 +284,10 @@
     "UPDATE": "Update",
     "SAVE": "Save",
     "CANCEL": "Cancel",
+    "ADD_NEW_STAFF": "Add New Staff",
+    "CURRENT_ROLE": "Current Role",
+    "CHANGE_ROLE": "Change Role",
+    "NAME": "Name",
     "CHART_SALES": "Sales Revenue Trend",
     "CHART_STATUS": "Order Status Distribution",
     "CHART_PEAK_HOURS": "Peak Hours (Order Distribution)",
@@ -292,6 +296,8 @@
     "TOTAL_ORDERS": "Total Orders",
     "TOTAL_REVENUE": "Total Revenue",
     "AVG_ORDER_VALUE": "Avg Order Value",
+    "TOTAL_USERS": "Total Users & Staff",
+    "STAFF_MANAGEMENT": "Staff Management",
     "TOTAL_EMPLOYEES": "Total Employees",
     "ORDERS": {
       "STATUS_UPDATE": "Update Status"

@@ -285,6 +285,10 @@
     "UPDATE": "تحديث",
     "SAVE": "حفظ",
     "CANCEL": "إلغاء",
+    "ADD_NEW_STAFF": "إضافة موظف جديد",
+    "CURRENT_ROLE": "الدور الحالي",
+    "CHANGE_ROLE": "تغيير الدور",
+    "NAME": "الاسم",
     "CHART_SALES": "اتجاه المبيعات الإيرادات",
     "CHART_STATUS": "توزيع حالات الطلبات",
     "CHART_PEAK_HOURS": "ساعات الذروة (توقيت الطلبات)",
@@ -293,6 +297,8 @@
     "TOTAL_ORDERS": "إجمالي الطلبات",
     "TOTAL_REVENUE": "إجمالي الإيرادات",
     "AVG_ORDER_VALUE": "متوسط قيمة الطلب",
+    "TOTAL_USERS": "إجمالي الموظفين والعملاء",
+    "STAFF_MANAGEMENT": "إدارة الموظفين",
     "TOTAL_EMPLOYEES": "إجمالي الموظفين",
     "ORDERS": {
       "STATUS_UPDATE": "تحديث الحالة"

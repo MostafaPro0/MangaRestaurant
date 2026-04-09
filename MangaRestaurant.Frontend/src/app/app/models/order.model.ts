@@ -30,8 +30,12 @@ export interface Order {
   orderItems: OrderItem[];
   discount: number;
   total: number;
-  deliveryPersonId?: number;
+  cashierId?: string;
+  cashierName?: string;
+  deliveryPersonId?: string;
   deliveryPersonName?: string;
+  waiterId?: string;
+  waiterName?: string;
 }
 
 export interface DeliveryMethod {
