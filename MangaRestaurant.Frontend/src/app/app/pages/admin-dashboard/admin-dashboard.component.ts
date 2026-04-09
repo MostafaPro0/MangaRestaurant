@@ -121,7 +121,7 @@ export class AdminDashboardComponent implements OnInit {
     private ordersService: OrdersService,
     private settingsService: SettingsService,
     private messageService: MessageService,
-    private translate: TranslateService,
+    public translate: TranslateService,
     private route: ActivatedRoute,
     private router: Router
   ) { }

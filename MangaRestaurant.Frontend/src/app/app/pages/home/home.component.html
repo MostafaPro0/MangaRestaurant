@@ -21,6 +21,10 @@
     </p>
     
     <div class="flex align-items-center justify-content-center flex-wrap gap-4 mt-8">
+      <button pButton routerLink="/pos" icon="pi pi-desktop"
+         [label]="'HOME.DINE_IN' | translate"
+         class="p-button-warning p-button-lg px-8 py-5 text-2xl shadow-lg border-none"
+         style="background: linear-gradient(135deg, #ffcc33 0%, #ffb300 100%); color: #000; font-weight: 800;"></button>
       <button pButton routerLink="/products" icon="pi pi-shopping-bag"
          [label]="'HOME.BROWSE' | translate"
          class="p-button-primary p-button-lg px-8 py-5 text-2xl"></button>

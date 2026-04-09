@@ -11,7 +11,8 @@
     "PROFILE": "My Profile",
     "MY_ORDERS": "My Orders",
     "SETTINGS": "Settings",
-    "DASHBOARD": "Dashboard"
+    "DASHBOARD": "Dashboard",
+    "DINE_IN": "Dine-in Order"
   },
   "HOME": {
     "BADGE": "Premium Japanese Restaurant",
@@ -37,7 +38,8 @@
     "DEALS_TAG": "Limited Time",
     "DEALS_TITLE": "Special Offers & Discounts",
     "LATEST_TAG": "What's New?",
-    "LATEST_TITLE": "Our Fresh Arrivals"
+    "LATEST_TITLE": "Our Fresh Arrivals",
+    "DINE_IN": "Order Inside Restaurant"
   },
   "PRODUCTS": {
     "TITLE": "Our Menu",

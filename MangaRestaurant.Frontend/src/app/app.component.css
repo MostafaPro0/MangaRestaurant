@@ -80,6 +80,17 @@
   border-radius: 2px;
 }
 
+.dine-in-nav-link:hover {
+  background: var(--primary-color) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 62, 62, 0.3);
+}
+
+.dine-in-nav-link:active {
+  transform: scale(0.95);
+}
+
 /* Actions (Right) */
 .nav-right {
   display: flex;

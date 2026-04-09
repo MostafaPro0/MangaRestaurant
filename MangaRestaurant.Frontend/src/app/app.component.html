@@ -25,6 +25,10 @@
           {{ 'NAV.BASKET' | translate }}
           <span class="basket-badge" *ngIf="basketCount() > 0">{{basketCount()}}</span>
         </a>
+        <a routerLink="/pos" routerLinkActive="active" class="dine-in-nav-link flex align-items-center gap-2 px-3 py-1 ml-2" 
+           style="color: var(--primary-color); font-weight: 800; border: 2px solid var(--primary-color); border-radius: 50px; background: rgba(255, 62, 62, 0.05); transition: all 0.3s ease;">
+           <i class="pi pi-desktop"></i> <span class="hidden xl:inline">{{ 'NAV.DINE_IN' | translate }}</span>
+        </a>
       </nav>
 
       <!-- Desktop Actions -->
@@ -167,6 +171,11 @@
           }}</a>
         <a *ngIf="isAdmin()" routerLink="/admin" (click)="toggleMobileMenu()" routerLinkActive="active">{{ 'NAV.ADMIN' |
           translate }}</a>
+        <a routerLink="/pos" (click)="toggleMobileMenu()" routerLinkActive="active" 
+           class="p-button p-button-warning p-button-lg w-full mt-3 mb-1 shadow-md border-none flex align-items-center justify-content-center gap-2"
+           style="background: linear-gradient(135deg, #ffcc33 0%, #ffb300 100%); color: #000; font-weight: 800;">
+           <i class="pi pi-desktop"></i> {{ 'NAV.DINE_IN' | translate }}
+        </a>
 
         <div class="border-top-1 border-white-alpha-10 my-4"></div>
 
