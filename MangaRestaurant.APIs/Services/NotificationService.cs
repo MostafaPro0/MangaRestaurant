@@ -124,15 +124,19 @@ namespace MangaRestaurant.APIs.Services
             });
         }
 
-        public async Task SendPriceUpdatedNotification(int productId, string productName, decimal newPrice)
+        public async Task SendPriceUpdatedNotification(int productId, string productName, string productNameAr, decimal newPrice)
         {
             // Broadcast to ALL connected clients so they can update their basket in real-time
+            // Using a simple object to avoid any serialization issues
             await _hubContext.Clients.All.SendAsync("PriceUpdated", new
             {
-                ProductId = productId,
-                ProductName = productName,
-                NewPrice = newPrice
+                productId = productId,
+                productName = productName,
+                productNameAr = productNameAr,
+                newPrice = newPrice
             });
+            
+            System.Console.WriteLine($"[SignalR] Broadcasted PriceUpdated for Product {productId}: {newPrice}");
         }
     }
 }

@@ -84,31 +84,35 @@ export class NotificationService {
     });
 
     // Listen for real-time price updates and sync basket items accordingly
-    this.hubConnection.on('PriceUpdated', (data: { productId: number; productName: string; newPrice: number }) => {
+    this.hubConnection.on('PriceUpdated', (data: any) => {
+      const productId = data.productId || data.ProductId;
+      const newPrice = data.newPrice || data.NewPrice;
+      
       const current = this.basketService.getCurrentBasket();
-      const affectedItem = current.items.find(item => item.productId === data.productId);
+      const affectedItem = current.items.find(item => item.productId === productId);
 
       if (affectedItem) {
-        // Update the price for the affected item
-        const updatedItems = current.items.map(item =>
-          item.productId === data.productId ? { ...item, price: data.newPrice } : item
-        );
-        const updatedBasket = { ...current, items: updatedItems };
-
-        // Persist the updated price to Redis
-        this.basketService.updateBasket(updatedBasket).subscribe();
-
-        // Notify the user
-        const isAr = this.translateService.currentLanguage === 'ar';
-        const productLabel = isAr ? (affectedItem.productNameAr || data.productName) : data.productName;
-        this.messageService.add({
-          severity: 'warn',
-          summary: isAr ? '⚠️ تحديث سعر' : '⚠️ Price Updated',
-          detail: isAr
-            ? `تم تحديث سعر "${productLabel}" في سلتك إلى $${data.newPrice.toFixed(2)}`
-            : `Price of "${productLabel}" in your cart updated to $${data.newPrice.toFixed(2)}`,
-          life: 6000,
-          icon: 'pi pi-tag'
+        // Force refresh the basket from the API to get the latest synced prices
+        // Our API GetCustomerBasket now has logic to sync prices from DB
+        this.basketService.getBasket(current.id).subscribe({
+          next: (updatedBasket) => {
+            console.log('Basket refreshed after price update');
+            
+            // Notify the user with a Toast
+            const isAr = this.translateService.currentLanguage === 'ar';
+            const productNameAr = data.productNameAr || affectedItem.productNameAr;
+            const productLabel = isAr ? (productNameAr || data.productName) : data.productName;
+            
+            this.messageService.add({
+              severity: 'info',
+              summary: isAr ? '📢 تحديث تلقائي' : '📢 Auto Update',
+              detail: isAr 
+                ? `تم تحديث سعر "${productLabel}" في سلتك` 
+                : `Price updated for "${productLabel}" in your cart`,
+              life: 5000,
+              icon: 'pi pi-sync'
+            });
+          }
         });
       }
     });

@@ -1,5 +1,5 @@
 <section class="admin-dashboard-container p-3 md:p-4">
-  
+
   <!-- 1. Header Section -->
   <div class="header-section d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
     <div class="title-group">
@@ -11,10 +11,12 @@
       [label]="'ADMIN.ADD_PRODUCT' | translate" (click)="openCreateProduct()"></button>
   </div>
 
-  <div class="admin-dashboard-wrapper border-round-xl overflow-hidden glass-panel" style="background: var(--bg-deep); border: 1px solid var(--glass-border)">
-    
+  <div class="admin-dashboard-wrapper border-round-xl overflow-hidden glass-panel"
+    style="background: var(--bg-deep); border: 1px solid var(--glass-border)">
+
     <!-- 2. CUSTOM SYSTEM NAV -->
-    <div class="custom-admin-nav p-3 border-bottom-1 flex-wrap gap-2" style="border-color: var(--glass-border) !important;">
+    <div class="custom-admin-nav p-3 border-bottom-1 flex-wrap gap-2"
+      style="border-color: var(--glass-border) !important;">
       <button class="nav-btn" [class.active]="activeTab === 'reports'" (click)="setActiveTab('reports')">
         <i class="pi pi-chart-bar"></i> <span>{{ 'ADMIN.REPORTS' | translate }}</span>
       </button>
@@ -31,7 +33,7 @@
 
     <!-- 3. Dynamic Content Area -->
     <div class="admin-content-card">
-      
+
       <!-- Tab 1: FULL ANALYTICAL REPORTS -->
       <div *ngIf="activeTab === 'reports'" class="tab-content animate-fade p-3 md:p-4">
 
@@ -87,17 +89,17 @@
 
         <!-- Stats Summary (Row 1) -->
         <div class="grid mb-4" *ngIf="reportData && !loadingReports">
-           <div class="col-12 sm:col-6 lg:col-3" *ngFor="let stat of getSummaryStats()">
-             <div class="stat-card p-4 shadow-sm h-full flex align-items-center gap-3 border-round-xl">
-               <div [class]="'stat-icon flex align-items-center justify-content-center ' + stat.colorClass">
-                 <i [class]="stat.icon"></i>
-               </div>
-               <div class="stat-content">
-                 <span class="stat-label block opacity-70">{{ stat.label | translate }}</span>
-                 <span class="stat-value block text-2xl font-bold">{{ stat.value }}</span>
-               </div>
-             </div>
-           </div>
+          <div class="col-12 sm:col-6 lg:col-3" *ngFor="let stat of getSummaryStats()">
+            <div class="stat-card p-4 shadow-sm h-full flex align-items-center gap-3 border-round-xl">
+              <div [class]="'stat-icon flex align-items-center justify-content-center ' + stat.colorClass">
+                <i [class]="stat.icon"></i>
+              </div>
+              <div class="stat-content">
+                <span class="stat-label block opacity-70">{{ stat.label | translate }}</span>
+                <span class="stat-value block text-2xl font-bold">{{ stat.value }}</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Analytical Charts (Grid) -->
@@ -106,18 +108,21 @@
           <div class="col-12 lg:col-8">
             <div class="chart-container p-4 shadow-sm border-round-xl mb-4">
               <h3 class="chart-title"><i class="pi pi-chart-line"></i> {{ 'ADMIN.CHART_SALES' | translate }}</h3>
-              <apx-chart *ngIf="salesChartOptions" [series]="salesChartOptions.series!" [chart]="salesChartOptions.chart!" 
-                [xaxis]="salesChartOptions.xaxis!" [colors]="salesChartOptions.colors!" [stroke]="salesChartOptions.stroke!" [fill]="salesChartOptions.fill!">
+              <apx-chart *ngIf="salesChartOptions" [series]="salesChartOptions.series!"
+                [chart]="salesChartOptions.chart!" [xaxis]="salesChartOptions.xaxis!"
+                [colors]="salesChartOptions.colors!" [stroke]="salesChartOptions.stroke!"
+                [fill]="salesChartOptions.fill!">
               </apx-chart>
             </div>
           </div>
-          
+
           <!-- Row 2: Status Distribution (Side) -->
           <div class="col-12 lg:col-4">
             <div class="chart-container p-4 shadow-sm border-round-xl mb-4">
               <h3 class="chart-title"><i class="pi pi-chart-pie"></i> {{ 'ADMIN.CHART_STATUS' | translate }}</h3>
-              <apx-chart *ngIf="statusChartOptions" [series]="statusChartOptions.series!" [chart]="statusChartOptions.chart!" 
-                [labels]="statusChartOptions.labels!" [colors]="statusChartOptions.colors!" [legend]="statusChartOptions.legend!">
+              <apx-chart *ngIf="statusChartOptions" [series]="statusChartOptions.series!"
+                [chart]="statusChartOptions.chart!" [labels]="statusChartOptions.labels!"
+                [colors]="statusChartOptions.colors!" [legend]="statusChartOptions.legend!">
               </apx-chart>
             </div>
           </div>
@@ -126,8 +131,9 @@
           <div class="col-12 lg:col-12">
             <div class="chart-container p-4 shadow-sm border-round-xl mb-4">
               <h3 class="chart-title"><i class="pi pi-clock"></i> {{ 'ADMIN.CHART_PEAK_HOURS' | translate }}</h3>
-              <apx-chart *ngIf="peakHoursChartOptions" [series]="peakHoursChartOptions.series!" [chart]="peakHoursChartOptions.chart!" 
-                [xaxis]="peakHoursChartOptions.xaxis!" [colors]="peakHoursChartOptions.colors!" [plotOptions]="peakHoursChartOptions.plotOptions!">
+              <apx-chart *ngIf="peakHoursChartOptions" [series]="peakHoursChartOptions.series!"
+                [chart]="peakHoursChartOptions.chart!" [xaxis]="peakHoursChartOptions.xaxis!"
+                [colors]="peakHoursChartOptions.colors!" [plotOptions]="peakHoursChartOptions.plotOptions!">
               </apx-chart>
             </div>
           </div>
@@ -136,8 +142,9 @@
           <div class="col-12 lg:col-6">
             <div class="chart-container p-4 shadow-sm border-round-xl mb-4 h-full">
               <h3 class="chart-title"><i class="pi pi-star"></i> {{ 'ADMIN.CHART_TOP_SELLERS' | translate }}</h3>
-              <apx-chart *ngIf="topProductsChartOptions" [series]="topProductsChartOptions.series!" [chart]="topProductsChartOptions.chart!" 
-                [xaxis]="topProductsChartOptions.xaxis!" [colors]="topProductsChartOptions.colors!" [plotOptions]="topProductsChartOptions.plotOptions!">
+              <apx-chart *ngIf="topProductsChartOptions" [series]="topProductsChartOptions.series!"
+                [chart]="topProductsChartOptions.chart!" [xaxis]="topProductsChartOptions.xaxis!"
+                [colors]="topProductsChartOptions.colors!" [plotOptions]="topProductsChartOptions.plotOptions!">
               </apx-chart>
             </div>
           </div>
@@ -146,8 +153,9 @@
           <div class="col-12 lg:col-6">
             <div class="chart-container p-4 shadow-sm border-round-xl mb-4 h-full">
               <h3 class="chart-title"><i class="pi pi-tag"></i> {{ 'ADMIN.CHART_TOP_SELLERS' | translate }}</h3>
-              <apx-chart *ngIf="categoryChartOptions" [series]="categoryChartOptions.series!" [chart]="categoryChartOptions.chart!" 
-                [labels]="categoryChartOptions.labels!" [colors]="categoryChartOptions.colors!">
+              <apx-chart *ngIf="categoryChartOptions" [series]="categoryChartOptions.series!"
+                [chart]="categoryChartOptions.chart!" [labels]="categoryChartOptions.labels!"
+                [colors]="categoryChartOptions.colors!">
               </apx-chart>
             </div>
           </div>
@@ -156,8 +164,9 @@
           <div class="col-12 lg:col-4">
             <div class="chart-container p-4 shadow-sm border-round-xl mb-4 h-full">
               <h3 class="chart-title"><i class="pi pi-truck"></i> {{ 'ADMIN.CHART_DELIVERY' | translate }}</h3>
-              <apx-chart *ngIf="deliveryChartOptions" [series]="deliveryChartOptions.series!" [chart]="deliveryChartOptions.chart!" 
-                [labels]="deliveryChartOptions.labels!" [colors]="deliveryChartOptions.colors!">
+              <apx-chart *ngIf="deliveryChartOptions" [series]="deliveryChartOptions.series!"
+                [chart]="deliveryChartOptions.chart!" [labels]="deliveryChartOptions.labels!"
+                [colors]="deliveryChartOptions.colors!">
               </apx-chart>
             </div>
           </div>
@@ -175,7 +184,8 @@
             <p-skeleton width="20%" height="1rem"></p-skeleton>
             <p-skeleton width="25%" height="1rem"></p-skeleton>
           </div>
-          <div *ngFor="let i of [1,2,3,4,5,6,7]" class="flex gap-3 align-items-center py-3 border-bottom-1 surface-border px-1">
+          <div *ngFor="let i of [1,2,3,4,5,6,7]"
+            class="flex gap-3 align-items-center py-3 border-bottom-1 surface-border px-1">
             <p-skeleton width="15%" height="1.2rem"></p-skeleton>
             <p-skeleton width="25%" height="1.2rem"></p-skeleton>
             <p-skeleton width="15%" height="1.2rem"></p-skeleton>
@@ -205,9 +215,11 @@
               </td>
               <td class="text-center">
                 <div class="flex align-items-center justify-content-center gap-2">
-                  <p-dropdown [options]="orderStatusOptions" [(ngModel)]="orderStatusDraft[order.id]" appendTo="body" class="p-inputtext-sm">
+                  <p-dropdown [options]="orderStatusOptions" [(ngModel)]="orderStatusDraft[order.id]" appendTo="body"
+                    class="p-inputtext-sm">
                   </p-dropdown>
-                  <button pButton icon="pi pi-save" class="p-button-rounded p-button-warning" (click)="updateOrderStatus(order.id)"></button>
+                  <button pButton icon="pi pi-save" class="p-button-rounded p-button-warning"
+                    (click)="updateOrderStatus(order.id)"></button>
                 </div>
               </td>
             </tr>
@@ -225,7 +237,8 @@
             <p-skeleton width="20%" height="1rem"></p-skeleton>
             <p-skeleton width="30%" height="1rem"></p-skeleton>
           </div>
-          <div *ngFor="let i of [1,2,3,4,5,6,7,8]" class="flex gap-3 align-items-center py-3 border-bottom-1 surface-border px-1">
+          <div *ngFor="let i of [1,2,3,4,5,6,7,8]"
+            class="flex gap-3 align-items-center py-3 border-bottom-1 surface-border px-1">
             <p-skeleton width="30%" height="1.2rem"></p-skeleton>
             <p-skeleton width="20%" height="1.8rem" borderRadius="20px"></p-skeleton>
             <p-skeleton width="20%" height="1.2rem"></p-skeleton>
@@ -254,16 +267,18 @@
               <td>
                 <div class="flex flex-column">
                   <span class="font-bold text-lg">{{ product.price | currency }}</span>
-                  <span *ngIf="product.oldPrice && product.oldPrice > product.price" 
-                        class="text-xs text-dim strikethrough opacity-60">
+                  <span *ngIf="product.oldPrice && product.oldPrice > product.price"
+                    class="text-xs text-dim strikethrough opacity-60">
                     {{ product.oldPrice | currency }}
                   </span>
                 </div>
               </td>
               <td class="text-center">
                 <div class="flex justify-content-center gap-2">
-                  <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-warning" (click)="openEditProduct(product)"></button>
-                  <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger" (click)="deleteProduct(product.id)"></button>
+                  <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-warning"
+                    (click)="openEditProduct(product)"></button>
+                  <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
+                    (click)="deleteProduct(product.id)"></button>
                 </div>
               </td>
             </tr>
@@ -280,7 +295,8 @@
             <p-skeleton width="40%" height="1rem"></p-skeleton>
             <p-skeleton width="20%" height="1rem"></p-skeleton>
           </div>
-          <div *ngFor="let i of [1,2,3,4,5]" class="flex gap-3 align-items-center py-3 border-bottom-1 surface-border px-1">
+          <div *ngFor="let i of [1,2,3,4,5]"
+            class="flex gap-3 align-items-center py-3 border-bottom-1 surface-border px-1">
             <p-skeleton width="40%" height="1.2rem"></p-skeleton>
             <p-skeleton width="40%" height="1.2rem"></p-skeleton>
             <p-skeleton width="20%" height="1.8rem" borderRadius="20px"></p-skeleton>
@@ -311,30 +327,33 @@
 </section>
 
 <!-- Product Dialog -->
-<p-dialog [(visible)]="productDialogVisible" [modal]="true" [header]="(editingProductId ? 'ADMIN.EDIT_PRODUCT' : 'ADMIN.ADD_PRODUCT') | translate"
-          class="custom-dialog" [style]="{width: '700px'}" [breakpoints]="{'960px': '95vw'}">
+<p-dialog [(visible)]="productDialogVisible" [modal]="true"
+  [header]="(editingProductId ? 'ADMIN.EDIT_PRODUCT' : 'ADMIN.ADD_PRODUCT') | translate" class="custom-dialog"
+  [style]="{width: '700px'}" [breakpoints]="{'960px': '95vw'}">
   <div class="p-fluid">
     <!-- Image Click-to-Upload Section -->
     <div class="field mb-4 pt-2">
-      <label class="font-bold block mb-2">{{ 'ADMIN.IMAGE_PREVIEW' | translate }} <span class="text-red-500">*</span></label>
-      <div 
-        class="img-upload-container border-round overflow-hidden shadow-sm bg-gray-100 flex align-items-center justify-content-center cursor-pointer relative" 
-        style="height: 250px; border: 2px dashed #ddd; min-height: 250px;"
-        (click)="fileUpload.click()">
-        
+      <label class="font-bold block mb-2">{{ 'ADMIN.IMAGE_PREVIEW' | translate }} <span
+          class="text-red-500">*</span></label>
+      <div
+        class="img-upload-container border-round overflow-hidden shadow-sm bg-gray-100 flex align-items-center justify-content-center cursor-pointer relative"
+        style="height: 250px; border: 2px dashed #ddd; min-height: 250px;" (click)="fileUpload.click()">
+
         <!-- Case 1: Always Visible Placeholder/Fallback -->
         <div class="flex flex-column align-items-center justify-content-center text-gray-500 w-full h-full p-4">
-           <i class="pi pi-images text-6xl mb-3 text-red-500 opacity-60"></i>
-           <span class="text-2xl font-bold">Add Product Photo</span>
-           <span class="text-sm opacity-60">Click anywhere here to upload</span>
+          <i class="pi pi-images text-6xl mb-3 text-red-500 opacity-60"></i>
+          <span class="text-2xl font-bold">Add Product Photo</span>
+          <span class="text-sm opacity-60">Click anywhere here to upload</span>
         </div>
 
         <!-- Case 2: Image as an overlay (Only shows if pictureUrl exists) -->
-        <img *ngIf="selectedProduct.pictureUrl" [src]="getImageUrl(selectedProduct.pictureUrl)" [alt]="selectedProduct.name" 
-             style="position: absolute; top:0; left:0; width: 100%; height: 100%; object-fit: contain; z-index: 5; background: #f8f9fa;" />
-        
+        <img *ngIf="selectedProduct.pictureUrl" [src]="getImageUrl(selectedProduct.pictureUrl)"
+          [alt]="selectedProduct.name"
+          style="position: absolute; top:0; left:0; width: 100%; height: 100%; object-fit: contain; z-index: 5; background: #f8f9fa;" />
+
         <!-- Case 3: Hover Overlay (Shows 'Change' text when an image exists) -->
-        <div *ngIf="selectedProduct.pictureUrl" class="upload-overlay flex flex-column align-items-center justify-content-center" style="z-index: 10;">
+        <div *ngIf="selectedProduct.pictureUrl"
+          class="upload-overlay flex flex-column align-items-center justify-content-center" style="z-index: 10;">
           <i class="pi pi-camera text-4xl mb-2"></i>
           <span class="font-bold">Change Image</span>
           <p class="text-sm mt-1" *ngIf="uploadingImage">Uploading...</p>
@@ -342,23 +361,25 @@
 
         <input type="file" #fileUpload hidden (change)="onFileSelected($event)" accept="image/*" />
       </div>
-      <p class="text-sm text-muted mt-2 text-center font-bold text-red-500">Required *</p>
     </div>
 
     <!-- Row 1: Names -->
     <div class="formgrid grid">
       <div class="field col-12 md:col-6 mb-3">
-        <label for="name" class="font-bold block mb-2">{{ 'ADMIN.PRODUCT_NAME' | translate }} <span class="text-red-500">*</span></label>
+        <label for="name" class="font-bold block mb-2">{{ 'ADMIN.PRODUCT_NAME' | translate }} <span
+            class="text-red-500">*</span></label>
         <input id="name" type="text" pInputText [(ngModel)]="selectedProduct.name" />
       </div>
       <div class="field col-12 md:col-6 mb-3">
-        <label for="nameAr" class="font-bold block mb-2">{{ 'ADMIN.PRODUCT_NAME_AR' | translate }} <span class="text-red-500">*</span></label>
+        <label for="nameAr" class="font-bold block mb-2">{{ 'ADMIN.PRODUCT_NAME_AR' | translate }} <span
+            class="text-red-500">*</span></label>
         <input id="nameAr" type="text" pInputText [(ngModel)]="selectedProduct.nameAr" dir="rtl" />
       </div>
     </div>
     <div class="formgrid grid">
       <div class="field col-12 md:col-6 mb-3">
-        <label for="price" class="font-bold block mb-2">{{ 'ADMIN.PRICE' | translate }} <span class="text-red-500">*</span></label>
+        <label for="price" class="font-bold block mb-2">{{ 'ADMIN.PRICE' | translate }} <span
+            class="text-red-500">*</span></label>
         <input id="price" type="number" pInputText [(ngModel)]="selectedProduct.price" />
       </div>
       <div class="field col-12 md:col-6 mb-3">
@@ -368,27 +389,35 @@
     </div>
     <div class="formgrid grid">
       <div class="field col-12 md:col-6 mb-3">
-        <label for="category" class="font-bold block mb-2">{{ 'ADMIN.CATEGORY' | translate }} <span class="text-red-500">*</span></label>
-        <p-dropdown id="category" [options]="categories" [(ngModel)]="selectedProduct.categoryId" 
-                    optionLabel="name" optionValue="id" [placeholder]="'ADMIN.CATEGORY' | translate"></p-dropdown>
+        <label for="category" class="font-bold block mb-2">{{ 'ADMIN.CATEGORY' | translate }} <span
+            class="text-red-500">*</span></label>
+        <p-dropdown id="category" [options]="categories" [(ngModel)]="selectedProduct.categoryId" optionLabel="name"
+          optionValue="id" [placeholder]="'ADMIN.CATEGORY' | translate"></p-dropdown>
       </div>
       <div class="field col-12 md:col-6 mb-3">
-        <label for="brand" class="font-bold block mb-2">{{ 'ADMIN.BRAND' | translate }} <span class="text-red-500">*</span></label>
-        <p-dropdown id="brand" [options]="brands" [(ngModel)]="selectedProduct.brandId" 
-                    optionLabel="name" optionValue="id" [placeholder]="'ADMIN.BRAND' | translate"></p-dropdown>
+        <label for="brand" class="font-bold block mb-2">{{ 'ADMIN.BRAND' | translate }} <span
+            class="text-red-500">*</span></label>
+        <p-dropdown id="brand" [options]="brands" [(ngModel)]="selectedProduct.brandId" optionLabel="name"
+          optionValue="id" [placeholder]="'ADMIN.BRAND' | translate"></p-dropdown>
       </div>
     </div>
     <div class="field mb-4">
-      <label for="desc" class="font-bold block mb-2">{{ 'ADMIN.DESCRIPTION_EN' | translate }} <span class="text-red-500">*</span></label>
-      <textarea id="desc" rows="8" pInputTextarea [(ngModel)]="selectedProduct.description" class="w-full text-lg"></textarea>
+      <label for="desc" class="font-bold block mb-2">{{ 'ADMIN.DESCRIPTION_EN' | translate }} <span
+          class="text-red-500">*</span></label>
+      <textarea id="desc" rows="8" pInputTextarea [(ngModel)]="selectedProduct.description"
+        class="w-full text-lg"></textarea>
     </div>
     <div class="field mb-4">
-      <label for="descAr" class="font-bold block mb-2">{{ 'ADMIN.DESCRIPTION_AR' | translate }} <span class="text-red-500">*</span></label>
-      <textarea id="descAr" rows="8" pInputTextarea [(ngModel)]="selectedProduct.descriptionAr" dir="rtl" class="w-full text-lg"></textarea>
+      <label for="descAr" class="font-bold block mb-2">{{ 'ADMIN.DESCRIPTION_AR' | translate }} <span
+          class="text-red-500">*</span></label>
+      <textarea id="descAr" rows="8" pInputTextarea [(ngModel)]="selectedProduct.descriptionAr" dir="rtl"
+        class="w-full text-lg"></textarea>
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <button pButton label="{{ 'ADMIN.CANCEL' | translate }}" icon="pi pi-times" class="p-button-text" (click)="productDialogVisible = false"></button>
-    <button pButton label="{{ 'ADMIN.SAVE' | translate }}" icon="pi pi-check" class="p-button-warning" (click)="saveProduct()"></button>
+    <button pButton label="{{ 'ADMIN.CANCEL' | translate }}" icon="pi pi-times" class="p-button-text"
+      (click)="productDialogVisible = false"></button>
+    <button pButton label="{{ 'ADMIN.SAVE' | translate }}" icon="pi pi-check" class="p-button-warning"
+      (click)="saveProduct()"></button>
   </ng-template>
 </p-dialog>

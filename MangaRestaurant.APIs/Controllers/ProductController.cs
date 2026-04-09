@@ -114,7 +114,7 @@ namespace MangaRestaurant.APIs.Controllers
             // Notify all clients if the price has changed so they can update their baskets in real-time
             if (product.Price != oldPrice)
             {
-                await _notificationService.SendPriceUpdatedNotification(product.Id, product.Name, product.Price);
+                await _notificationService.SendPriceUpdatedNotification(product.Id, product.Name, product.NameAr, product.Price);
             }
 
             // Re-fetch with relations for proper DTO return
