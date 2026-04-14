@@ -6,11 +6,11 @@
 
       <!-- Brand & Home Link -->
       <a routerLink="/" class="manga-brand" *ngIf="settings$ | async as settings">
-        <img src="mango-logo.png" class="brand-logo" alt="Logo" style="width: 35px; height: 35px; object-fit: contain;" />
+        <img src="logo.png" class="brand-logo" alt="Logo" style="width: 35px; height: 35px; object-fit: contain;" />
         <span class="brand-text">{{ lang() === 'ar' ? settings.restaurantNameAr : settings.restaurantName }}</span>
       </a>
       <a routerLink="/" class="manga-brand" *ngIf="!(settings$ | async)">
-        <img src="mango-logo.png" class="brand-logo" alt="Logo" style="width: 35px; height: 35px; object-fit: contain;" />
+        <img src="logo.png" class="brand-logo" alt="Logo" style="width: 35px; height: 35px; object-fit: contain;" />
         <span class="brand-text">{{ lang() === 'ar' ? 'مطعم مانجا' : 'MANGARESTO' }}</span>
       </a>
 
@@ -222,7 +222,7 @@
       <div class="grid align-items-start">
         <div class="col-12 md:col-4 mb-6 md:mb-0">
           <div class="manga-brand mb-4">
-            <img src="mango-logo.png" class="brand-logo" alt="Logo" style="width: 35px; height: 35px; object-fit: contain;" />
+            <img src="logo.png" class="brand-logo" alt="Logo" style="width: 35px; height: 35px; object-fit: contain;" />
             <span class="brand-text">{{ lang() === 'ar' ? settings.restaurantNameAr : settings.restaurantName }}</span>
           </div>
           <p class="text-dim pr-6" [innerHTML]="lang() === 'ar' ? 'أفضل مطعم يقدم أطباقاً شهية بجودة عالية.' : 'The best restaurant offering delicious dishes with premium quality.'"></p>
