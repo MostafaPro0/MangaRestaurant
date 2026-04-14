@@ -26,13 +26,13 @@
       <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'products'" [routerLink]="['/admin', 'products']">
         <i class="pi pi-box"></i> <span>{{ 'ADMIN.PRODUCTS' | translate }}</span>
       </a>
-      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'users'" (click)="setActiveTab('users')">
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'users'" [routerLink]="['/admin', 'users']">
         <i class="pi pi-users"></i> <span>{{ 'ADMIN.STAFF_MANAGEMENT' | translate }}</span>
       </a>
-      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'categories'" (click)="setActiveTab('categories')">
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'categories'" [routerLink]="['/admin', 'categories']">
         <i class="pi pi-tags"></i> <span>{{ (translateService.currentLang === 'ar' ? 'التصنيفات' : 'Categories') }}</span>
       </a>
-      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'brands'" (click)="setActiveTab('brands')">
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'brands'" [routerLink]="['/admin', 'brands']">
         <i class="pi pi-bookmark"></i> <span>{{ (translateService.currentLang === 'ar' ? 'البراندات' : 'Brands') }}</span>
       </a>
       <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'settings'" [routerLink]="['/admin', 'settings']">
@@ -436,36 +436,70 @@
         </p-table>
       </div>
       <!-- User Dialog -->
-      <p-dialog [(visible)]="userDialog" [style]="{width: '450px'}" 
+      <p-dialog [(visible)]="userDialog" [style]="{width: '500px'}" 
                 [header]="'ADMIN.ADD_NEW_STAFF' | translate" 
-                [modal]="true" styleClass="p-fluid glass-panel">
+                [modal]="true" styleClass="p-fluid glass-panel custom-admin-dialog" 
+                [draggable]="false" [resizable]="false">
         <ng-template pTemplate="content">
-          <div class="field mb-3">
-            <label for="name">{{ 'ADMIN.NAME' | translate }}</label>
-            <input type="text" pInputText id="name" [(ngModel)]="newUser.displayName" required autofocus />
-          </div>
-          <div class="field mb-3">
-            <label for="email">{{ 'ADMIN.EMAIL' | translate }}</label>
-            <input type="email" pInputText id="email" [(ngModel)]="newUser.email" required />
-          </div>
-          <div class="field mb-3">
-            <label for="password">{{ 'AUTH.PASSWORD' | translate }}</label>
-            <input type="password" pInputText id="password" [(ngModel)]="newUser.password" required />
-          </div>
-          <div class="field mb-3">
-            <label for="role">{{ 'ADMIN.ROLE' | translate }}</label>
-            <p-dropdown [options]="roleOptions" [(ngModel)]="selectedUserRole" id="role" appendTo="body"></p-dropdown>
+          <div class="p-4">
+            <div class="field mb-4">
+              <label for="name" class="block font-bold mb-2 opacity-80">{{ 'ADMIN.NAME' | translate }}</label>
+              <span class="p-input-icon-left">
+                <i class="pi pi-user text-primary"></i>
+                <input type="text" pInputText id="name" [(ngModel)]="newUser.displayName" 
+                       [placeholder]="translateService.currentLang === 'ar' ? 'أدخل اسم الموظف' : 'Enter employee name'" 
+                       required autofocus class="p-inputtext-lg border-round-xl" />
+              </span>
+            </div>
+
+            <div class="field mb-4">
+              <label for="email" class="block font-bold mb-2 opacity-80">{{ 'ADMIN.EMAIL' | translate }}</label>
+              <span class="p-input-icon-left">
+                <i class="pi pi-envelope text-primary"></i>
+                <input type="email" pInputText id="email" [(ngModel)]="newUser.email" 
+                       [placeholder]="translateService.currentLang === 'ar' ? 'example@mail.com' : 'example@mail.com'" 
+                       required class="p-inputtext-lg border-round-xl" />
+              </span>
+            </div>
+
+            <div class="field mb-4">
+              <label for="password" class="block font-bold mb-2 opacity-80">{{ 'AUTH.PASSWORD' | translate }}</label>
+              <span class="p-input-icon-left">
+                <i class="pi pi-lock text-primary"></i>
+                <input type="password" pInputText id="password" [(ngModel)]="newUser.password" 
+                       [placeholder]="'••••••••'"
+                       required class="p-inputtext-lg border-round-xl" />
+              </span>
+            </div>
+
+            <div class="field mb-4">
+              <label for="role" class="block font-bold mb-2 opacity-80">{{ 'ADMIN.ROLE' | translate }}</label>
+              <p-dropdown [options]="roleOptions" [(ngModel)]="selectedUserRole" id="role" 
+                          appendTo="body" styleClass="p-dropdown-lg border-round-xl"
+                          [placeholder]="translateService.currentLang === 'ar' ? 'اختر الدور' : 'Select Role'">
+                <ng-template let-option pTemplate="item">
+                  <div class="flex align-items-center gap-2">
+                    <i class="pi" [ngClass]="option.value === 'Admin' ? 'pi-shield' : 'pi-user'"></i>
+                    <span>{{ option.label }}</span>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+            </div>
           </div>
         </ng-template>
 
         <ng-template pTemplate="footer">
-          <button pButton [label]="'ADMIN.CANCEL' | translate" 
-                  icon="pi pi-times" class="p-button-text" (click)="userDialog = false"></button>
-          <button pButton [label]="'ADMIN.SAVE' | translate" 
-                  [icon]="savingUserStatus ? 'pi pi-spin pi-spinner' : 'pi pi-check'" 
-                  [loading]="savingUserStatus"
-                  [disabled]="savingUserStatus"
-                  class="p-button-raised" (click)="saveUser()"></button>
+          <div class="flex justify-content-end gap-2 p-3 border-top-1 surface-border">
+            <button pButton [label]="'ADMIN.CANCEL' | translate" 
+                    icon="pi pi-times" class="p-button-text p-button-secondary border-round-xl" 
+                    (click)="userDialog = false"></button>
+            <button pButton [label]="'ADMIN.SAVE' | translate" 
+                    [icon]="savingUserStatus ? 'pi pi-spin pi-spinner' : 'pi pi-check'" 
+                    [loading]="savingUserStatus"
+                    [disabled]="savingUserStatus || !newUser.email || !newUser.password"
+                    class="p-button-raised p-button-success px-4 border-round-xl" 
+                    (click)="saveUser()"></button>
+          </div>
         </ng-template>
       </p-dialog>
 

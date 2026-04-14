@@ -270,3 +270,82 @@
         flex-direction: column;
     }
 }
+
+/* RTL Support for Input Icons */
+:host-context([dir="rtl"]) .p-input-icon-left {
+    display: block !important;
+    position: relative !important;
+}
+
+:host-context([dir="rtl"]) .p-input-icon-left > i {
+    left: auto !important;
+    right: 1.25rem !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 10 !important;
+}
+
+:host-context([dir="rtl"]) .p-input-icon-left > .p-inputtext {
+    padding-left: 1rem !important;
+    padding-right: 3rem !important;
+}
+
+/* Fix Labels alignment in RTL */
+:host-context([dir="rtl"]) .custom-admin-dialog label {
+    text-align: right !important;
+}
+
+/* Custom Admin Dialog Styles */
+.custom-admin-dialog .p-dialog-content {
+    padding: 0 !important;
+    border-bottom-left-radius: 1.5rem !important;
+    border-bottom-right-radius: 1.5rem !important;
+}
+
+.custom-admin-dialog .p-dialog-header {
+    padding: 1.5rem 2rem !important;
+    background: var(--bg-deep) !important;
+    color: var(--primary) !important;
+    border-bottom: 1px solid var(--glass-border) !important;
+    border-top-left-radius: 1.5rem !important;
+    border-top-right-radius: 1.5rem !important;
+}
+
+.custom-admin-dialog label {
+    color: var(--text-main) !important;
+    display: block;
+}
+
+.custom-admin-dialog .p-inputtext {
+    background: var(--bg-soft) !important;
+    border: 1px solid var(--glass-border) !important;
+}
+
+.custom-admin-dialog .p-inputtext:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 0.2rem rgba(255, 62, 62, 0.15) !important;
+}
+
+.custom-admin-dialog .p-dropdown {
+    background: var(--bg-soft) !important;
+    border: 1px solid var(--glass-border) !important;
+    width: 100% !important;
+    min-height: 50px !important;
+}
+
+/* Make Dropdown Overlay (Panel) wider as well */
+.p-dropdown-panel {
+    min-width: 250px !important;
+    border-radius: 12px !important;
+    box-shadow: var(--shadow-lg) !important;
+    border: 1px solid var(--glass-border) !important;
+    background: var(--bg-main) !important;
+}
+
+.p-dropdown-items .p-dropdown-item {
+    padding: 1rem !important;
+    font-weight: 500 !important;
+}
+
+

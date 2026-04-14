@@ -45,6 +45,15 @@ export class CheckoutComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if (!this.authService.isAuthenticated()) {
+      this.messageService.add({
+        severity: 'info',
+        summary: this.translate.instant('TOAST.INFO'),
+        detail: this.translate.currentLang === 'ar' ? 'برجاء تسجيل الدخول أولاً لإتمام الطلب' : 'Please login first to complete your order.'
+      });
+      this.router.navigate(['/login'], { queryParams: { returnUrl: '/checkout' } });
+      return;
+    }
     this.settings$ = this.settingsService.settings$;
     this.basketService.basket$.subscribe((basket) => (this.basket = basket));
     this.loadSavedAddresses();

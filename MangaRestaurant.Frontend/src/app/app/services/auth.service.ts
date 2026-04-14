@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, map, Observable, of } from 'rxjs';
 import { ApiService } from './api.service';
 import { User } from '../models/user.model';
+import { WishlistService } from './wishlist.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { User } from '../models/user.model';
 export class AuthService {
   private currentUser$ = new BehaviorSubject<User | null>(null);
 
-  constructor(private api: ApiService, private router: Router) {
+  constructor(private api: ApiService, private router: Router, private injector: Injector) {
     const stored = localStorage.getItem('currentUser');
     if (stored) this.currentUser$.next(JSON.parse(stored));
   }
@@ -31,6 +32,9 @@ export class AuthService {
   private setUser(user: User): void {
     this.currentUser$.next(user);
     localStorage.setItem('currentUser', JSON.stringify(user));
+    // Merge guest data after setting user
+    const wishlistService = this.injector.get(WishlistService);
+    wishlistService.mergeGuestWishlist().subscribe();
   }
 
   login(email: string, password: string): Observable<User> {
