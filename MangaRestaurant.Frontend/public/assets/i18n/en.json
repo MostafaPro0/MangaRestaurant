@@ -189,7 +189,11 @@
     "STOP": "Stop Broadcasting",
     "BROADCASTING": "Broadcasting location...",
     "IDLE": "Idle",
-    "IDLE_DESC": "Select an order and press Start to share your live location with the customer"
+    "IDLE_DESC": "Select an order and press Start to share your live location with the customer",
+    "MY_ORDERS": "My Assigned Orders",
+    "NO_ORDERS": "No orders assigned to you yet",
+    "SELECT_ORDER_HINT": "Select an order from the left to start tracking",
+    "ORDER": "Order"
   },
   "PROFILE": {
 

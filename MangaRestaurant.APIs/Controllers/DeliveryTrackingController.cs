@@ -10,7 +10,7 @@ namespace MangaRestaurant.APIs.Controllers
     /// Used by the delivery agent (Admin) to broadcast their GPS location
     /// to all customers watching the given order via SignalR.
     /// </summary>
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Delivery,Admin")]
     public class DeliveryTrackingController : BaseApiController
     {
         private readonly IHubContext<DeliveryHub> _hubContext;

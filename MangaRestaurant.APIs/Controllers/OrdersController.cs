@@ -13,6 +13,7 @@ using MangaRestaurant.Core.Entities.Identity;
 using System.Security.Claims;
 using Microsoft.Extensions.Localization;
 using MangaRestaurant.APIs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace MangaRestaurant.APIs.Controllers
 {
@@ -355,6 +356,79 @@ namespace MangaRestaurant.APIs.Controllers
                     .ToList()
             };
             return Ok(report);
+        }
+
+        // ── Assign Driver ─────────────────────────────────────────────────────
+        /// <summary>
+        /// Admin assigns a delivery person to a specific order.
+        /// Sends a real-time SignalR notification to the driver + persists it in DB.
+        /// </summary>
+        [HttpPost("{id}/assign-driver")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> AssignDriver(
+            int id,
+            [FromBody] AssignDriverDto dto,
+            [FromServices] Microsoft.AspNetCore.SignalR.IHubContext<MangaRestaurant.APIs.Hubs.NotificationHub> hubContext)
+        {
+            var order = await _unitOfWork.Repository<Order>().GetAsync(id);
+            if (order == null) return NotFound(new ApiResponse(404));
+
+            // Update the order
+            order.DeliveryPersonId   = dto.DeliveryPersonId;
+            order.DeliveryPersonName = dto.DeliveryPersonName;
+            _unitOfWork.Repository<Order>().Update(order);
+
+            // Find the driver's email to target them in NotificationHub
+            var driver = await _userManager.FindByIdAsync(dto.DeliveryPersonId);
+            if (driver == null) return BadRequest(new ApiResponse(400, "Driver not found"));
+
+            // Persist notification
+            var notification = new MangaRestaurant.Core.Entities.Notification
+            {
+                Title      = "New Delivery Assignment",
+                TitleAr    = "مهمة توصيل جديدة",
+                Message    = $"You have been assigned to order #{id}. Please start delivery.",
+                MessageAr  = $"تم تعيينك للطلب رقم #{id}. يرجى بدء التوصيل.",
+                Type       = MangaRestaurant.Core.Entities.NotificationType.DeliveryAssignment,
+                RelatedId  = id.ToString(),
+                TargetUser = driver.Email!,
+            };
+            await _unitOfWork.Repository<MangaRestaurant.Core.Entities.Notification>().AddAsync(notification);
+            await _unitOfWork.CompleteAsync();
+
+            // Real-time push to the driver's SignalR group
+            await hubContext.Clients
+                .Group(driver.Email!)
+                .SendAsync("ReceiveNotification", new
+                {
+                    notification.Title,
+                    notification.TitleAr,
+                    notification.Message,
+                    notification.MessageAr,
+                    notification.Type,
+                    notification.RelatedId,
+                    notification.CreatedAt,
+                });
+
+            return Ok(new { message = $"Driver {dto.DeliveryPersonName} assigned to order #{id}" });
+        }
+
+        // ── Get Driver's Assigned Orders ───────────────────────────────────────
+        [HttpGet("my-deliveries")]
+        [Authorize(Roles = "Delivery")]
+        public async Task<ActionResult<IReadOnlyList<OrderToReturnDTO>>> GetMyDeliveries()
+        {
+            var driverId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var allOrders = await _unitOfWork.Repository<Order>().GetAllAsync();
+            var myOrders  = allOrders
+                .Where(o => o.DeliveryPersonId == driverId
+                         && o.OrderStatus != OrderStatus.Delivered
+                         && o.OrderStatus != OrderStatus.Cancelled)
+                .ToList();
+
+            var result = _mapper.Map<IReadOnlyList<Order>, IReadOnlyList<OrderToReturnDTO>>(myOrders);
+            await EnrichOrderImages(result);
+            return Ok(result);
         }
     }
 }

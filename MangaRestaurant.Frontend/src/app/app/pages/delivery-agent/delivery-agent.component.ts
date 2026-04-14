@@ -7,27 +7,35 @@ import { DropdownModule }       from 'primeng/dropdown';
 import { CardModule }           from 'primeng/card';
 import { TagModule }            from 'primeng/tag';
 import { ToastModule }          from 'primeng/toast';
+import { BadgeModule }          from 'primeng/badge';
 import { MessageService }       from 'primeng/api';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { DeliveryTrackingService } from '../../services/delivery-tracking.service';
 import { environment }             from '../../../../environments/environment';
 
-interface OrderOption { label: string; value: string; }
+interface AssignedOrder {
+  id: number;
+  buyerEmail: string;
+  orderStatus: string;
+  shippingAddress: any;
+}
 
 @Component({
   selector: 'app-delivery-agent',
   standalone: true,
   imports: [CommonModule, FormsModule, TranslateModule, ButtonModule,
-            DropdownModule, CardModule, TagModule, ToastModule],
+            DropdownModule, CardModule, TagModule, ToastModule, BadgeModule],
   providers: [MessageService],
   templateUrl: './delivery-agent.component.html',
   styleUrl:    './delivery-agent.component.css',
 })
 export class DeliveryAgentComponent implements OnInit, OnDestroy {
 
-  orders: OrderOption[] = [];
-  selectedOrderId = '';
+  assignedOrders: AssignedOrder[] = [];
+  loadingOrders  = false;
+  selectedOrder?: AssignedOrder;
+
   status = 'on_the_way';
   statusOptions = [
     { label: '🛵 On the way', value: 'on_the_way' },
@@ -40,33 +48,41 @@ export class DeliveryAgentComponent implements OnInit, OnDestroy {
   currentLat?: number;
   currentLng?: number;
 
+  private get token(): string {
+    return JSON.parse(localStorage.getItem('currentUser') ?? '{}')?.token ?? '';
+  }
+
   constructor(
     private tracker:  DeliveryTrackingService,
     private http:     HttpClient,
     private toast:    MessageService,
   ) {}
 
-  ngOnInit(): void { this.loadOrders(); }
+  ngOnInit(): void { this.loadAssignedOrders(); }
 
-  private loadOrders(): void {
-    const token = JSON.parse(localStorage.getItem('currentUser') ?? '{}')?.token ?? '';
-    this.http.get<any[]>(`${environment.apiUrl}/orders/all`, {
-      headers: new HttpHeaders({ Authorization: `Bearer ${token}` })
+  loadAssignedOrders(): void {
+    this.loadingOrders = true;
+    this.http.get<AssignedOrder[]>(`${environment.apiUrl}/orders/my-deliveries`, {
+      headers: new HttpHeaders({ Authorization: `Bearer ${this.token}` })
     }).subscribe({
       next: orders => {
-        this.orders = orders
-          .filter(o => o.status !== 'delivered')
-          .map(o => ({ label: `#${o.id} — ${o.buyerName ?? ''}`, value: String(o.id) }));
+        this.assignedOrders = orders;
+        this.loadingOrders  = false;
       },
-      error: () => this.toast.add({ severity: 'error', summary: 'Error', detail: 'Could not load orders' })
+      error: () => {
+        this.toast.add({ severity: 'error', summary: 'Error', detail: 'Could not load assigned orders' });
+        this.loadingOrders = false;
+      }
     });
   }
 
+  selectOrder(order: AssignedOrder): void {
+    if (this.tracking) this.stopTracking();
+    this.selectedOrder = order;
+  }
+
   startTracking(): void {
-    if (!this.selectedOrderId) {
-      this.toast.add({ severity: 'warn', summary: 'Select order', detail: 'Please select an order first' });
-      return;
-    }
+    if (!this.selectedOrder) return;
     if (!navigator.geolocation) {
       this.toast.add({ severity: 'error', summary: 'Error', detail: 'Geolocation not supported' });
       return;
@@ -84,13 +100,14 @@ export class DeliveryAgentComponent implements OnInit, OnDestroy {
   private broadcast(lat: number, lng: number): void {
     this.currentLat = lat;
     this.currentLng = lng;
-    const token = JSON.parse(localStorage.getItem('currentUser') ?? '{}')?.token ?? '';
-    this.tracker.sendLocation(this.selectedOrderId, lat, lng, this.status, token).catch(console.error);
+    this.tracker.sendLocation(
+      String(this.selectedOrder!.id), lat, lng, this.status, this.token
+    ).catch(console.error);
   }
 
   stopTracking(): void {
     if (this.watchId !== undefined) navigator.geolocation.clearWatch(this.watchId);
-    this.tracker.stopTracking(this.selectedOrderId);
+    if (this.selectedOrder) this.tracker.stopTracking(String(this.selectedOrder.id));
     this.tracking = false;
     this.toast.add({ severity: 'info', summary: 'Stopped', detail: 'Location broadcast stopped' });
   }
@@ -98,6 +115,14 @@ export class DeliveryAgentComponent implements OnInit, OnDestroy {
   openCurrentLocation(): void {
     if (this.currentLat && this.currentLng)
       window.open(`https://www.google.com/maps?q=${this.currentLat},${this.currentLng}`, '_blank');
+  }
+
+  statusSeverity(status: string): 'info' | 'success' | 'warning' | 'danger' {
+    const map: Record<string, any> = {
+      Pending: 'warning', Shipped: 'info', Processing: 'info',
+      Delivered: 'success', Cancelled: 'danger'
+    };
+    return map[status] ?? 'info';
   }
 
   ngOnDestroy(): void {

@@ -9,85 +9,118 @@
 
   <div class="grid">
 
-    <!-- Control Panel ────────────────────────── -->
+    <!-- Assigned Orders List ──────────────────────── -->
     <div class="col-12 lg:col-5">
-      <div class="mg-card p-5 flex flex-column gap-4">
-
-        <!-- Order selector -->
-        <div class="field">
-          <label class="form-label mb-2 block">{{ 'DELIVERY.SELECT_ORDER' | translate }}</label>
-          <p-dropdown [options]="orders" [(ngModel)]="selectedOrderId"
-                      optionLabel="label" optionValue="value"
-                      [placeholder]="'DELIVERY.SELECT_ORDER_PLACEHOLDER' | translate"
-                      styleClass="w-full p-input-lg"
-                      [disabled]="tracking">
-          </p-dropdown>
+      <div class="mg-card p-4">
+        <div class="flex align-items-center justify-content-between mb-4">
+          <h3 class="font-bold text-lg m-0">{{ 'DELIVERY.MY_ORDERS' | translate }}</h3>
+          <button pButton icon="pi pi-refresh" class="p-button-text p-button-sm"
+                  (click)="loadAssignedOrders()" [loading]="loadingOrders"></button>
         </div>
 
-        <!-- Status selector -->
-        <div class="field">
-          <label class="form-label mb-2 block">{{ 'DELIVERY.STATUS' | translate }}</label>
-          <p-dropdown [options]="statusOptions" [(ngModel)]="status"
-                      optionLabel="label" optionValue="value"
-                      styleClass="w-full p-input-lg">
-          </p-dropdown>
+        <!-- Empty state -->
+        <div *ngIf="!loadingOrders && assignedOrders.length === 0"
+             class="text-center py-6 text-dim">
+          <i class="pi pi-inbox text-4xl mb-3 block opacity-30"></i>
+          <p>{{ 'DELIVERY.NO_ORDERS' | translate }}</p>
         </div>
 
-        <!-- Start / Stop buttons -->
-        <div class="flex gap-3">
-          <button pButton
-            [label]="'DELIVERY.START' | translate"
-            icon="pi pi-play"
-            class="p-button-success flex-1"
-            [disabled]="tracking || !selectedOrderId"
-            (click)="startTracking()">
-          </button>
-          <button pButton
-            [label]="'DELIVERY.STOP' | translate"
-            icon="pi pi-stop"
-            class="p-button-danger flex-1"
-            [disabled]="!tracking"
-            (click)="stopTracking()">
-          </button>
-        </div>
+        <!-- Order cards -->
+        <div class="flex flex-column gap-3">
+          <div *ngFor="let order of assignedOrders"
+               class="p-3 rounded-xl border-1 cursor-pointer transition-all"
+               [ngClass]="selectedOrder?.id === order.id
+                 ? 'border-primary bg-primary-alpha-10'
+                 : 'border-white-alpha-10 hover:bg-white-alpha-05'"
+               (click)="selectOrder(order)">
 
-        <!-- Current coords preview -->
-        <div *ngIf="currentLat" class="p-3 bg-soft rounded-xl border-1 border-primary">
-          <div class="flex align-items-center justify-content-between">
-            <div class="flex align-items-center gap-2">
-              <i class="pi pi-map-marker text-primary text-xl"></i>
-              <span class="font-mono text-xs">
-                📍 {{ currentLat | number:'1.5-5' }}, {{ currentLng | number:'1.5-5' }}
-              </span>
+            <div class="flex justify-content-between align-items-center">
+              <span class="font-bold text-primary">#{{ order.id }}</span>
+              <p-tag [value]="order.orderStatus"
+                     [severity]="statusSeverity(order.orderStatus)"
+                     [rounded]="true" styleClass="text-xs">
+              </p-tag>
             </div>
-            <button pButton icon="pi pi-external-link"
-                    class="p-button-text p-button-sm"
-                    (click)="openCurrentLocation()">
-            </button>
+
+            <div class="text-xs text-dim mt-2 line-height-3" *ngIf="order.shippingAddress">
+              <i class="pi pi-map-marker mr-1 text-primary"></i>
+              {{ order.shippingAddress.street }}, {{ order.shippingAddress.city }}
+            </div>
+            <div class="text-xs text-dim mt-1">
+              <i class="pi pi-user mr-1"></i>
+              {{ order.buyerEmail }}
+            </div>
           </div>
         </div>
-
       </div>
     </div>
 
-    <!-- Status card ────────────────────────── -->
+    <!-- Tracking Control ──────────────────────────── -->
     <div class="col-12 lg:col-7">
-      <div class="mg-card p-5 h-full flex flex-column align-items-center justify-content-center gap-4">
+      <div class="mg-card p-5 h-full flex flex-column gap-4">
 
-        <div class="status-icon" [class.active]="tracking">🛵</div>
+        <ng-container *ngIf="selectedOrder; else noSelection">
 
-        <p class="font-bold text-2xl text-center">
-          {{ tracking ? ('DELIVERY.BROADCASTING' | translate) : ('DELIVERY.IDLE' | translate) }}
-        </p>
+          <!-- Selected order info -->
+          <div class="p-3 bg-soft rounded-xl border-1 border-primary">
+            <div class="flex align-items-center gap-3">
+              <i class="pi pi-shopping-cart text-primary text-xl"></i>
+              <div>
+                <span class="font-bold block">{{ 'DELIVERY.ORDER' | translate }} #{{ selectedOrder.id }}</span>
+                <span class="text-xs text-dim">{{ selectedOrder.shippingAddress?.city }}</span>
+              </div>
+            </div>
+          </div>
 
-        <p class="text-dim text-center text-sm max-w-20rem" *ngIf="!tracking">
-          {{ 'DELIVERY.IDLE_DESC' | translate }}
-        </p>
+          <!-- Status selector -->
+          <div class="field">
+            <label class="form-label mb-2 block">{{ 'DELIVERY.STATUS' | translate }}</label>
+            <p-dropdown [options]="statusOptions" [(ngModel)]="status"
+                        optionLabel="label" optionValue="value"
+                        styleClass="w-full p-input-lg">
+            </p-dropdown>
+          </div>
 
-        <div *ngIf="tracking" class="flex align-items-center gap-2">
-          <span class="live-dot"></span>
-          <span class="font-bold text-primary text-sm uppercase">LIVE</span>
-        </div>
+          <!-- Start / Stop -->
+          <div class="flex gap-3">
+            <button pButton [label]="'DELIVERY.START' | translate" icon="pi pi-play"
+                    class="p-button-success flex-1"
+                    [disabled]="tracking" (click)="startTracking()">
+            </button>
+            <button pButton [label]="'DELIVERY.STOP' | translate" icon="pi pi-stop"
+                    class="p-button-danger flex-1"
+                    [disabled]="!tracking" (click)="stopTracking()">
+            </button>
+          </div>
+
+          <!-- Coords preview -->
+          <div *ngIf="currentLat" class="p-3 bg-soft rounded-xl border-1 border-primary">
+            <div class="flex align-items-center justify-content-between">
+              <span class="font-mono text-xs">
+                📍 {{ currentLat | number:'1.5-5' }}, {{ currentLng | number:'1.5-5' }}
+              </span>
+              <button pButton icon="pi pi-external-link"
+                      class="p-button-text p-button-sm" (click)="openCurrentLocation()">
+              </button>
+            </div>
+          </div>
+
+          <!-- LIVE indicator -->
+          <div *ngIf="tracking" class="flex align-items-center gap-2 justify-content-center">
+            <span class="live-dot"></span>
+            <span class="font-bold text-primary text-sm uppercase">LIVE BROADCASTING</span>
+          </div>
+
+        </ng-container>
+
+        <!-- No order selected -->
+        <ng-template #noSelection>
+          <div class="flex flex-column align-items-center justify-content-center flex-grow-1 py-8 gap-3">
+            <div class="status-icon">🛵</div>
+            <p class="font-bold text-xl text-center">{{ 'DELIVERY.SELECT_ORDER_HINT' | translate }}</p>
+            <p class="text-dim text-sm text-center">{{ 'DELIVERY.IDLE_DESC' | translate }}</p>
+          </div>
+        </ng-template>
 
       </div>
     </div>

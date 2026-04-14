@@ -215,5 +215,30 @@ export class AuthService {
   isAdmin(token: string | null = this.token): boolean {
     return this.getAdminDecision(token) === 'admin';
   }
+
+  /** Generic role check – case-insensitive */
+  hasRole(roleName: string, token: string | null = this.token): boolean {
+    if (!token) return false;
+    const payload = this.decodeJwtPayload(token);
+    if (!payload) return false;
+
+    const msRoleUri = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
+    const msRoleClaims = payload[msRoleUri];
+    const msRoles: string[] = Array.isArray(msRoleClaims)
+      ? msRoleClaims
+      : typeof msRoleClaims === 'string' ? [msRoleClaims] : [];
+
+    const allRoles = [
+      ...msRoles,
+      ...(Array.isArray(payload.roles) ? payload.roles : []),
+      ...(typeof payload.role === 'string' ? [payload.role] : []),
+    ].map((r: string) => r.toLowerCase());
+
+    return allRoles.includes(roleName.toLowerCase());
+  }
+
+  isDelivery(token: string | null = this.token): boolean {
+    return this.hasRole('Delivery', token);
+  }
 }
 

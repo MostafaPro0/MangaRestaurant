@@ -9,7 +9,8 @@ namespace MangaRestaurant.Core.Entities
         NewProduct,
         PasswordChange,
         NewReview,
-        NewOrder
+        NewOrder,
+        DeliveryAssignment
     }
 
     public class Notification : BaseEntity

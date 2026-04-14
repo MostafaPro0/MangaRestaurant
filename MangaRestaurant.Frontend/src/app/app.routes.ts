@@ -1,7 +1,8 @@
 import { Route } from '@angular/router';
-import { adminGuard } from './app/guards/admin.guard';
-import { authGuard } from './app/guards/auth.guard';
-import { guestGuard } from './app/guards/guest.guard';
+import { adminGuard }    from './app/guards/admin.guard';
+import { authGuard }     from './app/guards/auth.guard';
+import { guestGuard }    from './app/guards/guest.guard';
+import { deliveryGuard } from './app/guards/delivery.guard';
 
 export const routes: Route[] = [
   { path: '', pathMatch: 'full', loadComponent: () => import('./app/pages/home/home.component').then(m => m.HomeComponent) },
@@ -12,7 +13,7 @@ export const routes: Route[] = [
   { path: 'wishlist', canActivate: [authGuard], loadComponent: () => import('./app/pages/wishlist/wishlist.component').then(m => m.WishlistComponent) },
   { path: 'orders', canActivate: [authGuard], loadComponent: () => import('./app/pages/orders/orders.component').then(m => m.OrdersComponent) },
   { path: 'orders/:id/track', canActivate: [authGuard], loadComponent: () => import('./app/pages/order-tracking/order-tracking.component').then(m => m.OrderTrackingComponent) },
-  { path: 'delivery-agent', canActivate: [adminGuard], loadComponent: () => import('./app/pages/delivery-agent/delivery-agent.component').then(m => m.DeliveryAgentComponent) },
+  { path: 'delivery-agent', canActivate: [deliveryGuard], loadComponent: () => import('./app/pages/delivery-agent/delivery-agent.component').then(m => m.DeliveryAgentComponent) },
   { path: 'admin', redirectTo: 'admin/reports', pathMatch: 'full' },
   { path: 'admin/:tab', canActivate: [adminGuard], loadComponent: () => import('./app/pages/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent) },
   { path: 'profile', canActivate: [authGuard], loadComponent: () => import('./app/pages/user-profile/user-profile.component').then(m => m.UserProfileComponent) },
