@@ -121,6 +121,7 @@ namespace MangaRestaurant.APIs
 
             app.MapControllers();
             app.MapHub<NotificationHub>("/hub/notifications");
+            app.MapHub<DeliveryHub>("/hub/delivery");
 
             #endregion
 

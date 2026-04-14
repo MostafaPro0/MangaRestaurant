@@ -163,9 +163,36 @@
     "ORDERED_ON": "Ordered On",
     "DELIVERY_ADDRESS": "Delivery Address",
     "ITEMS_ORDER": "Items Order",
-    "NO_SHIPPING_VAL": "No delivery address specified."
+    "NO_SHIPPING_VAL": "No delivery address specified.",
+    "TRACK": "Track Your Order"
+  },
+  "TRACKING": {
+    "TAG": "Live Tracking",
+    "TITLE": "Delivery Tracking",
+    "ORDER_NUM": "Order",
+    "CONNECTED": "Connected",
+    "CONNECTING": "Connecting...",
+    "LAST_UPDATE": "Last update",
+    "WAITING": "Waiting for Delivery Agent",
+    "WAITING_DESC": "The agent's location will appear automatically once delivery starts",
+    "ON_THE_WAY": "On the Way",
+    "ARRIVED": "Agent Arrived",
+    "DELIVERED": "Delivered"
+  },
+  "DELIVERY": {
+    "TAG": "Agent Panel",
+    "TITLE": "Delivery Agent Dashboard",
+    "SELECT_ORDER": "Select an Order to Track",
+    "SELECT_ORDER_PLACEHOLDER": "Select order...",
+    "STATUS": "Delivery Status",
+    "START": "Start Broadcasting",
+    "STOP": "Stop Broadcasting",
+    "BROADCASTING": "Broadcasting location...",
+    "IDLE": "Idle",
+    "IDLE_DESC": "Select an order and press Start to share your live location with the customer"
   },
   "PROFILE": {
+
     "TAG_LINE": "Your Account",
     "TITLE": "User Profile",
     "DISPLAY_NAME": "Display Name",

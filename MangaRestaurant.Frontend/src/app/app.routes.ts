@@ -11,6 +11,8 @@ export const routes: Route[] = [
   { path: 'checkout', canActivate: [authGuard], loadComponent: () => import('./app/pages/checkout/checkout.component').then(m => m.CheckoutComponent) },
   { path: 'wishlist', canActivate: [authGuard], loadComponent: () => import('./app/pages/wishlist/wishlist.component').then(m => m.WishlistComponent) },
   { path: 'orders', canActivate: [authGuard], loadComponent: () => import('./app/pages/orders/orders.component').then(m => m.OrdersComponent) },
+  { path: 'orders/:id/track', canActivate: [authGuard], loadComponent: () => import('./app/pages/order-tracking/order-tracking.component').then(m => m.OrderTrackingComponent) },
+  { path: 'delivery-agent', canActivate: [adminGuard], loadComponent: () => import('./app/pages/delivery-agent/delivery-agent.component').then(m => m.DeliveryAgentComponent) },
   { path: 'admin', redirectTo: 'admin/reports', pathMatch: 'full' },
   { path: 'admin/:tab', canActivate: [adminGuard], loadComponent: () => import('./app/pages/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent) },
   { path: 'profile', canActivate: [authGuard], loadComponent: () => import('./app/pages/user-profile/user-profile.component').then(m => m.UserProfileComponent) },

@@ -1,0 +1,96 @@
+<p-toast></p-toast>
+
+<div class="agent-page container section-pad">
+
+  <div class="section-header-v2 mb-6">
+    <span class="section-tag">{{ 'DELIVERY.TAG' | translate }}</span>
+    <h1 class="section-title-v2">{{ 'DELIVERY.TITLE' | translate }}</h1>
+  </div>
+
+  <div class="grid">
+
+    <!-- Control Panel ────────────────────────── -->
+    <div class="col-12 lg:col-5">
+      <div class="mg-card p-5 flex flex-column gap-4">
+
+        <!-- Order selector -->
+        <div class="field">
+          <label class="form-label mb-2 block">{{ 'DELIVERY.SELECT_ORDER' | translate }}</label>
+          <p-dropdown [options]="orders" [(ngModel)]="selectedOrderId"
+                      optionLabel="label" optionValue="value"
+                      [placeholder]="'DELIVERY.SELECT_ORDER_PLACEHOLDER' | translate"
+                      styleClass="w-full p-input-lg"
+                      [disabled]="tracking">
+          </p-dropdown>
+        </div>
+
+        <!-- Status selector -->
+        <div class="field">
+          <label class="form-label mb-2 block">{{ 'DELIVERY.STATUS' | translate }}</label>
+          <p-dropdown [options]="statusOptions" [(ngModel)]="status"
+                      optionLabel="label" optionValue="value"
+                      styleClass="w-full p-input-lg">
+          </p-dropdown>
+        </div>
+
+        <!-- Start / Stop buttons -->
+        <div class="flex gap-3">
+          <button pButton
+            [label]="'DELIVERY.START' | translate"
+            icon="pi pi-play"
+            class="p-button-success flex-1"
+            [disabled]="tracking || !selectedOrderId"
+            (click)="startTracking()">
+          </button>
+          <button pButton
+            [label]="'DELIVERY.STOP' | translate"
+            icon="pi pi-stop"
+            class="p-button-danger flex-1"
+            [disabled]="!tracking"
+            (click)="stopTracking()">
+          </button>
+        </div>
+
+        <!-- Current coords preview -->
+        <div *ngIf="currentLat" class="p-3 bg-soft rounded-xl border-1 border-primary">
+          <div class="flex align-items-center justify-content-between">
+            <div class="flex align-items-center gap-2">
+              <i class="pi pi-map-marker text-primary text-xl"></i>
+              <span class="font-mono text-xs">
+                📍 {{ currentLat | number:'1.5-5' }}, {{ currentLng | number:'1.5-5' }}
+              </span>
+            </div>
+            <button pButton icon="pi pi-external-link"
+                    class="p-button-text p-button-sm"
+                    (click)="openCurrentLocation()">
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Status card ────────────────────────── -->
+    <div class="col-12 lg:col-7">
+      <div class="mg-card p-5 h-full flex flex-column align-items-center justify-content-center gap-4">
+
+        <div class="status-icon" [class.active]="tracking">🛵</div>
+
+        <p class="font-bold text-2xl text-center">
+          {{ tracking ? ('DELIVERY.BROADCASTING' | translate) : ('DELIVERY.IDLE' | translate) }}
+        </p>
+
+        <p class="text-dim text-center text-sm max-w-20rem" *ngIf="!tracking">
+          {{ 'DELIVERY.IDLE_DESC' | translate }}
+        </p>
+
+        <div *ngIf="tracking" class="flex align-items-center gap-2">
+          <span class="live-dot"></span>
+          <span class="font-bold text-primary text-sm uppercase">LIVE</span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

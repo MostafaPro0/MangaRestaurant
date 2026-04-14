@@ -1,0 +1,23 @@
+.status-icon {
+  font-size: 5rem;
+  transition: transform 0.3s;
+}
+.status-icon.active {
+  animation: scooter 1.5s ease-in-out infinite alternate;
+}
+@keyframes scooter {
+  from { transform: translateX(-10px); }
+  to   { transform: translateX(10px); }
+}
+
+.live-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ef4444;
+  animation: pulse-red 1s infinite;
+}
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.5); }
+  50%       { box-shadow: 0 0 0 8px rgba(239,68,68,0); }
+}

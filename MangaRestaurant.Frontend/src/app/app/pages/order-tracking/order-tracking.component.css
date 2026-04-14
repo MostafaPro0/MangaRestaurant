@@ -1,0 +1,66 @@
+/* ── Map ─────────────────────────────────────────────────── */
+.map-wrapper {
+  position: relative;
+  min-height: 420px;
+}
+
+.map-container {
+  width: 100%;
+  height: 420px;
+  z-index: 1;
+}
+
+/* ── Waiting overlay ─────────────────────────────────────── */
+.waiting-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  border-radius: inherit;
+}
+
+.waiting-icon {
+  font-size: 4rem;
+  animation: bounce 1.2s infinite alternate;
+}
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-16px); }
+}
+
+/* ── Connection dot ──────────────────────────────────────── */
+.connection-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--text-muted, #888);
+  display: inline-block;
+  transition: background 0.3s;
+}
+.connection-dot.active {
+  background: #22c55e;
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2);
+  animation: pulse-green 1.5s infinite;
+}
+
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+  50%       { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+}
+
+/* ── Delivery marker emoji ───────────────────────────────── */
+:global(.delivery-marker) {
+  font-size: 2rem;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.5));
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}

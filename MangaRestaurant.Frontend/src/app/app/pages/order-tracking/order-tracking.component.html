@@ -1,0 +1,75 @@
+<div class="tracking-page container section-pad">
+
+  <!-- Header -->
+  <div class="section-header-v2 mb-6">
+    <span class="section-tag">{{ 'TRACKING.TAG' | translate }}</span>
+    <h1 class="section-title-v2">{{ 'TRACKING.TITLE' | translate }}</h1>
+    <p class="text-dim text-sm mt-2">
+      {{ 'TRACKING.ORDER_NUM' | translate }}: <span class="text-primary font-bold">#{{ orderId }}</span>
+    </p>
+  </div>
+
+  <!-- Status Bar -->
+  <div class="flex align-items-center justify-content-between mb-5 p-4 mg-card gap-4 flex-wrap">
+
+    <!-- Connection indicator -->
+    <div class="flex align-items-center gap-3">
+      <span class="connection-dot" [class.active]="connected"></span>
+      <span class="font-bold text-sm">
+        {{ connected ? ('TRACKING.CONNECTED' | translate) : ('TRACKING.CONNECTING' | translate) }}
+      </span>
+    </div>
+
+    <!-- Delivery status badge -->
+    <div *ngIf="location">
+      <p-tag [value]="statusLabel[location.status] | translate"
+             [severity]="statusSeverity[location.status]"
+             [rounded]="true" styleClass="text-sm px-3 py-2 font-bold">
+      </p-tag>
+    </div>
+
+    <!-- Last update time -->
+    <div *ngIf="location" class="text-xs text-dim">
+      {{ 'TRACKING.LAST_UPDATE' | translate }}:
+      {{ location.timestamp | date:'shortTime' }}
+    </div>
+
+    <!-- Open in Google Maps -->
+    <button pButton icon="pi pi-map-marker" [label]="'LOCATION.GOOGLE_MAPS' | translate"
+            class="p-button-outlined p-button-sm"
+            *ngIf="location"
+            (click)="openInGoogleMaps()">
+    </button>
+  </div>
+
+  <!-- Map -->
+  <div class="map-wrapper mg-card overflow-hidden">
+    <!-- Waiting overlay -->
+    <div *ngIf="!location" class="waiting-overlay">
+      <div class="text-center">
+        <div class="waiting-icon">🛵</div>
+        <p class="font-bold text-xl mt-3">{{ 'TRACKING.WAITING' | translate }}</p>
+        <p class="text-dim text-sm mt-1">{{ 'TRACKING.WAITING_DESC' | translate }}</p>
+        <p-progressSpinner styleClass="w-4rem h-4rem mt-4" strokeWidth="4"></p-progressSpinner>
+      </div>
+    </div>
+
+    <!-- Leaflet map container -->
+    <div #mapContainer class="map-container"></div>
+  </div>
+
+  <!-- Coordinates card -->
+  <div *ngIf="location" class="mt-4 p-4 mg-card animate-fade-in">
+    <div class="flex align-items-center gap-3">
+      <i class="pi pi-map text-primary text-2xl"></i>
+      <div>
+        <span class="block text-xs opacity-60 mb-1">{{ 'LOCATION.COORD' | translate }}</span>
+        <span class="font-mono font-bold text-sm">
+          📍 {{ location.latitude | number:'1.5-5' }},
+             {{ location.longitude | number:'1.5-5' }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+</div>

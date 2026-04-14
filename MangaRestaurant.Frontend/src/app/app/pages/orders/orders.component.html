@@ -43,8 +43,15 @@
               <p-badge [value]="'ORDER_STATUS.' + (getDisplayStatus(order) | uppercase) | translate" [severity]="statusSeverity(getDisplayStatus(order))"></p-badge>
             </td>
             <td class="p-4 text-center">
-              <button pButton type="button" [label]="'COMMON.VIEW' | translate" icon="pi pi-eye"
-                class="p-button-sm p-button-outlined p-button-rounded" (click)="openOrderDetails(order)"></button>
+              <div class="flex gap-2 justify-content-center">
+                <button pButton type="button" [label]="'COMMON.VIEW' | translate" icon="pi pi-eye"
+                  class="p-button-sm p-button-outlined p-button-rounded" (click)="openOrderDetails(order)"></button>
+                <a *ngIf="order.status !== 'Delivered'" [routerLink]="['/orders', order.id, 'track']"
+                   pButton icon="pi pi-map-marker"
+                   class="p-button-sm p-button-rounded p-button-warning"
+                   [label]="'ORDERS.TRACK' | translate">
+                </a>
+              </div>
             </td>
           </tr>
         </ng-template>

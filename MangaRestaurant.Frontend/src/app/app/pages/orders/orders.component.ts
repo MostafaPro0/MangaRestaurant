@@ -12,6 +12,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { DividerModule } from 'primeng/divider';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { OrdersService } from '../../services/orders.service';
+import { RouterLink } from '@angular/router';
 
 import { SettingsService } from '../../services/settings.service';
 
@@ -20,7 +21,7 @@ import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule, CardModule, TableModule, ProgressSpinnerModule, BadgeModule, DialogModule, ButtonModule, TranslateModule, SkeletonModule, DividerModule],
+  imports: [CommonModule, CardModule, TableModule, ProgressSpinnerModule, BadgeModule, DialogModule, ButtonModule, TranslateModule, SkeletonModule, DividerModule, RouterLink],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css'
 })
