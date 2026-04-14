@@ -171,6 +171,11 @@ export class DeliveryAgentComponent implements OnInit, OnDestroy {
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(text)}`;
   }
 
+  /** Checks if order has a pinpoint location (GPS or link) */
+  hasPreciseLocation(order: AssignedOrder): boolean {
+    return !!((order.shippingAddress?.latitude && order.shippingAddress?.longitude) || order.shippingAddress?.locationUrl);
+  }
+
   ngOnDestroy(): void {
     if (this.tracking) this.stopTracking();
   }

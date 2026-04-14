@@ -205,7 +205,8 @@
     "CUSTOMER": "Customer",
     "PHONE": "Phone",
     "ADDRESS": "Delivery Address",
-    "OPEN_MAP": "Open in Maps"
+    "OPEN_MAP": "Open in Maps",
+    "NO_LOCATION_PROVIDED": "No location provided for this order"
   },
   "PROFILE": {
 

@@ -69,14 +69,22 @@
               </a>
             </div>
 
-            <!-- Address summary (Clickable Map Link) -->
-            <a [href]="getMapUrl(order)" target="_blank" class="flex align-items-center gap-2 text-xs text-dim no-underline hover:text-primary transition-colors mt-1" (click)="$event.stopPropagation()">
-              <i class="pi pi-map-marker text-xs"></i>
-              <span class="border-bottom-1 border-transparent hover:border-primary">
-                {{ order.shippingAddress?.street }},
-                {{ order.shippingAddress?.city }}
-              </span>
-            </a>
+            <!-- Address summary (Clickable Map Link if exists) -->
+            <ng-container *ngIf="hasPreciseLocation(order); else noLocCard">
+              <a [href]="getMapUrl(order)" target="_blank" class="flex align-items-center gap-2 text-xs text-dim no-underline hover:text-primary transition-colors mt-1" (click)="$event.stopPropagation()">
+                <i class="pi pi-map-marker text-xs"></i>
+                <span class="border-bottom-1 border-transparent hover:border-primary">
+                  {{ order.shippingAddress?.street }},
+                  {{ order.shippingAddress?.city }}
+                </span>
+              </a>
+            </ng-container>
+            <ng-template #noLocCard>
+              <div class="flex align-items-center gap-2 text-xs text-dim mt-1">
+                <i class="pi pi-map-marker text-xs opacity-40"></i>
+                <span>{{ order.shippingAddress?.street }}, {{ order.shippingAddress?.city }}</span>
+              </div>
+            </ng-template>
           </div>
         </div>
       </div>
@@ -116,10 +124,14 @@
                   <span *ngIf="!selectedOrder.buyerPhone && !selectedOrder.buyerPhone2" class="text-dim">—</span>
                 </div>
               </div>
-              <!-- Street & Full Address (Clickable) -->
+              <!-- Street & Full Address -->
               <div class="col-12 mt-2">
                 <span class="text-dim text-xs block mb-1">{{ 'DELIVERY.ADDRESS' | translate }}</span>
-                <a [href]="getMapUrl(selectedOrder)" target="_blank" class="font-medium text-main no-underline hover:text-primary flex align-items-start gap-2">
+                
+                <!-- Link if location exists -->
+                <a *ngIf="hasPreciseLocation(selectedOrder); else noLocDetail"
+                   [href]="getMapUrl(selectedOrder)" target="_blank" 
+                   class="font-medium text-main no-underline hover:text-primary flex align-items-start gap-2">
                    <i class="pi pi-map-marker mt-1 text-primary"></i>
                    <span class="border-bottom-1 border-transparent hover:border-primary line-height-3">
                     {{ selectedOrder.shippingAddress?.street }},
@@ -127,15 +139,32 @@
                     {{ selectedOrder.shippingAddress?.country }}
                    </span>
                 </a>
+
+                <!-- Text if no location -->
+                <ng-template #noLocDetail>
+                  <div class="font-medium text-main flex align-items-start gap-2">
+                    <i class="pi pi-map-marker mt-1 text-dim opacity-50"></i>
+                    <span class="line-height-3">
+                      {{ selectedOrder.shippingAddress?.street }},
+                      {{ selectedOrder.shippingAddress?.city }},
+                      {{ selectedOrder.shippingAddress?.country }}
+                    </span>
+                  </div>
+                </ng-template>
               </div>
               
-              <!-- Unified Map Link -->
+              <!-- Map Link or Warning -->
               <div class="col-12 mt-2">
-                <a [href]="getMapUrl(selectedOrder)"
+                <a *ngIf="hasPreciseLocation(selectedOrder)" [href]="getMapUrl(selectedOrder)"
                    target="_blank" class="text-primary text-xs font-bold no-underline hover:underline">
                   <i class="pi pi-external-link mr-1"></i>
                   {{ 'DELIVERY.OPEN_MAP' | translate }}
                 </a>
+                
+                <div *ngIf="!hasPreciseLocation(selectedOrder)" class="text-hint text-xs flex align-items-center gap-1">
+                  <i class="pi pi-exclamation-triangle text-warning"></i>
+                  <span>{{ 'DELIVERY.NO_LOCATION_PROVIDED' | translate }}</span>
+                </div>
               </div>
             </div>
           </div>
