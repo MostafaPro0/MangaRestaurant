@@ -12,7 +12,8 @@
     "MY_ORDERS": "طلباتي",
     "SETTINGS": "الإعدادات",
     "DASHBOARD": "لوحة التحكم",
-    "DINE_IN": "طلب داخلي"
+    "DINE_IN": "طلب داخلي",
+    "DELIVERY": "طلبات التوصيل"
   },
   "HOME": {
     "BADGE": "مطعم ياباني فاخر",
@@ -194,7 +195,14 @@
     "MY_ORDERS": "طلباتي المعينة",
     "NO_ORDERS": "لا يوجد طلبات معينة لك حالياً",
     "SELECT_ORDER_HINT": "اختر طلباً من اليسار لبدء التتبع",
-    "ORDER": "طلب رقم"
+    "ORDER": "طلب رقم",
+    "TOAST_STARTED_SUMMARY": "تم بدء البث",
+    "TOAST_STARTED_DETAIL": "جاري بث موقعك للعميل...",
+    "TOAST_STOPPED_SUMMARY": "تم الإيقاف",
+    "TOAST_STOPPED_DETAIL": "تم إيقاف بث الموقع",
+    "TOAST_NO_GEO": "المتصفح لا يدعم تحديد الموقع",
+    "TOAST_LOC_ERROR": "تعذر الحصول على الموقع",
+    "TOAST_LOAD_ERROR": "تعذر تحميل الطلبات"
   },
   "PROFILE": {
     "TAG_LINE": "حسابك",

@@ -44,7 +44,8 @@ export class AppComponent {
   title = 'MangaRestaurant';
   currentTheme = signal<'light' | 'dark'>(localStorage.getItem('theme') === 'dark' ? 'dark' : 'light');
   isAuthenticated = signal(false);
-  isAdmin = signal(false);
+  isAdmin    = signal(false);
+  isDelivery = signal(false);
   user = signal<User | null>(null);
   lang = signal<'en' | 'ar'>((localStorage.getItem('lang') as 'en' | 'ar') || 'en');
   basketCount = signal(0);
@@ -95,6 +96,7 @@ export class AppComponent {
       this.user.set(user);
       this.isAuthenticated.set(!!user);
       this.isAdmin.set(this.auth.isAdmin(user?.token ?? null));
+      this.isDelivery.set(this.auth.isDelivery(user?.token ?? null));
       this.initProfileMenu();
     });
     this.applyTheme(this.currentTheme());

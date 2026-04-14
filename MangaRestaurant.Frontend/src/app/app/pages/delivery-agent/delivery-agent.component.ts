@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule }         from '@angular/common';
 import { FormsModule }          from '@angular/forms';
-import { TranslateModule }      from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonModule }         from 'primeng/button';
 import { DropdownModule }       from 'primeng/dropdown';
 import { CardModule }           from 'primeng/card';
@@ -53,9 +53,10 @@ export class DeliveryAgentComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private tracker:  DeliveryTrackingService,
-    private http:     HttpClient,
-    private toast:    MessageService,
+    private tracker:   DeliveryTrackingService,
+    private http:      HttpClient,
+    private toast:     MessageService,
+    private translate: TranslateService,
   ) {}
 
   ngOnInit(): void { this.loadAssignedOrders(); }
@@ -70,7 +71,11 @@ export class DeliveryAgentComponent implements OnInit, OnDestroy {
         this.loadingOrders  = false;
       },
       error: () => {
-        this.toast.add({ severity: 'error', summary: 'Error', detail: 'Could not load assigned orders' });
+        this.toast.add({
+          severity: 'error',
+          summary: this.translate.instant('DELIVERY.TOAST_LOAD_ERROR'),
+          detail:  this.translate.instant('DELIVERY.TOAST_LOAD_ERROR')
+        });
         this.loadingOrders = false;
       }
     });
@@ -84,17 +89,29 @@ export class DeliveryAgentComponent implements OnInit, OnDestroy {
   startTracking(): void {
     if (!this.selectedOrder) return;
     if (!navigator.geolocation) {
-      this.toast.add({ severity: 'error', summary: 'Error', detail: 'Geolocation not supported' });
+      this.toast.add({
+        severity: 'error',
+        summary: this.translate.instant('DELIVERY.TOAST_NO_GEO'),
+        detail:  this.translate.instant('DELIVERY.TOAST_NO_GEO')
+      });
       return;
     }
 
     this.tracking = true;
     this.watchId  = navigator.geolocation.watchPosition(
       pos => this.broadcast(pos.coords.latitude, pos.coords.longitude),
-      ()  => this.toast.add({ severity: 'warn', summary: 'Location', detail: 'Could not get location' }),
+      ()  => this.toast.add({
+        severity: 'warn',
+        summary: this.translate.instant('DELIVERY.TOAST_LOC_ERROR'),
+        detail:  this.translate.instant('DELIVERY.TOAST_LOC_ERROR')
+      }),
       { enableHighAccuracy: true, maximumAge: 5000 }
     );
-    this.toast.add({ severity: 'success', summary: 'Started', detail: 'Broadcasting location...' });
+    this.toast.add({
+      severity: 'success',
+      summary: this.translate.instant('DELIVERY.TOAST_STARTED_SUMMARY'),
+      detail:  this.translate.instant('DELIVERY.TOAST_STARTED_DETAIL')
+    });
   }
 
   private broadcast(lat: number, lng: number): void {
@@ -109,7 +126,11 @@ export class DeliveryAgentComponent implements OnInit, OnDestroy {
     if (this.watchId !== undefined) navigator.geolocation.clearWatch(this.watchId);
     if (this.selectedOrder) this.tracker.stopTracking(String(this.selectedOrder.id));
     this.tracking = false;
-    this.toast.add({ severity: 'info', summary: 'Stopped', detail: 'Location broadcast stopped' });
+    this.toast.add({
+      severity: 'info',
+      summary: this.translate.instant('DELIVERY.TOAST_STOPPED_SUMMARY'),
+      detail:  this.translate.instant('DELIVERY.TOAST_STOPPED_DETAIL')
+    });
   }
 
   openCurrentLocation(): void {

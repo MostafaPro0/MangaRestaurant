@@ -12,7 +12,8 @@
     "MY_ORDERS": "My Orders",
     "SETTINGS": "Settings",
     "DASHBOARD": "Dashboard",
-    "DINE_IN": "Dine-in Order"
+    "DINE_IN": "Dine-in Order",
+    "DELIVERY": "My Deliveries"
   },
   "HOME": {
     "BADGE": "Premium Japanese Restaurant",
@@ -193,7 +194,14 @@
     "MY_ORDERS": "My Assigned Orders",
     "NO_ORDERS": "No orders assigned to you yet",
     "SELECT_ORDER_HINT": "Select an order from the left to start tracking",
-    "ORDER": "Order"
+    "ORDER": "Order",
+    "TOAST_STARTED_SUMMARY": "Broadcasting Started",
+    "TOAST_STARTED_DETAIL": "Broadcasting your location to the customer...",
+    "TOAST_STOPPED_SUMMARY": "Broadcasting Stopped",
+    "TOAST_STOPPED_DETAIL": "Location broadcast has been stopped",
+    "TOAST_NO_GEO": "Browser does not support geolocation",
+    "TOAST_LOC_ERROR": "Could not retrieve your location",
+    "TOAST_LOAD_ERROR": "Could not load assigned orders"
   },
   "PROFILE": {
 
