@@ -296,7 +296,6 @@
     text-align: right !important;
 }
 
-/* Custom Admin Dialog Styles */
 .custom-admin-dialog .p-dialog-content {
     padding: 0 !important;
     border-bottom-left-radius: 1.5rem !important;
@@ -315,6 +314,7 @@
 .custom-admin-dialog label {
     color: var(--text-main) !important;
     display: block;
+    margin-bottom: 0.5rem;
 }
 
 .custom-admin-dialog .p-inputtext {
@@ -327,25 +327,36 @@
     box-shadow: 0 0 0 0.2rem rgba(255, 62, 62, 0.15) !important;
 }
 
-.custom-admin-dialog .p-dropdown {
+/* Force Dropdown Width and Height */
+.custom-admin-dialog .p-dropdown,
+.custom-admin-dialog p-dropdown {
+    width: 100% !important;
+    min-width: 100% !important;
+    display: flex !important;
+    min-height: 55px !important;
     background: var(--bg-soft) !important;
     border: 1px solid var(--glass-border) !important;
-    width: 100% !important;
-    min-height: 50px !important;
 }
 
-/* Make Dropdown Overlay (Panel) wider as well */
+.custom-admin-dialog .p-dropdown .p-dropdown-label {
+    font-size: 1.2rem !important;
+    padding: 12px !important;
+}
+
+/* Dropdown Overlay */
 .p-dropdown-panel {
-    min-width: 250px !important;
     border-radius: 12px !important;
-    box-shadow: var(--shadow-lg) !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4) !important;
     border: 1px solid var(--glass-border) !important;
     background: var(--bg-main) !important;
 }
 
+
 .p-dropdown-items .p-dropdown-item {
-    padding: 1rem !important;
-    font-weight: 500 !important;
+    padding: 1.25rem 1.5rem !important;
+    font-size: 1.1rem !important;
+    border-bottom: 1px solid var(--glass-border) !important;
 }
+
 
 

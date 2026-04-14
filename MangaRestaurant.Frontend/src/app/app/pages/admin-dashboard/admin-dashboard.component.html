@@ -476,6 +476,8 @@
               <label for="role" class="block font-bold mb-2 opacity-80">{{ 'ADMIN.ROLE' | translate }}</label>
               <p-dropdown [options]="roleOptions" [(ngModel)]="selectedUserRole" id="role" 
                           appendTo="body" styleClass="p-dropdown-lg border-round-xl"
+                          [style]="{'width': '100%'}"
+                          [panelStyle]="{'width': '410px'}"
                           [placeholder]="translateService.currentLang === 'ar' ? 'اختر الدور' : 'Select Role'">
                 <ng-template let-option pTemplate="item">
                   <div class="flex align-items-center gap-2">
