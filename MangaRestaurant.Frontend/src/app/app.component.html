@@ -25,17 +25,19 @@
           {{ 'NAV.BASKET' | translate }}
           <span class="basket-badge" *ngIf="basketCount() > 0">{{basketCount()}}</span>
         </a>
-        <a routerLink="/pos" routerLinkActive="active" class="dine-in-nav-link flex align-items-center gap-2 px-3 py-1 ml-2" 
-           style="color: var(--primary-color); font-weight: 800; border: 2px solid var(--primary-color); border-radius: 50px; background: rgba(255, 62, 62, 0.05); transition: all 0.3s ease;">
-           <i class="pi pi-desktop"></i> <span class="hidden xl:inline">{{ 'NAV.DINE_IN' | translate }}</span>
+        <a routerLink="/pos" routerLinkActive="active"
+           class="pill-nav-btn pill-primary">
+          <i class="pi pi-desktop"></i>
+          <span>{{ 'NAV.DINE_IN' | translate }}</span>
         </a>
         <!-- Delivery Agent Link -->
         <a *ngIf="isDelivery()" routerLink="/delivery-agent" routerLinkActive="active"
-           class="dine-in-nav-link flex align-items-center gap-2 px-3 py-1 ml-2"
-           style="color: #f59e0b; font-weight: 800; border: 2px solid #f59e0b; border-radius: 50px; background: rgba(245,158,11,0.07); transition: all 0.3s ease;">
-          <i class="pi pi-truck"></i> <span class="hidden xl:inline">{{ 'NAV.DELIVERY' | translate }}</span>
+           class="pill-nav-btn pill-amber">
+          <i class="pi pi-truck"></i>
+          <span>{{ 'NAV.DELIVERY' | translate }}</span>
         </a>
       </nav>
+
 
       <!-- Desktop Actions -->
       <div class="nav-right hidden lg:flex">

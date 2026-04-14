@@ -182,7 +182,10 @@ namespace MangaRestaurant.APIs.Controllers
 
         [HttpPut("{orderId}/assign-delivery")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<ApiResponse>> AssignDeliveryPerson(int orderId, [FromBody] AssignDeliveryRequest request)
+        public async Task<ActionResult<ApiResponse>> AssignDeliveryPerson(
+            int orderId,
+            [FromBody] AssignDeliveryRequest request,
+            [FromServices] Microsoft.AspNetCore.SignalR.IHubContext<MangaRestaurant.APIs.Hubs.NotificationHub> hubContext)
         {
             if (request == null || string.IsNullOrEmpty(request.EmployeeId))
                 return BadRequest(new ApiResponse(400, _localizer["EMPLOYEE_ID_REQUIRED"]));
@@ -192,6 +195,35 @@ namespace MangaRestaurant.APIs.Controllers
 
             var ok = await _orderService.AssignDeliveryPersonAsync(orderId, request.EmployeeId, user.DisplayName);
             if (!ok) return NotFound(new ApiResponse(404, _localizer["ORDER_STATUS_ERROR"]));
+
+            // ── Notify the assigned driver ────────────────────────────────────
+            var notification = new MangaRestaurant.Core.Entities.Notification
+            {
+                Title      = "New Delivery Assignment",
+                TitleAr    = "مهمة توصيل جديدة",
+                Message    = $"You have been assigned to order #{orderId}. Open your delivery panel to start.",
+                MessageAr  = $"تم تعيينك للطلب رقم #{orderId}. افتح لوحة التوصيل لبدء المهمة.",
+                Type       = MangaRestaurant.Core.Entities.NotificationType.DeliveryAssignment,
+                RelatedId  = orderId.ToString(),
+                TargetUser = user.Email!,
+            };
+            await _unitOfWork.Repository<MangaRestaurant.Core.Entities.Notification>().AddAsync(notification);
+            await _unitOfWork.CompleteAsync();
+
+            // Push real-time via SignalR to the driver's notification group
+            await hubContext.Clients
+                .Group(user.Email!)
+                .SendAsync("ReceiveNotification", new
+                {
+                    notification.Title,
+                    notification.TitleAr,
+                    notification.Message,
+                    notification.MessageAr,
+                    notification.Type,
+                    notification.RelatedId,
+                    notification.CreatedAt,
+                });
+            // ──────────────────────────────────────────────────────────────────
 
             return Ok(new ApiResponse(200, _localizer["DELIVERY_ASSIGN_SUCCESS"]));
         }
