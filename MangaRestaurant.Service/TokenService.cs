@@ -1,4 +1,4 @@
-﻿using MangaRestaurant.Core.Entities.Identity;
+using MangaRestaurant.Core.Entities.Identity;
 using MangaRestaurant.Core.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -26,8 +26,9 @@ namespace MangaRestaurant.Service
             //1. Private Claims
             var authUserClaims = new List<Claim>()
             {
-               new Claim(ClaimTypes.GivenName,user.DisplayName),
-               new Claim(ClaimTypes.Email,user.Email),
+               new Claim(ClaimTypes.GivenName, user.DisplayName),
+               new Claim(ClaimTypes.Email,     user.Email),
+               new Claim(ClaimTypes.NameIdentifier, user.Id),
             };
 
             var userRoles = await userManager.GetRolesAsync(user);

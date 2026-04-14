@@ -419,9 +419,15 @@ namespace MangaRestaurant.APIs.Controllers
         public async Task<ActionResult<IReadOnlyList<OrderToReturnDTO>>> GetMyDeliveries()
         {
             var driverId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Guard: if claim is missing, reject the request
+            if (string.IsNullOrEmpty(driverId))
+                return Unauthorized(new ApiResponse(401, "Unable to identify driver from token."));
+
             var allOrders = await _unitOfWork.Repository<Order>().GetAllAsync();
             var myOrders  = allOrders
-                .Where(o => o.DeliveryPersonId == driverId
+                .Where(o => !string.IsNullOrEmpty(o.DeliveryPersonId)   // never match null
+                         && o.DeliveryPersonId == driverId
                          && o.OrderStatus != OrderStatus.Delivered
                          && o.OrderStatus != OrderStatus.Cancelled)
                 .ToList();
