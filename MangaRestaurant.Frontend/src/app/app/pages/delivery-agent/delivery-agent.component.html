@@ -69,15 +69,14 @@
               </a>
             </div>
 
-            <!-- Address summary -->
-            <div class="flex align-items-center gap-2 text-xs text-dim">
+            <!-- Address summary (Clickable Map Link) -->
+            <a [href]="getMapUrl(order)" target="_blank" class="flex align-items-center gap-2 text-xs text-dim no-underline hover:text-primary transition-colors mt-1" (click)="$event.stopPropagation()">
               <i class="pi pi-map-marker text-xs"></i>
-              <span>
+              <span class="border-bottom-1 border-transparent hover:border-primary">
                 {{ order.shippingAddress?.street }},
-                {{ order.shippingAddress?.city }},
-                {{ order.shippingAddress?.country }}
+                {{ order.shippingAddress?.city }}
               </span>
-            </div>
+            </a>
           </div>
         </div>
       </div>
@@ -117,26 +116,23 @@
                   <span *ngIf="!selectedOrder.buyerPhone && !selectedOrder.buyerPhone2" class="text-dim">—</span>
                 </div>
               </div>
-              <!-- Street -->
+              <!-- Street & Full Address (Clickable) -->
               <div class="col-12 mt-2">
                 <span class="text-dim text-xs block mb-1">{{ 'DELIVERY.ADDRESS' | translate }}</span>
-                <span class="font-medium">
-                  {{ selectedOrder.shippingAddress?.street }},
-                  {{ selectedOrder.shippingAddress?.city }},
-                  {{ selectedOrder.shippingAddress?.country }}
-                </span>
-              </div>
-              <!-- Map link -->
-              <div class="col-12 mt-2" *ngIf="selectedOrder.shippingAddress?.latitude">
-                <a [href]="'https://www.google.com/maps?q=' + selectedOrder.shippingAddress.latitude + ',' + selectedOrder.shippingAddress.longitude"
-                   target="_blank" class="text-primary text-xs font-bold">
-                  <i class="pi pi-external-link mr-1"></i>
-                  {{ 'DELIVERY.OPEN_MAP' | translate }}
+                <a [href]="getMapUrl(selectedOrder)" target="_blank" class="font-medium text-main no-underline hover:text-primary flex align-items-start gap-2">
+                   <i class="pi pi-map-marker mt-1 text-primary"></i>
+                   <span class="border-bottom-1 border-transparent hover:border-primary line-height-3">
+                    {{ selectedOrder.shippingAddress?.street }},
+                    {{ selectedOrder.shippingAddress?.city }},
+                    {{ selectedOrder.shippingAddress?.country }}
+                   </span>
                 </a>
               </div>
-              <div class="col-12 mt-1" *ngIf="selectedOrder.shippingAddress?.locationUrl && !selectedOrder.shippingAddress?.latitude">
-                <a [href]="selectedOrder.shippingAddress.locationUrl"
-                   target="_blank" class="text-primary text-xs font-bold">
+              
+              <!-- Unified Map Link -->
+              <div class="col-12 mt-2">
+                <a [href]="getMapUrl(selectedOrder)"
+                   target="_blank" class="text-primary text-xs font-bold no-underline hover:underline">
                   <i class="pi pi-external-link mr-1"></i>
                   {{ 'DELIVERY.OPEN_MAP' | translate }}
                 </a>

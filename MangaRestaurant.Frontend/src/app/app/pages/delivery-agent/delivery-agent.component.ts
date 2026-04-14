@@ -154,9 +154,21 @@ export class DeliveryAgentComponent implements OnInit, OnDestroy {
   statusSeverity(status: string): 'info' | 'success' | 'warning' | 'danger' {
     const map: Record<string, any> = {
       Pending: 'warning', Shipped: 'info', Processing: 'info',
+      Confirmed: 'info', PaymentReceived: 'info',
       Delivered: 'success', Cancelled: 'danger'
     };
     return map[status] ?? 'info';
+  }
+
+  /** Builds the best Google Maps link for an order's shipping address */
+  getMapUrl(order: AssignedOrder): string {
+    const addr = order.shippingAddress;
+    if (addr?.latitude && addr?.longitude)
+      return `https://www.google.com/maps?q=${addr.latitude},${addr.longitude}`;
+    if (addr?.locationUrl)
+      return addr.locationUrl;
+    const text = [addr?.street, addr?.city, addr?.country].filter(Boolean).join(', ');
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(text)}`;
   }
 
   ngOnDestroy(): void {
