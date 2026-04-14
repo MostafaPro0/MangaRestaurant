@@ -86,11 +86,15 @@
 
           <div class="flex gap-2">
             <button pButton class="p-button-outlined p-button-lg p-button-secondary action-icon-btn" 
-                    icon="pi pi-share-alt" [pTooltip]="'PRODUCTS.SHARE' | translate" (click)="shareProduct()"></button>
+              [icon]="isInWishlist() ? 'pi pi-heart-fill' : 'pi pi-heart'" 
+              [style.color]="isInWishlist() ? '#ff3e3e' : 'inherit'"
+              (click)="toggleWishlist()" [pTooltip]="(translateService.currentLang === 'ar' ? 'المفضلة' : 'Wishlist')"></button>
             <button pButton class="p-button-outlined p-button-lg p-button-secondary action-icon-btn" 
-                    icon="pi pi-copy" [pTooltip]="'PRODUCTS.COPY_LINK' | translate" (click)="copyLink()"></button>
-            <button pButton class="p-button-outlined p-button-lg action-icon-btn" icon="pi pi-heart"
-                    [pTooltip]="(translateService.currentLanguage === 'ar' ? 'إضافة للمفضلة' : 'Add to Wishlist')"></button>
+              icon="pi pi-share-alt" (click)="shareProduct()"
+              [pTooltip]="(translateService.currentLang === 'ar' ? 'مشاركة' : 'Share')"></button>
+            <button pButton class="p-button-outlined p-button-lg p-button-secondary action-icon-btn" 
+              icon="pi pi-copy" (click)="copyLink()"
+              [pTooltip]="(translateService.currentLang === 'ar' ? 'نسخ الرابط' : 'Copy Link')"></button>
           </div>
         </div>
 

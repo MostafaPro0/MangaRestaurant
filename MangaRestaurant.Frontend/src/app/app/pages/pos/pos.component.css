@@ -34,10 +34,18 @@
 }
 
 .category-strip {
-    scrollbar-width: none;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) transparent;
 }
 .category-strip::-webkit-scrollbar {
-    display: none;
+    height: 4px;
+}
+.category-strip::-webkit-scrollbar-track {
+    background: transparent;
+}
+.category-strip::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
 }
 
 .cat-chip {

@@ -297,6 +297,36 @@ namespace MangaRestaurant.APIs.Controllers
                 .OrderBy(x => x.Hour)
                 .ToList();
 
+            // Calculate Top Viewed Products
+            var topViewedProducts = allProducts
+                .OrderByDescending(p => p.Views)
+                .Take(5)
+                .Select(p => new TopViewedProductDTO
+                {
+                    Name = p.Name,
+                    NameAr = p.NameAr,
+                    Views = p.Views,
+                    PictureUrl = string.IsNullOrEmpty(p.PictureUrl) ? "" : $"{_configuration["BaseURL"]}/{p.PictureUrl}"
+                })
+                .ToList();
+
+            // Calculate Top Wishlisted Products
+            var allWishlists = await _unitOfWork.Repository<WishlistItem>().GetAllAsync();
+            var topWishlistedProducts = allWishlists
+                .GroupBy(w => w.ProductId)
+                .Select(g => {
+                    var product = allProducts.FirstOrDefault(p => p.Id == g.Key);
+                    return new TopProductDTO
+                    {
+                        Name = product?.Name ?? "Unknown",
+                        NameAr = product?.NameAr ?? "غير معروف",
+                        Quantity = g.Count() // Reusing Quantity field for total wishlist count
+                    };
+                })
+                .OrderByDescending(x => x.Quantity)
+                .Take(5)
+                .ToList();
+
             var report = new AdminReportDTO
             {
                 TotalOrders = totalOrders,
@@ -310,6 +340,8 @@ namespace MangaRestaurant.APIs.Controllers
                 TopCategories = topCategories,
                 TopDrivers = topDrivers,
                 PeakHours = peakHours,
+                TopViewedProducts = topViewedProducts,
+                TopWishlistedProducts = topWishlistedProducts,
                 TopEmployees = orders
                     .GroupBy(o => o.BuyerEmail)
                     .Select(g => new TopEmployeeDTO

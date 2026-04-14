@@ -38,11 +38,7 @@
       <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'settings'" [routerLink]="['/admin', 'settings']">
         <i class="pi pi-cog"></i> <span>{{ 'ADMIN.SETTINGS' | translate }}</span>
       </a>
-      <a class="nav-btn no-underline cursor-pointer bg-primary-reverse" routerLink="/pos" target="_blank" 
-         style="background: rgba(255, 62, 62, 0.1); color: #ff3e3e;"
-         [pTooltip]="(translateService.currentLang === 'ar' ? 'فتح نظام الكاشير' : 'Open POS System')">
-        <i class="pi pi-desktop"></i> <span>POS System</span>
-      </a>
+
     </div>
 
     <!-- 3. Dynamic Content Area -->
@@ -159,6 +155,28 @@
               <apx-chart *ngIf="topProductsChartOptions" [series]="topProductsChartOptions.series!"
                 [chart]="topProductsChartOptions.chart!" [xaxis]="topProductsChartOptions.xaxis!"
                 [colors]="topProductsChartOptions.colors!" [plotOptions]="topProductsChartOptions.plotOptions!">
+              </apx-chart>
+            </div>
+          </div>
+
+          <!-- Row 4: Top Viewed Products (Horizontal) -->
+          <div class="col-12 lg:col-6">
+            <div class="chart-container p-4 shadow-sm border-round-xl mb-4 h-full">
+              <h3 class="chart-title"><i class="pi pi-eye"></i> {{ 'ADMIN.CHART_TOP_VIEWED' | translate }}</h3>
+              <apx-chart *ngIf="topViewedProductsChartOptions" [series]="topViewedProductsChartOptions.series!"
+                [chart]="topViewedProductsChartOptions.chart!" [xaxis]="topViewedProductsChartOptions.xaxis!"
+                [colors]="topViewedProductsChartOptions.colors!" [plotOptions]="topViewedProductsChartOptions.plotOptions!">
+              </apx-chart>
+            </div>
+          </div>
+
+          <!-- Row 5: Top Wishlisted Products (Horizontal) -->
+          <div class="col-12 lg:col-6">
+            <div class="chart-container p-4 shadow-sm border-round-xl mb-4 h-full">
+              <h3 class="chart-title"><i class="pi pi-heart"></i> {{ 'ADMIN.CHART_TOP_WISHLISTED' | translate }}</h3>
+              <apx-chart *ngIf="topWishlistedProductsChartOptions" [series]="topWishlistedProductsChartOptions.series!"
+                [chart]="topWishlistedProductsChartOptions.chart!" [xaxis]="topWishlistedProductsChartOptions.xaxis!"
+                [colors]="topWishlistedProductsChartOptions.colors!" [plotOptions]="topWishlistedProductsChartOptions.plotOptions!">
               </apx-chart>
             </div>
           </div>

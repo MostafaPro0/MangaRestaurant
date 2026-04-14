@@ -70,6 +70,14 @@
               -{{ product.discountPercentage }}%
             </span>
           </div>
+
+          <!-- Wishlist Toggle -->
+          <div style="position: absolute; top: 10px; left: 10px;">
+            <button pButton [icon]="isInWishlist(product.id) ? 'pi pi-heart-fill' : 'pi pi-heart'" 
+              class="p-button-rounded p-button-text p-button-sm wishlist-btn"
+              [style.color]="isInWishlist(product.id) ? '#ff3e3e' : 'white'"
+              (click)="toggleWishlist(product); $event.stopPropagation()"></button>
+          </div>
         </div>
 
         <!-- content -->

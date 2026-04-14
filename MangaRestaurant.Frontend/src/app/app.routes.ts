@@ -9,6 +9,7 @@ export const routes: Route[] = [
   { path: 'products/:id', loadComponent: () => import('./app/pages/product-details/product-details.component').then(m => m.ProductDetailsComponent) },
   { path: 'basket', loadComponent: () => import('./app/pages/basket/basket.component').then(m => m.BasketComponent) },
   { path: 'checkout', canActivate: [authGuard], loadComponent: () => import('./app/pages/checkout/checkout.component').then(m => m.CheckoutComponent) },
+  { path: 'wishlist', canActivate: [authGuard], loadComponent: () => import('./app/pages/wishlist/wishlist.component').then(m => m.WishlistComponent) },
   { path: 'orders', canActivate: [authGuard], loadComponent: () => import('./app/pages/orders/orders.component').then(m => m.OrdersComponent) },
   { path: 'admin', redirectTo: 'admin/reports', pathMatch: 'full' },
   { path: 'admin/:tab', canActivate: [adminGuard], loadComponent: () => import('./app/pages/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent) },

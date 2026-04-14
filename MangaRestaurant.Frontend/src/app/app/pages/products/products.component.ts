@@ -13,6 +13,8 @@ import { ProductsService } from '../../services/products.service';
 import { BasketService } from '../../services/basket.service';
 import { TranslateService } from '../../services/translate.service';
 import { SettingsService } from '../../services/settings.service';
+import { WishlistService } from '../../services/wishlist.service';
+import { AuthService } from '../../services/auth.service';
 
 import { TooltipModule } from 'primeng/tooltip';
 
@@ -35,13 +37,20 @@ export class ProductsComponent implements OnInit {
     private productsService: ProductsService, 
     private basketService: BasketService,
     public translateService: TranslateService,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    public wishlistService: WishlistService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.settings$ = this.settingsService.settings$;
     this.loadProducts();
     this.loadCategories();
+    
+    // Only load wishlist if user is authenticated
+    if (this.authService.getCurrentUser()) {
+        this.wishlistService.getWishlist().subscribe();
+    }
   }
 
   loadProducts(): void {
@@ -75,5 +84,17 @@ export class ProductsComponent implements OnInit {
 
   addToBasket(product: any): void {
     this.basketService.addItem(product, 1);
+  }
+
+  toggleWishlist(product: any): void {
+    if (!this.authService.getCurrentUser()) {
+        // You might want to redirect to login or show a message
+        return;
+    }
+    this.wishlistService.toggleWishlist(product.id).subscribe();
+  }
+
+  isInWishlist(productId: number): boolean {
+    return this.wishlistService.isInWishlistLocal(productId);
   }
 }
