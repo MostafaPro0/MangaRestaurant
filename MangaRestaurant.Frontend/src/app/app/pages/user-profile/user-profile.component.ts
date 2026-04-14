@@ -16,11 +16,12 @@ import { DividerModule } from 'primeng/divider';
 import { SkeletonModule } from 'primeng/skeleton';
 import { PasswordModule } from 'primeng/password';
 import { TabViewModule } from 'primeng/tabview';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, CardModule, ButtonModule, InputTextModule, TranslateModule, AvatarModule, DialogModule, DividerModule, SkeletonModule, PasswordModule, TabViewModule],
+  imports: [CommonModule, FormsModule, CardModule, ButtonModule, InputTextModule, TranslateModule, AvatarModule, DialogModule, DividerModule, SkeletonModule, PasswordModule, TabViewModule, TooltipModule],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
 })
@@ -43,6 +44,11 @@ export class UserProfileComponent implements OnInit {
   loadingPicture = false;
   savingAddress = false;
   activeTabIndex = 0;
+
+  // GPS Location for address dialog
+  detectingLocation = false;
+  locationDetected = false;
+  locationError = '';
 
   @ViewChild('fileInput') fileInput!: ElementRef;
   @ViewChild('addressForm') addressForm!: NgForm;
@@ -106,12 +112,61 @@ export class UserProfileComponent implements OnInit {
 
   openNewAddress(): void {
     this.editingAddress = this.getEmptyAddress();
+    this.locationDetected = false;
+    this.locationError = '';
     this.addressDialogVisible = true;
   }
 
   editAddress(address: any): void {
     this.editingAddress = { ...address };
+    this.locationDetected = !!(address.locationUrl);
+    this.locationError = '';
     this.addressDialogVisible = true;
+  }
+
+  detectLocation(): void {
+    if (!navigator.geolocation) {
+      this.locationError = this.translate.currentLang === 'ar'
+        ? 'المتصفح لا يدعم تحديد الموقع'
+        : 'Geolocation is not supported by your browser';
+      return;
+    }
+    this.detectingLocation = true;
+    this.locationError = '';
+    this.locationDetected = false;
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        this.editingAddress.locationUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+        this.editingAddress.latitude = lat;
+        this.editingAddress.longitude = lng;
+        this.detectingLocation = false;
+        this.locationDetected = true;
+      },
+      (error) => {
+        this.detectingLocation = false;
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            this.locationError = this.translate.currentLang === 'ar' ? 'تم رفض الإذن بالوصول إلى الموقع' : 'Location permission denied';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            this.locationError = this.translate.currentLang === 'ar' ? 'الموقع غير متاح حالياً' : 'Location unavailable';
+            break;
+          default:
+            this.locationError = this.translate.currentLang === 'ar' ? 'حدث خطأ أثناء تحديد الموقع' : 'Error detecting location';
+        }
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }
+
+  clearLocation(): void {
+    this.editingAddress.locationUrl = null;
+    this.editingAddress.latitude = null;
+    this.editingAddress.longitude = null;
+    this.locationDetected = false;
+    this.locationError = '';
   }
 
   saveAddress(): void {

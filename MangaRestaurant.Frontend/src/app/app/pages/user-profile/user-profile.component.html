@@ -92,6 +92,16 @@
                           <span class="text-white-alpha-70">{{ addr.city }}, {{ addr.state }} {{ addr.zipCode }}</span><br>
                           <span class="text-primary font-bold text-sm uppercase tracking-wide">{{ addr.country }}</span>
                         </div>
+                        <!-- GPS Link -->
+                        <a *ngIf="addr.locationUrl" [href]="addr.locationUrl" target="_blank"
+                           class="mt-2 inline-flex align-items-center gap-2 text-xs text-primary font-bold hover:underline"
+                           (click)="$event.stopPropagation()">
+                          <i class="pi pi-map-marker"></i>
+                          {{ translate.currentLang === 'ar' ? 'عرض على الخريطة' : 'View on Map' }}
+                          <span *ngIf="addr.latitude" class="opacity-60 font-normal">
+                            ({{ addr.latitude?.toFixed(4) }}, {{ addr.longitude?.toFixed(4) }})
+                          </span>
+                        </a>
                       </div>
                     </div>
                     <div class="address-actions flex gap-2">
@@ -189,6 +199,64 @@
                   <input pInputText type="text" [(ngModel)]="editingAddress.country" name="country" #country="ngModel" required class="p-input-lg" [ngClass]="{'ng-invalid ng-dirty': country.invalid && (country.dirty || country.touched)}" />
                   <small class="p-error block mt-1" *ngIf="country.invalid && (country.dirty || country.touched)">{{ 'COMMON.REQUIRED' | translate }}</small>
               </div>
+
+              <!-- GPS Location Section -->
+              <div class="col-12 mt-2">
+                <div class="p-3 rounded-xl border-1 bg-soft"
+                     [ngClass]="locationDetected ? 'border-primary' : 'border-white-alpha-10'">
+                  <div class="flex align-items-center gap-3 mb-3">
+                    <i class="pi pi-map-marker text-primary text-xl"></i>
+                    <div class="flex-grow-1">
+                      <span class="font-bold block text-sm">
+                        {{ translate.currentLang === 'ar' ? 'الموقع الجغرافي' : 'GPS Location' }}
+                      </span>
+                      <span class="text-xs opacity-50">
+                        {{ translate.currentLang === 'ar' ? 'اختياري - لتسهيل التوصيل' : 'Optional - helps with delivery' }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <button pButton type="button"
+                    [label]="detectingLocation
+                      ? (translate.currentLang === 'ar' ? 'جاري التحديد...' : 'Detecting...')
+                      : (locationDetected
+                          ? (translate.currentLang === 'ar' ? 'تم تحديد الموقع ✓' : 'Location Detected ✓')
+                          : (translate.currentLang === 'ar' ? 'استخدم موقعي الحالي' : 'Use My Current Location'))"
+                    [icon]="detectingLocation ? 'pi pi-spin pi-spinner' : (locationDetected ? 'pi pi-check' : 'pi pi-crosshairs')"
+                    [loading]="detectingLocation"
+                    [disabled]="detectingLocation"
+                    (click)="detectLocation()"
+                    class="w-full p-button-sm"
+                    [ngClass]="locationDetected ? 'p-button-success p-button-outlined' : 'p-button-outlined p-button-secondary'">
+                  </button>
+
+                  <div *ngIf="locationError" class="mt-2 text-red-400 text-xs flex align-items-center gap-2">
+                    <i class="pi pi-exclamation-triangle"></i>
+                    <span>{{ locationError }}</span>
+                  </div>
+
+                  <div *ngIf="locationDetected && editingAddress.locationUrl"
+                       class="mt-3 p-2 bg-white-alpha-05 rounded-lg flex align-items-center gap-3">
+                    <i class="pi pi-map text-primary"></i>
+                    <div class="flex-grow-1 min-w-0">
+                      <div class="text-xs opacity-60 mb-1 font-mono">
+                        📍 {{ editingAddress.latitude?.toFixed(6) }}, {{ editingAddress.longitude?.toFixed(6) }}
+                      </div>
+                      <a [href]="editingAddress.locationUrl" target="_blank"
+                         class="text-primary font-bold text-xs hover:underline">
+                        <i class="pi pi-external-link mr-1"></i>
+                        {{ translate.currentLang === 'ar' ? 'فتح على خرائط جوجل' : 'Open in Google Maps' }}
+                      </a>
+                    </div>
+                    <button pButton icon="pi pi-times" type="button"
+                      class="p-button-rounded p-button-text p-button-danger p-button-sm"
+                      (click)="clearLocation()"
+                      [pTooltip]="translate.currentLang === 'ar' ? 'إزالة الموقع' : 'Remove'">
+                    </button>
+                  </div>
+                </div>
+              </div>
+
           </div>
       </form>
       
