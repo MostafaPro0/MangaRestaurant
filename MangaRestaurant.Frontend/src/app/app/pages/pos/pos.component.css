@@ -241,7 +241,7 @@
 }
 
 /* Touch Optimizations */
-@media (max-width: 1024px) {
+@media (max-width: 991px) {
     .pos-main {
         padding: 1rem;
     }
@@ -265,6 +265,7 @@
         transform: translateY(0);
     }
 }
+
 
 .mobile-cart-fab {
     position: fixed;
