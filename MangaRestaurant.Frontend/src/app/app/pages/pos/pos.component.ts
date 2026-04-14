@@ -48,6 +48,8 @@ export class PosComponent implements OnInit {
   selectedCategoryId = 0;
   settings$: any;
   basket$: any;
+  isCartVisible = false;
+
 
   constructor(
     public productsService: ProductsService,

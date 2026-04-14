@@ -70,7 +70,7 @@
   </div>
 
   <!-- Right Panel: Cart Summary -->
-  <aside class="pos-sidebar glass-card flex flex-column">
+  <aside class="pos-sidebar glass-card flex flex-column" [class.active]="isCartVisible">
     <div class="p-4 border-bottom-1 surface-border flex justify-content-between align-items-center">
       <div class="flex align-items-center gap-2">
         <h2 class="text-2xl font-black m-0 tracking-tight">
@@ -78,11 +78,16 @@
         </h2>
         <p-badge [value]="totalItemsCount.toString()" severity="danger" size="large"></p-badge>
       </div>
-      <button pButton icon="pi pi-refresh" class="p-button-rounded p-button-text p-button-secondary" 
-              (click)="clearBasket()" *ngIf="totalItemsCount > 0"
-              [pTooltip]="(translate.currentLang === 'ar' ? 'مسح السلة' : 'Clear Basket')"></button>
+      <div class="flex align-items-center gap-2">
+        <button pButton icon="pi pi-refresh" class="p-button-rounded p-button-text p-button-secondary" 
+                (click)="clearBasket()" *ngIf="totalItemsCount > 0"
+                [pTooltip]="(translate.currentLang === 'ar' ? 'مسح السلة' : 'Clear Basket')"></button>
+        <button pButton icon="pi pi-times" class="p-button-rounded p-button-text p-button-secondary lg:hidden" 
+                (click)="isCartVisible = false"></button>
+      </div>
     </div>
 
+    <!-- ... rest of sidebar content remains same ... -->
     <div class="flex-grow-1 overflow-y-auto p-3 flex flex-column gap-3 cart-items-container">
       <ng-container *ngIf="basket$ | async as basket">
         <div *ngFor="let item of basket.items" class="cart-item glass-card-sm p-2 flex align-items-center gap-3 animate-slide-in">
@@ -152,4 +157,15 @@
         (click)="submitOrder()"></button>
     </div>
   </aside>
+
+  <!-- Mobile Cart Toggle Button -->
+  <div class="mobile-cart-fab lg:hidden" (click)="isCartVisible = true" *ngIf="!isCartVisible">
+    <button pButton icon="pi pi-shopping-cart" class="p-button-rounded p-button-lg shadow-4 vibrant-gradient"></button>
+    <p-badge [value]="totalItemsCount.toString()" severity="danger" *ngIf="totalItemsCount > 0" 
+             styleClass="pos-fab-badge"></p-badge>
+  </div>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay lg:hidden" *ngIf="isCartVisible" (click)="isCartVisible = false"></div>
 </div>
+
