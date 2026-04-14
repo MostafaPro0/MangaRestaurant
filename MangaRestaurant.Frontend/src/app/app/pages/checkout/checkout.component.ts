@@ -90,9 +90,7 @@ export class CheckoutComponent implements OnInit {
 
   detectLocation(): void {
     if (!navigator.geolocation) {
-      this.locationError = this.translate.currentLang === 'ar'
-        ? 'المتصفح لا يدعم تحديد الموقع'
-        : 'Geolocation is not supported by your browser';
+      this.locationError = this.translate.instant('LOCATION.NOT_SUPPORTED');
       return;
     }
 
@@ -114,19 +112,13 @@ export class CheckoutComponent implements OnInit {
         this.detectingLocation = false;
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            this.locationError = this.translate.currentLang === 'ar'
-              ? 'تم رفض الإذن بالوصول إلى الموقع'
-              : 'Location permission denied';
+            this.locationError = this.translate.instant('LOCATION.PERMISSION_DENIED');
             break;
           case error.POSITION_UNAVAILABLE:
-            this.locationError = this.translate.currentLang === 'ar'
-              ? 'الموقع غير متاح حالياً'
-              : 'Location unavailable';
+            this.locationError = this.translate.instant('LOCATION.UNAVAILABLE');
             break;
           default:
-            this.locationError = this.translate.currentLang === 'ar'
-              ? 'حدث خطأ أثناء تحديد الموقع'
-              : 'Error detecting location';
+            this.locationError = this.translate.instant('LOCATION.ERROR');
         }
       },
       { enableHighAccuracy: true, timeout: 10000 }

@@ -132,6 +132,22 @@
     "SAVE_ADDRESS": "Save this address for future use",
     "TOTAL": "Order Total"
   },
+  "LOCATION": {
+    "TITLE": "GPS Location",
+    "SUBTITLE": "Optional - helps delivery find you accurately",
+    "DETECTING": "Detecting...",
+    "DETECTED": "Location Detected ✓",
+    "USE_MY": "Use My Current Location",
+    "GOOGLE_MAPS": "Google Maps",
+    "OPEN_IN_MAPS": "Open in Google Maps",
+    "VIEW_ON_MAP": "View on Map",
+    "REMOVE": "Remove",
+    "NOT_SUPPORTED": "Geolocation is not supported by your browser",
+    "PERMISSION_DENIED": "Location permission denied",
+    "UNAVAILABLE": "Location unavailable",
+    "ERROR": "Error detecting location",
+    "COORD": "Coordinates"
+  },
   "ORDERS": {
     "TITLE": "Order History",
     "TAG_LINE": "History",

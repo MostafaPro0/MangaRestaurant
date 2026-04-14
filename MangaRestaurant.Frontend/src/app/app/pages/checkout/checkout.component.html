@@ -103,10 +103,10 @@
                 <i class="pi pi-map-marker text-primary text-2xl"></i>
                 <div class="flex-grow-1">
                   <span class="font-bold block">
-                    {{ translate.currentLang === 'ar' ? 'تحديد الموقع الجغرافي' : 'GPS Location' }}
+                    {{ 'LOCATION.TITLE' | translate }}
                   </span>
                   <span class="text-xs opacity-60">
-                    {{ translate.currentLang === 'ar' ? 'اختياري - يساعد في التوصيل بدقة أكبر' : 'Optional - helps delivery find you accurately' }}
+                    {{ 'LOCATION.SUBTITLE' | translate }}
                   </span>
                 </div>
               </div>
@@ -114,10 +114,10 @@
               <!-- Detect Button -->
               <button pButton type="button"
                 [label]="detectingLocation
-                  ? (translate.currentLang === 'ar' ? 'جاري التحديد...' : 'Detecting...')
+                  ? ('LOCATION.DETECTING' | translate)
                   : (locationDetected
-                      ? (translate.currentLang === 'ar' ? 'تم تحديد الموقع ✓' : 'Location Detected ✓')
-                      : (translate.currentLang === 'ar' ? 'استخدم موقعي الحالي' : 'Use My Current Location'))"
+                      ? ('LOCATION.DETECTED' | translate)
+                      : ('LOCATION.USE_MY' | translate))"
                 [icon]="detectingLocation ? 'pi pi-spin pi-spinner' : (locationDetected ? 'pi pi-check' : 'pi pi-crosshairs')"
                 [loading]="detectingLocation"
                 [disabled]="detectingLocation"
@@ -137,7 +137,7 @@
                 <i class="pi pi-map text-primary text-xl flex-shrink-0"></i>
                 <div class="flex-grow-1 min-w-0">
                   <span class="block text-xs opacity-60 mb-1">
-                    {{ translate.currentLang === 'ar' ? 'الموقع الجغرافي المحدد' : 'Detected Location' }}
+                    {{ 'LOCATION.TITLE' | translate }}
                   </span>
                   <!-- Coordinates -->
                   <div class="flex gap-3 mb-2 text-xs font-mono opacity-70">
@@ -147,18 +147,18 @@
                   <a [href]="address.locationUrl" target="_blank"
                      class="text-primary font-bold text-sm hover:underline block text-overflow-ellipsis overflow-hidden white-space-nowrap">
                     <i class="pi pi-external-link mr-1"></i>
-                    {{ translate.currentLang === 'ar' ? 'عرض على خرائط جوجل' : 'Open in Google Maps' }}
+                    {{ 'LOCATION.OPEN_IN_MAPS' | translate }}
                   </a>
                 </div>
                 <button pButton icon="pi pi-times" type="button"
                   class="p-button-rounded p-button-text p-button-danger p-button-sm flex-shrink-0"
                   (click)="clearLocation()"
-                  [pTooltip]="translate.currentLang === 'ar' ? 'إزالة الموقع' : 'Remove location'">
+                  [pTooltip]="'LOCATION.REMOVE' | translate">
                 </button>
               </div>
-
             </div>
           </div>
+
 
           <!-- No longer needed -->
         </form>
