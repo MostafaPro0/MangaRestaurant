@@ -18,6 +18,7 @@ import { TranslateService } from '../../services/translate.service';
 import { AuthService } from '../../services/auth.service';
 import { SettingsService } from '../../services/settings.service';
 import { TooltipModule } from 'primeng/tooltip';
+import { WishlistService } from '../../services/wishlist.service';
 
 @Component({
   selector: 'app-product-details',
@@ -49,7 +50,8 @@ export class ProductDetailsComponent implements OnInit {
     private messageService: MessageService,
     private settingsService: SettingsService,
     private title: Title,
-    private meta: Meta
+    private meta: Meta,
+    public wishlistService: WishlistService
   ) {}
 
   ngOnInit(): void {
@@ -64,6 +66,10 @@ export class ProductDetailsComponent implements OnInit {
     this.translateService.onLangChange?.subscribe(() => {
       if (this.product) this.updateSeo(this.product);
     });
+
+    if (this.authService.isAuthenticated()) {
+        this.wishlistService.getWishlist().subscribe();
+    }
   }
 
   updateSeo(product: any) {
@@ -209,5 +215,18 @@ export class ProductDetailsComponent implements OnInit {
 
   goToProduct(id: number): void {
     this.router.navigate(['/products', id]);
+  }
+
+  toggleWishlist(): void {
+    if (!this.authService.isAuthenticated()) {
+        this.router.navigate(['/login']);
+        return;
+    }
+    this.wishlistService.toggleWishlist(this.product.id).subscribe();
+  }
+
+  isInWishlist(): boolean {
+    if (!this.product) return false;
+    return this.wishlistService.isInWishlistLocal(this.product.id);
   }
 }

@@ -15,6 +15,7 @@ namespace MangaRestaurant.APIs.Dtos
         public List<PeakHourDTO> PeakHours { get; set; } = new();
         public List<TopEmployeeDTO> TopEmployees { get; set; } = new();
         public List<TopViewedProductDTO> TopViewedProducts { get; set; } = new();
+        public List<TopProductDTO> TopWishlistedProducts { get; set; } = new();
     }
 
     public class TopViewedProductDTO

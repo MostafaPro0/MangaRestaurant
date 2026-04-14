@@ -39,5 +39,6 @@ namespace MangaRestaurant.Repository.Data
         public DbSet<ProductReview> ProductReviews { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<SiteSettings> SiteSettings { get; set; }
+        public DbSet<WishlistItem> Wishlists { get; set; }
     }
 }

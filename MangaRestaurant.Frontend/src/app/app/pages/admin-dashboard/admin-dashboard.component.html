@@ -170,6 +170,17 @@
             </div>
           </div>
 
+          <!-- Row 5: Top Wishlisted Products (Horizontal) -->
+          <div class="col-12 lg:col-6">
+            <div class="chart-container p-4 shadow-sm border-round-xl mb-4 h-full">
+              <h3 class="chart-title"><i class="pi pi-heart"></i> {{ 'ADMIN.CHART_TOP_WISHLISTED' | translate }}</h3>
+              <apx-chart *ngIf="topWishlistedProductsChartOptions" [series]="topWishlistedProductsChartOptions.series!"
+                [chart]="topWishlistedProductsChartOptions.chart!" [xaxis]="topWishlistedProductsChartOptions.xaxis!"
+                [colors]="topWishlistedProductsChartOptions.colors!" [plotOptions]="topWishlistedProductsChartOptions.plotOptions!">
+              </apx-chart>
+            </div>
+          </div>
+
           <!-- Row 4: Category Distribution (Pie) -->
           <div class="col-12 lg:col-6">
             <div class="chart-container p-4 shadow-sm border-round-xl mb-4 h-full">

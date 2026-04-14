@@ -154,6 +154,11 @@ export class AppComponent {
             routerLink: '/orders'
           },
           {
+            label: isAr ? 'قائمة الأمنيات' : 'My Wishlist',
+            icon: 'pi pi-heart',
+            routerLink: '/wishlist'
+          },
+          {
             label: isAr ? 'الملف الشخصي' : 'Profile',
             icon: 'pi pi-user-edit',
             routerLink: '/profile'

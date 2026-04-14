@@ -1,0 +1,57 @@
+<div class="container section-pad px-3">
+    <div class="section-header-v2">
+      <span class="section-tag">{{ 'WISHLIST.TAG' | translate }}</span>
+      <h1 class="section-title-v2 font-bold">{{ 'WISHLIST.TITLE' | translate }}</h1>
+      <p class="section-subtitle-v2">{{ 'WISHLIST.SUBTITLE' | translate }}</p>
+    </div>
+  
+    <!-- Loading Skeletons -->
+    <div class="grid" *ngIf="loading">
+      <div class="col-12 sm:col-6 lg:col-3 mb-4" *ngFor="let i of [1,2,3,4]">
+        <div class="p-4 border-round-xl surface-card shadow-1">
+            <p-skeleton height="200px" styleClass="mb-3"></p-skeleton>
+            <p-skeleton width="70%" styleClass="mb-2"></p-skeleton>
+            <p-skeleton width="40%"></p-skeleton>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Wishlist Items -->
+    <div class="grid" *ngIf="!loading && items.length > 0">
+      <div class="col-12 sm:col-6 lg:col-4 xl:col-3 mb-6" *ngFor="let product of items">
+        <div class="mg-card h-full flex flex-column relative overflow-hidden">
+          
+          <div style="position: absolute; top: 10px; right: 10px; z-index: 5;">
+            <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-sm shadow-lg"
+              (click)="removeFromWishlist(product.id)" [pTooltip]="'COMMON.DELETE' | translate"></button>
+          </div>
+  
+          <div class="img-panel" [routerLink]="['/products', product.id]" style="cursor: pointer;">
+            <img [src]="product.pictureUrl" [alt]="product.name" />
+          </div>
+  
+          <div class="p-4 flex-grow-1 flex flex-column">
+            <h3 class="display-font text-xl font-bold mb-2 uppercase">{{ (translateService.currentLanguage === 'ar' ? product.nameAr : product.name) || product.name }}</h3>
+            
+            <div class="flex align-items-center justify-content-between mt-auto">
+              <span class="primary-text text-xl font-black" *ngIf="settings$ | async as settings">
+                {{ translateService.currentLanguage === 'ar' ? (product.price + ' ' + settings.currencySymbol) : (product.price | currency : settings.currencyCode) }}
+              </span>
+              <button pButton icon="pi pi-shopping-cart" class="p-button-sm p-button-rounded"
+                (click)="addToBasket(product)"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Empty State -->
+    <div class="text-center py-8" *ngIf="!loading && items.length === 0">
+      <div class="mb-6">
+        <i class="pi pi-heart text-8xl text-muted opacity-20"></i>
+      </div>
+      <h2 class="text-3xl font-bold mb-4">{{ 'WISHLIST.EMPTY' | translate }}</h2>
+      <p class="text-dim mb-8">{{ 'WISHLIST.EMPTY_DESC' | translate }}</p>
+      <button pButton [label]="'WISHLIST.GO_SHOPPING' | translate" routerLink="/products" icon="pi pi-arrow-left" class="p-button-lg p-button-rounded px-6"></button>
+    </div>
+  </div>

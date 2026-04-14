@@ -124,6 +124,7 @@ export class AdminDashboardComponent implements OnInit {
   public topProductsChartOptions!: Partial<ChartOptions>;
   public driversChartOptions!: Partial<ChartOptions>;
   public topViewedProductsChartOptions!: Partial<ChartOptions>;
+  public topWishlistedProductsChartOptions!: Partial<ChartOptions>;
 
   get orderStatusOptions() {
     return [
@@ -551,6 +552,19 @@ export class AdminDashboardComponent implements OnInit {
         theme: { mode: themeMode as 'light' | 'dark' },
         xaxis: { categories: report.topViewedProducts.map((p: any) => isAr ? (p.nameAr || p.name) : p.name) },
         colors: ['#3498db'],
+        plotOptions: { bar: { horizontal: true, borderRadius: 4 } }
+    };
+
+    // 8. Top Wishlisted Products
+    this.topWishlistedProductsChartOptions = {
+        series: [{ 
+            name: this.translateService.instant('ADMIN.WISHLIST_COUNT') || (isAr ? 'عدد الإضافات للمفضلة' : 'Wishlist Count'), 
+            data: report.topWishlistedProducts.map((p: any) => p.quantity) 
+        }],
+        chart: { type: 'bar', height: 350, ...chartBaseConfig },
+        theme: { mode: themeMode as 'light' | 'dark' },
+        xaxis: { categories: report.topWishlistedProducts.map((p: any) => isAr ? (p.nameAr || p.name) : p.name) },
+        colors: ['#e74c3c'],
         plotOptions: { bar: { horizontal: true, borderRadius: 4 } }
     };
   }
