@@ -141,13 +141,13 @@ export class PosComponent implements OnInit {
       basketId: basket.id,
       orderType: 1, // DineIn
       shippingAddress: {
-        firstName: 'Dine-In',
-        lastName: 'Customer',
-        street: 'Restaurant Table',
-        city: 'Inside',
+        firstName: this.translate.currentLanguage === 'ar' ? 'طلب' : 'Dine-In',
+        lastName: this.translate.currentLanguage === 'ar' ? 'طاولة' : 'Customer',
+        street: this.translate.currentLanguage === 'ar' ? 'طاولة المطعم' : 'Restaurant Table',
+        city: this.translate.currentLanguage === 'ar' ? 'داخل الصالة' : 'Inside',
         state: 'POS',
         zipCode: '0000',
-        country: 'Inside'
+        country: this.translate.currentLanguage === 'ar' ? 'المطعم' : 'Restaurant'
       }
     };
 

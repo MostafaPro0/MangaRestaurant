@@ -93,7 +93,9 @@
 
             <!-- Shipping Info -->
             <div class="shipping-section">
-              <h5 class="manga-font text-xl primary-text mb-3">{{ 'ORDERS.DELIVERY_ADDRESS' | translate }}</h5>
+              <h5 class="manga-font text-xl primary-text mb-3">
+                {{ selectedOrder.deliveryMethod === 'DineIn' ? (translate.currentLang === 'ar' ? 'معلومات الطلب داخلياً' : 'Dine-In Details') : ('ORDERS.DELIVERY_ADDRESS' | translate) }}
+              </h5>
               <div class="p-4 glass-card border-radius-md text-dim line-height-3">
                 <div *ngIf="getShippingAddress(selectedOrder); else noAddress">
                   <div class="font-bold text-main mb-1">{{ getShippingAddress(selectedOrder)?.firstName }} {{
@@ -161,7 +163,8 @@
                 </span>
               </div>
               <div class="flex justify-content-between text-dim mt-2">
-                <span>{{ 'BASKET.DELIVERY' | translate }} ({{ selectedOrder.deliveryMethod }})</span>
+                <span *ngIf="selectedOrder.deliveryMethod !== 'DineIn'">{{ 'BASKET.DELIVERY' | translate }} ({{ selectedOrder.deliveryMethod }})</span>
+                <span *ngIf="selectedOrder.deliveryMethod === 'DineIn'">{{ translate.currentLang === 'ar' ? 'نوع الخدمة' : 'Service Type' }} ({{ translate.currentLang === 'ar' ? 'طلب داخلي' : 'Dine-In' }})</span>
                 <span>
                   <ng-container *ngIf="translate.currentLang === 'ar'">
                     {{ selectedOrder.shippingPrice | number : '1.2-2' }} {{ settings.currencySymbol }}
