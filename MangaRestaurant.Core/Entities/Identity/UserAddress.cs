@@ -18,6 +18,11 @@ namespace MangaRestaurant.Core.Entities.Identity
         public string ZipCode { get; set;}
         public string Country { get; set;}
 
+        // GPS Location
+        public string? LocationUrl { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
+
         public string AppUserId { get; set; }//ForeignKey
         public AppUser User { get; set;}
     }

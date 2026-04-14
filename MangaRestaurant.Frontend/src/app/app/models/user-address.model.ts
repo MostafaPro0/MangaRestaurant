@@ -6,4 +6,8 @@ export interface UserAddress {
   state: string;
   zipCode: string;
   country: string;
+  locationUrl?: string;
+  latitude?: number;
+  longitude?: number;
 }
+

@@ -20,5 +20,8 @@ namespace MangaRestaurant.APIs.Dtos
         public string ZipCode { get; set; }
         [Required]
         public string Country { get; set; }
+        public string? LocationUrl { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
     }
 }

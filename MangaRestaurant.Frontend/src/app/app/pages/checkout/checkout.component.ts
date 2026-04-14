@@ -17,10 +17,12 @@ import { OrdersService } from '../../services/orders.service';
 import { UserAddress } from '../../models/user-address.model';
 import { AuthService } from '../../services/auth.service';
 
+import { TooltipModule } from 'primeng/tooltip';
+
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, FormsModule, InputTextModule, PasswordModule, ButtonModule, DropdownModule, ProgressSpinnerModule, TranslateModule, CheckboxModule, RadioButtonModule],
+  imports: [CommonModule, FormsModule, InputTextModule, PasswordModule, ButtonModule, DropdownModule, ProgressSpinnerModule, TranslateModule, CheckboxModule, RadioButtonModule, TooltipModule],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.css'
 })
@@ -33,6 +35,12 @@ export class CheckoutComponent implements OnInit {
   saveAddressToProfile = false;
   addressMode: 'saved' | 'new' = 'new';
   settings$: any;
+
+  // Geolocation
+  detectingLocation = false;
+  locationDetected = false;
+  locationError = '';
+
 
   constructor(
     private basketService: BasketService,
@@ -78,6 +86,59 @@ export class CheckoutComponent implements OnInit {
 
   get subtotal(): number {
     return this.basket.items.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
+  }
+
+  detectLocation(): void {
+    if (!navigator.geolocation) {
+      this.locationError = this.translate.currentLang === 'ar'
+        ? 'المتصفح لا يدعم تحديد الموقع'
+        : 'Geolocation is not supported by your browser';
+      return;
+    }
+
+    this.detectingLocation = true;
+    this.locationError = '';
+    this.locationDetected = false;
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        this.address.locationUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+        this.address.latitude = lat;
+        this.address.longitude = lng;
+        this.detectingLocation = false;
+        this.locationDetected = true;
+      },
+      (error) => {
+        this.detectingLocation = false;
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            this.locationError = this.translate.currentLang === 'ar'
+              ? 'تم رفض الإذن بالوصول إلى الموقع'
+              : 'Location permission denied';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            this.locationError = this.translate.currentLang === 'ar'
+              ? 'الموقع غير متاح حالياً'
+              : 'Location unavailable';
+            break;
+          default:
+            this.locationError = this.translate.currentLang === 'ar'
+              ? 'حدث خطأ أثناء تحديد الموقع'
+              : 'Error detecting location';
+        }
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }
+
+  clearLocation(): void {
+    this.address.locationUrl = undefined;
+    this.address.latitude = undefined;
+    this.address.longitude = undefined;
+    this.locationDetected = false;
+    this.locationError = '';
   }
 
   createOrder(): void {

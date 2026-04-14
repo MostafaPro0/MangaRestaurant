@@ -93,12 +93,78 @@
               <label for="saveAddr" class="cursor-pointer text-sm font-bold opacity-80">{{ 'CHECKOUT.SAVE_ADDRESS' |
                 translate }}</label>
             </div>
+
+            <!-- GPS Location Section -->
+            <div class="mt-4 p-4 rounded-xl border-1 location-box"
+                 [class.border-primary]="locationDetected"
+                 [class.border-white-alpha-10]="!locationDetected">
+
+              <div class="flex align-items-center gap-3 mb-3">
+                <i class="pi pi-map-marker text-primary text-2xl"></i>
+                <div class="flex-grow-1">
+                  <span class="font-bold block">
+                    {{ translate.currentLang === 'ar' ? 'تحديد الموقع الجغرافي' : 'GPS Location' }}
+                  </span>
+                  <span class="text-xs opacity-60">
+                    {{ translate.currentLang === 'ar' ? 'اختياري - يساعد في التوصيل بدقة أكبر' : 'Optional - helps delivery find you accurately' }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Detect Button -->
+              <button pButton type="button"
+                [label]="detectingLocation
+                  ? (translate.currentLang === 'ar' ? 'جاري التحديد...' : 'Detecting...')
+                  : (locationDetected
+                      ? (translate.currentLang === 'ar' ? 'تم تحديد الموقع ✓' : 'Location Detected ✓')
+                      : (translate.currentLang === 'ar' ? 'استخدم موقعي الحالي' : 'Use My Current Location'))"
+                [icon]="detectingLocation ? 'pi pi-spin pi-spinner' : (locationDetected ? 'pi pi-check' : 'pi pi-crosshairs')"
+                [loading]="detectingLocation"
+                [disabled]="detectingLocation"
+                (click)="detectLocation()"
+                class="w-full location-btn"
+                [ngClass]="locationDetected ? 'p-button-success p-button-outlined' : 'p-button-outlined p-button-secondary'">
+              </button>
+
+              <!-- Error Message -->
+              <div *ngIf="locationError" class="mt-2 flex align-items-center gap-2 text-red-400 text-sm">
+                <i class="pi pi-exclamation-triangle"></i>
+                <span>{{ locationError }}</span>
+              </div>
+
+              <!-- Location Link Preview -->
+              <div *ngIf="locationDetected && address.locationUrl" class="mt-3 p-3 bg-soft rounded-lg flex align-items-center gap-3 location-preview">
+                <i class="pi pi-map text-primary text-xl flex-shrink-0"></i>
+                <div class="flex-grow-1 min-w-0">
+                  <span class="block text-xs opacity-60 mb-1">
+                    {{ translate.currentLang === 'ar' ? 'الموقع الجغرافي المحدد' : 'Detected Location' }}
+                  </span>
+                  <!-- Coordinates -->
+                  <div class="flex gap-3 mb-2 text-xs font-mono opacity-70">
+                    <span>📍 {{ address.latitude?.toFixed(6) }}, {{ address.longitude?.toFixed(6) }}</span>
+                  </div>
+                  <!-- Google Maps Link -->
+                  <a [href]="address.locationUrl" target="_blank"
+                     class="text-primary font-bold text-sm hover:underline block text-overflow-ellipsis overflow-hidden white-space-nowrap">
+                    <i class="pi pi-external-link mr-1"></i>
+                    {{ translate.currentLang === 'ar' ? 'عرض على خرائط جوجل' : 'Open in Google Maps' }}
+                  </a>
+                </div>
+                <button pButton icon="pi pi-times" type="button"
+                  class="p-button-rounded p-button-text p-button-danger p-button-sm flex-shrink-0"
+                  (click)="clearLocation()"
+                  [pTooltip]="translate.currentLang === 'ar' ? 'إزالة الموقع' : 'Remove location'">
+                </button>
+              </div>
+
+            </div>
           </div>
 
           <!-- No longer needed -->
         </form>
       </div>
     </div>
+
 
     <!-- Review Sidebar -->
     <div class="col-12 lg:col-4">
