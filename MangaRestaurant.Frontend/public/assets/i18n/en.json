@@ -314,6 +314,7 @@
     "BACK": "Return Home"
   },
   "ADMIN": {
+    "TAG": "Control Panel",
     "DASHBOARD_TITLE": "Admin Dashboard",
     "DASHBOARD_SUBTITLE": "Manage restaurant operations, employees, products, and orders.",
     "ADD_PRODUCT": "Add New Product",
@@ -433,16 +434,5 @@
     "EMPTY": "Your wishlist is empty",
     "EMPTY_DESC": "Start exploring our menu and add items you like to your wishlist!",
     "GO_SHOPPING": "Go Shopping"
-  },
-  "ADMIN": {
-    "TAG": "Control Panel",
-    "DASHBOARD_TITLE": "Admin Dashboard",
-    "DASHBOARD_SUBTITLE": "Manage restaurant operations, staff, products, and orders.",
-    "REPORTS": "Reports",
-    "ORDER_LOG": "Order Log",
-    "PRODUCTS": "Products",
-    "STAFF_MANAGEMENT": "Staff Management",
-    "SETTINGS": "Settings",
-    "ADD_PRODUCT": "Add New Product"
   }
 }
