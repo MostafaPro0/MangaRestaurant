@@ -180,11 +180,19 @@ export class OrdersComponent implements OnInit {
         this.editableAddress.longitude = pos.coords.longitude;
         this.editableAddress.locationUrl = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
         this.detectingLocation = false;
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Location detected!' });
+        this.messageService.add({ 
+            severity: 'success', 
+            summary: this.translate.instant('TOAST.SUCCESS') || 'Success', 
+            detail: this.translate.instant('CHECKOUT.LOCATION_DETECTED') || 'Location detected!' 
+        });
       },
       (err) => {
         this.detectingLocation = false;
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Location access denied' });
+        this.messageService.add({ 
+            severity: 'error', 
+            summary: this.translate.instant('TOAST.ERROR') || 'Error', 
+            detail: this.translate.instant('CHECKOUT.LOCATION_DENIED') || 'Location access denied' 
+        });
       }
     );
   }

@@ -134,6 +134,8 @@
     "ZIPCODE": "Zip Code",
     "LOCATION_URL": "Location Map URL",
     "USE_MY": "Use My Current Location",
+    "LOCATION_DETECTED": "Location detected successfully!",
+    "LOCATION_DENIED": "Location access denied.",
     "TOTAL": "Order Total"
   },
   "LOCATION": {
