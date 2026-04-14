@@ -9,7 +9,7 @@
 
   <div class="grid">
 
-    <!-- Assigned Orders List ──────────────────────── -->
+    <!-- ── Assigned Orders List ───────────────────────────── -->
     <div class="col-12 lg:col-5">
       <div class="mg-card p-4">
         <div class="flex align-items-center justify-content-between mb-4">
@@ -25,49 +25,121 @@
           <p>{{ 'DELIVERY.NO_ORDERS' | translate }}</p>
         </div>
 
+        <!-- Skeleton -->
+        <div *ngIf="loadingOrders" class="flex flex-column gap-3">
+          <div *ngFor="let s of [1,2,3]" class="p-3 rounded-xl bg-soft" style="height: 90px"></div>
+        </div>
+
         <!-- Order cards -->
         <div class="flex flex-column gap-3">
           <div *ngFor="let order of assignedOrders"
-               class="p-3 rounded-xl border-1 cursor-pointer transition-all"
+               class="order-card p-3 rounded-xl border-1 cursor-pointer transition-all"
                [ngClass]="selectedOrder?.id === order.id
                  ? 'border-primary bg-primary-alpha-10'
                  : 'border-white-alpha-10 hover:bg-white-alpha-05'"
                (click)="selectOrder(order)">
 
-            <div class="flex justify-content-between align-items-center">
-              <span class="font-bold text-primary">#{{ order.id }}</span>
+            <!-- Header row -->
+            <div class="flex justify-content-between align-items-center mb-2">
+              <span class="font-bold text-primary text-base">#{{ order.id }}</span>
               <p-tag [value]="order.orderStatus"
                      [severity]="statusSeverity(order.orderStatus)"
                      [rounded]="true" styleClass="text-xs">
               </p-tag>
             </div>
 
-            <div class="text-xs text-dim mt-2 line-height-3" *ngIf="order.shippingAddress">
-              <i class="pi pi-map-marker mr-1 text-primary"></i>
-              {{ order.shippingAddress.street }}, {{ order.shippingAddress.city }}
+            <!-- Customer name -->
+            <div class="flex align-items-center gap-2 text-sm font-semibold mb-1">
+              <i class="pi pi-user text-primary text-xs"></i>
+              <span>{{ order.buyerName || order.buyerEmail }}</span>
             </div>
-            <div class="text-xs text-dim mt-1">
-              <i class="pi pi-user mr-1"></i>
-              {{ order.buyerEmail }}
+
+            <!-- Phone 1 -->
+            <div *ngIf="order.buyerPhone" class="flex align-items-center gap-2 text-xs text-dim mb-1">
+              <i class="pi pi-phone text-xs"></i>
+              <a [href]="'tel:' + order.buyerPhone" class="text-dim" (click)="$event.stopPropagation()">
+                {{ order.buyerPhone }}
+              </a>
+            </div>
+            <!-- Phone 2 -->
+            <div *ngIf="order.buyerPhone2" class="flex align-items-center gap-2 text-xs text-dim mb-1">
+              <i class="pi pi-phone text-xs opacity-60"></i>
+              <a [href]="'tel:' + order.buyerPhone2" class="text-dim" (click)="$event.stopPropagation()">
+                {{ order.buyerPhone2 }}
+              </a>
+            </div>
+
+            <!-- Address summary -->
+            <div class="flex align-items-center gap-2 text-xs text-dim">
+              <i class="pi pi-map-marker text-xs"></i>
+              <span>
+                {{ order.shippingAddress?.street }},
+                {{ order.shippingAddress?.city }},
+                {{ order.shippingAddress?.country }}
+              </span>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Tracking Control ──────────────────────────── -->
+    <!-- ── Tracking Control ───────────────────────────────── -->
     <div class="col-12 lg:col-7">
       <div class="mg-card p-5 h-full flex flex-column gap-4">
 
         <ng-container *ngIf="selectedOrder; else noSelection">
 
-          <!-- Selected order info -->
-          <div class="p-3 bg-soft rounded-xl border-1 border-primary">
-            <div class="flex align-items-center gap-3">
-              <i class="pi pi-shopping-cart text-primary text-xl"></i>
-              <div>
-                <span class="font-bold block">{{ 'DELIVERY.ORDER' | translate }} #{{ selectedOrder.id }}</span>
-                <span class="text-xs text-dim">{{ selectedOrder.shippingAddress?.city }}</span>
+          <!-- Selected order shipping card -->
+          <div class="p-4 bg-soft rounded-xl border-1 border-primary">
+            <div class="flex align-items-center gap-2 mb-3">
+              <i class="pi pi-truck text-primary text-xl"></i>
+              <span class="font-bold text-lg">{{ 'DELIVERY.ORDER' | translate }} #{{ selectedOrder.id }}</span>
+            </div>
+
+            <div class="grid text-sm">
+              <!-- Customer name -->
+              <div class="col-6">
+                <span class="text-dim text-xs block mb-1">{{ 'DELIVERY.CUSTOMER' | translate }}</span>
+                <span class="font-semibold">{{ selectedOrder.buyerName || '—' }}</span>
+              </div>
+              <!-- Phone -->
+              <div class="col-6">
+                <span class="text-dim text-xs block mb-1">{{ 'DELIVERY.PHONE' | translate }}</span>
+                <div class="flex flex-column gap-1">
+                  <a *ngIf="selectedOrder.buyerPhone" [href]="'tel:' + selectedOrder.buyerPhone"
+                     class="font-semibold text-primary text-sm">
+                    {{ selectedOrder.buyerPhone }}
+                  </a>
+                  <a *ngIf="selectedOrder.buyerPhone2" [href]="'tel:' + selectedOrder.buyerPhone2"
+                     class="font-semibold text-primary text-sm opacity-80">
+                    {{ selectedOrder.buyerPhone2 }}
+                  </a>
+                  <span *ngIf="!selectedOrder.buyerPhone && !selectedOrder.buyerPhone2" class="text-dim">—</span>
+                </div>
+              </div>
+              <!-- Street -->
+              <div class="col-12 mt-2">
+                <span class="text-dim text-xs block mb-1">{{ 'DELIVERY.ADDRESS' | translate }}</span>
+                <span class="font-medium">
+                  {{ selectedOrder.shippingAddress?.street }},
+                  {{ selectedOrder.shippingAddress?.city }},
+                  {{ selectedOrder.shippingAddress?.country }}
+                </span>
+              </div>
+              <!-- Map link -->
+              <div class="col-12 mt-2" *ngIf="selectedOrder.shippingAddress?.latitude">
+                <a [href]="'https://www.google.com/maps?q=' + selectedOrder.shippingAddress.latitude + ',' + selectedOrder.shippingAddress.longitude"
+                   target="_blank" class="text-primary text-xs font-bold">
+                  <i class="pi pi-external-link mr-1"></i>
+                  {{ 'DELIVERY.OPEN_MAP' | translate }}
+                </a>
+              </div>
+              <div class="col-12 mt-1" *ngIf="selectedOrder.shippingAddress?.locationUrl && !selectedOrder.shippingAddress?.latitude">
+                <a [href]="selectedOrder.shippingAddress.locationUrl"
+                   target="_blank" class="text-primary text-xs font-bold">
+                  <i class="pi pi-external-link mr-1"></i>
+                  {{ 'DELIVERY.OPEN_MAP' | translate }}
+                </a>
               </div>
             </div>
           </div>
@@ -77,7 +149,7 @@
             <label class="form-label mb-2 block">{{ 'DELIVERY.STATUS' | translate }}</label>
             <p-dropdown [options]="statusOptions" [(ngModel)]="status"
                         optionLabel="label" optionValue="value"
-                        styleClass="w-full p-input-lg">
+                        styleClass="w-full">
             </p-dropdown>
           </div>
 
@@ -93,7 +165,7 @@
             </button>
           </div>
 
-          <!-- Coords preview -->
+          <!-- Current GPS coords -->
           <div *ngIf="currentLat" class="p-3 bg-soft rounded-xl border-1 border-primary">
             <div class="flex align-items-center justify-content-between">
               <span class="font-mono text-xs">
@@ -108,12 +180,12 @@
           <!-- LIVE indicator -->
           <div *ngIf="tracking" class="flex align-items-center gap-2 justify-content-center">
             <span class="live-dot"></span>
-            <span class="font-bold text-primary text-sm uppercase">LIVE BROADCASTING</span>
+            <span class="font-bold text-primary text-sm uppercase tracking-widest">LIVE</span>
           </div>
 
         </ng-container>
 
-        <!-- No order selected -->
+        <!-- No selection state -->
         <ng-template #noSelection>
           <div class="flex flex-column align-items-center justify-content-center flex-grow-1 py-8 gap-3">
             <div class="status-icon">🛵</div>

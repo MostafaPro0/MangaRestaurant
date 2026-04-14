@@ -1,14 +1,12 @@
 <section class="admin-dashboard-container p-3 md:p-4">
 
   <!-- 1. Header Section -->
-  <div class="header-section d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-    <div class="title-group">
-      <h1 class="dashboard-title gradient-text mb-1">{{ 'ADMIN.DASHBOARD_TITLE' | translate }}</h1>
-      <p class="dashboard-subtitle text-muted">{{ 'ADMIN.DASHBOARD_SUBTITLE' | translate }}</p>
-    </div>
-
-    <button pButton type="button" icon="pi pi-plus" class="p-button-raised p-button-rounded add-btn"
-      [label]="'ADMIN.ADD_PRODUCT' | translate" (click)="openCreateProduct()"></button>
+  <div class="section-header-v2 mb-5">
+    <span class="section-tag">{{ 'ADMIN.TAG' | translate }}</span>
+    <h1 class="section-title-v2">{{ 'ADMIN.DASHBOARD_TITLE' | translate }}</h1>
+    <p class="section-subtitle text-dim mt-2" style="font-size:1rem; max-width:520px; margin: 0.5rem auto 0;">
+      {{ 'ADMIN.DASHBOARD_SUBTITLE' | translate }}
+    </p>
   </div>
 
   <div class="admin-dashboard-wrapper border-round-xl overflow-hidden glass-panel"
@@ -725,21 +723,21 @@
                   <i class="pi pi-share-alt mr-2"></i> {{ 'ADMIN.SOCIAL_LINKS' | translate }}
                 </h3>
                 <div class="field mb-3">
-                   <div class="p-inputgroup">
+                   <div class="p-inputgroup flex-1">
                       <span class="p-inputgroup-addon"><i class="pi pi-facebook"></i></span>
-                      <input type="text" pInputText [(ngModel)]="siteSettings.facebookUrl" [placeholder]="'Facebook URL'">
+                      <input type="text" pInputText [(ngModel)]="siteSettings.facebookUrl" [placeholder]="'Facebook URL'" class="flex-1 w-full">
                    </div>
                 </div>
                 <div class="field mb-3">
-                   <div class="p-inputgroup">
+                   <div class="p-inputgroup flex-1">
                       <span class="p-inputgroup-addon"><i class="pi pi-instagram"></i></span>
-                      <input type="text" pInputText [(ngModel)]="siteSettings.instagramUrl" [placeholder]="'Instagram URL'">
+                      <input type="text" pInputText [(ngModel)]="siteSettings.instagramUrl" [placeholder]="'Instagram URL'" class="flex-1 w-full">
                    </div>
                 </div>
                 <div class="field mb-3">
-                   <div class="p-inputgroup">
+                   <div class="p-inputgroup flex-1">
                       <span class="p-inputgroup-addon"><i class="pi pi-twitter"></i></span>
-                      <input type="text" pInputText [(ngModel)]="siteSettings.twitterUrl" [placeholder]="'Twitter URL'">
+                      <input type="text" pInputText [(ngModel)]="siteSettings.twitterUrl" [placeholder]="'Twitter URL'" class="flex-1 w-full">
                    </div>
                 </div>
               </div>

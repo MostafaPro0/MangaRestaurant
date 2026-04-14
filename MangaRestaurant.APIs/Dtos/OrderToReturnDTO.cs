@@ -7,7 +7,8 @@ namespace MangaRestaurant.APIs.Dtos
         public int Id { get; set; }
         public string BuyerEmail { get; set; }
         public string? BuyerName  { get; set; }   // DisplayName
-        public string? BuyerPhone { get; set; }   // Phone number for delivery
+        public string? BuyerPhone { get; set; }   // Primary phone
+        public string? BuyerPhone2 { get; set; }  // Secondary phone
         public DateTimeOffset OrderDate { get; set; }
         public string OrderStatus { get; set; }
         public OrderAddress ShippingAddress { get; set; }

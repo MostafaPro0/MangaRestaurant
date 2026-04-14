@@ -8,6 +8,17 @@
   min-height: 100vh;
 }
 
+/* ── p-inputgroup full-width fix ── */
+.settings-form .p-inputgroup {
+  display: flex;
+  width: 100%;
+}
+.settings-form .p-inputgroup input {
+  flex: 1;
+  min-width: 0;
+  width: 100% !important;
+}
+
 .admin-dashboard-wrapper {
     padding-bottom: 3rem;
 }

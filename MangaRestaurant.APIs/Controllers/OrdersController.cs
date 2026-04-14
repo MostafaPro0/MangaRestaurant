@@ -466,6 +466,19 @@ namespace MangaRestaurant.APIs.Controllers
 
             var result = _mapper.Map<IReadOnlyList<Order>, IReadOnlyList<OrderToReturnDTO>>(myOrders);
             await EnrichOrderImages(result);
+
+            // Enrich with buyer display name & phone (never expose raw email to driver)
+            foreach (var dto in result)
+            {
+                var buyer = await _userManager.FindByEmailAsync(dto.BuyerEmail);
+                if (buyer != null)
+                {
+                    dto.BuyerName   = buyer.DisplayName;
+                    dto.BuyerPhone  = buyer.PhoneNumber;
+                    dto.BuyerPhone2 = buyer.PhoneNumber2;
+                }
+            }
+
             return Ok(result);
         }
     }

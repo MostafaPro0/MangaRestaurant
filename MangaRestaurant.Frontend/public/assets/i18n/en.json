@@ -201,7 +201,11 @@
     "TOAST_STOPPED_DETAIL": "Location broadcast has been stopped",
     "TOAST_NO_GEO": "Browser does not support geolocation",
     "TOAST_LOC_ERROR": "Could not retrieve your location",
-    "TOAST_LOAD_ERROR": "Could not load assigned orders"
+    "TOAST_LOAD_ERROR": "Could not load assigned orders",
+    "CUSTOMER": "Customer",
+    "PHONE": "Phone",
+    "ADDRESS": "Delivery Address",
+    "OPEN_MAP": "Open in Maps"
   },
   "PROFILE": {
 
@@ -429,5 +433,16 @@
     "EMPTY": "Your wishlist is empty",
     "EMPTY_DESC": "Start exploring our menu and add items you like to your wishlist!",
     "GO_SHOPPING": "Go Shopping"
+  },
+  "ADMIN": {
+    "TAG": "Control Panel",
+    "DASHBOARD_TITLE": "Admin Dashboard",
+    "DASHBOARD_SUBTITLE": "Manage restaurant operations, staff, products, and orders.",
+    "REPORTS": "Reports",
+    "ORDER_LOG": "Order Log",
+    "PRODUCTS": "Products",
+    "STAFF_MANAGEMENT": "Staff Management",
+    "SETTINGS": "Settings",
+    "ADD_PRODUCT": "Add New Product"
   }
 }

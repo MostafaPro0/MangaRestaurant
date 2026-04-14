@@ -16,9 +16,22 @@ import { environment }             from '../../../../environments/environment';
 
 interface AssignedOrder {
   id: number;
-  buyerEmail: string;
+  buyerEmail:   string;
+  buyerName?:   string;
+  buyerPhone?:  string;
+  buyerPhone2?: string;
   orderStatus: string;
-  shippingAddress: any;
+  orderDate:   string;
+  shippingAddress: {
+    firstName:  string;
+    lastName:   string;
+    street:     string;
+    city:       string;
+    country:    string;
+    locationUrl?: string;
+    latitude?:  number;
+    longitude?: number;
+  };
 }
 
 @Component({
