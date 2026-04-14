@@ -18,10 +18,14 @@ import { SettingsService } from '../../services/settings.service';
 
 import { environment } from '../../../../environments/environment';
 
+import { FormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { TooltipModule } from 'primeng/tooltip';
+
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule, CardModule, TableModule, ProgressSpinnerModule, BadgeModule, DialogModule, ButtonModule, TranslateModule, SkeletonModule, DividerModule, RouterLink],
+  imports: [CommonModule, CardModule, TableModule, ProgressSpinnerModule, BadgeModule, DialogModule, ButtonModule, TranslateModule, SkeletonModule, DividerModule, RouterLink, FormsModule, InputTextModule, TooltipModule],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css'
 })
@@ -31,6 +35,12 @@ export class OrdersComponent implements OnInit {
   orderDialogVisible = false;
   loading = false;
   settings$: any;
+
+  // Edit Address status
+  editAddressVisible = false;
+  editableAddress: any = null;
+  updatingAddress = false;
+  detectingLocation = false;
 
   constructor(
     private ordersService: OrdersService,
@@ -109,6 +119,70 @@ export class OrdersComponent implements OnInit {
   closeOrderDetails(): void {
     this.selectedOrder = null;
     this.orderDialogVisible = false;
+  }
+
+  isOrderPending(order: Order | null): boolean {
+    if (!order) return false;
+    const status = this.getDisplayStatus(order);
+    return status === 'Pending' || status === OrderStatus.Pending;
+  }
+
+  toggleEditAddress(): void {
+    if (this.selectedOrder) {
+      const addr = this.getShippingAddress(this.selectedOrder);
+      this.editableAddress = { ...addr };
+      this.editAddressVisible = true;
+    }
+  }
+
+  saveAddress(): void {
+    if (!this.selectedOrder || !this.editableAddress) return;
+
+    this.updatingAddress = true;
+    this.ordersService.updateOrderAddress(this.selectedOrder.id, this.editableAddress).subscribe({
+      next: (updatedOrder) => {
+        // Update local list and selected order
+        const index = this.orders.findIndex(o => o.id === updatedOrder.id);
+        if (index !== -1) {
+          this.orders[index] = updatedOrder;
+        }
+        this.selectedOrder = updatedOrder;
+        this.updatingAddress = false;
+        this.editAddressVisible = false;
+        this.messageService.add({ 
+            severity: 'success', 
+            summary: this.translate.instant('TOAST.SUCCESS') || 'Success', 
+            detail: this.translate.instant('ORDERS.ADDRESS_UPDATED') || 'Address updated successfully.' 
+        });
+      },
+      error: (err) => {
+        console.error('Update address failed', err);
+        this.updatingAddress = false;
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Could not update address.' });
+      }
+    });
+  }
+
+  detectLocation(): void {
+    if (!navigator.geolocation) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Geolocation not supported' });
+      return;
+    }
+
+    this.detectingLocation = true;
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        this.editableAddress.latitude = pos.coords.latitude;
+        this.editableAddress.longitude = pos.coords.longitude;
+        this.editableAddress.locationUrl = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+        this.detectingLocation = false;
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Location detected!' });
+      },
+      (err) => {
+        this.detectingLocation = false;
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Location access denied' });
+      }
+    );
   }
 
   ngOnInit(): void {

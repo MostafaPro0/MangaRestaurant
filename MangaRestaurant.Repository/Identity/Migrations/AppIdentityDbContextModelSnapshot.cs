@@ -153,7 +153,7 @@ namespace MangaRestaurant.Repository.Identity.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("UserAddress");
+                    b.ToTable("UserAddress", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

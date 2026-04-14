@@ -93,5 +93,9 @@ export class OrdersService {
   assignDelivery(orderId: number, employeeId: string): Observable<any> {
     return this.api.put(`Orders/${orderId}/assign-delivery`, { EmployeeId: employeeId });
   }
+
+  updateOrderAddress(orderId: number, address: any): Observable<Order> {
+    return this.api.put<Order>(`Orders/${orderId}/update-address`, address);
+  }
 }
 

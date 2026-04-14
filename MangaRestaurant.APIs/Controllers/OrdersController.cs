@@ -125,6 +125,40 @@ namespace MangaRestaurant.APIs.Controllers
         }
 
         [ProducesResponseType(typeof(OrderToReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [HttpPut("{id}/update-address")]
+        [Authorize]
+        public async Task<ActionResult<OrderToReturnDTO>> UpdateOrderAddress(int id, UserAddressDto shippingAddress)
+        {
+            var buyerEmail = User.FindFirstValue(ClaimTypes.Email);
+            var order = await _unitOfWork.Repository<Order>().GetAsync(id);
+
+            if (order == null) return NotFound(new ApiResponse(404, _localizer["ORDER_NOT_FOUND"]));
+            
+            // Security: Ensure the order belongs to the user
+            if (order.BuyerEmail != buyerEmail) 
+                return BadRequest(new ApiResponse(400, _localizer["ORDER_UNAUTHORIZED"]));
+
+            // Business Rule: Only allow updates if Pending
+            if (order.OrderStatus != OrderStatus.Pending)
+                return BadRequest(new ApiResponse(400, "Address can only be updated for pending orders."));
+
+            var mappedAddress = _mapper.Map<UserAddressDto, OrderAddress>(shippingAddress);
+            order.ShippingAddress = mappedAddress;
+
+            _unitOfWork.Repository<Order>().Update(order);
+            var result = await _unitOfWork.CompleteAsync();
+
+            if (result <= 0) return BadRequest(new ApiResponse(400, "Problem updating address."));
+
+            var mappedOrder = _mapper.Map<Order, OrderToReturnDTO>(order);
+            await EnrichOrderImages(mappedOrder);
+
+            return Ok(mappedOrder);
+        }
+
+        [ProducesResponseType(typeof(OrderToReturnDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         [HttpGet("Admin/{orderId}")]
         [Authorize(Roles = "Admin")]

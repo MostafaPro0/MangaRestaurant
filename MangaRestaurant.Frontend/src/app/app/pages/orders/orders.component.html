@@ -100,9 +100,17 @@
 
             <!-- Shipping Info -->
             <div class="shipping-section">
-              <h5 class="manga-font text-xl primary-text mb-3">
-                {{ selectedOrder.deliveryMethod === 'DineIn' ? (translate.currentLang === 'ar' ? 'معلومات الطلب داخلياً' : 'Dine-In Details') : ('ORDERS.DELIVERY_ADDRESS' | translate) }}
-              </h5>
+              <div class="flex justify-content-between align-items-center mb-3">
+                 <h5 class="manga-font text-xl primary-text m-0">
+                   {{ selectedOrder.deliveryMethod === 'DineIn' ? (translate.currentLang === 'ar' ? 'معلومات الطلب داخلياً' : 'Dine-In Details') : ('ORDERS.DELIVERY_ADDRESS' | translate) }}
+                 </h5>
+                 <button *ngIf="isOrderPending(selectedOrder) && selectedOrder.deliveryMethod !== 'DineIn'" 
+                         pButton icon="pi pi-pencil" 
+                         [label]="'ORDERS.EDIT_ADDRESS' | translate" 
+                         class="p-button-text p-button-sm p-button-warning p-0"
+                         (click)="toggleEditAddress()">
+                 </button>
+              </div>
               <div class="p-4 glass-card border-radius-md text-dim line-height-3">
                 <div *ngIf="getShippingAddress(selectedOrder); else noAddress">
                   <div class="font-bold text-main mb-1">{{ getShippingAddress(selectedOrder)?.firstName }} {{
@@ -213,3 +221,43 @@
     </div>
   </div>
 </div>
+
+<!-- Edit Address Dialog -->
+<p-dialog [header]="'ORDERS.EDIT_ADDRESS' | translate" [(visible)]="editAddressVisible" [modal]="true"
+          [style]="{width: '450px'}" [draggable]="false" [resizable]="false" appendTo="body" styleClass="manga-dialog">
+  <div class="flex flex-column gap-4 p-2" *ngIf="editableAddress">
+    <div class="field">
+      <label class="block mb-2 font-bold">{{ 'CHECKOUT.STREET' | translate }}</label>
+      <input type="text" pInputText [(ngModel)]="editableAddress.street" class="w-full">
+    </div>
+    <div class="field">
+      <label class="block mb-2 font-bold">{{ 'CHECKOUT.CITY' | translate }}</label>
+      <input type="text" pInputText [(ngModel)]="editableAddress.city" class="w-full">
+    </div>
+    <div class="grid">
+      <div class="col-6 field">
+        <label class="block mb-2 font-bold">{{ 'CHECKOUT.STATE' | translate }}</label>
+        <input type="text" pInputText [(ngModel)]="editableAddress.state" class="w-full">
+      </div>
+      <div class="col-6 field">
+        <label class="block mb-2 font-bold">{{ 'CHECKOUT.ZIPCODE' | translate }}</label>
+        <input type="text" pInputText [(ngModel)]="editableAddress.zipCode" class="w-full">
+      </div>
+    </div>
+    <div class="field">
+      <label class="block mb-2 font-bold">{{ 'CHECKOUT.LOCATION_URL' | translate }} ({{ 'COMMON.OPTIONAL' | translate }})</label>
+      <div class="p-inputgroup">
+        <input type="text" pInputText [(ngModel)]="editableAddress.locationUrl" placeholder="https://maps.google.com/...">
+        <button type="button" pButton icon="pi pi-map-marker" 
+                class="p-button-warning" [loading]="detectingLocation"
+                (click)="detectLocation()" [pTooltip]="'CHECKOUT.USE_MY' | translate"></button>
+      </div>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <div class="flex gap-2 justify-content-end">
+      <button pButton type="button" [label]="'COMMON.CANCEL' | translate" class="p-button-text p-button-secondary" (click)="editAddressVisible = false"></button>
+      <button pButton type="button" [label]="'COMMON.SAVE' | translate" class="p-button-primary" [loading]="updatingAddress" (click)="saveAddress()"></button>
+    </div>
+  </ng-template>
+</p-dialog>

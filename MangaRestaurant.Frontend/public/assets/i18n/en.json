@@ -131,6 +131,9 @@
     "ADD_NEW": "Add New Address",
     "SELECT_SAVED": "Select a saved address",
     "SAVE_ADDRESS": "Save this address for future use",
+    "ZIPCODE": "Zip Code",
+    "LOCATION_URL": "Location Map URL",
+    "USE_MY": "Use My Current Location",
     "TOTAL": "Order Total"
   },
   "LOCATION": {
@@ -165,7 +168,9 @@
     "DELIVERY_ADDRESS": "Delivery Address",
     "ITEMS_ORDER": "Items Order",
     "NO_SHIPPING_VAL": "No delivery address specified.",
-    "TRACK": "Track Your Order"
+    "TRACK": "Track Your Order",
+    "EDIT_ADDRESS": "Edit Address",
+    "ADDRESS_UPDATED": "Address updated successfully"
   },
   "TRACKING": {
     "TAG": "Live Tracking",
@@ -241,6 +246,7 @@
     "REQUIRED": "This field is required",
     "VIEW": "View",
     "CLOSE": "Close",
+    "OPTIONAL": "Optional",
     "TERMS": "Terms of Service",
     "PRIVACY": "Privacy Policy",
     "SAVE": "Save",
