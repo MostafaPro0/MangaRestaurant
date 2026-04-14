@@ -296,6 +296,8 @@
     "CHART_TOP_SELLERS": "Top Selling Categories",
     "CHART_TOP_PRODUCTS": "Top Selling Products",
     "CHART_DRIVERS": "Top Delivery Drivers",
+    "CHART_TOP_VIEWED": "Top Products by Views",
+    "VIEWS": "Views",
     "TOTAL_ORDERS": "Total Orders",
     "TOTAL_REVENUE": "Total Revenue",
     "AVG_ORDER_VALUE": "Avg Order Value",

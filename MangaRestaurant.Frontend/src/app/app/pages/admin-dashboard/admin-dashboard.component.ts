@@ -123,6 +123,7 @@ export class AdminDashboardComponent implements OnInit {
   public categoryChartOptions!: Partial<ChartOptions>;
   public topProductsChartOptions!: Partial<ChartOptions>;
   public driversChartOptions!: Partial<ChartOptions>;
+  public topViewedProductsChartOptions!: Partial<ChartOptions>;
 
   get orderStatusOptions() {
     return [
@@ -538,6 +539,19 @@ export class AdminDashboardComponent implements OnInit {
       chart: { type: 'donut', height: 300, background: 'transparent' },
       theme: { mode: themeMode as 'light' | 'dark' },
       colors: ['#27ae60', '#f1c40f', '#e74c3c', '#2980b9', '#8e44ad']
+    };
+
+    // 7. Top Viewed Products
+    this.topViewedProductsChartOptions = {
+        series: [{ 
+            name: this.translateService.instant('ADMIN.VIEWS') || (isAr ? 'المشاهدات' : 'Views'), 
+            data: report.topViewedProducts.map((p: any) => p.views) 
+        }],
+        chart: { type: 'bar', height: 350, ...chartBaseConfig },
+        theme: { mode: themeMode as 'light' | 'dark' },
+        xaxis: { categories: report.topViewedProducts.map((p: any) => isAr ? (p.nameAr || p.name) : p.name) },
+        colors: ['#3498db'],
+        plotOptions: { bar: { horizontal: true, borderRadius: 4 } }
     };
   }
 
