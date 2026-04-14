@@ -70,8 +70,7 @@
           </div>
         </div>
 
-        <div class="text-dim text-xl line-height-4 mb-8"
-          style="border-left: 5px solid var(--primary); padding-left: 2rem">
+        <div class="text-dim text-xl line-height-4 mb-8 product-description-box">
           {{ (translateService.currentLanguage === 'ar' ? product.descriptionAr : product.description) ||
           product.description }}
         </div>
@@ -99,16 +98,16 @@
         </div>
 
         <div class="mt-10 grid grid-nogutter border-top-1 border-white-alpha-10 pt-8 opacity-90">
-          <div class="col-4">
+          <div class="col-12 md:col-4 mb-4 md:mb-0">
             <span class="block text-muted text-xs font-bold uppercase mb-2"><i class="pi pi-users primary-text mr-1"></i> {{ 'PRODUCTS.SERVINGS' | translate }}</span>
             <span class="block font-black text-xl">{{ 'PRODUCTS.SERVINGS_VAL' | translate }}</span>
           </div>
-          <div class="col-4 text-center">
+          <div class="col-12 md:col-4 mb-4 md:mb-0 md:text-center">
             <span class="block text-muted text-xs font-bold uppercase mb-2"><i class="pi pi-clock primary-text mr-1"></i> {{ 'PRODUCTS.PREP_TIME' | translate
               }}</span>
             <span class="block font-black text-xl">{{ 'PRODUCTS.PREP_TIME_VAL' | translate }}</span>
           </div>
-          <div class="col-4 text-right">
+          <div class="col-12 md:col-4 md:text-right">
             <span class="block text-muted text-xs font-bold uppercase mb-2"><i class="pi pi-map-marker primary-text mr-1"></i> {{ 'PRODUCTS.ORIGIN' | translate }}</span>
             <span class="block font-black text-xl">{{ 'PRODUCTS.ORIGIN_VAL' | translate }}</span>
           </div>
@@ -117,12 +116,13 @@
     </div>
   </div>
 
-  <!-- REVIEWS SECTION -->
+
   <div class="mt-12">
-    <div class="flex align-items-center gap-4 mb-8">
-      <h2 class="display-font text-3xl font-black text-main m-0">{{ 'REVIEWS.TITLE' | translate }}</h2>
-      <div class="flex-grow-1 border-top-1 border-white-alpha-10"></div>
+    <div class="flex flex-column sm:flex-row sm:align-items-center gap-3 sm:gap-4 mb-8">
+      <h2 class="display-font text-3xl font-black text-main m-0 white-space-nowrap">{{ 'REVIEWS.TITLE' | translate }}</h2>
+      <div class="flex-glow-1 hidden sm:block border-top-1 border-white-alpha-10"></div>
     </div>
+
 
     <div class="grid">
       <!-- Reviews List -->
