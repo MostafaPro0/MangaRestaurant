@@ -46,6 +46,37 @@
                 </div>
               </ng-template>
             </p-dropdown>
+
+            <!-- Selected Address Preview -->
+            <div *ngIf="addressMode === 'saved' && selectedAddress" 
+                 class="mt-4 p-4 rounded-xl border-1 border-primary bg-primary-alpha-10 animate-fade-in">
+              <div class="flex align-items-start gap-3">
+                <i class="pi pi-check-circle text-primary text-2xl mt-1"></i>
+                <div class="flex-grow-1">
+                  <div class="flex justify-content-between align-items-center mb-2">
+                    <span class="font-bold text-xl">{{ selectedAddress.firstName }} {{ selectedAddress.lastName }}</span>
+                    <span class="px-2 py-1 bg-primary text-white text-xs rounded-lg font-bold">
+                       {{ 'CHECKOUT.USE_SAVED' | translate }}
+                    </span>
+                  </div>
+                  
+                  <div class="text-dim line-height-3 mb-3">
+                    <p class="m-0"><i class="pi pi-home mr-2 text-primary opacity-70"></i> {{ selectedAddress.street }}</p>
+                    <p class="m-0"><i class="pi pi-building mr-2 text-primary opacity-70"></i> {{ selectedAddress.city }}, {{ selectedAddress.state }} {{ selectedAddress.zipCode }}</p>
+                    <p class="m-0 font-bold text-primary mt-1 uppercase tracking-wide">{{ selectedAddress.country }}</p>
+                  </div>
+
+                  <!-- Location Link if exists in saved address -->
+                  <div *ngIf="selectedAddress.locationUrl" class="p-2 bg-white-alpha-05 rounded-lg border-1 border-white-alpha-10 inline-flex align-items-center gap-2">
+                    <i class="pi pi-map-marker text-primary text-sm"></i>
+                    <a [href]="selectedAddress.locationUrl" target="_blank" class="text-primary font-bold text-xs hover:underline">
+                      <i class="pi pi-external-link mr-1"></i>
+                      {{ 'LOCATION.VIEW_ON_MAP' | translate }}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- Address Input Grid -->
