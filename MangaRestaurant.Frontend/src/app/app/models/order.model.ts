@@ -13,8 +13,13 @@ export enum OrderStatus {
   Pending = 'Pending',
   PaymentReceived = 'PaymentReceived',
   PaymentFailed = 'PaymentFailed',
+  Confirmed = 'Confirmed',
+  Processing = 'Processing',
+  Shipped = 'Shipped',
+  Delivered = 'Delivered',
   Completed = 'Completed',
-  Cancelled = 'Cancelled'
+  Cancelled = 'Cancelled',
+  Refunded = 'Refunded'
 }
 
 export interface Order {

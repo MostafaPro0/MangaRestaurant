@@ -170,7 +170,8 @@
     "NO_SHIPPING_VAL": "No delivery address specified.",
     "TRACK": "Track Your Order",
     "EDIT_ADDRESS": "Edit Address",
-    "ADDRESS_UPDATED": "Address updated successfully"
+    "ADDRESS_UPDATED": "Address updated successfully",
+    "ADDRESS_UPDATE_FAIL": "Failed to update address. You can only edit while the order is 'Pending'."
   },
   "TRACKING": {
     "TAG": "Live Tracking",

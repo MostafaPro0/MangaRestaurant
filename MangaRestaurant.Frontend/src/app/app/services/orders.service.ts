@@ -28,11 +28,21 @@ export class OrdersService {
         return OrderStatus.PaymentReceived;
       case 'paymentfailed':
         return OrderStatus.PaymentFailed;
+      case 'confirmed':
+        return OrderStatus.Confirmed;
+      case 'processing':
+        return OrderStatus.Processing;
+      case 'shipped':
+        return OrderStatus.Shipped;
+      case 'delivered':
+        return OrderStatus.Delivered;
       case 'completed':
         return OrderStatus.Completed;
       case 'cancelled':
       case 'canceled':
         return OrderStatus.Cancelled;
+      case 'refunded':
+        return OrderStatus.Refunded;
       case 'pending':
       default:
         return OrderStatus.Pending;

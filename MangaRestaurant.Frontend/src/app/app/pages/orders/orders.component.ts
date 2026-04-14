@@ -158,7 +158,11 @@ export class OrdersComponent implements OnInit {
       error: (err) => {
         console.error('Update address failed', err);
         this.updatingAddress = false;
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Could not update address.' });
+        this.messageService.add({ 
+          severity: 'error', 
+          summary: this.translate.instant('TOAST.ERROR') || 'Error', 
+          detail: this.translate.instant('ORDERS.ADDRESS_UPDATE_FAIL') || 'Could not update address.' 
+        });
       }
     });
   }
