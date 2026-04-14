@@ -115,6 +115,8 @@ export class AdminDashboardComponent implements OnInit {
   savingItem = false;
   savingUserStatus = false;
   savingOrderStatus = false;
+  showPasswordUser = false;
+
 
   // Charts Options
   public salesChartOptions!: Partial<ChartOptions>;

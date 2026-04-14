@@ -464,10 +464,22 @@
 
             <div class="field mb-4">
               <label for="password" class="block font-bold mb-2 opacity-80">{{ 'AUTH.PASSWORD' | translate }}</label>
-              <span class="p-input-icon-left">
+              <span class="p-input-icon-left p-input-icon-right">
                 <i class="pi pi-lock text-primary"></i>
-                <input type="password" pInputText id="password" [(ngModel)]="newUser.password" 
+                <input [type]="showPasswordUser ? 'text' : 'password'" pInputText id="password" [(ngModel)]="newUser.password" 
                        [placeholder]="'••••••••'"
+                       required class="p-inputtext-lg border-round-xl" />
+                <i (click)="showPasswordUser = !showPasswordUser" class="pi cursor-pointer hover:text-primary transition-colors" 
+                   [ngClass]="showPasswordUser ? 'pi-eye' : 'pi-eye-slash'"></i>
+              </span>
+            </div>
+
+            <div class="field mb-4">
+              <label for="phone" class="block font-bold mb-2 opacity-80">{{ 'ADMIN.PHONE' | translate }}</label>
+              <span class="p-input-icon-left">
+                <i class="pi pi-phone text-primary"></i>
+                <input type="text" pInputText id="phone" [(ngModel)]="newUser.phoneNumber" 
+                       [placeholder]="translateService.currentLang === 'ar' ? '01xxxxxxxxx' : '01xxxxxxxxx'" 
                        required class="p-inputtext-lg border-round-xl" />
               </span>
             </div>

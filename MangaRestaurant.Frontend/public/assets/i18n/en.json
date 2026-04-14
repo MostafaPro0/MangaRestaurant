@@ -129,7 +129,8 @@
     "USE_SAVED": "Use a Saved Address",
     "ADD_NEW": "Add New Address",
     "SELECT_SAVED": "Select a saved address",
-    "SAVE_ADDRESS": "Save this address for future use"
+    "SAVE_ADDRESS": "Save this address for future use",
+    "TOTAL": "Order Total"
   },
   "ORDERS": {
     "TITLE": "Order History",
@@ -343,7 +344,8 @@
     "BANNED": "Banned",
     "STATUS_UPDATED": "Status updated successfully",
     "CLICK_TO_ACTIVATE": "Click to activate user",
-    "CLICK_TO_BAN": "Click to deactivate user"
+    "CLICK_TO_BAN": "Click to deactivate user",
+    "PHONE": "Phone Number"
   },
   "REVIEWS": {
     "TITLE": "Customer Reviews",
