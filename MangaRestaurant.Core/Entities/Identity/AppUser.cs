@@ -12,6 +12,7 @@ namespace MangaRestaurant.Core.Entities.Identity
         public string DisplayName { get; set; } 
         public string? ProfilePictureUrl { get; set; }
         public string? PhoneNumber2 { get; set; }
+        public int LuckyCoins { get; set; } = 0; // Coins used for Lucky Rewards
 
         public bool IsBanned { get; set; } = false;
         public ICollection<UserAddress> UserAddresses { get; set; } = new HashSet<UserAddress>();

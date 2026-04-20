@@ -40,5 +40,7 @@ namespace MangaRestaurant.Repository.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<SiteSettings> SiteSettings { get; set; }
         public DbSet<WishlistItem> Wishlists { get; set; }
+        public DbSet<LuckyPrize> LuckyPrizes { get; set; }
+        public DbSet<UserLuckyReward> UserLuckyRewards { get; set; }
     }
 }

@@ -22,5 +22,6 @@ export const routes: Route[] = [
   { path: 'login', canActivate: [guestGuard], loadComponent: () => import('./app/pages/login/login.component').then(m => m.LoginComponent) },
   { path: 'register', canActivate: [guestGuard], loadComponent: () => import('./app/pages/register/register.component').then(m => m.RegisterComponent) },
   { path: 'pos', loadComponent: () => import('./app/pages/pos/pos.component').then(m => m.PosComponent) },
+  { path: 'lucky-rewards', canActivate: [authGuard], loadComponent: () => import('./app/pages/lucky-rewards/lucky.component').then(m => m.LuckyRewardsPageComponent) },
   { path: '**', loadComponent: () => import('./app/pages/not-found/not-found.component').then(m => m.NotFoundComponent) }
 ];

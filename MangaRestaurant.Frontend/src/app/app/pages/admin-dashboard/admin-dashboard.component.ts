@@ -20,6 +20,7 @@ import { AdminService } from '../../services/admin.service';
 import { ProductsService } from '../../services/products.service';
 import { OrdersService } from '../../services/orders.service';
 import { SettingsService } from '../../services/settings.service';
+import { LuckyRewardsService, LuckyPrize } from '../../services/lucky-rewards.service';
 import { MessageService } from 'primeng/api';
 import { SiteSettings } from '../../models/site-settings.model';
 
@@ -117,6 +118,19 @@ export class AdminDashboardComponent implements OnInit {
   savingOrderStatus = false;
   showPasswordUser = false;
 
+  // Lucky Rewards Management
+  luckyPrizes: LuckyPrize[] = [];
+  loadingLucky = false;
+  luckyPrizeDialog = false;
+  editingLuckyPrize: LuckyPrize | null = null;
+  selectedLuckyPrize: LuckyPrize = {
+    title: '', titleAr: '', 
+    description: '', descriptionAr: '', 
+    icon: 'pi pi-ticket', color: '#ff3e3e', 
+    probabilityWeight: 1, isActive: true 
+  };
+  savingLuckyPrize = false;
+
 
   // Charts Options
   public salesChartOptions!: Partial<ChartOptions>;
@@ -170,6 +184,7 @@ export class AdminDashboardComponent implements OnInit {
     private settingsService: SettingsService,
     private messageService: MessageService,
     public translateService: TranslateService,
+    private luckyRewardsService: LuckyRewardsService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -228,6 +243,7 @@ export class AdminDashboardComponent implements OnInit {
     this.loadUsers();
     this.loadCategories();
     this.loadBrands();
+    this.loadLuckyPrizes();
   }
 
   loadUsers() {
@@ -698,5 +714,70 @@ export class AdminDashboardComponent implements OnInit {
         this.savingSettings = false;
       }
     });
+  }
+
+  // --- LUCKY REWARDS ACTIONS ---
+  loadLuckyPrizes() {
+    this.loadingLucky = true;
+    this.luckyRewardsService.getPrizes().subscribe({
+      next: (res) => {
+        this.luckyPrizes = res;
+        this.loadingLucky = false;
+      },
+      error: () => (this.loadingLucky = false)
+    });
+  }
+
+  openCreateLuckyPrize() {
+    this.editingLuckyPrize = null;
+    this.selectedLuckyPrize = {
+      title: '', titleAr: '', 
+      description: '', descriptionAr: '', 
+      icon: 'pi pi-ticket', color: '#ff3e3e', 
+      probabilityWeight: 1, isActive: true 
+    };
+    this.luckyPrizeDialog = true;
+  }
+
+  openEditLuckyPrize(prize: LuckyPrize) {
+    this.editingLuckyPrize = prize;
+    this.selectedLuckyPrize = { ...prize };
+    this.luckyPrizeDialog = true;
+  }
+
+  saveLuckyPrize() {
+    if (!this.selectedLuckyPrize.title || !this.selectedLuckyPrize.titleAr) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please fill all required fields' });
+      return;
+    }
+
+    this.savingLuckyPrize = true;
+    const obs = this.editingLuckyPrize 
+      ? this.luckyRewardsService.updatePrize(this.selectedLuckyPrize)
+      : this.luckyRewardsService.addPrize(this.selectedLuckyPrize);
+
+    obs.subscribe({
+      next: () => {
+        this.savingLuckyPrize = false;
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Prize saved' });
+        this.luckyPrizeDialog = false;
+        this.loadLuckyPrizes();
+      },
+      error: () => {
+        this.savingLuckyPrize = false;
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Save failed' });
+      }
+    });
+  }
+
+  deleteLuckyPrize(id: number) {
+    if (confirm('Are you sure you want to delete this prize?')) {
+      this.luckyRewardsService.deletePrize(id).subscribe({
+        next: () => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Prize deleted' });
+          this.loadLuckyPrizes();
+        }
+      });
+    }
   }
 }

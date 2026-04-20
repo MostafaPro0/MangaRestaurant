@@ -23,5 +23,6 @@ namespace MangaRestaurant.Core.Entities
         public string OpeningHoursEn { get; set; }
         public string OpeningHoursAr { get; set; }
         public decimal DeliveryFee { get; set; }
+        public bool IsLuckyRewardsEnabled { get; set; } = true;
     }
 }

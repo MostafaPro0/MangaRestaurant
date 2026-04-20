@@ -1,0 +1,76 @@
+<div class="lucky-rewards-container" [class.drawing]="isDrawing" *ngIf="isEnabled">
+  <div class="gacha-machine">
+    <!-- Machine Header -->
+    <div class="machine-header">
+      <h3 class="manga-title">{{ 'GACHA.TITLE' | translate | uppercase }}</h3>
+      <div class="coin-slot">
+        <div class="slot-hole"></div>
+      </div>
+    </div>
+
+    <!-- Display Window -->
+    <div class="machine-window">
+      <div class="capsules-container" #capsuleContainer>
+        <div class="capsule" *ngFor="let c of [1,2,3,4,5,6,7,8]; let i = index" 
+             [style.background]="getColors(i)[0]"
+             [style.border-color]="getColors(i)[1]">
+             <div class="capsule-reflection"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Machine Controls -->
+    <div class="machine-controls">
+      <div class="dial-container" (click)="drawReward()" [class.turning]="isDrawing">
+        <div class="dial">
+          <div class="dial-handle"></div>
+        </div>
+      </div>
+      <div class="dispenser">
+        <div class="dispenser-hole"></div>
+        <!-- Dropping Capsule -->
+        <div class="dropped-capsule" *ngIf="showCapsule" [class.opening]="isOpening">
+           <div class="capsule-top" [style.background]="wonColor"></div>
+           <div class="capsule-bottom"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Panel -->
+  <div class="gacha-stats mg-card text-center mt-4 p-3">
+    <div class="flex align-items-center justify-content-center gap-2 mb-2">
+      <i class="pi pi-stop-circle text-primary text-xl"></i>
+      <span class="font-bold text-lg">{{ 'GACHA.COINS' | translate }}: <span class="primary-text">{{ userCoins }}</span></span>
+    </div>
+    <p class="text-sm text-dim">{{ 'GACHA.COST' | translate }}: 1 Coin / Pull</p>
+    <button pButton [label]="'GACHA.DRAW' | translate" 
+            [disabled]="isDrawing || userCoins < 1 || !isEnabled" 
+            (click)="drawReward()" 
+            class="w-full mt-3 font-bold"></button>
+  </div>
+
+  <!-- Prize Modal -->
+  <div class="prize-modal-overlay" *ngIf="showPrize" (click)="closePrize()">
+    <div class="prize-modal mg-card text-center" (click)="$event.stopPropagation()">
+      <div class="burst-bg"></div>
+      <div class="prize-content relative z-1">
+        <h2 class="manga-title text-primary text-4xl mb-2">{{ 'GACHA.CONGRATS' | translate }}</h2>
+        <p class="text-xl font-bold mb-4">{{ 'GACHA.YOU_WON' | translate }}</p>
+        
+        <div class="prize-box mb-4">
+          <i [class]="'text-6xl mb-3 ' + (currentPrize?.icon || 'pi-star')" [style.color]="currentPrize?.color || '#ef4444'"></i>
+          <h3 class="font-bold text-2xl m-0">{{ translateService.currentLang === 'ar' ? currentPrize?.titleAr : currentPrize?.title }}</h3>
+          <p class="text-sm text-dim mt-2">{{ translateService.currentLang === 'ar' ? currentPrize?.descriptionAr : currentPrize?.description }}</p>
+        </div>
+
+        <button pButton [label]="'COMMON.CLOSE' | translate" (click)="closePrize()" class="p-button-outlined w-full"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="text-center p-5 opacity-50 font-bold text-xl" *ngIf="!isEnabled">
+  <i class="pi pi-lock text-4xl block mb-3"></i>
+  {{ 'GACHA.DISABLED' | translate }}
+</div>

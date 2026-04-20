@@ -177,8 +177,23 @@ namespace MangaRestaurant.APIs.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ApiResponse>> UpdateOrderStatusAdmin(int orderId, [FromBody] OrderStatus status)
         {
+            var existingOrder = await _orderService.GetOrderByIdAsync(orderId);
+            if (existingOrder == null) return NotFound(new ApiResponse(404, _localizer["ORDER_NOT_FOUND"]));
+
             var ok = await _orderService.UpdateOrderStatusAsync(orderId, status);
             if (!ok) return NotFound(new ApiResponse(404, _localizer["ORDER_STATUS_ERROR"]));
+
+            // Reward Lucky Coin if status is Completed
+            if (status == OrderStatus.Completed)
+            {
+                var user = await _userManager.FindByEmailAsync(existingOrder.BuyerEmail);
+                if (user != null)
+                {
+                    user.LuckyCoins += 1;
+                    await _userManager.UpdateAsync(user);
+                }
+            }
+
             return Ok(new ApiResponse(200, _localizer["ORDER_STATUS_SUCCESS"]));
         }
 
@@ -211,6 +226,18 @@ namespace MangaRestaurant.APIs.Controllers
 
             var ok = await _orderService.UpdateOrderStatusAsync(orderId, status);
             if (!ok) return NotFound(new ApiResponse(404, _localizer["ORDER_STATUS_ERROR"]));
+
+            // Reward Lucky Coin if status is Completed
+            if (status == OrderStatus.Completed)
+            {
+                var user = await _userManager.FindByEmailAsync(existing.BuyerEmail);
+                if (user != null)
+                {
+                    user.LuckyCoins += 1;
+                    await _userManager.UpdateAsync(user);
+                }
+            }
+
             return Ok(new ApiResponse(200, _localizer["ORDER_STATUS_SUCCESS"]));
         }
 
