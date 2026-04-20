@@ -34,6 +34,7 @@ namespace MangaRestaurant.APIs.Extensions
 
             services.AddScoped<IEmailService, EmailService>();//AllowDependencyInjection
             services.AddScoped<INotificationService, NotificationService>();
+            services.AddSingleton<IEncryptionService, EncryptionService>();
 
 
             services.AddAutoMapper(typeof(MappingProfile));

@@ -25,8 +25,9 @@ namespace MangaRestaurant.APIs.Controllers
         private readonly IConfiguration _configuration;
         private readonly IEmailService _emailService;
         private readonly IStringLocalizer<SharedResource> _localizer;
+        private readonly IEncryptionService _encryptionService;
 
-        public AccountsController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper, IConfiguration configuration, IEmailService emailService, IStringLocalizer<SharedResource> localizer)
+        public AccountsController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper, IConfiguration configuration, IEmailService emailService, IStringLocalizer<SharedResource> localizer, IEncryptionService encryptionService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -35,8 +36,9 @@ namespace MangaRestaurant.APIs.Controllers
             _configuration = configuration;
             _emailService = emailService;
             _localizer = localizer;
+            _encryptionService = encryptionService;
         }
-        //Register User
+
         [HttpPost("Register")]
         public async Task<ActionResult<UserDTO>> Register(RegisterDTO registerModel)
         {
@@ -51,6 +53,11 @@ namespace MangaRestaurant.APIs.Controllers
                 UserName = registerModel.Email.Split('@')[0],
                 PhoneNumber = registerModel.PhoneNumber,
             };
+            if (!string.IsNullOrEmpty(registerModel.Password))
+            {
+                registerModel.Password = _encryptionService.Decrypt(registerModel.Password);
+            }
+
             var regRequestResult = await _userManager.CreateAsync(user, registerModel.Password);
             
             if (!regRequestResult.Succeeded) return BadRequest(new ApiResponse(400));
@@ -67,6 +74,11 @@ namespace MangaRestaurant.APIs.Controllers
             var user = await _userManager.FindByEmailAsync(loginModel.Email);
             if (user is null) return Unauthorized(new ApiResponse(401, _localizer["INVALID_LOGIN"]));
 
+            if (!string.IsNullOrEmpty(loginModel.Password))
+            {
+                loginModel.Password = _encryptionService.Decrypt(loginModel.Password);
+            }
+
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginModel.Password, false);
 
             if (!result.Succeeded)
@@ -77,6 +89,7 @@ namespace MangaRestaurant.APIs.Controllers
 
             return Ok(await CreateUserDtoAsync(user));
         }
+
         [Authorize]
         [HttpGet("GetCurrentUser")]
         public async Task<ActionResult<UserDTO>> GetCurrentUser()
@@ -211,6 +224,12 @@ namespace MangaRestaurant.APIs.Controllers
             if (!result.Succeeded) return BadRequest(new ApiResponse(400, _localizer["ADDRESS_DELETE_FAILED"]));
 
             return Ok();
+        }
+
+        [HttpGet("PublicKey")]
+        public ActionResult<string> GetPublicKey()
+        {
+            return Ok(new { publicKey = _encryptionService.GetPublicKey() });
         }
 
         [HttpGet("EmailExist")]
@@ -406,6 +425,11 @@ namespace MangaRestaurant.APIs.Controllers
             var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
             if (user == null) return BadRequest(new ApiResponse(400, _localizer["INVALID_REQUEST"]));
 
+            if (!string.IsNullOrEmpty(resetPasswordDto.NewPassword))
+            {
+                resetPasswordDto.NewPassword = _encryptionService.Decrypt(resetPasswordDto.NewPassword);
+            }
+
             var result = await _userManager.ResetPasswordAsync(user, resetPasswordDto.Token, resetPasswordDto.NewPassword);
 
             if (!result.Succeeded)
@@ -424,6 +448,15 @@ namespace MangaRestaurant.APIs.Controllers
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
             var user = await _userManager.FindByEmailAsync(userEmail);
             if (user == null) return Unauthorized(new ApiResponse(401));
+
+            if (!string.IsNullOrEmpty(changePasswordDto.CurrentPassword))
+            {
+                changePasswordDto.CurrentPassword = _encryptionService.Decrypt(changePasswordDto.CurrentPassword);
+            }
+            if (!string.IsNullOrEmpty(changePasswordDto.NewPassword))
+            {
+                changePasswordDto.NewPassword = _encryptionService.Decrypt(changePasswordDto.NewPassword);
+            }
 
             var result = await _userManager.ChangePasswordAsync(user, changePasswordDto.CurrentPassword, changePasswordDto.NewPassword);
 
@@ -447,6 +480,11 @@ namespace MangaRestaurant.APIs.Controllers
             if (await _userManager.HasPasswordAsync(user))
             {
                 return BadRequest(new ApiResponse(400, _localizer["HAS_PASSWORD_ERROR"]));
+            }
+
+            if (!string.IsNullOrEmpty(addPasswordDto.NewPassword))
+            {
+                addPasswordDto.NewPassword = _encryptionService.Decrypt(addPasswordDto.NewPassword);
             }
 
             var result = await _userManager.AddPasswordAsync(user, addPasswordDto.NewPassword);

@@ -1,9 +1,10 @@
 import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, from, map, Observable, of, switchMap } from 'rxjs';
 import { ApiService } from './api.service';
 import { User } from '../models/user.model';
 import { WishlistService } from './wishlist.service';
+import { EncryptionService } from './encryption.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,12 @@ import { WishlistService } from './wishlist.service';
 export class AuthService {
   private currentUser$ = new BehaviorSubject<User | null>(null);
 
-  constructor(private api: ApiService, private router: Router, private injector: Injector) {
+  constructor(
+    private api: ApiService, 
+    private router: Router, 
+    private injector: Injector,
+    private encryptionService: EncryptionService
+  ) {
     const stored = localStorage.getItem('currentUser');
     if (stored) this.currentUser$.next(JSON.parse(stored));
   }
@@ -38,7 +44,10 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<User> {
-    return this.api.post<User>('Accounts/Login', { email, password }).pipe(
+    return from(this.encryptionService.encrypt(password)).pipe(
+      switchMap(encryptedPassword => 
+        this.api.post<User>('Accounts/Login', { email, password: encryptedPassword })
+      ),
       map((user) => {
         this.setUser(user);
         return user;
@@ -56,7 +65,10 @@ export class AuthService {
   }
 
   register(displayName: string, email: string, password: string, phoneNumber?: string): Observable<User> {
-    return this.api.post<User>('Accounts/Register', { displayName, email, password, phoneNumber }).pipe(
+    return from(this.encryptionService.encrypt(password)).pipe(
+      switchMap(encryptedPassword => 
+        this.api.post<User>('Accounts/Register', { displayName, email, password: encryptedPassword, phoneNumber })
+      ),
       map((user) => {
         this.setUser(user);
         return user;
@@ -102,15 +114,42 @@ export class AuthService {
   }
 
   resetPassword(data: any): Observable<any> {
-    return this.api.post<any>('Accounts/ResetPassword', data);
+    return from(Promise.all([
+      this.encryptionService.encrypt(data.newPassword),
+      this.encryptionService.encrypt(data.confirmPassword)
+    ])).pipe(
+      switchMap(([encryptedNew, encryptedConfirm]) => 
+        this.api.post<any>('Accounts/ResetPassword', { 
+          ...data, 
+          newPassword: encryptedNew, 
+          confirmPassword: encryptedConfirm 
+        })
+      )
+    );
   }
 
   changePassword(data: any): Observable<any> {
-    return this.api.post<any>('Accounts/ChangePassword', data);
+    return from(Promise.all([
+      this.encryptionService.encrypt(data.currentPassword),
+      this.encryptionService.encrypt(data.newPassword),
+      this.encryptionService.encrypt(data.confirmPassword)
+    ])).pipe(
+      switchMap(([encryptedCurrent, encryptedNew, encryptedConfirm]) => 
+        this.api.post<any>('Accounts/ChangePassword', { 
+          ...data, 
+          currentPassword: encryptedCurrent, 
+          newPassword: encryptedNew,
+          confirmPassword: encryptedConfirm
+        })
+      )
+    );
   }
 
   addPassword(data: any): Observable<User> {
-    return this.api.post<User>('Accounts/AddPassword', data).pipe(
+    return from(this.encryptionService.encrypt(data.newPassword)).pipe(
+      switchMap(encryptedPassword => 
+        this.api.post<User>('Accounts/AddPassword', { ...data, newPassword: encryptedPassword })
+      ),
       map(user => {
         this.setUser(user);
         return user;
