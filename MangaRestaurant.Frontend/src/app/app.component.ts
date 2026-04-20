@@ -129,6 +129,8 @@ export class AppComponent {
       pageTitle = isAr ? 'الملف الشخصي' : 'Profile';
     } else if (currentUrl.includes('/orders')) {
       pageTitle = isAr ? 'طلباتي' : 'My Orders';
+    } else if (currentUrl.includes('/wishlist')) {
+      pageTitle = isAr ? 'المفضلة' : 'Favorites';
     }
 
     if (pageTitle) {
@@ -156,7 +158,7 @@ export class AppComponent {
             routerLink: '/orders'
           },
           {
-            label: isAr ? 'قائمة الأمنيات' : 'My Wishlist',
+            label: isAr ? 'المفضلة' : 'Favorites',
             icon: 'pi pi-heart',
             routerLink: '/wishlist'
           },

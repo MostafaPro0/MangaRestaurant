@@ -364,9 +364,9 @@
     "CHART_TOP_PRODUCTS": "Top Selling Products",
     "CHART_DRIVERS": "Top Delivery Drivers",
     "CHART_TOP_VIEWED": "Top Products by Views",
-    "CHART_TOP_WISHLISTED": "Top Products by Wishlist",
+    "CHART_TOP_WISHLISTED": "Top Products by Favorites",
     "VIEWS": "Views",
-    "WISHLIST_COUNT": "Times Added to Wishlist",
+    "WISHLIST_COUNT": "Times Added to Favorites",
     "TOTAL_ORDERS": "Total Orders",
     "TOTAL_REVENUE": "Total Revenue",
     "AVG_ORDER_VALUE": "Avg Order Value",
@@ -435,10 +435,10 @@
   },
   "WISHLIST": {
     "TAG": "Favorites",
-    "TITLE": "My Wishlist",
+    "TITLE": "My Favorites",
     "SUBTITLE": "Explore and order the items you've saved for later.",
-    "EMPTY": "Your wishlist is empty",
-    "EMPTY_DESC": "Start exploring our menu and add items you like to your wishlist!",
+    "EMPTY": "Your favorites list is empty",
+    "EMPTY_DESC": "Start exploring our menu and add items you like to your favorites!",
     "GO_SHOPPING": "Go Shopping"
   },
   "GACHA": {
