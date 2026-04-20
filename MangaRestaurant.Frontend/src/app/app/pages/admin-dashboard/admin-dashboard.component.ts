@@ -14,6 +14,7 @@ import { TagModule } from 'primeng/tag';
 import { SkeletonModule } from 'primeng/skeleton';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ColorPickerModule } from 'primeng/colorpicker';
 import { NgApexchartsModule, ChartComponent, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexTitleSubtitle, ApexStroke, ApexDataLabels, ApexFill, ApexGrid, ApexYAxis, ApexTooltip, ApexLegend, ApexPlotOptions, ApexResponsive, ApexTheme } from "ng-apexcharts";
 import { environment } from '../../../../environments/environment';
 import { AdminService } from '../../services/admin.service';
@@ -65,7 +66,8 @@ import { TooltipModule } from 'primeng/tooltip';
     NgApexchartsModule,
     TooltipModule,
     SelectButtonModule,
-    CheckboxModule
+    CheckboxModule,
+    ColorPickerModule
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css'],

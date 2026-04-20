@@ -1,6 +1,6 @@
 /* 
-  --- MANGA RESTAURANT ADMIN DASHBOARD V4 ---
-  Premium Theme-Aware Fluid Design 
+  --- MANGA RESTAURANT ADMIN DASHBOARD ---
+  Restored & Professional
 */
 
 :host {
@@ -8,63 +8,41 @@
   min-height: 100vh;
 }
 
-/* ── p-inputgroup full-width fix ── */
-.settings-form .p-inputgroup {
-  display: flex;
-  width: 100%;
-}
-.settings-form .p-inputgroup input {
-  flex: 1;
-  min-width: 0;
-  width: 100% !important;
-}
-
 .admin-dashboard-wrapper {
-    padding-bottom: 3rem;
+    padding: 2rem;
+    padding-bottom: 5rem;
 }
 
 .main-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 2rem;
     background: linear-gradient(135deg, #e6b980 0%, var(--primary) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* --- CUSTOM TABS NAVIGATION --- */
+/* --- TABS --- */
 .custom-admin-nav {
     display: flex;
     flex-wrap: wrap; 
     gap: 12px;
-    padding: 0 1.5rem 1.5rem 1.5rem;
-    justify-content: flex-start;
-    background: transparent;
+    margin-bottom: 2rem;
 }
 
 .nav-btn {
-    padding: 12px 24px;
+    padding: 14px 28px;
     border: 1px solid var(--glass-border);
-    border-radius: 14px;
+    border-radius: 16px;
     background: var(--bg-soft);
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     gap: 10px;
     color: var(--text-dim);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-}
-
-.nav-btn i {
-    font-size: 1.2rem;
-    color: var(--text-dim-subtle);
-}
-
-.nav-btn:hover {
-    background: var(--glass);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-    border-color: var(--primary);
 }
 
 .nav-btn.active {
@@ -74,324 +52,261 @@
     box-shadow: 0 8px 20px rgba(255, 62, 62, 0.3);
 }
 
-.nav-btn.active i {
-    color: #000;
+/* --- CARDS --- */
+.admin-content-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    backdrop-filter: blur(10px);
+    padding: 2rem;
 }
 
-/* Content Area */
-.tab-content {
-    animation: slideUp 0.4s ease-out;
-}
-
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Stats Summary */
+/* --- STATS --- */
 .stat-card {
-    background: var(--glass);
-    border-radius: 20px;
-    border: 1px solid var(--glass-border);
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-}
-
-.stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--primary);
-}
-
-.stat-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 15px;
-}
-
-.stat-icon.sales { background: rgba(230, 185, 128, 0.1); color: #e6b980; }
-.stat-icon.revenue { background: rgba(76, 175, 80, 0.1); color: #4caf50; }
-.stat-icon.avg { background: rgba(33, 150, 243, 0.1); color: #2196f3; }
-.stat-icon.users { background: rgba(233, 30, 99, 0.1); color: #e91e63; }
-
-/* Charts */
-.chart-container {
-    background: var(--glass);
-    border-radius: 20px;
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(10px);
-}
-
-.chart-title {
-    font-size: 1.3rem;
-    font-weight: 800;
-    margin-bottom: 2rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--text-main);
-}
-
-/* MOBILE FIX OVERHAUL */
-@media screen and (max-width: 768px) {
-    .header-main {
-        flex-direction: column;
-        text-align: center;
-        gap: 1rem;
-    }
-
-    .custom-admin-nav {
-        display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 8px !important;
-        padding: 0.75rem !important;
-    }
-
-    .nav-btn {
-        width: 100% !important;
-        flex-direction: column !important;
-        padding: 16px 8px !important;
-        font-size: 0.85rem !important;
-        border-radius: 16px !important;
-        text-align: center;
-    }
-
-    .nav-btn i {
-        font-size: 1.4rem !important;
-    }
-
-    .main-title {
-        font-size: 2rem !important;
-    }
-
-    .chart-container {
-        padding: 1rem !important;
-    }
-}
-
-/* ─── Premium Form Controls (Theme Aware) ─────────────────────────────── */
-.custom-dialog .p-inputtext,
-.custom-dialog .p-inputtextarea {
-    border-radius: 12px !important;
-    border: 2px solid var(--glass-border) !important;
-    background: var(--bg-deep) !important;
-    color: var(--text-main) !important;
-    padding: 12px 16px !important;
-    font-size: 1.1rem !important;
-    transition: all 0.2s ease;
-}
-
-.custom-dialog .p-inputtext:focus,
-.custom-dialog .p-inputtextarea:focus {
-    border-color: var(--primary) !important;
-    box-shadow: 0 0 0 4px rgba(255, 190, 0, 0.1) !important;
-}
-
-.custom-dialog label {
-    color: var(--text-dim);
-    font-size: 0.95rem;
-    margin-bottom: 0.75rem !important;
-}
-
-/* ─── Click-to-Upload Area (Theme Aware) ──────────────────────────────── */
-.img-upload-container {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
     background: var(--bg-soft);
-    border: 2px dashed var(--glass-border) !important;
-    min-height: 250px;
-}
-
-.img-upload-container:hover {
-    border-color: var(--primary) !important;
-    background: var(--surface-hover);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg) !important;
-}
-
-.upload-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(45, 55, 72, 0.6);
-    backdrop-filter: blur(2px);
-    color: white;
-    opacity: 0;
-    transition: all 0.3s ease;
-    z-index: 10;
-}
-
-.img-upload-container:hover .upload-overlay {
-    opacity: 1;
-}
-
-.upload-overlay i {
-    transform: translateY(10px);
-    transition: transform 0.3s ease;
-}
-
-.img-upload-container:hover .upload-overlay i {
-    transform: translateY(0);
-}
-
-.img-upload-container .pi-image {
-    color: #cbd5e0;
-}
-
-/* --- Settings Form Styles --- */
-.mg-card {
-    background: var(--glass);
     border-radius: 20px;
+    padding: 1.5rem;
     border: 1px solid var(--glass-border);
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
 }
 
-.mg-card:hover {
-    box-shadow: var(--shadow-md);
-    border-color: var(--primary-light);
-}
-
-.settings-form input.p-inputtext, 
-.settings-form textarea.p-inputtext {
-    border-radius: 12px !important;
-    border: 1px solid var(--glass-border) !important;
+/* --- TABLES --- */
+::ng-deep .p-datatable.p-datatable-sm .p-datatable-thead > tr > th {
     background: var(--bg-deep) !important;
     color: var(--text-main) !important;
-    transition: all 0.2s ease;
+    border-color: var(--white-alpha-10) !important;
 }
 
-.settings-form .p-inputgroup-addon {
-    background: var(--bg-soft);
-    border-color: var(--glass-border);
-    color: var(--text-dim);
-    border-radius: 12px 0 0 12px;
+::ng-deep .p-datatable .p-datatable-tbody > tr {
+    background: transparent !important;
+    color: var(--text-dim) !important;
 }
 
-.settings-form .p-inputgroup input {
-    border-radius: 0 12px 12px 0 !important;
+/* ─── Lucky Prize Dialog (Professional V7) ─── */
+::ng-deep .ultimate-admin-dialog {
+    border-radius: 24px !important;
+    overflow: hidden !important;
 }
 
-@media screen and (max-width: 991px) {
-    .settings-form .grid {
-        display: flex;
-        flex-direction: column;
-    }
-}
-
-/* RTL Support for Input Icons */
-:host-context([dir="rtl"]) .p-input-icon-left {
-    display: block !important;
-    position: relative !important;
-    width: 100% !important;
-}
-
-:host-context([dir="rtl"]) .p-input-icon-left > i:first-child {
-    left: auto !important;
-    right: 1.25rem !important;
-    position: absolute !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    z-index: 10 !important;
-}
-
-/* Secondary Icon (like eye) in RTL should be on the opposite side */
-:host-context([dir="rtl"]) .p-input-icon-right > i:last-child {
-    right: auto !important;
-    left: 1.25rem !important;
-    position: absolute !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    z-index: 10 !important;
-}
-
-:host-context([dir="rtl"]) .p-input-icon-left > .p-inputtext,
-:host-context([dir="rtl"]) .p-input-icon-left > input {
-    padding-left: 3rem !important; /* Increase left padding for the eye button */
-    padding-right: 3rem !important;
-    width: 100% !important;
-}
-
-
-/* LTR Support for Input Icons (fallback) */
-.p-input-icon-left {
-    width: 100% !important;
-}
-
-.p-input-icon-left > input {
-    width: 100% !important;
-}
-
-
-/* Fix Labels alignment in RTL */
-:host-context([dir="rtl"]) .custom-admin-dialog label {
-    text-align: right !important;
-}
-
-.custom-admin-dialog .p-dialog-content {
-    padding: 0 !important;
-    border-bottom-left-radius: 1.5rem !important;
-    border-bottom-right-radius: 1.5rem !important;
-}
-
-.custom-admin-dialog .p-dialog-header {
-    padding: 1.5rem 2rem !important;
+::ng-deep .ultimate-admin-dialog .p-dialog-header {
     background: var(--bg-deep) !important;
-    color: var(--primary) !important;
-    border-bottom: 1px solid var(--glass-border) !important;
-    border-top-left-radius: 1.5rem !important;
-    border-top-right-radius: 1.5rem !important;
+    padding: 1.5rem !important;
+    border-bottom: 1px solid var(--white-alpha-10) !important;
 }
 
-.custom-admin-dialog label {
-    color: var(--text-main) !important;
+::ng-deep .ultimate-admin-dialog .p-dialog-content {
+    background: var(--bg-main) !important;
+    padding: 2rem !important;
+}
+
+.form-group-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--white-alpha-10);
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.field label {
     display: block;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-dim);
     margin-bottom: 0.5rem;
 }
 
-.custom-admin-dialog .p-inputtext {
+.lucky-input {
     background: var(--bg-soft) !important;
     border: 1px solid var(--glass-border) !important;
+    border-radius: 14px !important;
+    color: var(--text-main) !important;
+    padding: 12px 16px !important;
 }
 
-.custom-admin-dialog .p-inputtext:focus {
+/* RTL Helpers */
+:host-context([dir='rtl']) .field label { text-align: right; }
+:host-context([dir='rtl']) .lucky-input { text-align: right; }
+
+.prize-preview-banner {
+    background: var(--bg-soft);
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    border: 1px solid var(--glass-border);
+}
+
+.preview-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-md);
+}
+
+/* Mobile Fixes */
+@media screen and (max-width: 768px) {
+    .admin-dashboard-wrapper { padding: 1rem; }
+    .custom-admin-nav { display: grid; grid-template-columns: 1fr 1fr; }
+    .nav-btn { padding: 10px; font-size: 0.8rem; }
+}
+
+
+/* Global override to ensure dialog is always on top when appended to body */
+::ng-deep .ultimate-admin-dialog {
+    z-index: 10000 !important;
+}
+
+::ng-deep .p-dialog-mask {
+    background: rgba(0, 0, 0, 0.7) !important;
+    backdrop-filter: blur(4px);
+    z-index: 9999 !important;
+}
+
+
+/* ?? Masterpiece Prize Dialog (V8) ?? */
+.v8-dialog-content {
+    background: var(--bg-main);
+    padding: 0 !important;
+}
+
+.v8-hero-section {
+    background: linear-gradient(135deg, rgba(234, 67, 53, 0.1) 0%, rgba(0,0,0,0) 100%);
+    padding: 3rem 2rem;
+    border-bottom: 1px solid var(--white-alpha-10);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.v8-hero-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, var(--primary-faded) 0%, transparent 70%);
+    opacity: 0.1;
+    animation: rotateGlow 10s linear infinite;
+}
+
+@keyframes rotateGlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.v8-icon-glow {
+    width: 100px;
+    height: 100px;
+    border-radius: 24px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: white;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    transform: rotate(-5deg);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.v8-icon-glow:hover {
+    transform: rotate(0deg) scale(1.1);
+    box-shadow: 0 30px 60px rgba(255, 62, 62, 0.4);
+}
+
+.v8-field-group {
+    background: var(--bg-soft);
+    border-radius: 24px;
+    padding: 2rem;
+    border: 1px solid var(--white-alpha-10);
+    transition: all 0.3s ease;
+}
+
+.v8-field-group:hover {
+    border-color: var(--primary-faded);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.v8-label {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--primary);
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+.v8-input {
+    background: var(--bg-deep) !important;
+    border: 1px solid var(--white-alpha-10) !important;
+    border-radius: 16px !important;
+    color: var(--text-main) !important;
+    padding: 14px 18px !important;
+    font-size: 1rem !important;
+    width: 100%;
+    transition: all 0.3s ease !important;
+}
+
+.v8-input:focus {
     border-color: var(--primary) !important;
-    box-shadow: 0 0 0 0.2rem rgba(255, 62, 62, 0.15) !important;
+    box-shadow: 0 0 0 4px rgba(255, 62, 62, 0.15) !important;
+    transform: translateY(-2px);
 }
 
-/* Force Dropdown Width and Height */
-.custom-admin-dialog .p-dropdown,
-.custom-admin-dialog p-dropdown {
-    width: 100% !important;
-    min-width: 100% !important;
-    display: flex !important;
-    min-height: 55px !important;
-    background: var(--bg-soft) !important;
-    border: 1px solid var(--glass-border) !important;
+.v8-save-btn {
+    background: var(--primary) !important;
+    border: none !important;
+    color: #000 !important;
+    padding: 1rem 3rem !important;
+    border-radius: 20px !important;
+    font-weight: 900 !important;
+    letter-spacing: 1px !important;
+    box-shadow: 0 10px 25px rgba(255, 62, 62, 0.4) !important;
+    transition: all 0.3s ease !important;
 }
 
-.custom-admin-dialog .p-dropdown .p-dropdown-label {
-    font-size: 1.2rem !important;
-    padding: 12px !important;
+.v8-save-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(255, 62, 62, 0.6) !important;
 }
 
-/* Dropdown Overlay */
-.p-dropdown-panel {
+
+
+/* ?? Lucky Dialog V9 Refinements ?? */
+.lucky-dialog-v9 .p-dialog-content {
+    padding: 0 !important;
+}
+
+.section-badge {
+    display: inline-block;
+    background: var(--primary-faded);
+    color: var(--primary);
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid rgba(255, 62, 62, 0.2);
+}
+
+.lucky-dialog-v9 .p-inputgroup-addon {
+    background: var(--bg-deep) !important;
+    border: 1px solid var(--white-alpha-10) !important;
+    color: var(--primary) !important;
+    min-width: 45px;
+}
+
+.lucky-dialog-v9 .p-colorpicker-preview {
+    width: 45px !important;
+    height: 45px !important;
     border-radius: 12px !important;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.4) !important;
-    border: 1px solid var(--glass-border) !important;
-    background: var(--bg-main) !important;
+    border: 1px solid var(--white-alpha-10) !important;
 }
-
-
-.p-dropdown-items .p-dropdown-item {
-    padding: 1.25rem 1.5rem !important;
-    font-size: 1.1rem !important;
-    border-bottom: 1px solid var(--glass-border) !important;
-}
-
-
 

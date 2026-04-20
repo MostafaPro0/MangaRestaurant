@@ -816,58 +816,109 @@
         </p-table>
 
         <!-- Lucky Prize Dialog -->
-        <p-dialog [(visible)]="luckyPrizeDialog" [style]="{width: '500px'}" 
+        <!-- Lucky Prize Dialog (Professional Refined) -->
+        <p-dialog [(visible)]="luckyPrizeDialog" 
                   [header]="(editingLuckyPrize ? 'ADMIN.EDIT' : 'GACHA.ADD_PRIZE_TITLE') | translate" 
-                  [modal]="true" styleClass="p-fluid glass-panel">
-          <ng-template pTemplate="content">
-            <div class="grid p-2">
-              <div class="field col-6">
-                <label>{{ 'GACHA.TITLE_EN' | translate }}</label>
-                <input type="text" pInputText [(ngModel)]="selectedLuckyPrize.title" required />
+                  [modal]="true" draggable="false" [resizable]="false"
+                  appendTo="body"
+                  styleClass="p-fluid ultimate-admin-dialog lucky-dialog-v9" 
+                  [style]="{width: '600px'}"
+                  [breakpoints]="{'960px': '90vw', '640px': '100vw'}" 
+                  [contentStyle]="{'max-height': '85vh', 'overflow-y': 'auto'}">
+          
+          <div class="lucky-dialog-content">
+            
+            <!-- Preview Banner -->
+            <div class="prize-preview-banner" [style.background]="selectedLuckyPrize.color ? selectedLuckyPrize.color + '15' : 'var(--bg-soft)'">
+              <div class="preview-icon-wrapper" [style.background]="selectedLuckyPrize.color || 'var(--primary)'">
+                <i [class]="selectedLuckyPrize.icon || 'pi pi-gift'" class="text-white text-2xl"></i>
               </div>
-              <div class="field col-6">
-                <label>{{ 'GACHA.TITLE_AR' | translate }}</label>
-                <input type="text" pInputText [(ngModel)]="selectedLuckyPrize.titleAr" dir="rtl" required />
-              </div>
-              <div class="field col-12">
-                <label>{{ 'GACHA.DESC_EN' | translate }}</label>
-                <textarea pInputTextarea [(ngModel)]="selectedLuckyPrize.description" rows="2"></textarea>
-              </div>
-              <div class="field col-12">
-                <label>{{ 'GACHA.DESC_AR' | translate }}</label>
-                <textarea pInputTextarea [(ngModel)]="selectedLuckyPrize.descriptionAr" dir="rtl" rows="2"></textarea>
-              </div>
-              <div class="field col-6">
-                <label>{{ 'GACHA.ICON' | translate }}</label>
-                <input type="text" pInputText [(ngModel)]="selectedLuckyPrize.icon" placeholder="pi pi-gift" />
-              </div>
-              <div class="field col-6">
-                <label>{{ 'GACHA.COLOR' | translate }}</label>
-                <div class="flex gap-2">
-                  <input type="text" pInputText [(ngModel)]="selectedLuckyPrize.color" placeholder="#ff0000" />
-                  <div class="w-2rem h-2rem border-round border-1 surface-border" [style.background]="selectedLuckyPrize.color"></div>
-                </div>
-              </div>
-              <div class="field col-6">
-                <label>{{ 'GACHA.WEIGHT' | translate }}</label>
-                <input type="number" pInputText [(ngModel)]="selectedLuckyPrize.probabilityWeight" />
-              </div>
-              <div class="field col-6 flex align-items-end pb-2">
-                <div class="flex align-items-center gap-2">
-                  <p-checkbox [(ngModel)]="selectedLuckyPrize.isActive" [binary]="true" inputId="prizeActive"></p-checkbox>
-                  <label for="prizeActive">{{ 'GACHA.IS_ACTIVE' | translate }}</label>
-                </div>
+              <h3 class="m-0 text-main font-bold text-center">{{ selectedLuckyPrize.title || 'Golden Prize' }}</h3>
+              <div class="flex align-items-center justify-content-center gap-2 mt-3">
+                <p-checkbox [(ngModel)]="selectedLuckyPrize.isActive" [binary]="true" inputId="prizeActive"></p-checkbox>
+                <label for="prizeActive" class="m-0 font-bold text-xs">{{ 'GACHA.IS_ACTIVE' | translate }}</label>
               </div>
             </div>
-          </ng-template>
+
+            <!-- Forms -->
+            <div class="p-3 md:p-4">
+               
+               <!-- Group: Identity (Stacked) -->
+               <div class="form-group-card mb-4">
+                  <div class="section-badge mb-4">{{ (translateService.currentLang === 'ar' ? 'بيانات الجائزة' : 'Prize Identity') }}</div>
+                  
+                  <div class="field mb-4">
+                     <label class="block mb-2 font-bold text-xs text-dim">{{ 'GACHA.TITLE_EN' | translate }}</label>
+                     <input type="text" pInputText [(ngModel)]="selectedLuckyPrize.title" class="lucky-input" placeholder="e.g. Mega Discount" />
+                  </div>
+                  
+                  <div class="field mb-4">
+                     <label class="block mb-2 font-bold text-xs text-dim" [class.text-right]="translateService.currentLang === 'ar'">{{ 'GACHA.TITLE_AR' | translate }}</label>
+                     <input type="text" pInputText [(ngModel)]="selectedLuckyPrize.titleAr" dir="rtl" class="lucky-input" placeholder="مثلاً: خصم هائل" />
+                  </div>
+                  
+                  <div class="grid">
+                     <div class="col-12 md:col-6 field">
+                        <label class="block mb-2 font-bold text-xs text-dim">{{ 'GACHA.DESC_EN' | translate }}</label>
+                        <textarea pInputTextarea [(ngModel)]="selectedLuckyPrize.description" rows="3" class="lucky-input"></textarea>
+                     </div>
+                     <div class="col-12 md:col-6 field">
+                        <label class="block mb-2 font-bold text-xs text-dim" [class.text-right]="translateService.currentLang === 'ar'">{{ 'GACHA.DESC_AR' | translate }}</label>
+                        <textarea pInputTextarea [(ngModel)]="selectedLuckyPrize.descriptionAr" dir="rtl" rows="3" class="lucky-input"></textarea>
+                     </div>
+                  </div>
+               </div>
+
+               <!-- Group: Configuration (Side-by-Side) -->
+               <div class="form-group-card">
+                  <div class="section-badge mb-4">{{ (translateService.currentLang === 'ar' ? 'الإعدادات الفنية' : 'Technical Config') }}</div>
+                  
+                  <div class="grid">
+                     <div class="col-12 md:col-6 field mb-4">
+                        <label class="block mb-2 font-bold text-xs text-dim">{{ 'GACHA.ICON' | translate }}</label>
+                        <div class="p-inputgroup">
+                           <span class="p-inputgroup-addon"><i [class]="selectedLuckyPrize.icon || 'pi pi-gift'"></i></span>
+                           <input type="text" pInputText [(ngModel)]="selectedLuckyPrize.icon" placeholder="pi pi-ticket" class="lucky-input" />
+                        </div>
+                     </div>
+                     
+                     <div class="col-12 md:col-6 field mb-4">
+                        <label class="block mb-2 font-bold text-xs text-dim">{{ 'GACHA.COLOR' | translate }}</label>
+                        <div class="flex align-items-center gap-2">
+                           <div class="p-inputgroup flex-grow-1">
+                              <span class="p-inputgroup-addon"><i class="pi pi-palette"></i></span>
+                              <input type="text" pInputText [(ngModel)]="selectedLuckyPrize.color" placeholder="#EA4335" class="lucky-input" />
+                           </div>
+                           <p-colorPicker [(ngModel)]="selectedLuckyPrize.color"></p-colorPicker>
+                        </div>
+                     </div>
+
+                     <div class="col-12 field mb-0">
+                        <label class="block mb-2 font-bold text-xs text-dim">{{ 'GACHA.WEIGHT' | translate }}</label>
+                        <div class="flex align-items-center gap-3">
+                           <input type="number" pInputText [(ngModel)]="selectedLuckyPrize.probabilityWeight" class="lucky-input" style="max-width: 120px;" />
+                           <div class="p-2 px-3 bg-black-alpha-10 border-round-lg text-xs opacity-60 flex-grow-1">
+                              {{ (translateService.currentLang === 'ar' ? 'الوزن يحدد نسبة الفوز بالجائزة.' : 'Weight determines winning probability.') }}
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+            </div>
+          </div>
+
           <ng-template pTemplate="footer">
-            <button pButton [label]="'ADMIN.CANCEL' | translate" 
-                    icon="pi pi-times" class="p-button-text" (click)="luckyPrizeDialog = false"></button>
-            <button pButton [label]="'ADMIN.SAVE' | translate" 
-                    [icon]="savingLuckyPrize ? 'pi pi-spin pi-spinner' : 'pi pi-check'" 
-                    [loading]="savingLuckyPrize"
-                    [disabled]="savingLuckyPrize"
-                    class="p-button-raised p-button-success" (click)="saveLuckyPrize()"></button>
+            <div class="flex justify-content-end gap-3 p-4 bg-deep">
+              <button pButton [label]="'ADMIN.CANCEL' | translate" 
+                      class="p-button-text p-button-secondary font-bold" 
+                      (click)="luckyPrizeDialog = false"></button>
+              
+              <button pButton [label]="'ADMIN.SAVE' | translate" 
+                      [icon]="savingLuckyPrize ? 'pi pi-spin pi-spinner' : 'pi pi-check'" 
+                      class="p-button-success px-6 font-bold shadow-4 border-round-xl" 
+                      (click)="saveLuckyPrize()"></button>
+            </div>
           </ng-template>
         </p-dialog>
       </div>
