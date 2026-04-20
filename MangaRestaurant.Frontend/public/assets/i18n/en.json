@@ -253,6 +253,8 @@
     "ADD": "Add New",
     "EDIT": "Edit",
     "CANCEL": "Cancel",
+    "SHARE": "Share",
+    "COPY_LINK": "Copy Link",
     "RIGHTS": "MangaRestaurant. All Rights Reserved",
     "QUICK_LINKS": "QUICK LINKS",
     "MENU": "Our Menu",
@@ -344,6 +346,10 @@
     "IMAGE_PREVIEW": "Image Preview",
     "UPLOAD_INSTRUCTION": "Click here to upload product image",
     "UPLOAD_HINT": "(JPG, PNG, WebP recommended)",
+    "ADD_PHOTO": "Add Product Photo",
+    "CLICK_TO_UPLOAD": "Click anywhere here to upload",
+    "CHANGE_IMAGE": "Change Image",
+    "UPLOADING": "Uploading...",
     "EMPLOYEE_NAME": "Employee Name",
     "EMAIL": "Email",
     "ROLE": "Role",
@@ -411,7 +417,9 @@
     "STATUS_UPDATED": "Status updated successfully",
     "CLICK_TO_ACTIVATE": "Click to activate user",
     "CLICK_TO_BAN": "Click to deactivate user",
-    "PHONE": "Phone Number"
+    "PHONE": "Phone Number",
+    "DINE_IN": "Dine-In",
+    "DELIVERY_TAKEAWAY": "Delivery/TakeAway"
   },
   "REVIEWS": {
     "TITLE": "Customer Reviews",
@@ -454,13 +462,19 @@
     "ENABLED": "Enabled",
     "PROBABILITY": "Win Chance",
     "WEIGHT": "Weight",
+    "WEIGHT_PROB": "Weight (Prob.)",
     "MANAGEMENT": "Rewards Management",
+    "MANAGEMENT_DESC": "Manage prizes and system status",
     "ADD_PRIZE": "Add New Prize",
+    "ADD_PRIZE_TITLE": "Add Lucky Prize",
     "TITLE_EN": "Title (EN)",
     "TITLE_AR": "Title (AR)",
     "DESC_EN": "Description (EN)",
     "DESC_AR": "Description (AR)",
     "ICON": "Icon (PrimeNG)",
-    "COLOR": "Color (Hex)"
+    "COLOR": "Color (Hex)",
+    "ICON_COLOR": "Icon & Color",
+    "DESCRIPTION": "Description",
+    "IS_ACTIVE": "Is Active"
   }
 }

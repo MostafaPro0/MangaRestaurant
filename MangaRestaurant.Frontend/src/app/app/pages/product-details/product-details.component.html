@@ -87,13 +87,13 @@
             <button pButton class="p-button-outlined p-button-lg p-button-secondary action-icon-btn" 
               [icon]="isInWishlist() ? 'pi pi-heart-fill' : 'pi pi-heart'" 
               [style.color]="isInWishlist() ? '#ff3e3e' : 'inherit'"
-              (click)="toggleWishlist()" [pTooltip]="(translateService.currentLang === 'ar' ? 'المفضلة' : 'Wishlist')"></button>
+              (click)="toggleWishlist()" [pTooltip]="'WISHLIST.TAG' | translate"></button>
             <button pButton class="p-button-outlined p-button-lg p-button-secondary action-icon-btn" 
               icon="pi pi-share-alt" (click)="shareProduct()"
-              [pTooltip]="(translateService.currentLang === 'ar' ? 'مشاركة' : 'Share')"></button>
+              [pTooltip]="'COMMON.SHARE' | translate"></button>
             <button pButton class="p-button-outlined p-button-lg p-button-secondary action-icon-btn" 
               icon="pi pi-copy" (click)="copyLink()"
-              [pTooltip]="(translateService.currentLang === 'ar' ? 'نسخ الرابط' : 'Copy Link')"></button>
+              [pTooltip]="'COMMON.COPY_LINK' | translate"></button>
           </div>
         </div>
 

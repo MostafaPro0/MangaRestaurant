@@ -165,9 +165,9 @@ export class AdminDashboardComponent implements OnInit {
   
   get orderTypeOptions() {
     return [
-      { label: this.translateService.currentLang === 'ar' ? 'الكل' : 'All', value: 'All' },
-      { label: this.translateService.currentLang === 'ar' ? 'داخل المطعم' : 'Dine-In', value: 'DineIn' },
-      { label: this.translateService.currentLang === 'ar' ? 'توصيل/سفري' : 'Delivery/TakeAway', value: 'Delivery' }
+      { label: this.translateService.instant('COMMON.ALL'), value: 'All' },
+      { label: this.translateService.instant('ADMIN.DINE_IN'), value: 'DineIn' },
+      { label: this.translateService.instant('ADMIN.DELIVERY_TAKEAWAY'), value: 'Delivery' }
     ];
   }
 

@@ -255,6 +255,8 @@
     "ADD": "إضافة جديدة",
     "EDIT": "تعديل",
     "CANCEL": "إلغاء",
+    "SHARE": "مشاركة",
+    "COPY_LINK": "نسخ الرابط",
     "TERMS": "شروط الخدمة",
     "PRIVACY": "سياسة الخصوصية",
     "RIGHTS": "جميع الحقوق محفوظة. مطعم مانجا",
@@ -348,6 +350,10 @@
     "IMAGE_PREVIEW": "معاينة الصورة",
     "UPLOAD_INSTRUCTION": "اضغط هنا لرفع صورة المنتج",
     "UPLOAD_HINT": "(يفضل JPG, PNG, WebP)",
+    "ADD_PHOTO": "أضف صورة للمج",
+    "CLICK_TO_UPLOAD": "اضغط هنا للرفع",
+    "CHANGE_IMAGE": "تغيير الصورة",
+    "UPLOADING": "جاري التحميل...",
     "EMPLOYEE_NAME": "اسم الموظف",
     "EMAIL": "البريد الإلكتروني",
     "ROLE": "الدور",
@@ -415,7 +421,9 @@
     "STATUS_UPDATED": "تم تحديث الحالة بنجاح",
     "CLICK_TO_ACTIVATE": "اضغط لتنشيط الحساب",
     "CLICK_TO_BAN": "اضغط لتعطيل الحساب",
-    "PHONE": "رقم الهاتف"
+    "PHONE": "رقم الهاتف",
+    "DINE_IN": "داخل المطعم",
+    "DELIVERY_TAKEAWAY": "توصيل/سفري"
   },
   "REVIEWS": {
     "TITLE": "آراء العملاء",
@@ -458,13 +466,19 @@
     "ENABLED": "مفعل",
     "PROBABILITY": "فرصة الفوز",
     "WEIGHT": "الوزن",
+    "WEIGHT_PROB": "الوزن (الاحتمالية)",
     "MANAGEMENT": "إدارة المكافآت",
+    "MANAGEMENT_DESC": "إدارة الجوائز وحالة النظام",
     "ADD_PRIZE": "إضافة جائزة جديدة",
+    "ADD_PRIZE_TITLE": "إضافة جائزة حظ",
     "TITLE_EN": "الاسم (EN)",
     "TITLE_AR": "الاسم (عربي)",
     "DESC_EN": "الوصف (EN)",
     "DESC_AR": "الوصف (عربي)",
     "ICON": "الأيقونة (PrimeNG)",
-    "COLOR": "اللون (Hex)"
+    "COLOR": "اللون (Hex)",
+    "ICON_COLOR": "الأيقونة واللون",
+    "DESCRIPTION": "الوصف",
+    "IS_ACTIVE": "نشط"
   }
 }

@@ -30,7 +30,7 @@ export interface LuckyRewardsDrawResult {
   providedIn: 'root'
 })
 export class LuckyRewardsService {
-  private apiUrl = environment.apiUrl + 'luckyrewards';
+  private apiUrl = environment.apiUrl + '/luckyrewards';
 
   constructor(private http: HttpClient) {}
 
