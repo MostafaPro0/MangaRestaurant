@@ -21,7 +21,7 @@
         <a routerLink="/products" routerLinkActive="active">{{ 'NAV.PRODUCTS' | translate }}</a>
         <a *ngIf="isAuthenticated()" routerLink="/orders" routerLinkActive="active">{{ 'NAV.MY_ORDERS' | translate
           }}</a>
-        <a *ngIf="isAuthenticated()" routerLink="/lucky-rewards" routerLinkActive="active" class="flex align-items-center gap-1">
+        <a *ngIf="(settings$ | async)?.isLuckyRewardsEnabled" routerLink="/lucky-rewards" routerLinkActive="active" class="flex align-items-center gap-1">
           <i class="pi pi-star-fill text-yellow-400"></i>
           {{ 'NAV.GACHA' | translate }}
         </a>
@@ -179,7 +179,7 @@
           }}</a>
         <a *ngIf="isAuthenticated()" routerLink="/orders" (click)="toggleMobileMenu()" routerLinkActive="active">{{
           'NAV.MY_ORDERS' | translate }}</a>
-        <a *ngIf="isAuthenticated()" routerLink="/lucky-rewards" (click)="toggleMobileMenu()" routerLinkActive="active">
+        <a *ngIf="(settings$ | async)?.isLuckyRewardsEnabled" routerLink="/lucky-rewards" (click)="toggleMobileMenu()" routerLinkActive="active">
           <i class="pi pi-star-fill text-yellow-400 mr-2"></i> {{ 'NAV.GACHA' | translate }}
         </a>
         <a routerLink="/basket" (click)="toggleMobileMenu()" routerLinkActive="active">{{ 'NAV.BASKET' | translate
@@ -262,7 +262,7 @@
                 }}</a></li>
             <li><a routerLink="/basket" class="hover:text-primary transition-colors">{{ 'COMMON.CART_ORDERS' | translate
                 }}</a></li>
-            <li><a routerLink="/lucky-rewards" class="hover:text-primary transition-colors">{{ 'NAV.GACHA' | translate }}</a></li>
+            <li><a *ngIf="(settings$ | async)?.isLuckyRewardsEnabled" routerLink="/lucky-rewards" class="hover:text-primary transition-colors">{{ 'NAV.GACHA' | translate }}</a></li>
           </ul>
         </div>
 

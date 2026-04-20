@@ -14,4 +14,5 @@ export interface SiteSettings {
     openingHoursEn: string;
     openingHoursAr: string;
     deliveryFee: number;
+    isLuckyRewardsEnabled: boolean;
 }

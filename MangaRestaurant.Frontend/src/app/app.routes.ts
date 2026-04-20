@@ -4,6 +4,8 @@ import { authGuard }     from './app/guards/auth.guard';
 import { guestGuard }    from './app/guards/guest.guard';
 import { deliveryGuard } from './app/guards/delivery.guard';
 
+import { luckyRewardsGuard } from './app/guards/lucky-rewards.guard';
+
 export const routes: Route[] = [
   { path: '', pathMatch: 'full', loadComponent: () => import('./app/pages/home/home.component').then(m => m.HomeComponent) },
   { path: 'products', loadComponent: () => import('./app/pages/products/products.component').then(m => m.ProductsComponent) },
@@ -22,6 +24,6 @@ export const routes: Route[] = [
   { path: 'login', canActivate: [guestGuard], loadComponent: () => import('./app/pages/login/login.component').then(m => m.LoginComponent) },
   { path: 'register', canActivate: [guestGuard], loadComponent: () => import('./app/pages/register/register.component').then(m => m.RegisterComponent) },
   { path: 'pos', loadComponent: () => import('./app/pages/pos/pos.component').then(m => m.PosComponent) },
-  { path: 'lucky-rewards', canActivate: [authGuard], loadComponent: () => import('./app/pages/lucky-rewards/lucky.component').then(m => m.LuckyRewardsPageComponent) },
+  { path: 'lucky-rewards', canActivate: [authGuard, luckyRewardsGuard], loadComponent: () => import('./app/pages/lucky-rewards/lucky.component').then(m => m.LuckyRewardsPageComponent) },
   { path: '**', loadComponent: () => import('./app/pages/not-found/not-found.component').then(m => m.NotFoundComponent) }
 ];

@@ -15,28 +15,36 @@
     <!-- 2. CUSTOM SYSTEM NAV -->
     <div class="custom-admin-nav p-3 border-bottom-1 flex-wrap gap-2"
       style="border-color: var(--glass-border) !important;">
-      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'reports'" [routerLink]="['/admin', 'reports']">
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'reports'"
+        [routerLink]="['/admin', 'reports']">
         <i class="pi pi-chart-bar"></i> <span>{{ 'ADMIN.REPORTS' | translate }}</span>
       </a>
-      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'orders'" [routerLink]="['/admin', 'orders']">
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'orders'"
+        [routerLink]="['/admin', 'orders']">
         <i class="pi pi-shopping-cart"></i> <span>{{ 'ADMIN.ORDER_LOG' | translate }}</span>
       </a>
-      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'products'" [routerLink]="['/admin', 'products']">
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'products'"
+        [routerLink]="['/admin', 'products']">
         <i class="pi pi-box"></i> <span>{{ 'ADMIN.PRODUCTS' | translate }}</span>
       </a>
-      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'users'" [routerLink]="['/admin', 'users']">
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'users'"
+        [routerLink]="['/admin', 'users']">
         <i class="pi pi-users"></i> <span>{{ 'ADMIN.STAFF_MANAGEMENT' | translate }}</span>
       </a>
-      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'categories'" [routerLink]="['/admin', 'categories']">
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'categories'"
+        [routerLink]="['/admin', 'categories']">
         <i class="pi pi-tags"></i> <span>{{ 'ADMIN.CATEGORIES' | translate }}</span>
       </a>
-      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'brands'" [routerLink]="['/admin', 'brands']">
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'brands'"
+        [routerLink]="['/admin', 'brands']">
         <i class="pi pi-bookmark"></i> <span>{{ 'ADMIN.BRANDS' | translate }}</span>
       </a>
-      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'settings'" [routerLink]="['/admin', 'settings']">
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'settings'"
+        [routerLink]="['/admin', 'settings']">
         <i class="pi pi-cog"></i> <span>{{ 'ADMIN.SETTINGS' | translate }}</span>
       </a>
-      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'lucky'" [routerLink]="['/admin', 'lucky']">
+      <a class="nav-btn no-underline cursor-pointer" [class.active]="activeTab === 'lucky'"
+        [routerLink]="['/admin', 'lucky']">
         <i class="pi pi-star-fill text-yellow-400"></i> <span>{{ 'GACHA.TITLE' | translate }}</span>
       </a>
 
@@ -166,7 +174,8 @@
               <h3 class="chart-title"><i class="pi pi-eye"></i> {{ 'ADMIN.CHART_TOP_VIEWED' | translate }}</h3>
               <apx-chart *ngIf="topViewedProductsChartOptions" [series]="topViewedProductsChartOptions.series!"
                 [chart]="topViewedProductsChartOptions.chart!" [xaxis]="topViewedProductsChartOptions.xaxis!"
-                [colors]="topViewedProductsChartOptions.colors!" [plotOptions]="topViewedProductsChartOptions.plotOptions!">
+                [colors]="topViewedProductsChartOptions.colors!"
+                [plotOptions]="topViewedProductsChartOptions.plotOptions!">
               </apx-chart>
             </div>
           </div>
@@ -177,7 +186,8 @@
               <h3 class="chart-title"><i class="pi pi-heart"></i> {{ 'ADMIN.CHART_TOP_WISHLISTED' | translate }}</h3>
               <apx-chart *ngIf="topWishlistedProductsChartOptions" [series]="topWishlistedProductsChartOptions.series!"
                 [chart]="topWishlistedProductsChartOptions.chart!" [xaxis]="topWishlistedProductsChartOptions.xaxis!"
-                [colors]="topWishlistedProductsChartOptions.colors!" [plotOptions]="topWishlistedProductsChartOptions.plotOptions!">
+                [colors]="topWishlistedProductsChartOptions.colors!"
+                [plotOptions]="topWishlistedProductsChartOptions.plotOptions!">
               </apx-chart>
             </div>
           </div>
@@ -225,10 +235,13 @@
             <p-skeleton width="25%" height="2.5rem" borderRadius="8px"></p-skeleton>
           </div>
         </ng-container>
-        <div class="flex justify-content-between align-items-center mb-4 gap-3 bg-glass-light p-3 border-radius-md border-1 surface-border" *ngIf="!loadingOrders">
+        <div
+          class="flex justify-content-between align-items-center mb-4 gap-3 bg-glass-light p-3 border-radius-md border-1 surface-border"
+          *ngIf="!loadingOrders">
           <div class="flex align-items-center gap-3">
-             <i class="pi pi-filter primary-text text-xl"></i>
-             <p-selectButton [options]="orderTypeOptions" [(ngModel)]="selectedOrderType" class="p-buttonset-sm"></p-selectButton>
+            <i class="pi pi-filter primary-text text-xl"></i>
+            <p-selectButton [options]="orderTypeOptions" [(ngModel)]="selectedOrderType"
+              class="p-buttonset-sm"></p-selectButton>
           </div>
           <div class="text-dim font-bold">
             {{ filteredOrders.length }} {{ (translateService.currentLang === 'ar' ? 'طلب معروض' : 'Orders showing') }}
@@ -243,7 +256,8 @@
               <th style="width: 12%">{{ 'ORDERS.TOTAL' | translate }}</th>
               <th style="width: 15%">{{ 'ORDERS.STATUS' | translate }}</th>
               <th style="width: 12%">{{ (translateService.currentLang === 'ar' ? 'النوع' : 'Type') }}</th>
-              <th style="width: 18%">{{ (translateService.currentLang === 'ar' ? 'مسؤول التوصيل' : 'Delivery Person') }}</th>
+              <th style="width: 18%">{{ (translateService.currentLang === 'ar' ? 'مسؤول التوصيل' : 'Delivery Person') }}
+              </th>
               <th style="width: 20%" class="text-center">{{ 'ADMIN.ORDERS.STATUS_UPDATE' | translate }}</th>
             </tr>
           </ng-template>
@@ -265,22 +279,21 @@
                 </span>
               </td>
               <td>
-                <p-tag [severity]="order.orderType === 'DineIn' ? 'warning' : 'info'" 
-                       [value]="order.orderType === 'DineIn' ? (translateService.currentLang === 'ar' ? 'داخل المطعم' : 'Dine-In') : (translateService.currentLang === 'ar' ? 'توصيل' : 'Delivery')"
-                       [rounded]="true" class="font-bold">
+                <p-tag [severity]="order.orderType === 'DineIn' ? 'warning' : 'info'"
+                  [value]="order.orderType === 'DineIn' ? (translateService.currentLang === 'ar' ? 'داخل المطعم' : 'Dine-In') : (translateService.currentLang === 'ar' ? 'توصيل' : 'Delivery')"
+                  [rounded]="true" class="font-bold">
                 </p-tag>
               </td>
               <td>
                 <div class="flex align-items-center gap-2" *ngIf="order.orderType !== 'DineIn'">
-                  <p-dropdown [options]="deliveryEmployees" [(ngModel)]="orderDeliveryAssignee[order.id]" 
-                    optionLabel="displayName" optionValue="id" [placeholder]="(translateService.currentLang === 'ar' ? 'اختر عامل' : 'Select Driver')"
+                  <p-dropdown [options]="deliveryEmployees" [(ngModel)]="orderDeliveryAssignee[order.id]"
+                    optionLabel="displayName" optionValue="id"
+                    [placeholder]="(translateService.currentLang === 'ar' ? 'اختر عامل' : 'Select Driver')"
                     class="p-inputtext-sm w-full">
                   </p-dropdown>
-                  <button pButton 
-                    [icon]="savingOrderStatus ? 'pi pi-spin pi-spinner' : 'pi pi-user-plus'" 
-                    [loading]="savingOrderStatus"
-                    class="p-button-rounded p-button-text p-button-info p-button-sm"
-                    (click)="updateOrderDelivery(order.id)" 
+                  <button pButton [icon]="savingOrderStatus ? 'pi pi-spin pi-spinner' : 'pi pi-user-plus'"
+                    [loading]="savingOrderStatus" class="p-button-rounded p-button-text p-button-info p-button-sm"
+                    (click)="updateOrderDelivery(order.id)"
                     [pTooltip]="(translateService.currentLang === 'ar' ? 'تعيين' : 'Assign')"
                     [disabled]="!orderDeliveryAssignee[order.id] || savingOrderStatus"></button>
                 </div>
@@ -291,12 +304,9 @@
                   <p-dropdown [options]="orderStatusOptions" [(ngModel)]="orderStatusDraft[order.id]" appendTo="body"
                     class="p-inputtext-sm">
                   </p-dropdown>
-                  <button pButton 
-                    [icon]="savingOrderStatus ? 'pi pi-spin pi-spinner' : 'pi pi-save'" 
-                    [loading]="savingOrderStatus"
-                    [disabled]="savingOrderStatus"
-                    class="p-button-rounded p-button-warning"
-                    (click)="updateOrderStatus(order.id)"
+                  <button pButton [icon]="savingOrderStatus ? 'pi pi-spin pi-spinner' : 'pi pi-save'"
+                    [loading]="savingOrderStatus" [disabled]="savingOrderStatus"
+                    class="p-button-rounded p-button-warning" (click)="updateOrderStatus(order.id)"
                     [pTooltip]="(translateService.currentLang === 'ar' ? 'حفظ الحالة' : 'Save Status')"></button>
                 </div>
               </td>
@@ -337,12 +347,15 @@
               <td class="font-medium">
                 <div class="flex align-items-center gap-2">
                   {{ (translateService.currentLang === 'ar' && product.nameAr) ? product.nameAr : product.name }}
-                  <p-tag *ngIf="product.isHidden" severity="danger" [value]="(translateService.currentLang === 'ar' ? 'مخفي' : 'Hidden')" [rounded]="true" class="text-xs"></p-tag>
+                  <p-tag *ngIf="product.isHidden" severity="danger"
+                    [value]="(translateService.currentLang === 'ar' ? 'مخفي' : 'Hidden')" [rounded]="true"
+                    class="text-xs"></p-tag>
                 </div>
               </td>
               <td>
                 <span class="category-tag">
-                  {{ (translateService.currentLang === 'ar' && product.categoryAr) ? product.categoryAr : product.category }}
+                  {{ (translateService.currentLang === 'ar' && product.categoryAr) ? product.categoryAr :
+                  product.category }}
                 </span>
               </td>
               <td>
@@ -369,9 +382,11 @@
               <td class="text-center">
                 <div class="flex justify-content-center gap-2">
                   <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-warning"
-                    (click)="openEditProduct(product)" [pTooltip]="(translateService.currentLang === 'ar' ? 'تعديل' : 'Edit')"></button>
+                    (click)="openEditProduct(product)"
+                    [pTooltip]="(translateService.currentLang === 'ar' ? 'تعديل' : 'Edit')"></button>
                   <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
-                    (click)="deleteProduct(product.id)" [pTooltip]="(translateService.currentLang === 'ar' ? 'حذف' : 'Delete')"></button>
+                    (click)="deleteProduct(product.id)"
+                    [pTooltip]="(translateService.currentLang === 'ar' ? 'حذف' : 'Delete')"></button>
                 </div>
               </td>
             </tr>
@@ -386,11 +401,12 @@
             <i class="pi pi-users text-primary"></i>
             {{ 'ADMIN.STAFF_MANAGEMENT' | translate }}
           </h2>
-          <button pButton [label]="'ADMIN.ADD_NEW_STAFF' | translate" 
-                  icon="pi pi-plus" class="p-button-raised p-button-rounded p-button-success" (click)="userDialog = true"></button>
+          <button pButton [label]="'ADMIN.ADD_NEW_STAFF' | translate" icon="pi pi-plus"
+            class="p-button-raised p-button-rounded p-button-success" (click)="userDialog = true"></button>
         </div>
 
-        <p-table [value]="users" [loading]="loadingUsers" [rows]="10" [paginator]="true" class="custom-table staff-table shadow-2 border-round-xl">
+        <p-table [value]="users" [loading]="loadingUsers" [rows]="10" [paginator]="true"
+          class="custom-table staff-table shadow-2 border-round-xl">
           <ng-template pTemplate="header">
             <tr>
               <th style="width: 20%">{{ 'ADMIN.EMPLOYEE_NAME' | translate }}</th>
@@ -406,50 +422,44 @@
               <td class="font-bold">{{ user.displayName }}</td>
               <td>{{ user.email }}</td>
               <td>
-                <p-tag [severity]="user.role === 'Admin' ? 'danger' : (user.role === 'User' ? 'info' : 'warning')" 
-                       [value]="user.role"></p-tag>
+                <p-tag [severity]="user.role === 'Admin' ? 'danger' : (user.role === 'User' ? 'info' : 'warning')"
+                  [value]="user.role"></p-tag>
               </td>
               <td>
-                <p-dropdown [options]="roleOptions" [(ngModel)]="user.role" 
-                   (onChange)="onRoleChange(user, $event.value)" appendTo="body" class="p-inputtext-sm w-full">
+                <p-dropdown [options]="roleOptions" [(ngModel)]="user.role"
+                  (onChange)="onRoleChange(user, $event.value)" appendTo="body" class="p-inputtext-sm w-full">
                 </p-dropdown>
               </td>
               <td class="text-center">
-                <p-button 
-                        [label]="(user.isBanned ? 'ADMIN.BANNED' : 'ADMIN.ACTIVE') | translate"
-                        [severity]="user.isBanned ? 'danger' : 'success'"
-                        [outlined]="true"
-                        [icon]="savingUserStatus ? 'pi pi-spin pi-spinner' : (user.isBanned ? 'pi pi-lock' : 'pi pi-lock-open')"
-                        [loading]="savingUserStatus"
-                        [disabled]="savingUserStatus"
-                        size="small"
-                        styleClass="border-round-xl"
-                        [pTooltip]="(user.isBanned ? 'ADMIN.CLICK_TO_ACTIVATE' : 'ADMIN.CLICK_TO_BAN') | translate"
-                        (click)="onToggleUserBan(user)">
+                <p-button [label]="(user.isBanned ? 'ADMIN.BANNED' : 'ADMIN.ACTIVE') | translate"
+                  [severity]="user.isBanned ? 'danger' : 'success'" [outlined]="true"
+                  [icon]="savingUserStatus ? 'pi pi-spin pi-spinner' : (user.isBanned ? 'pi pi-lock' : 'pi pi-lock-open')"
+                  [loading]="savingUserStatus" [disabled]="savingUserStatus" size="small" styleClass="border-round-xl"
+                  [pTooltip]="(user.isBanned ? 'ADMIN.CLICK_TO_ACTIVATE' : 'ADMIN.CLICK_TO_BAN') | translate"
+                  (click)="onToggleUserBan(user)">
                 </p-button>
               </td>
               <td class="text-center">
                 <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"
-                  (click)="onDeleteUser(user.id)" [pTooltip]="(translateService.currentLang === 'ar' ? 'حذف' : 'Delete')"></button>
+                  (click)="onDeleteUser(user.id)"
+                  [pTooltip]="(translateService.currentLang === 'ar' ? 'حذف' : 'Delete')"></button>
               </td>
             </tr>
           </ng-template>
         </p-table>
       </div>
       <!-- User Dialog -->
-      <p-dialog [(visible)]="userDialog" [style]="{width: '500px'}" 
-                [header]="'ADMIN.ADD_NEW_STAFF' | translate" 
-                [modal]="true" styleClass="p-fluid glass-panel custom-admin-dialog" 
-                [draggable]="false" [resizable]="false">
+      <p-dialog [(visible)]="userDialog" [style]="{width: '500px'}" [header]="'ADMIN.ADD_NEW_STAFF' | translate"
+        [modal]="true" styleClass="p-fluid glass-panel custom-admin-dialog" [draggable]="false" [resizable]="false">
         <ng-template pTemplate="content">
           <div class="p-4">
             <div class="field mb-4">
               <label for="name" class="block font-bold mb-2 opacity-80">{{ 'ADMIN.NAME' | translate }}</label>
               <span class="p-input-icon-left">
                 <i class="pi pi-user text-primary"></i>
-                <input type="text" pInputText id="name" [(ngModel)]="newUser.displayName" 
-                       [placeholder]="translateService.currentLang === 'ar' ? 'أدخل اسم الموظف' : 'Enter employee name'" 
-                       required autofocus class="p-inputtext-lg border-round-xl" />
+                <input type="text" pInputText id="name" [(ngModel)]="newUser.displayName"
+                  [placeholder]="translateService.currentLang === 'ar' ? 'أدخل اسم الموظف' : 'Enter employee name'"
+                  required autofocus class="p-inputtext-lg border-round-xl" />
               </span>
             </div>
 
@@ -457,9 +467,9 @@
               <label for="email" class="block font-bold mb-2 opacity-80">{{ 'ADMIN.EMAIL' | translate }}</label>
               <span class="p-input-icon-left">
                 <i class="pi pi-envelope text-primary"></i>
-                <input type="email" pInputText id="email" [(ngModel)]="newUser.email" 
-                       [placeholder]="translateService.currentLang === 'ar' ? 'example@mail.com' : 'example@mail.com'" 
-                       required class="p-inputtext-lg border-round-xl" />
+                <input type="email" pInputText id="email" [(ngModel)]="newUser.email"
+                  [placeholder]="translateService.currentLang === 'ar' ? 'example@mail.com' : 'example@mail.com'"
+                  required class="p-inputtext-lg border-round-xl" />
               </span>
             </div>
 
@@ -467,11 +477,12 @@
               <label for="password" class="block font-bold mb-2 opacity-80">{{ 'AUTH.PASSWORD' | translate }}</label>
               <span class="p-input-icon-left p-input-icon-right">
                 <i class="pi pi-lock text-primary"></i>
-                <input [type]="showPasswordUser ? 'text' : 'password'" pInputText id="password" [(ngModel)]="newUser.password" 
-                       [placeholder]="'••••••••'"
-                       required class="p-inputtext-lg border-round-xl" />
-                <i (click)="showPasswordUser = !showPasswordUser" class="pi cursor-pointer hover:text-primary transition-colors" 
-                   [ngClass]="showPasswordUser ? 'pi-eye' : 'pi-eye-slash'"></i>
+                <input [type]="showPasswordUser ? 'text' : 'password'" pInputText id="password"
+                  [(ngModel)]="newUser.password" [placeholder]="'••••••••'" required
+                  class="p-inputtext-lg border-round-xl" />
+                <i (click)="showPasswordUser = !showPasswordUser"
+                  class="pi cursor-pointer hover:text-primary transition-colors"
+                  [ngClass]="showPasswordUser ? 'pi-eye' : 'pi-eye-slash'"></i>
               </span>
             </div>
 
@@ -479,19 +490,17 @@
               <label for="phone" class="block font-bold mb-2 opacity-80">{{ 'ADMIN.PHONE' | translate }}</label>
               <span class="p-input-icon-left">
                 <i class="pi pi-phone text-primary"></i>
-                <input type="text" pInputText id="phone" [(ngModel)]="newUser.phoneNumber" 
-                       [placeholder]="translateService.currentLang === 'ar' ? '01xxxxxxxxx' : '01xxxxxxxxx'" 
-                       required class="p-inputtext-lg border-round-xl" />
+                <input type="text" pInputText id="phone" [(ngModel)]="newUser.phoneNumber"
+                  [placeholder]="translateService.currentLang === 'ar' ? '01xxxxxxxxx' : '01xxxxxxxxx'" required
+                  class="p-inputtext-lg border-round-xl" />
               </span>
             </div>
 
             <div class="field mb-4">
               <label for="role" class="block font-bold mb-2 opacity-80">{{ 'ADMIN.ROLE' | translate }}</label>
-              <p-dropdown [options]="roleOptions" [(ngModel)]="selectedUserRole" id="role" 
-                          appendTo="body" styleClass="p-dropdown-lg border-round-xl"
-                          [style]="{'width': '100%'}"
-                          [panelStyle]="{'width': '410px'}"
-                          [placeholder]="translateService.currentLang === 'ar' ? 'اختر الدور' : 'Select Role'">
+              <p-dropdown [options]="roleOptions" [(ngModel)]="selectedUserRole" id="role" appendTo="body"
+                styleClass="p-dropdown-lg border-round-xl" [style]="{'width': '100%'}" [panelStyle]="{'width': '410px'}"
+                [placeholder]="translateService.currentLang === 'ar' ? 'اختر الدور' : 'Select Role'">
                 <ng-template let-option pTemplate="item">
                   <div class="flex align-items-center gap-2">
                     <i class="pi" [ngClass]="option.value === 'Admin' ? 'pi-shield' : 'pi-user'"></i>
@@ -505,15 +514,12 @@
 
         <ng-template pTemplate="footer">
           <div class="flex justify-content-end gap-2 p-3 border-top-1 surface-border">
-            <button pButton [label]="'ADMIN.CANCEL' | translate" 
-                    icon="pi pi-times" class="p-button-text p-button-secondary border-round-xl" 
-                    (click)="userDialog = false"></button>
-            <button pButton [label]="'ADMIN.SAVE' | translate" 
-                    [icon]="savingUserStatus ? 'pi pi-spin pi-spinner' : 'pi pi-check'" 
-                    [loading]="savingUserStatus"
-                    [disabled]="savingUserStatus || !newUser.email || !newUser.password"
-                    class="p-button-raised p-button-success px-4 border-round-xl" 
-                    (click)="saveUser()"></button>
+            <button pButton [label]="'ADMIN.CANCEL' | translate" icon="pi pi-times"
+              class="p-button-text p-button-secondary border-round-xl" (click)="userDialog = false"></button>
+            <button pButton [label]="'ADMIN.SAVE' | translate"
+              [icon]="savingUserStatus ? 'pi pi-spin pi-spinner' : 'pi pi-check'" [loading]="savingUserStatus"
+              [disabled]="savingUserStatus || !newUser.email || !newUser.password"
+              class="p-button-raised p-button-success px-4 border-round-xl" (click)="saveUser()"></button>
           </div>
         </ng-template>
       </p-dialog>
@@ -521,15 +527,15 @@
       <!-- Tab 6: Category Management -->
       <div *ngIf="activeTab === 'categories'" class="tab-content animate-fade p-3 md:p-4">
         <div class="flex justify-content-between align-items-center mb-4">
-          <h2 class="m-0"><i class="pi pi-tags text-primary"></i> 
-              {{ 'ADMIN.CATEGORY_MANAGEMENT' | translate }}
+          <h2 class="m-0"><i class="pi pi-tags text-primary"></i>
+            {{ 'ADMIN.CATEGORY_MANAGEMENT' | translate }}
           </h2>
-          <button pButton label="{{ 'ADMIN.ADD_CATEGORY' | translate }}" 
-                  icon="pi pi-plus" class="p-button-rounded p-button-success" 
-                  (click)="openCreateItem('categories')"></button>
+          <button pButton label="{{ 'ADMIN.ADD_CATEGORY' | translate }}" icon="pi pi-plus"
+            class="p-button-rounded p-button-success" (click)="openCreateItem('categories')"></button>
         </div>
 
-        <p-table [value]="categoriesList" [loading]="loadingCategories" [rows]="10" [paginator]="true" class="custom-table">
+        <p-table [value]="categoriesList" [loading]="loadingCategories" [rows]="10" [paginator]="true"
+          class="custom-table">
           <ng-template pTemplate="header">
             <tr>
               <th style="width: 30%">{{ 'ADMIN.NAME_EN' | translate }}</th>
@@ -551,9 +557,10 @@
                 <div class="flex justify-content-center gap-2">
                   <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-warning"
                     (click)="openEditItem(cat, 'categories')" [pTooltip]="'Edit'"></button>
-                  <button pButton [icon]="cat.isHidden ? 'pi pi-eye' : 'pi pi-eye-slash'" 
-                    class="p-button-rounded p-button-text" [class.p-button-secondary]="!cat.isHidden" [class.p-button-success]="cat.isHidden"
-                    (click)="toggleItemVisibility(cat.id, !cat.isHidden, 'categories')" 
+                  <button pButton [icon]="cat.isHidden ? 'pi pi-eye' : 'pi pi-eye-slash'"
+                    class="p-button-rounded p-button-text" [class.p-button-secondary]="!cat.isHidden"
+                    [class.p-button-success]="cat.isHidden"
+                    (click)="toggleItemVisibility(cat.id, !cat.isHidden, 'categories')"
                     [pTooltip]="cat.isHidden ? 'Show' : 'Hide'"></button>
                   <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
                     (click)="deleteItem(cat.id, 'categories')" [pTooltip]="'Delete'"></button>
@@ -567,12 +574,11 @@
       <!-- Tab 7: Brand Management -->
       <div *ngIf="activeTab === 'brands'" class="tab-content animate-fade p-3 md:p-4">
         <div class="flex justify-content-between align-items-center mb-4">
-          <h2 class="m-0"><i class="pi pi-bookmark text-primary"></i> 
-              {{ 'ADMIN.BRAND_MANAGEMENT' | translate }}
+          <h2 class="m-0"><i class="pi pi-bookmark text-primary"></i>
+            {{ 'ADMIN.BRAND_MANAGEMENT' | translate }}
           </h2>
-          <button pButton label="{{ 'ADMIN.ADD_BRAND' | translate }}" 
-                  icon="pi pi-plus" class="p-button-rounded p-button-success" 
-                  (click)="openCreateItem('brands')"></button>
+          <button pButton label="{{ 'ADMIN.ADD_BRAND' | translate }}" icon="pi pi-plus"
+            class="p-button-rounded p-button-success" (click)="openCreateItem('brands')"></button>
         </div>
 
         <p-table [value]="brandsList" [loading]="loadingBrands" [rows]="10" [paginator]="true" class="custom-table">
@@ -597,9 +603,10 @@
                 <div class="flex justify-content-center gap-2">
                   <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-warning"
                     (click)="openEditItem(brand, 'brands')" [pTooltip]="'Edit'"></button>
-                  <button pButton [icon]="brand.isHidden ? 'pi pi-eye' : 'pi pi-eye-slash'" 
-                    class="p-button-rounded p-button-text" [class.p-button-secondary]="!brand.isHidden" [class.p-button-success]="brand.isHidden"
-                    (click)="toggleItemVisibility(brand.id, !brand.isHidden, 'brands')" 
+                  <button pButton [icon]="brand.isHidden ? 'pi pi-eye' : 'pi pi-eye-slash'"
+                    class="p-button-rounded p-button-text" [class.p-button-secondary]="!brand.isHidden"
+                    [class.p-button-success]="brand.isHidden"
+                    (click)="toggleItemVisibility(brand.id, !brand.isHidden, 'brands')"
                     [pTooltip]="brand.isHidden ? 'Show' : 'Hide'"></button>
                   <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
                     (click)="deleteItem(brand.id, 'brands')" [pTooltip]="'Delete'"></button>
@@ -611,9 +618,9 @@
       </div>
 
       <!-- Item Dialog (Shared for Cat/Brand) -->
-      <p-dialog [(visible)]="itemDialog" [style]="{width: '450px'}" 
-                [header]="(isCategoryMode ? (editingItem ? 'Edit Category' : 'Add Category') : (editingItem ? 'Edit Brand' : 'Add Brand'))" 
-                [modal]="true" styleClass="p-fluid glass-panel">
+      <p-dialog [(visible)]="itemDialog" [style]="{width: '450px'}"
+        [header]="(isCategoryMode ? (editingItem ? 'Edit Category' : 'Add Category') : (editingItem ? 'Edit Brand' : 'Add Brand'))"
+        [modal]="true" styleClass="p-fluid glass-panel">
         <ng-template pTemplate="content">
           <div class="field mb-3">
             <label>{{ (translateService.currentLang === 'ar' ? 'الاسم بالإنجليزية' : 'Name (EN)') }}</label>
@@ -625,18 +632,17 @@
           </div>
           <div class="field flex align-items-center gap-2 mb-3">
             <p-checkbox [(ngModel)]="selectedItem.isHidden" [binary]="true" inputId="isHidden"></p-checkbox>
-            <label for="isHidden">{{ (translateService.currentLang === 'ar' ? 'إخفاء من المتجر' : 'Hide from store') }}</label>
+            <label for="isHidden">{{ (translateService.currentLang === 'ar' ? 'إخفاء من المتجر' : 'Hide from store')
+              }}</label>
           </div>
         </ng-template>
 
         <ng-template pTemplate="footer">
-          <button pButton [label]="'ADMIN.CANCEL' | translate" 
-                  icon="pi pi-times" class="p-button-text" (click)="itemDialog = false"></button>
-          <button pButton [label]="'ADMIN.SAVE' | translate" 
-                  [icon]="savingItem ? 'pi pi-spin pi-spinner' : 'pi pi-check'" 
-                  [loading]="savingItem"
-                  [disabled]="savingItem"
-                  class="p-button-raised" (click)="saveItem()"></button>
+          <button pButton [label]="'ADMIN.CANCEL' | translate" icon="pi pi-times" class="p-button-text"
+            (click)="itemDialog = false"></button>
+          <button pButton [label]="'ADMIN.SAVE' | translate"
+            [icon]="savingItem ? 'pi pi-spin pi-spinner' : 'pi pi-check'" [loading]="savingItem" [disabled]="savingItem"
+            class="p-button-raised" (click)="saveItem()"></button>
         </ng-template>
       </p-dialog>
 
@@ -648,9 +654,8 @@
               <h2 class="text-2xl font-bold mb-1">{{ 'ADMIN.SETTINGS_TITLE' | translate }}</h2>
               <p class="text-dim text-sm">{{ 'ADMIN.SETTINGS_SUBTITLE' | translate }}</p>
             </div>
-            <button pButton icon="pi pi-save" [label]="'ADMIN.SAVE_CHANGES' | translate" 
-                    class="p-button-warning p-button-raised" [loading]="savingSettings"
-                    (click)="saveSettings()"></button>
+            <button pButton icon="pi pi-save" [label]="'ADMIN.SAVE_CHANGES' | translate"
+              class="p-button-warning p-button-raised" [loading]="savingSettings" (click)="saveSettings()"></button>
           </div>
 
           <div class="grid">
@@ -669,8 +674,8 @@
                   <input type="text" pInputText [(ngModel)]="siteSettings.restaurantNameAr" dir="rtl" class="w-full">
                 </div>
                 <div class="field mb-3">
-                   <label class="block mb-2 font-medium">{{ 'ADMIN.EMAIL' | translate }}</label>
-                   <input type="text" pInputText [(ngModel)]="siteSettings.email" class="w-full">
+                  <label class="block mb-2 font-medium">{{ 'ADMIN.EMAIL' | translate }}</label>
+                  <input type="text" pInputText [(ngModel)]="siteSettings.email" class="w-full">
                 </div>
               </div>
 
@@ -694,7 +699,8 @@
                 </div>
                 <div class="field mb-3">
                   <label class="block mb-2 font-medium">{{ 'ADMIN.ADDRESS_AR' | translate }}</label>
-                  <textarea pInputTextarea [(ngModel)]="siteSettings.addressAr" rows="3" dir="rtl" class="w-full"></textarea>
+                  <textarea pInputTextarea [(ngModel)]="siteSettings.addressAr" rows="3" dir="rtl"
+                    class="w-full"></textarea>
                 </div>
               </div>
             </div>
@@ -706,18 +712,18 @@
                   <i class="pi pi-cog mr-2"></i> {{ 'ADMIN.GENERAL_CONFIG' | translate }}
                 </h3>
                 <div class="grid">
-                   <div class="col-12 md:col-6">
-                      <label class="block mb-2 font-medium">{{ 'ADMIN.CURRENCY_CODE' | translate }} (e.g., EGP)</label>
-                      <input type="text" pInputText [(ngModel)]="siteSettings.currencyCode" class="w-full">
-                   </div>
-                   <div class="col-12 md:col-6">
-                      <label class="block mb-2 font-medium">{{ 'ADMIN.CURRENCY_SYMBOL' | translate }} (e.g., ج.م)</label>
-                      <input type="text" pInputText [(ngModel)]="siteSettings.currencySymbol" class="w-full">
-                   </div>
+                  <div class="col-12 md:col-6">
+                    <label class="block mb-2 font-medium">{{ 'ADMIN.CURRENCY_CODE' | translate }} (e.g., EGP)</label>
+                    <input type="text" pInputText [(ngModel)]="siteSettings.currencyCode" class="w-full">
+                  </div>
+                  <div class="col-12 md:col-6">
+                    <label class="block mb-2 font-medium">{{ 'ADMIN.CURRENCY_SYMBOL' | translate }} (e.g., ج.م)</label>
+                    <input type="text" pInputText [(ngModel)]="siteSettings.currencySymbol" class="w-full">
+                  </div>
                 </div>
                 <div class="field mt-3">
-                   <label class="block mb-2 font-medium">{{ 'ADMIN.DELIVERY_FEE' | translate }}</label>
-                   <input type="number" pInputText [(ngModel)]="siteSettings.deliveryFee" class="w-full">
+                  <label class="block mb-2 font-medium">{{ 'ADMIN.DELIVERY_FEE' | translate }}</label>
+                  <input type="number" pInputText [(ngModel)]="siteSettings.deliveryFee" class="w-full">
                 </div>
               </div>
 
@@ -726,22 +732,25 @@
                   <i class="pi pi-share-alt mr-2"></i> {{ 'ADMIN.SOCIAL_LINKS' | translate }}
                 </h3>
                 <div class="field mb-3">
-                   <div class="p-inputgroup flex-1">
-                      <span class="p-inputgroup-addon"><i class="pi pi-facebook"></i></span>
-                      <input type="text" pInputText [(ngModel)]="siteSettings.facebookUrl" [placeholder]="'Facebook URL'" class="flex-1 w-full">
-                   </div>
+                  <div class="p-inputgroup flex-1">
+                    <span class="p-inputgroup-addon"><i class="pi pi-facebook"></i></span>
+                    <input type="text" pInputText [(ngModel)]="siteSettings.facebookUrl" [placeholder]="'Facebook URL'"
+                      class="flex-1 w-full">
+                  </div>
                 </div>
                 <div class="field mb-3">
-                   <div class="p-inputgroup flex-1">
-                      <span class="p-inputgroup-addon"><i class="pi pi-instagram"></i></span>
-                      <input type="text" pInputText [(ngModel)]="siteSettings.instagramUrl" [placeholder]="'Instagram URL'" class="flex-1 w-full">
-                   </div>
+                  <div class="p-inputgroup flex-1">
+                    <span class="p-inputgroup-addon"><i class="pi pi-instagram"></i></span>
+                    <input type="text" pInputText [(ngModel)]="siteSettings.instagramUrl"
+                      [placeholder]="'Instagram URL'" class="flex-1 w-full">
+                  </div>
                 </div>
                 <div class="field mb-3">
-                   <div class="p-inputgroup flex-1">
-                      <span class="p-inputgroup-addon"><i class="pi pi-twitter"></i></span>
-                      <input type="text" pInputText [(ngModel)]="siteSettings.twitterUrl" [placeholder]="'Twitter URL'" class="flex-1 w-full">
-                   </div>
+                  <div class="p-inputgroup flex-1">
+                    <span class="p-inputgroup-addon"><i class="pi pi-twitter"></i></span>
+                    <input type="text" pInputText [(ngModel)]="siteSettings.twitterUrl" [placeholder]="'Twitter URL'"
+                      class="flex-1 w-full">
+                  </div>
                 </div>
               </div>
             </div>
@@ -754,26 +763,28 @@
         <div class="flex justify-content-between align-items-center mb-5 flex-wrap gap-3">
           <div>
             <h2 class="m-0 flex align-items-center gap-2">
-              <i class="pi pi-star-fill text-yellow-500"></i> 
+              <i class="pi pi-star-fill text-yellow-500"></i>
               {{ 'GACHA.MANAGEMENT' | translate }}
             </h2>
             <p class="text-dim text-sm mt-1">{{ 'GACHA.MANAGEMENT_DESC' | translate }}</p>
           </div>
           <div class="flex align-items-center gap-3">
             <div class="flex align-items-center gap-2 bg-glass p-2 border-round-lg pr-3">
-              <p-checkbox [(ngModel)]="siteSettings.isLuckyRewardsEnabled" [binary]="true" inputId="isLuckyRewardsEnabled" (onChange)="saveSettings()"></p-checkbox>
-              <label for="isLuckyRewardsEnabled" class="font-bold cursor-pointer">{{ 'GACHA.STATUS' | translate }}: 
+              <p-checkbox [(ngModel)]="siteSettings.isLuckyRewardsEnabled" [binary]="true"
+                inputId="isLuckyRewardsEnabled" (onChange)="saveSettings()"></p-checkbox>
+              <label for="isLuckyRewardsEnabled" class="font-bold cursor-pointer">{{ 'GACHA.STATUS' | translate }}:
                 <span [class]="siteSettings.isLuckyRewardsEnabled ? 'text-green-500' : 'text-red-500'">
                   {{ (siteSettings.isLuckyRewardsEnabled ? 'GACHA.ENABLED' : 'GACHA.DISABLED') | translate }}
                 </span>
               </label>
             </div>
-            <button pButton [label]="'GACHA.ADD_PRIZE' | translate" icon="pi pi-plus" 
-                    class="p-button-raised p-button-rounded p-button-success" (click)="openCreateLuckyPrize()"></button>
+            <button pButton [label]="'GACHA.ADD_PRIZE' | translate" icon="pi pi-plus"
+              class="p-button-raised p-button-rounded p-button-success" (click)="openCreateLuckyPrize()"></button>
           </div>
         </div>
 
-        <p-table [value]="luckyPrizes" [loading]="loadingLucky" [rows]="10" [paginator]="true" class="custom-table shadow-2 border-round-xl">
+        <p-table [value]="luckyPrizes" [loading]="loadingLucky" [rows]="10" [paginator]="true"
+          class="custom-table shadow-2 border-round-xl">
           <ng-template pTemplate="header">
             <tr>
               <th style="width: 25%">{{ 'ADMIN.NAME' | translate }}</th>
@@ -787,13 +798,17 @@
             <tr>
               <td>
                 <div class="flex flex-column gap-1">
-                  <span class="font-bold">{{ translateService.currentLang === 'ar' ? prize.titleAr : prize.title }}</span>
-                  <span class="text-xs text-dim">{{ translateService.currentLang === 'ar' ? prize.descriptionAr : prize.description }}</span>
+                  <span class="font-bold">{{ translateService.currentLang === 'ar' ? prize.titleAr : prize.title
+                    }}</span>
+                  <span class="text-xs text-dim">{{ translateService.currentLang === 'ar' ? prize.descriptionAr :
+                    prize.description }}</span>
                 </div>
               </td>
               <td>
                 <div class="flex align-items-center gap-2">
-                  <div class="w-2rem h-2rem border-circle flex align-items-center justify-content-center border-1 surface-border" [style.background]="prize.color">
+                  <div
+                    class="w-2rem h-2rem border-circle flex align-items-center justify-content-center border-1 surface-border"
+                    [style.background]="prize.color">
                     <i [class]="prize.icon + ' text-white'"></i>
                   </div>
                   <span class="text-xs opacity-60">{{ prize.color }}</span>
@@ -801,7 +816,8 @@
               </td>
               <td class="font-bold">{{ prize.probabilityWeight }}</td>
               <td class="text-center">
-                <i class="pi" [ngClass]="prize.isActive ? 'pi-check-circle text-green-500' : 'pi-times-circle text-red-500'"></i>
+                <i class="pi"
+                  [ngClass]="prize.isActive ? 'pi-check-circle text-green-500' : 'pi-times-circle text-red-500'"></i>
               </td>
               <td class="text-center">
                 <div class="flex justify-content-center gap-2">
@@ -817,107 +833,119 @@
 
         <!-- Lucky Prize Dialog -->
         <!-- Lucky Prize Dialog (Professional Refined) -->
-        <p-dialog [(visible)]="luckyPrizeDialog" 
-                  [header]="(editingLuckyPrize ? 'ADMIN.EDIT' : 'GACHA.ADD_PRIZE_TITLE') | translate" 
-                  [modal]="true" draggable="false" [resizable]="false"
-                  appendTo="body"
-                  styleClass="p-fluid ultimate-admin-dialog lucky-dialog-v9" 
-                  [style]="{width: '600px'}"
-                  [breakpoints]="{'960px': '90vw', '640px': '100vw'}" 
-                  [contentStyle]="{'max-height': '85vh', 'overflow-y': 'auto'}">
-          
+        <p-dialog [(visible)]="luckyPrizeDialog"
+          [header]="(editingLuckyPrize ? 'ADMIN.EDIT' : 'GACHA.ADD_PRIZE_TITLE') | translate" [modal]="true"
+          draggable="false" [resizable]="false" appendTo="body"
+          styleClass="p-fluid ultimate-admin-dialog lucky-dialog-v9" [style]="{width: '600px'}"
+          [breakpoints]="{'960px': '90vw', '640px': '100vw'}"
+          [contentStyle]="{'max-height': '85vh', 'overflow-y': 'auto'}">
+
           <div class="lucky-dialog-content">
-            
+
             <!-- Preview Banner -->
-            <div class="prize-preview-banner" [style.background]="selectedLuckyPrize.color ? selectedLuckyPrize.color + '15' : 'var(--bg-soft)'">
+            <div class="prize-preview-banner"
+              [style.background]="selectedLuckyPrize.color ? selectedLuckyPrize.color + '15' : 'var(--bg-soft)'">
               <div class="preview-icon-wrapper" [style.background]="selectedLuckyPrize.color || 'var(--primary)'">
                 <i [class]="selectedLuckyPrize.icon || 'pi pi-gift'" class="text-white text-2xl"></i>
               </div>
               <h3 class="m-0 text-main font-bold text-center">{{ selectedLuckyPrize.title || 'Golden Prize' }}</h3>
               <div class="flex align-items-center justify-content-center gap-2 mt-3">
-                <p-checkbox [(ngModel)]="selectedLuckyPrize.isActive" [binary]="true" inputId="prizeActive"></p-checkbox>
+                <p-checkbox [(ngModel)]="selectedLuckyPrize.isActive" [binary]="true"
+                  inputId="prizeActive"></p-checkbox>
                 <label for="prizeActive" class="m-0 font-bold text-xs">{{ 'GACHA.IS_ACTIVE' | translate }}</label>
               </div>
             </div>
 
             <!-- Forms -->
             <div class="p-3 md:p-4">
-               
-               <!-- Group: Identity (Stacked) -->
-               <div class="form-group-card mb-4">
-                  <div class="section-badge mb-4">{{ (translateService.currentLang === 'ar' ? 'بيانات الجائزة' : 'Prize Identity') }}</div>
-                  
-                  <div class="field mb-4">
-                     <label class="block mb-2 font-bold text-xs text-dim">{{ 'GACHA.TITLE_EN' | translate }}</label>
-                     <input type="text" pInputText [(ngModel)]="selectedLuckyPrize.title" class="lucky-input" placeholder="e.g. Mega Discount" />
-                  </div>
-                  
-                  <div class="field mb-4">
-                     <label class="block mb-2 font-bold text-xs text-dim" [class.text-right]="translateService.currentLang === 'ar'">{{ 'GACHA.TITLE_AR' | translate }}</label>
-                     <input type="text" pInputText [(ngModel)]="selectedLuckyPrize.titleAr" dir="rtl" class="lucky-input" placeholder="مثلاً: خصم هائل" />
-                  </div>
-                  
-                  <div class="grid">
-                     <div class="col-12 md:col-6 field">
-                        <label class="block mb-2 font-bold text-xs text-dim">{{ 'GACHA.DESC_EN' | translate }}</label>
-                        <textarea pInputTextarea [(ngModel)]="selectedLuckyPrize.description" rows="3" class="lucky-input"></textarea>
-                     </div>
-                     <div class="col-12 md:col-6 field">
-                        <label class="block mb-2 font-bold text-xs text-dim" [class.text-right]="translateService.currentLang === 'ar'">{{ 'GACHA.DESC_AR' | translate }}</label>
-                        <textarea pInputTextarea [(ngModel)]="selectedLuckyPrize.descriptionAr" dir="rtl" rows="3" class="lucky-input"></textarea>
-                     </div>
-                  </div>
-               </div>
 
-               <!-- Group: Configuration (Side-by-Side) -->
-               <div class="form-group-card">
-                  <div class="section-badge mb-4">{{ (translateService.currentLang === 'ar' ? 'الإعدادات الفنية' : 'Technical Config') }}</div>
-                  
-                  <div class="grid">
-                     <div class="col-12 md:col-6 field mb-4">
-                        <label class="block mb-2 font-bold text-xs text-dim">{{ 'GACHA.ICON' | translate }}</label>
-                        <div class="p-inputgroup">
-                           <span class="p-inputgroup-addon"><i [class]="selectedLuckyPrize.icon || 'pi pi-gift'"></i></span>
-                           <input type="text" pInputText [(ngModel)]="selectedLuckyPrize.icon" placeholder="pi pi-ticket" class="lucky-input" />
-                        </div>
-                     </div>
-                     
-                     <div class="col-12 md:col-6 field mb-4">
-                        <label class="block mb-2 font-bold text-xs text-dim">{{ 'GACHA.COLOR' | translate }}</label>
-                        <div class="flex align-items-center gap-2">
-                           <div class="p-inputgroup flex-grow-1">
-                              <span class="p-inputgroup-addon"><i class="pi pi-palette"></i></span>
-                              <input type="text" pInputText [(ngModel)]="selectedLuckyPrize.color" placeholder="#EA4335" class="lucky-input" />
-                           </div>
-                           <p-colorPicker [(ngModel)]="selectedLuckyPrize.color"></p-colorPicker>
-                        </div>
-                     </div>
+              <!-- Group: Identity (Stacked) -->
+              <div class="form-group-card mb-4">
+                <div class="section-badge mb-4">{{ (translateService.currentLang === 'ar' ? 'بيانات الجائزة' : 'Prize
+                  Identity') }}</div>
 
-                     <div class="col-12 field mb-0">
-                        <label class="block mb-2 font-bold text-xs text-dim">{{ 'GACHA.WEIGHT' | translate }}</label>
-                        <div class="flex align-items-center gap-3">
-                           <input type="number" pInputText [(ngModel)]="selectedLuckyPrize.probabilityWeight" class="lucky-input" style="max-width: 120px;" />
-                           <div class="p-2 px-3 bg-black-alpha-10 border-round-lg text-xs opacity-60 flex-grow-1">
-                              {{ (translateService.currentLang === 'ar' ? 'الوزن يحدد نسبة الفوز بالجائزة.' : 'Weight determines winning probability.') }}
-                           </div>
-                        </div>
-                     </div>
+                <div class="field mb-4">
+                  <label class="block mb-2 font-bold text-xs text-dim">{{ 'GACHA.TITLE_EN' | translate }}</label>
+                  <input type="text" pInputText [(ngModel)]="selectedLuckyPrize.title" class="lucky-input"
+                    placeholder="e.g. Mega Discount" />
+                </div>
+
+                <div class="field mb-4">
+                  <label class="block mb-2 font-bold text-xs text-dim"
+                    [class.text-right]="translateService.currentLang === 'ar'">{{ 'GACHA.TITLE_AR' | translate
+                    }}</label>
+                  <input type="text" pInputText [(ngModel)]="selectedLuckyPrize.titleAr" dir="rtl" class="lucky-input"
+                    placeholder="مثلاً: خصم هائل" />
+                </div>
+
+                <div class="grid">
+                  <div class="col-12 md:col-6 field">
+                    <label class="block mb-2 font-bold text-xs text-dim">{{ 'GACHA.DESC_EN' | translate }}</label>
+                    <textarea pInputTextarea [(ngModel)]="selectedLuckyPrize.description" rows="3"
+                      class="lucky-input"></textarea>
                   </div>
-               </div>
+                  <div class="col-12 md:col-6 field">
+                    <label class="block mb-2 font-bold text-xs text-dim"
+                      [class.text-right]="translateService.currentLang === 'ar'">{{ 'GACHA.DESC_AR' | translate
+                      }}</label>
+                    <textarea pInputTextarea [(ngModel)]="selectedLuckyPrize.descriptionAr" dir="rtl" rows="3"
+                      class="lucky-input"></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Group: Configuration (Side-by-Side) -->
+              <div class="form-group-card">
+                <div class="section-badge mb-4">{{ (translateService.currentLang === 'ar' ? 'الإعدادات الفنية' :
+                  'Technical Config') }}</div>
+
+                <div class="grid">
+                  <div class="col-12 md:col-6 field mb-4">
+                    <label class="block mb-2 font-bold text-xs text-dim">{{ 'GACHA.ICON' | translate }}</label>
+                    <div class="p-inputgroup">
+                      <span class="p-inputgroup-addon"><i [class]="selectedLuckyPrize.icon || 'pi pi-gift'"></i></span>
+                      <input type="text" pInputText [(ngModel)]="selectedLuckyPrize.icon" placeholder="pi pi-ticket"
+                        class="lucky-input" />
+                    </div>
+                  </div>
+
+                  <div class="col-12 md:col-6 field mb-4">
+                    <label class="block mb-2 font-bold text-xs text-dim">{{ 'GACHA.COLOR' | translate }}</label>
+                    <div class="flex align-items-center gap-2">
+                      <div class="p-inputgroup flex-grow-1">
+                        <span class="p-inputgroup-addon"><i class="pi pi-palette"></i></span>
+                        <input type="text" pInputText [(ngModel)]="selectedLuckyPrize.color" placeholder="#EA4335"
+                          class="lucky-input" />
+                      </div>
+                      <p-colorPicker [(ngModel)]="selectedLuckyPrize.color"></p-colorPicker>
+                    </div>
+                  </div>
+
+                  <div class="col-12 field mb-0">
+                    <label class="block mb-2 font-bold text-xs text-dim">{{ 'GACHA.WEIGHT' | translate }}</label>
+                    <div class="flex align-items-center gap-3">
+                      <input type="number" pInputText [(ngModel)]="selectedLuckyPrize.probabilityWeight"
+                        class="lucky-input" style="max-width: 120px;" />
+                      <div class="p-2 px-3 bg-black-alpha-10 border-round-lg text-xs opacity-60 flex-grow-1">
+                        {{ (translateService.currentLang === 'ar' ? 'الوزن يحدد نسبة الفوز بالجائزة.' : 'Weight
+                        determines winning probability.') }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
             </div>
           </div>
 
           <ng-template pTemplate="footer">
             <div class="flex justify-content-end gap-3 p-4 bg-deep">
-              <button pButton [label]="'ADMIN.CANCEL' | translate" 
-                      class="p-button-text p-button-secondary font-bold" 
-                      (click)="luckyPrizeDialog = false"></button>
-              
-              <button pButton [label]="'ADMIN.SAVE' | translate" 
-                      [icon]="savingLuckyPrize ? 'pi pi-spin pi-spinner' : 'pi pi-check'" 
-                      class="p-button-success px-6 font-bold shadow-4 border-round-xl" 
-                      (click)="saveLuckyPrize()"></button>
+              <button pButton [label]="'ADMIN.CANCEL' | translate" class="p-button-text p-button-secondary font-bold"
+                (click)="luckyPrizeDialog = false"></button>
+
+              <button pButton [label]="'ADMIN.SAVE' | translate"
+                [icon]="savingLuckyPrize ? 'pi pi-spin pi-spinner' : 'pi pi-check'"
+                class="p-button-success px-6 font-bold shadow-4 border-round-xl" (click)="saveLuckyPrize()"></button>
             </div>
           </ng-template>
         </p-dialog>
@@ -1003,8 +1031,8 @@
       </div>
     </div>
     <div class="field flex align-items-center gap-2 mb-3">
-        <p-checkbox [(ngModel)]="selectedProduct.isHidden" [binary]="true" inputId="productHidden"></p-checkbox>
-        <label for="productHidden">{{ 'ADMIN.HIDE_FROM_STORE' | translate }}</label>
+      <p-checkbox [(ngModel)]="selectedProduct.isHidden" [binary]="true" inputId="productHidden"></p-checkbox>
+      <label for="productHidden">{{ 'ADMIN.HIDE_FROM_STORE' | translate }}</label>
     </div>
     <div class="field mb-4">
       <label for="desc" class="font-bold block mb-2">{{ 'ADMIN.DESCRIPTION_EN' | translate }} <span
@@ -1022,11 +1050,8 @@
   <ng-template pTemplate="footer">
     <button pButton label="{{ 'ADMIN.CANCEL' | translate }}" icon="pi pi-times" class="p-button-text"
       (click)="productDialogVisible = false"></button>
-    <button pButton label="{{ 'ADMIN.SAVE' | translate }}" 
-      [icon]="savingProduct ? 'pi pi-spin pi-spinner' : 'pi pi-check'" 
-      [loading]="savingProduct"
-      [disabled]="savingProduct || uploadingImage"
-      class="p-button-warning"
-      (click)="saveProduct()"></button>
+    <button pButton label="{{ 'ADMIN.SAVE' | translate }}"
+      [icon]="savingProduct ? 'pi pi-spin pi-spinner' : 'pi pi-check'" [loading]="savingProduct"
+      [disabled]="savingProduct || uploadingImage" class="p-button-warning" (click)="saveProduct()"></button>
   </ng-template>
 </p-dialog>
