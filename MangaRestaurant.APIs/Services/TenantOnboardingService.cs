@@ -62,7 +62,18 @@ namespace MangaRestaurant.APIs.Services
                 await using (var storeCtx = new StoreContext(storeOptions))
                 {
                     await storeCtx.Database.MigrateAsync();
-                    await StoreContextSeed.SeedAsync(storeCtx); // Insert default products/categories 
+                    await StoreContextSeed.SeedAsync(storeCtx); 
+
+                    // Update Settings with the actual Tenant Names from DTO
+                    var settings = await storeCtx.SiteSettings.OrderByDescending(s => s.Id).FirstOrDefaultAsync();
+                    if (settings != null)
+                    {
+                        settings.RestaurantName = dto.Name;
+                        settings.RestaurantNameAr = dto.NameAr;
+                        settings.Email = dto.AdminEmail;
+                        storeCtx.SiteSettings.Update(settings);
+                        await storeCtx.SaveChangesAsync();
+                    }
                 }
 
                 // 4. Migrate Identity DB
@@ -76,7 +87,7 @@ namespace MangaRestaurant.APIs.Services
                     await identityCtx.Database.MigrateAsync();
                 }
 
-                // 5. Seed Identity DB (Roles, Default users, and Tenant Admin)
+                // 5. Seed Identity DB (Only Roles and the specific Tenant Admin)
                 await SeedIdentityDbAsync(identityConn, dto);
 
                 // 6. Record Tenant in SaaS Control
@@ -101,7 +112,8 @@ namespace MangaRestaurant.APIs.Services
                 {
                     EventType = "TenantCreated",
                     Description = $"Created new tenant: {tenant.Slug}",
-                    PerformedBy = "System"
+                    PerformedBy = "System",
+                    Timestamp = DateTime.UtcNow
                 });
 
                 await _saasDb.SaveChangesAsync();
@@ -118,7 +130,6 @@ namespace MangaRestaurant.APIs.Services
 
         private async Task SeedIdentityDbAsync(string connectionString, CreateTenantDto dto)
         {
-            // Create a dedicated DI container to resolve Identity managers locally for this DB
             var services = new ServiceCollection();
             services.AddLogging();
             services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(connectionString));
@@ -131,27 +142,30 @@ namespace MangaRestaurant.APIs.Services
             var userManager = provider.GetRequiredService<UserManager<AppUser>>();
             var roleManager = provider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            // 1. Seed base roles and generic users
-            await AppIdentityDbContextSeed.SeedUserAsync(userManager, roleManager);
+            // 1. Create essential roles only from Enum
+            foreach (var role in Enum.GetNames(typeof(AppUserRoles)))
+            {
+                if (role == AppUserRoles.SuperAdmin.ToString()) continue; // Skip SuperAdmin in regular tenants
 
-            // 2. Add the specific admin for this tenant
+                if (!await roleManager.RoleExistsAsync(role))
+                    await roleManager.CreateAsync(new IdentityRole(role));
+            }
+
+            // 2. Add the specific admin for this tenant only
             if (!await userManager.Users.AnyAsync(u => u.Email == dto.AdminEmail))
             {
                 var adminUser = new AppUser 
                 { 
                     DisplayName = dto.AdminName, 
-                    UserName = dto.AdminEmail.Split('@')[0], // safe username
+                    UserName = dto.AdminEmail, 
                     Email = dto.AdminEmail,
-                    PhoneNumber = "0000000000"
+                    PhoneNumber = "0112345678" 
                 };
 
                 var result = await userManager.CreateAsync(adminUser, dto.AdminPassword);
                 if (result.Succeeded)
                 {
-                    if (!await roleManager.RoleExistsAsync("Admin"))
-                        await roleManager.CreateAsync(new IdentityRole("Admin"));
-                        
-                    await userManager.AddToRoleAsync(adminUser, "Admin");
+                    await userManager.AddToRoleAsync(adminUser, AppUserRoles.Admin.ToString());
                 }
             }
         }

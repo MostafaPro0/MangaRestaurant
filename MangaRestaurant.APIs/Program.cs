@@ -69,7 +69,7 @@ namespace MangaRestaurant.APIs
                     options.AllowAnyHeader();
                     options.AllowAnyMethod();
                     options.AllowCredentials();
-                    options.WithOrigins(builder.Configuration["FrontBaseURL"] ?? "http://localhost:4200");
+                    options.SetIsOriginAllowed(origin => new Uri(origin).Host.EndsWith("localhost"));
                 });
             });
             #endregion
