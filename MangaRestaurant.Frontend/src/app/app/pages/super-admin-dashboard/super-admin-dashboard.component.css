@@ -1,89 +1,141 @@
-/* Premium Super Admin Dashboard Styling */
-
-:host ::ng-deep .custom-admin-dialog .p-dialog-header {
-    background: linear-gradient(to right, #f8fafc, #ffffff);
+/* Premium SAAS Dialog Styling */
+:host ::ng-deep .premium-saas-dialog .p-dialog-header {
+    background: #ffffff;
     border-bottom: 1px solid #f1f5f9;
-    padding: 1.5rem;
+    padding: 1.5rem 2rem;
+    color: #1e293b;
 }
 
-:host ::ng-deep .custom-admin-dialog .p-dialog-content {
-    padding: 1.5rem;
-    overflow-y: visible;
+:host ::ng-deep .premium-saas-dialog .p-dialog-content {
+    background: #f8fafc;
+    padding: 2rem;
 }
 
-.modal-form-container {
+.premium-form-layout {
     display: flex;
     flex-direction: column;
 }
 
-.form-section {
-    position: relative;
-    padding: 0.5rem 0;
+.form-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
-.section-badge {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    background: #fdfdfd;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.card-header .header-icon {
+    font-size: 1.5rem;
+    color: #3b82f6;
     background: #eff6ff;
-    color: #2563eb;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border: 1px solid #dbeafe;
+    padding: 0.75rem;
+    border-radius: 10px;
 }
 
-.section-badge.secondary {
-    background: #fff7ed;
-    color: #ea580c;
-    border-color: #ffedd5;
+.card-header.secondary .header-icon {
+    color: #f59e0b;
+    background: #fffbeb;
 }
 
-.premium-input {
-    border-radius: 8px !important;
-    padding: 0.75rem !important;
-    border: 1px solid #e2e8f0 !important;
-    transition: all 0.2s ease;
-    background: #fcfcfc !important;
+.header-text h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
 }
 
-.premium-input:focus {
-    border-color: #3b82f6 !important;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
-    background: #fff !important;
+.header-text p {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin: 0.25rem 0 0;
 }
 
-.ltr-group {
+.card-body {
+    padding: 1.5rem;
+}
+
+.field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.field-group label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+/* Slug Input Styling - Forced LTR */
+.slug-input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #cbd5e1;
     border-radius: 8px;
     overflow: hidden;
+    background: #fcfcfc;
+    transition: all 0.2s;
 }
 
-:host ::ng-deep .p-inputgroup-addon {
+.slug-input-wrapper:focus-within {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.slug-input-wrapper .prefix {
+    padding: 0 0.75rem;
+    color: #94a3b8;
     background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    color: #64748b;
-    font-size: 0.875rem;
+    border-right: 1px solid #e2e8f0;
+    line-height: 2.5rem;
 }
 
-/* RTL Specific fixes for input groups if needed */
-[dir="rtl"] .p-inputgroup > .p-inputtext:not(:first-child) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+.slug-input-wrapper .suffix {
+    padding: 0 0.75rem;
+    color: #3b82f6;
+    font-weight: 700;
+    background: #f8fafc;
+    border-left: 1px solid #e2e8f0;
+    line-height: 2.5rem;
 }
 
-[dir="rtl"] .p-inputgroup > .p-inputtext:not(:last-child) {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+.slug-input-wrapper .slug-input {
+    flex: 1;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0.5rem 0.75rem !important;
+    font-weight: bold;
+    color: #1e293b;
 }
 
-/* Global table tweaks for Super Admin */
-:host ::ng-deep .p-datatable-striped .p-datatable-tbody > tr:nth-child(even) {
-    background-color: #f8fafc;
+.help-text {
+    font-size: 0.75rem;
+    color: #ef4444;
+    margin-top: 0.25rem;
 }
 
-:host ::ng-deep .p-tag {
-    border-radius: 6px;
-    font-weight: 600;
-    padding: 0.25rem 0.6rem;
+.footer-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+:host ::ng-deep [dir="rtl"] .slug-input-wrapper .prefix {
+    border-right: none;
+    border-left: 1px solid #e2e8f0;
+}
+
+:host ::ng-deep [dir="rtl"] .slug-input-wrapper .suffix {
+    border-left: none;
+    border-right: 1px solid #e2e8f0;
 }

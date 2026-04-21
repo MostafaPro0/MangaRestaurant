@@ -51,84 +51,86 @@
 
 <!-- Create Tenant Dialog -->
 <p-dialog [header]="'SUPER_ADMIN.MODAL_TITLE' | translate" [(visible)]="displayCreateDialog" [modal]="true" 
-          [style]="{ 'max-width': '650px', 'width': '95%' }" [draggable]="false" [resizable]="false"
-          styleClass="custom-admin-dialog">
+          [style]="{ 'width': '800px', 'max-width': '95vw' }" [draggable]="false" [resizable]="false"
+          styleClass="premium-saas-dialog">
   
-  <form [formGroup]="createForm" (ngSubmit)="onSubmit()" class="modal-form-container" [dir]="currentLang === 'ar' ? 'rtl' : 'ltr'">
+  <form [formGroup]="createForm" (ngSubmit)="onSubmit()" class="premium-form-layout" [dir]="currentLang === 'ar' ? 'rtl' : 'ltr'">
     
-    <!-- Section 1: Business Info -->
-    <div class="form-section">
-      <div class="section-badge">{{ currentLang === 'ar' ? 'بيانات المطعم' : 'Restaurant Details' }}</div>
-      
-      <div class="flex flex-col md:flex-row gap-4 mt-4">
-        <div class="flex-1 flex flex-col gap-2">
-          <label class="font-semibold text-gray-600 dark:text-gray-400 text-sm">
-            <i class="pi pi-id-card mr-1 ml-1 text-primary-500"></i> {{ 'SUPER_ADMIN.NAME_EN' | translate }}
-          </label>
-          <input pInputText formControlName="name" placeholder="E.g., KFC" class="w-full premium-input" />
-        </div>
-        <div class="flex-1 flex flex-col gap-2">
-          <label class="font-semibold text-gray-600 dark:text-gray-400 text-sm">
-            <i class="pi pi-id-card mr-1 ml-1 text-primary-500"></i> {{ 'SUPER_ADMIN.NAME_AR' | translate }}
-          </label>
-          <input pInputText formControlName="nameAr" placeholder="E.g., كنتاكي" class="w-full premium-input" />
+    <!-- Step 1: Restaurant Identity -->
+    <div class="form-card">
+      <div class="card-header">
+        <i class="pi pi-building header-icon"></i>
+        <div class="header-text">
+          <h3>{{ currentLang === 'ar' ? 'هوية المطعم الجديد' : 'Restaurant Identity' }}</h3>
+          <p>{{ currentLang === 'ar' ? 'أدخل البيانات الأساسية ورابط النظام للمطعم' : 'Enter basic details and system URL for the restaurant' }}</p>
         </div>
       </div>
 
-      <div class="flex flex-col gap-2 mt-4">
-        <label class="font-semibold text-gray-600 dark:text-gray-400 text-sm">
-          <i class="pi pi-globe mr-1 ml-1 text-primary-500"></i> {{ 'SUPER_ADMIN.SLUG' | translate }}
-        </label>
-        <div class="p-inputgroup ltr-group" dir="ltr">
-          <span class="p-inputgroup-addon bg-gray-50 text-primary-600 font-bold">@</span>
-          <input type="text" pInputText formControlName="slug" placeholder="kfc" class="font-mono" />
-          <span class="p-inputgroup-addon">.manga.com</span>
-        </div>
-        <small class="text-red-500" *ngIf="createForm.get('slug')?.touched && createForm.get('slug')?.hasError('pattern')">
-          {{ currentLang === 'ar' ? 'يجب استخدام أحرف إنجليزية صغيرة وأرقام فقط' : 'Use lowercase English letters and numbers only.' }}
-        </small>
-      </div>
-    </div>
-
-    <div class="my-6 border-t border-dashed border-gray-200 dark:border-gray-700"></div>
-
-    <!-- Section 2: Admin Account -->
-    <div class="form-section">
-      <div class="section-badge secondary">{{ currentLang === 'ar' ? 'حساب المدير الأساسي' : 'Primary Admin Account' }}</div>
-
-      <div class="flex flex-col gap-4 mt-4">
-        <div class="flex flex-col gap-2">
-          <label class="font-semibold text-gray-600 dark:text-gray-400 text-sm">
-             <i class="pi pi-envelope mr-1 ml-1 text-orange-500"></i> {{ 'SUPER_ADMIN.ADMIN_EMAIL' | translate }}
-          </label>
-          <input pInputText type="email" formControlName="adminEmail" placeholder="admin@brand.com" class="w-full premium-input" />
+      <div class="card-body">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="field-group">
+            <label>{{ 'SUPER_ADMIN.NAME_EN' | translate }}</label>
+            <input pInputText formControlName="name" placeholder="E.g. Shonen Ramen" class="w-full" />
+          </div>
+          <div class="field-group">
+            <label>{{ 'SUPER_ADMIN.NAME_AR' | translate }}</label>
+            <input pInputText formControlName="nameAr" placeholder="مثال: شونين رامن" class="w-full" />
+          </div>
         </div>
 
-        <div class="flex flex-col md:flex-row gap-4">
-          <div class="flex-1 flex flex-col gap-2">
-            <label class="font-semibold text-gray-600 dark:text-gray-400 text-sm">
-              <i class="pi pi-user mr-1 ml-1 text-orange-500"></i> {{ 'SUPER_ADMIN.ADMIN_FULL_NAME' | translate }}
-            </label>
-            <input pInputText formControlName="adminName" placeholder="Full Name" class="w-full premium-input" />
+        <div class="field-group mt-6">
+          <label>{{ 'SUPER_ADMIN.SLUG' | translate }}</label>
+          <div class="slug-input-wrapper" dir="ltr">
+             <span class="prefix">https://</span>
+             <input type="text" pInputText formControlName="slug" placeholder="slug" class="slug-input" />
+             <span class="suffix">.manga.com</span>
           </div>
-          <div class="flex-1 flex flex-col gap-2">
-            <label class="font-semibold text-gray-600 dark:text-gray-400 text-sm">
-              <i class="pi pi-lock mr-1 ml-1 text-orange-500"></i> {{ 'SUPER_ADMIN.PASSWORD' | translate }}
-            </label>
-            <p-password formControlName="adminPassword" [toggleMask]="true" styleClass="w-full" inputStyleClass="w-full premium-input"></p-password>
-          </div>
+          <small class="help-text" *ngIf="createForm.get('slug')?.hasError('pattern')">
+            {{ currentLang === 'ar' ? 'استخدم أحرف إنجليزية صغيرة وأرقام فقط (بدون مسافات)' : 'Use lowercase English letters and numbers only (no spaces).' }}
+          </small>
         </div>
       </div>
     </div>
 
-    <!-- Footer Actions -->
-    <div class="flex justify-end gap-3 mt-8 p-4 bg-gray-50 dark:bg-gray-900/50 -mx-6 -mb-6 rounded-b-lg border-t border-gray-100 dark:border-gray-800"
-         [class.flex-row-reverse]="currentLang === 'ar'">
+    <!-- Step 2: Ownership -->
+    <div class="form-card mt-6">
+      <div class="card-header secondary">
+        <i class="pi pi-user-plus header-icon"></i>
+        <div class="header-text">
+          <h3>{{ currentLang === 'ar' ? 'حساب المدير (Owner)' : 'Owner Account' }}</h3>
+          <p>{{ currentLang === 'ar' ? 'هذا الحساب سيكون له كامل الصلاحيات لإدارة هذا المطعم' : 'This account will have full permissions to manage this restaurant' }}</p>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="field-group">
+          <label>{{ 'SUPER_ADMIN.ADMIN_EMAIL' | translate }}</label>
+          <div class="p-input-icon-left w-full">
+            <i class="pi pi-envelope"></i>
+            <input pInputText type="email" formControlName="adminEmail" placeholder="admin@example.com" class="w-full" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div class="field-group">
+            <label>{{ 'SUPER_ADMIN.ADMIN_FULL_NAME' | translate }}</label>
+            <input pInputText formControlName="adminName" placeholder="Full Name" class="w-full" />
+          </div>
+          <div class="field-group">
+            <label>{{ 'SUPER_ADMIN.PASSWORD' | translate }}</label>
+            <p-password formControlName="adminPassword" [toggleMask]="true" styleClass="w-full" inputStyleClass="w-full" placeholder="••••••••"></p-password>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary & Actions -->
+    <div class="footer-actions mt-8">
       <p-button [label]="'SUPER_ADMIN.CANCEL' | translate" severity="secondary" [text]="true" (click)="hideCreateDialog()" [disabled]="creating"></p-button>
       <p-button [label]="'SUPER_ADMIN.PROVISION_BTN' | translate" 
                 type="submit" 
-                icon="pi pi-database"
-                styleClass="p-button-raised p-button-primary px-6"
+                icon="pi pi-plus-circle"
+                class="provision-btn"
                 [disabled]="createForm.invalid || creating" 
                 [loading]="creating"></p-button>
     </div>
