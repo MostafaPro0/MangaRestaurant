@@ -92,6 +92,10 @@ namespace MangaRestaurant.APIs
 
                 // Note: StoreContext and AppIdentityDbContext are now tenant-specific
                 // Migrations for them will be handled later via an admin endpoint.
+                // Seed the Platform Identity (Super Admin)
+                var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                await AppIdentityDbContextSeed.SeedUserAsync(userManager, roleManager);
             }
             catch (Exception ex)
             {

@@ -139,35 +139,8 @@ namespace MangaRestaurant.APIs.Services
                 .AddDefaultTokenProviders();
 
             using var provider = services.BuildServiceProvider();
-            var userManager = provider.GetRequiredService<UserManager<AppUser>>();
-            var roleManager = provider.GetRequiredService<RoleManager<IdentityRole>>();
-
-            // 1. Create essential roles only from Enum
-            foreach (var role in Enum.GetNames(typeof(AppUserRoles)))
-            {
-                if (role == AppUserRoles.SuperAdmin.ToString()) continue; // Skip SuperAdmin in regular tenants
-
-                if (!await roleManager.RoleExistsAsync(role))
-                    await roleManager.CreateAsync(new IdentityRole(role));
-            }
-
-            // 2. Add the specific admin for this tenant only
-            if (!await userManager.Users.AnyAsync(u => u.Email == dto.AdminEmail))
-            {
-                var adminUser = new AppUser 
-                { 
-                    DisplayName = dto.AdminName, 
-                    UserName = dto.AdminEmail, 
-                    Email = dto.AdminEmail,
-                    PhoneNumber = "0112345678" 
-                };
-
-                var result = await userManager.CreateAsync(adminUser, dto.AdminPassword);
-                if (result.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(adminUser, AppUserRoles.Admin.ToString());
-                }
-            }
+            // 1. Seed Roles and the Tenant's Admin using the centralized clean method
+            await AppIdentityDbContextSeed.SeedNewTenantAsync(userManager, roleManager, dto.AdminName, dto.AdminEmail, dto.AdminPassword);
         }
     }
 }
