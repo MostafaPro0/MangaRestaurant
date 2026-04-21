@@ -22,6 +22,7 @@ import { NotificationService } from './app/services/notification.service';
 import { SettingsService } from './app/services/settings.service';
 import { User } from './app/models/user.model';
 import { SiteSettings } from './app/models/site-settings.model';
+import { TenantService } from './app/services/tenant.service';
 
 @Component({
   selector: 'app-root',
@@ -53,6 +54,8 @@ export class AppComponent {
   notifications = signal<any[]>([]);
   mobileMenuOpened = signal(false);
   settings$! : Observable<SiteSettings | null>;
+  showStoreLayout = signal(true);
+  isPlatformMode = signal(false);
 
   profileMenuItems: MenuItem[] = [];
 
@@ -64,17 +67,20 @@ export class AppComponent {
     public notificationService: NotificationService,
     private settingsService: SettingsService,
     private titleService: Title,
-    private metaService: Meta
+    private metaService: Meta,
+    private tenantService: TenantService
   ) {
+    this.isPlatformMode.set(this.tenantService.isPlatform());
     this.settings$ = this.settingsService.settings$;
     this.settingsService.loadSettings();
     this.notificationService.createHubConnection();
 
-    // Listen to router events for Dynamic Titles and SEO
+    // Listen to router events for Layout Switching and SEO
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.updatePageInfo();
+      this.checkLayout();
     });
 
     // Listen to language changes
@@ -218,6 +224,15 @@ export class AppComponent {
 
   logout(): void {
     this.auth.logout();
+  }
+
+  checkLayout(): void {
+    const url = this.router.url;
+    const isLanding = url === '/landing' || (url === '/' && this.isPlatformMode());
+    const isSuperAdmin = url.includes('/super-admin');
+    
+    // Hide store navbar/footer for landing pages and super admin dashboard
+    this.showStoreLayout.set(!isLanding && !isSuperAdmin);
   }
 
   getProfilePicUrl(url?: string): string {

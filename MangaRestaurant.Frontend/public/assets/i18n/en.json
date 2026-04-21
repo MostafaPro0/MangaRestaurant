@@ -14,7 +14,8 @@
     "DASHBOARD": "Dashboard",
     "DINE_IN": "Dine-in Order",
     "DELIVERY": "My Deliveries",
-    "GACHA": "Lucky Rewards"
+    "GACHA": "Lucky Rewards",
+    "PLATFORM_HOME": "Platform Home"
   },
   "HOME": {
     "BADGE": "Premium Japanese Restaurant",
@@ -502,5 +503,27 @@
     "LOADING": "Loading Tenants...",
     "NAME_EN": "Name (En)",
     "NAME_AR": "Name (Ar)"
+  },
+  "LANDING": {
+    "HERO_TITLE": "Complete <span>Restaurant Management</span> Platform",
+    "HERO_SUBTITLE": "Launch your restaurant online in minutes. Scale your business with the ultimate SaaS management solution.",
+    "GET_STARTED": "Get Started",
+    "VIEW_PRICING": "View Pricing",
+    "WHY_CHOOSE_US": "Why Choose Us?",
+    "FEATURE_1_TITLE": "Cloud Power",
+    "FEATURE_1_DESC": "Global infrastructure ensuring maximum uptime and speed for your restaurant site.",
+    "FEATURE_2_TITLE": "Smart POS System",
+    "FEATURE_2_DESC": "Integrated Point of Sale system for seamless order management.",
+    "FEATURE_3_TITLE": "Deep Analytics",
+    "FEATURE_3_DESC": "Advanced reports to help you understand your customers and grow your sales.",
+    "PRICING_TITLE": "Transparent Pricing",
+    "PRICING_SUBTITLE": "Choose the plan that fits your business scale.",
+    "MOST_POPULAR": "Most Popular",
+    "SUBSCRIBE_NOW": "Subscribe Now",
+    "FREE_PLAN": "Free Plan",
+    "PRO_PLAN": "Pro Plan",
+    "ENTERPRISE_PLAN": "Enterprise Plan",
+    "PARTNERS_TITLE": "Our Partners",
+    "PARTNERS_SUBTITLE": "Live restaurants currently using our platform to grow their business."
   }
 }

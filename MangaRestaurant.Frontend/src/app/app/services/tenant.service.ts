@@ -7,33 +7,41 @@ export class TenantService {
   constructor() {}
 
   /**
-   * Retrieves the current tenant's slug.
-   * Logic:
-   * 1. Check Subdomain (e.g. kfc.yoursaas.com -> kfc)
-   * 2. Fallback to a hardcoded local development tenant ('demo' or 'kfc')
-   *    In production, this fallback can be removed or used for the landing page.
+   * Identifies the current tenant based on the URL.
+   * Returns:
+   * - 'slug' (string) if a valid restaurant subdomain is found.
+   * - null if we are on the main domain (Landing Page / Platform).
    */
-  getTenantSlug(): string {
+  getTenantSlug(): string | null {
     const host = window.location.hostname;
-    
-    // For localhost development (e.g. localhost:4200),
-    // you can configure your etc/hosts to map to kfc.localhost or just fallback here.
+    const parts = host.split('.');
+
+    // Handle Localhost Development
+    // kfc.localhost -> parts = ['kfc', 'localhost']
+    if (parts.length === 2 && parts[1] === 'localhost') {
+        return parts[0];
+    }
     if (host === 'localhost' || host === '127.0.0.1') {
-      // You can change 'demo' to the slug of a DB you created during testing.
-      // E.g., 'manga', 'demo', etc.
-      return 'manga'; 
+        return null; // Localhost without subdomain is the PLATFORM
     }
 
-    const parts = host.split('.');
-    
-    // Assuming structure: tenant.domain.com (3 parts minimum for valid subdomain extraction)
+    // Handle Production Domains (e.g., manga.com, kfc.manga.com)
     if (parts.length >= 3) {
-      if (parts[0] !== 'www' && parts[0] !== 'api') {
-        return parts[0];
+      const subdomain = parts[0];
+      // Skip common technical subdomains
+      if (subdomain !== 'www' && subdomain !== 'api' && subdomain !== 'admin-control') {
+        return subdomain;
       }
     }
 
-    // Default fallback if no subdomain is present (you might want to return null and handle redirect later)
-    return 'manga';
+    // Default: Main Domain (Platform)
+    return null;
+  }
+
+  /**
+   * Returns true if the current visitor is on the main platform domain.
+   */
+  isPlatform(): boolean {
+    return this.getTenantSlug() === null;
   }
 }

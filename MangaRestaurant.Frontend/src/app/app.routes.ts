@@ -9,7 +9,22 @@ import { luckyRewardsGuard } from './app/guards/lucky-rewards.guard';
 import { superAdminGuard } from './app/guards/super-admin.guard';
 
 export const routes: Route[] = [
-  { path: '', pathMatch: 'full', loadComponent: () => import('./app/pages/home/home.component').then(m => m.HomeComponent) },
+  { 
+    path: 'landing', 
+    loadComponent: () => import('./app/pages/landing-page/landing-page.component').then(m => m.LandingPageComponent) 
+  },
+  { 
+    path: '', 
+    pathMatch: 'full', 
+    loadComponent: () => {
+        const host = window.location.hostname;
+        const reflectsSubdomain = (host.split('.').length >= (host.endsWith('localhost') ? 2 : 3));
+        if (!reflectsSubdomain || host.startsWith('www.')) {
+            return import('./app/pages/landing-page/landing-page.component').then(m => m.LandingPageComponent);
+        }
+        return import('./app/pages/home/home.component').then(m => m.HomeComponent);
+    }
+  },
   { path: 'products', loadComponent: () => import('./app/pages/products/products.component').then(m => m.ProductsComponent) },
   { path: 'products/:id', loadComponent: () => import('./app/pages/product-details/product-details.component').then(m => m.ProductDetailsComponent) },
   { path: 'basket', loadComponent: () => import('./app/pages/basket/basket.component').then(m => m.BasketComponent) },
