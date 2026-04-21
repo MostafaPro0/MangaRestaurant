@@ -113,7 +113,7 @@ namespace MangaRestaurant.APIs.Services
                     EventType = "TenantCreated",
                     Description = $"Created new tenant: {tenant.Slug}",
                     PerformedBy = "System",
-                    Timestamp = DateTime.UtcNow
+                    CreatedAt = DateTime.UtcNow
                 });
 
                 await _saasDb.SaveChangesAsync();
@@ -139,6 +139,9 @@ namespace MangaRestaurant.APIs.Services
                 .AddDefaultTokenProviders();
 
             using var provider = services.BuildServiceProvider();
+            var userManager = provider.GetRequiredService<UserManager<AppUser>>();
+            var roleManager = provider.GetRequiredService<RoleManager<IdentityRole>>();
+
             // 1. Seed Roles and the Tenant's Admin using the centralized clean method
             await AppIdentityDbContextSeed.SeedNewTenantAsync(userManager, roleManager, dto.AdminName, dto.AdminEmail, dto.AdminPassword);
         }
