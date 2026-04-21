@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { TenantService } from './tenant.service';
 
 export interface DeliveryLocation {
   orderId:   string;
@@ -13,6 +14,8 @@ export interface DeliveryLocation {
 
 @Injectable({ providedIn: 'root' })
 export class DeliveryTrackingService {
+  constructor(private tenantService: TenantService) {}
+  
   private hubConnection?: signalR.HubConnection;
   private readonly hubUrl = `${environment.apiUrl.replace('/api', '')}/hub/delivery`;
 
@@ -26,7 +29,7 @@ export class DeliveryTrackingService {
     if (this.hubConnection) await this.stopTracking(orderId);
 
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(this.hubUrl, {
+      .withUrl(`${this.hubUrl}?tenant=${this.tenantService.getTenantSlug()}`, {
         accessTokenFactory: () => token,
         transport: signalR.HttpTransportType.WebSockets |
                    signalR.HttpTransportType.ServerSentEvents |

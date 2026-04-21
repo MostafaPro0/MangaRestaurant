@@ -12,6 +12,7 @@ namespace MangaRestaurant.Repository.Identity
     {
         public static async Task SeedUserAsync(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+            var superAdminRoleName = "SuperAdmin";
             var adminRoleName = "Admin";
             var userRoleName = "User";
 
@@ -19,7 +20,7 @@ namespace MangaRestaurant.Repository.Identity
             var deliveryRoleName = "Delivery";
             var waiterRoleName = "Waiter";
 
-            var roles = new List<string> { adminRoleName, userRoleName, cashierRoleName, deliveryRoleName, waiterRoleName };
+            var roles = new List<string> { superAdminRoleName, adminRoleName, userRoleName, cashierRoleName, deliveryRoleName, waiterRoleName };
 
             foreach (var role in roles)
             {
@@ -46,6 +47,7 @@ namespace MangaRestaurant.Repository.Identity
                 if (createResult.Succeeded)
                 {
                     await userManager.AddToRoleAsync(adminUser, adminRoleName);
+                    await userManager.AddToRoleAsync(adminUser, superAdminRoleName);
                 }
             }
 
@@ -85,6 +87,7 @@ namespace MangaRestaurant.Repository.Identity
                 if (fallbackResult.Succeeded)
                 {
                     await userManager.AddToRoleAsync(fallbackAdmin, adminRoleName);
+                    await userManager.AddToRoleAsync(fallbackAdmin, superAdminRoleName);
                 }
             }
         }

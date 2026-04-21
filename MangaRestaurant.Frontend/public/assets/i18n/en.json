@@ -476,5 +476,31 @@
     "ICON_COLOR": "Icon & Color",
     "DESCRIPTION": "Description",
     "IS_ACTIVE": "Is Active"
+  },
+  "SUPER_ADMIN": {
+    "DASHBOARD": "Central Platform Dashboard",
+    "ADD_TENANT": "Provision New Tenant",
+    "RESTAURANT_NAME": "Restaurant Name",
+    "RESTAURANT_NAME_AR": "Restaurant Name (Ar)",
+    "SLUG": "Subdomain Slug",
+    "PLAN": "Subscription Plan",
+    "STATUS": "Status",
+    "CREATED_AT": "Joined Date",
+    "ACTIONS": "Actions",
+    "ACTIVE": "Active",
+    "SUSPENDED": "Suspended",
+    "DEACTIVATE_CONFIRM": "Are you sure you want to deactivate tenant:",
+    "SUCCESS_CREATE": "Tenant Database Provisioned Successfully",
+    "ERROR_CREATE": "Failed to provision tenant",
+    "MODAL_TITLE": "Provision New Tenant Database",
+    "ADMIN_EMAIL": "Admin Email",
+    "ADMIN_FULL_NAME": "Admin Full Name",
+    "PASSWORD": "Password",
+    "PROVISION_BTN": "Provision Database & Seed",
+    "CANCEL": "Cancel",
+    "EMPTY": "No tenants found. Start by adding one!",
+    "LOADING": "Loading Tenants...",
+    "NAME_EN": "Name (En)",
+    "NAME_AR": "Name (Ar)"
   }
 }

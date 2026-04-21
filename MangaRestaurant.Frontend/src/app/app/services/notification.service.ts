@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { BasketService } from './basket.service';
 import { SettingsService } from './settings.service';
+import { TenantService } from './tenant.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,8 @@ export class NotificationService {
     private router: Router,
     private http: HttpClient,
     private basketService: BasketService,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    private tenantService: TenantService
   ) {}
 
   loadNotifications() {
@@ -44,7 +46,7 @@ export class NotificationService {
 
   createHubConnection() {
     this.hubConnection = new HubConnectionBuilder()
-      .withUrl(environment.hubUrl + 'notifications')
+      .withUrl(`${environment.hubUrl}notifications?tenant=${this.tenantService.getTenantSlug()}`)
       .withAutomaticReconnect()
       .build();
 

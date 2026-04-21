@@ -25,6 +25,6 @@ namespace MangaRestaurant.APIs.Dtos.SuperAdmin
         [MinLength(6)]
         public string AdminPassword { get; set; }
 
-        public string? PlanId { get; set; }
+        public int PlanId { get; set; } = 1;
     }
 }

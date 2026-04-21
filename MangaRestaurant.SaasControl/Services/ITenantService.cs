@@ -10,7 +10,7 @@ namespace MangaRestaurant.SaasControl.Services
         public string Name { get; set; }
         public string StoreConnectionString { get; set; }
         public string IdentityConnectionString { get; set; }
-        public string PlanId { get; set; }
+        public int PlanId { get; set; }
         public bool IsActive { get; set; }
 
         // Plan feature flags (cached from Plan entity)

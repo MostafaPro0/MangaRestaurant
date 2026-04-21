@@ -39,7 +39,7 @@ namespace MangaRestaurant.SaasControl.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // ── Subscription ──
-        public string PlanId { get; set; } = "free";
+        public int PlanId { get; set; } = 1; // 1 = Free
         public Plan Plan { get; set; }
 
         public DateTime? SubscriptionStartDate { get; set; }

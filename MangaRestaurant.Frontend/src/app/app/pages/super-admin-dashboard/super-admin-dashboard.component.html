@@ -1,0 +1,136 @@
+<p-toast></p-toast>
+<div class="p-6 max-w-7xl mx-auto" [dir]="currentLang === 'ar' ? 'rtl' : 'ltr'">
+  <div class="flex justify-between items-center mb-6" [class.flex-row-reverse]="currentLang === 'ar'">
+    <h1 class="text-3xl font-bold dark:text-white text-gray-800">
+        {{ currentLang === 'ar' ? '🌍 لوحة التحكم المركزية' : '🌍 Super Admin Dashboard' }}
+    </h1>
+    <p-button [label]="'SUPER_ADMIN.ADD_TENANT' | translate" icon="pi pi-plus" (click)="showCreateDialog()"></p-button>
+  </div>
+
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4">
+    <p-table [value]="tenants" [loading]="loading" [rowHover]="true" styleClass="p-datatable-striped">
+      <ng-template pTemplate="header">
+        <tr>
+          <th [class.text-right]="currentLang === 'ar'">{{ 'SUPER_ADMIN.RESTAURANT_NAME' | translate }}</th>
+          <th [class.text-right]="currentLang === 'ar'">{{ 'SUPER_ADMIN.RESTAURANT_NAME_AR' | translate }}</th>
+          <th [class.text-right]="currentLang === 'ar'">{{ 'SUPER_ADMIN.SLUG' | translate }}</th>
+          <th [class.text-right]="currentLang === 'ar'">{{ 'SUPER_ADMIN.PLAN' | translate }}</th>
+          <th [class.text-right]="currentLang === 'ar'">{{ 'SUPER_ADMIN.STATUS' | translate }}</th>
+          <th [class.text-right]="currentLang === 'ar'">{{ 'SUPER_ADMIN.CREATED_AT' | translate }}</th>
+          <th [class.text-right]="currentLang === 'ar'">{{ 'SUPER_ADMIN.ACTIONS' | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-tenant>
+        <tr>
+          <td [class.text-right]="currentLang === 'ar'">{{ tenant.name }}</td>
+          <td [class.text-right]="currentLang === 'ar'">{{ tenant.nameAr }}</td>
+          <td [class.text-right]="currentLang === 'ar'">
+              <span class="font-mono text-primary-600 bg-primary-50 px-2 py-1 rounded">{{ tenant.slug }}</span>
+          </td>
+          <td [class.text-right]="currentLang === 'ar'">
+            <p-tag [value]="tenant.plan?.name || (tenant.planId === 1 ? 'Free' : tenant.planId === 2 ? 'Pro' : 'Enterprise')" 
+                   [severity]="tenant.planId >= 2 ? 'warning' : 'info'"></p-tag>
+          </td>
+          <td [class.text-right]="currentLang === 'ar'">
+            <p-tag [value]="tenant.isActive ? ('SUPER_ADMIN.ACTIVE' | translate) : ('SUPER_ADMIN.SUSPENDED' | translate)" [severity]="tenant.isActive ? 'success' : 'danger'"></p-tag>
+          </td>
+          <td [class.text-right]="currentLang === 'ar'">{{ tenant.createdAt | date }}</td>
+          <td [class.text-right]="currentLang === 'ar'">
+             <p-button icon="pi pi-ban" severity="danger" [text]="true" (click)="deleteTenant(tenant.slug)" *ngIf="tenant.isActive"></p-button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7" class="text-center py-6 text-gray-500">{{ 'SUPER_ADMIN.EMPTY' | translate }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<!-- Create Tenant Dialog -->
+<p-dialog [header]="'SUPER_ADMIN.MODAL_TITLE' | translate" [(visible)]="displayCreateDialog" [modal]="true" 
+          [style]="{ 'max-width': '650px', 'width': '95%' }" [draggable]="false" [resizable]="false"
+          styleClass="custom-admin-dialog">
+  
+  <form [formGroup]="createForm" (ngSubmit)="onSubmit()" class="modal-form-container" [dir]="currentLang === 'ar' ? 'rtl' : 'ltr'">
+    
+    <!-- Section 1: Business Info -->
+    <div class="form-section">
+      <div class="section-badge">{{ currentLang === 'ar' ? 'بيانات المطعم' : 'Restaurant Details' }}</div>
+      
+      <div class="flex flex-col md:flex-row gap-4 mt-4">
+        <div class="flex-1 flex flex-col gap-2">
+          <label class="font-semibold text-gray-600 dark:text-gray-400 text-sm">
+            <i class="pi pi-id-card mr-1 ml-1 text-primary-500"></i> {{ 'SUPER_ADMIN.NAME_EN' | translate }}
+          </label>
+          <input pInputText formControlName="name" placeholder="E.g., KFC" class="w-full premium-input" />
+        </div>
+        <div class="flex-1 flex flex-col gap-2">
+          <label class="font-semibold text-gray-600 dark:text-gray-400 text-sm">
+            <i class="pi pi-id-card mr-1 ml-1 text-primary-500"></i> {{ 'SUPER_ADMIN.NAME_AR' | translate }}
+          </label>
+          <input pInputText formControlName="nameAr" placeholder="E.g., كنتاكي" class="w-full premium-input" />
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2 mt-4">
+        <label class="font-semibold text-gray-600 dark:text-gray-400 text-sm">
+          <i class="pi pi-globe mr-1 ml-1 text-primary-500"></i> {{ 'SUPER_ADMIN.SLUG' | translate }}
+        </label>
+        <div class="p-inputgroup ltr-group" dir="ltr">
+          <span class="p-inputgroup-addon bg-gray-50 text-primary-600 font-bold">@</span>
+          <input type="text" pInputText formControlName="slug" placeholder="kfc" class="font-mono" />
+          <span class="p-inputgroup-addon">.manga.com</span>
+        </div>
+        <small class="text-red-500" *ngIf="createForm.get('slug')?.touched && createForm.get('slug')?.hasError('pattern')">
+          {{ currentLang === 'ar' ? 'يجب استخدام أحرف إنجليزية صغيرة وأرقام فقط' : 'Use lowercase English letters and numbers only.' }}
+        </small>
+      </div>
+    </div>
+
+    <div class="my-6 border-t border-dashed border-gray-200 dark:border-gray-700"></div>
+
+    <!-- Section 2: Admin Account -->
+    <div class="form-section">
+      <div class="section-badge secondary">{{ currentLang === 'ar' ? 'حساب المدير الأساسي' : 'Primary Admin Account' }}</div>
+
+      <div class="flex flex-col gap-4 mt-4">
+        <div class="flex flex-col gap-2">
+          <label class="font-semibold text-gray-600 dark:text-gray-400 text-sm">
+             <i class="pi pi-envelope mr-1 ml-1 text-orange-500"></i> {{ 'SUPER_ADMIN.ADMIN_EMAIL' | translate }}
+          </label>
+          <input pInputText type="email" formControlName="adminEmail" placeholder="admin@brand.com" class="w-full premium-input" />
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-4">
+          <div class="flex-1 flex flex-col gap-2">
+            <label class="font-semibold text-gray-600 dark:text-gray-400 text-sm">
+              <i class="pi pi-user mr-1 ml-1 text-orange-500"></i> {{ 'SUPER_ADMIN.ADMIN_FULL_NAME' | translate }}
+            </label>
+            <input pInputText formControlName="adminName" placeholder="Full Name" class="w-full premium-input" />
+          </div>
+          <div class="flex-1 flex flex-col gap-2">
+            <label class="font-semibold text-gray-600 dark:text-gray-400 text-sm">
+              <i class="pi pi-lock mr-1 ml-1 text-orange-500"></i> {{ 'SUPER_ADMIN.PASSWORD' | translate }}
+            </label>
+            <p-password formControlName="adminPassword" [toggleMask]="true" styleClass="w-full" inputStyleClass="w-full premium-input"></p-password>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Actions -->
+    <div class="flex justify-end gap-3 mt-8 p-4 bg-gray-50 dark:bg-gray-900/50 -mx-6 -mb-6 rounded-b-lg border-t border-gray-100 dark:border-gray-800"
+         [class.flex-row-reverse]="currentLang === 'ar'">
+      <p-button [label]="'SUPER_ADMIN.CANCEL' | translate" severity="secondary" [text]="true" (click)="hideCreateDialog()" [disabled]="creating"></p-button>
+      <p-button [label]="'SUPER_ADMIN.PROVISION_BTN' | translate" 
+                type="submit" 
+                icon="pi pi-database"
+                styleClass="p-button-raised p-button-primary px-6"
+                [disabled]="createForm.invalid || creating" 
+                [loading]="creating"></p-button>
+    </div>
+  </form>
+</p-dialog>

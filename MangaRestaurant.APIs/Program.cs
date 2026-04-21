@@ -87,6 +87,9 @@ namespace MangaRestaurant.APIs
                 var saasDb = services.GetRequiredService<MangaRestaurant.SaasControl.Data.SaasControlContext>();
                 await saasDb.Database.MigrateAsync();
 
+                // Call the separate Seed class
+                await MangaRestaurant.SaasControl.Data.SaasControlContextSeed.SeedAsync(saasDb, loggerFacotory);
+
                 // Note: StoreContext and AppIdentityDbContext are now tenant-specific
                 // Migrations for them will be handled later via an admin endpoint.
             }

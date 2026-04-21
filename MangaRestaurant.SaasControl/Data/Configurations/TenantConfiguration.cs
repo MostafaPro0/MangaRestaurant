@@ -46,8 +46,7 @@ namespace MangaRestaurant.SaasControl.Data.Configurations
 
             builder.Property(t => t.PlanId)
                 .IsRequired()
-                .HasMaxLength(50)
-                .HasDefaultValue("free");
+                .HasDefaultValue(1);
 
             builder.Property(t => t.SuspensionReason)
                 .HasMaxLength(500);

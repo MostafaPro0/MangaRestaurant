@@ -15,6 +15,13 @@ namespace MangaRestaurant.APIs.Middlewares
 
         public async Task InvokeAsync(HttpContext context, ITenantService tenantService)
         {
+            // Skip tenant resolution for Super Admin endpoints
+            if (context.Request.Path.StartsWithSegments("/api/super-admin"))
+            {
+                await _next(context);
+                return;
+            }
+
             var slug = tenantService.GetCurrentTenantSlug();
 
             if (string.IsNullOrEmpty(slug))

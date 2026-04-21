@@ -6,6 +6,8 @@ import { deliveryGuard } from './app/guards/delivery.guard';
 
 import { luckyRewardsGuard } from './app/guards/lucky-rewards.guard';
 
+import { superAdminGuard } from './app/guards/super-admin.guard';
+
 export const routes: Route[] = [
   { path: '', pathMatch: 'full', loadComponent: () => import('./app/pages/home/home.component').then(m => m.HomeComponent) },
   { path: 'products', loadComponent: () => import('./app/pages/products/products.component').then(m => m.ProductsComponent) },
@@ -25,5 +27,6 @@ export const routes: Route[] = [
   { path: 'register', canActivate: [guestGuard], loadComponent: () => import('./app/pages/register/register.component').then(m => m.RegisterComponent) },
   { path: 'pos', loadComponent: () => import('./app/pages/pos/pos.component').then(m => m.PosComponent) },
   { path: 'lucky-rewards', canActivate: [authGuard, luckyRewardsGuard], loadComponent: () => import('./app/pages/lucky-rewards/lucky.component').then(m => m.LuckyRewardsPageComponent) },
+  { path: 'super-admin', canActivate: [superAdminGuard], loadComponent: () => import('./app/pages/super-admin-dashboard/super-admin-dashboard.component').then(m => m.SuperAdminDashboardComponent) },
   { path: '**', loadComponent: () => import('./app/pages/not-found/not-found.component').then(m => m.NotFoundComponent) }
 ];

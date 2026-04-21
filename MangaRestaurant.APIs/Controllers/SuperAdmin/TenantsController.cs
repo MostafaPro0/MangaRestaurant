@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangaRestaurant.APIs.Controllers.SuperAdmin
 {
-    // [Authorize(Roles = "SuperAdmin")] // Commented out temporarily for easy testing
+    [Authorize(Roles = "SuperAdmin")]
     [Route("api/super-admin/tenants")]
     public class TenantsController : BaseApiController
     {

@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace MangaRestaurant.SaasControl.Entities
 {
     /// <summary>
@@ -5,8 +7,8 @@ namespace MangaRestaurant.SaasControl.Entities
     /// </summary>
     public class Plan
     {
-        /// <summary>Plan identifier (e.g., "free", "pro", "enterprise")</summary>
-        public string Id { get; set; }
+        /// <summary>Plan identifier (1: Free, 2: Pro, 3: Enterprise)</summary>
+        public int Id { get; set; }
 
         /// <summary>Display name in English</summary>
         public string Name { get; set; }
@@ -42,6 +44,7 @@ namespace MangaRestaurant.SaasControl.Entities
         public int SortOrder { get; set; }
 
         // Navigation
+        [JsonIgnore]
         public ICollection<Tenant> Tenants { get; set; } = new HashSet<Tenant>();
     }
 }

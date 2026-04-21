@@ -1,0 +1,89 @@
+/* Premium Super Admin Dashboard Styling */
+
+:host ::ng-deep .custom-admin-dialog .p-dialog-header {
+    background: linear-gradient(to right, #f8fafc, #ffffff);
+    border-bottom: 1px solid #f1f5f9;
+    padding: 1.5rem;
+}
+
+:host ::ng-deep .custom-admin-dialog .p-dialog-content {
+    padding: 1.5rem;
+    overflow-y: visible;
+}
+
+.modal-form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-section {
+    position: relative;
+    padding: 0.5rem 0;
+}
+
+.section-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: #eff6ff;
+    color: #2563eb;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: 1px solid #dbeafe;
+}
+
+.section-badge.secondary {
+    background: #fff7ed;
+    color: #ea580c;
+    border-color: #ffedd5;
+}
+
+.premium-input {
+    border-radius: 8px !important;
+    padding: 0.75rem !important;
+    border: 1px solid #e2e8f0 !important;
+    transition: all 0.2s ease;
+    background: #fcfcfc !important;
+}
+
+.premium-input:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+    background: #fff !important;
+}
+
+.ltr-group {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+:host ::ng-deep .p-inputgroup-addon {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+/* RTL Specific fixes for input groups if needed */
+[dir="rtl"] .p-inputgroup > .p-inputtext:not(:first-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+[dir="rtl"] .p-inputgroup > .p-inputtext:not(:last-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Global table tweaks for Super Admin */
+:host ::ng-deep .p-datatable-striped .p-datatable-tbody > tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+:host ::ng-deep .p-tag {
+    border-radius: 6px;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+}

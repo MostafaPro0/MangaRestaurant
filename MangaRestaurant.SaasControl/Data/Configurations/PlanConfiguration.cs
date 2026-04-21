@@ -10,9 +10,6 @@ namespace MangaRestaurant.SaasControl.Data.Configurations
         {
             builder.HasKey(p => p.Id);
 
-            builder.Property(p => p.Id)
-                .HasMaxLength(50);
-
             builder.Property(p => p.Name)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -24,11 +21,11 @@ namespace MangaRestaurant.SaasControl.Data.Configurations
             builder.Property(p => p.MonthlyPrice)
                 .HasColumnType("decimal(18,2)");
 
-            // Seed default plans
+            // Seed default plans (1: Free, 2: Pro, 3: Enterprise)
             builder.HasData(
                 new Plan
                 {
-                    Id = "free",
+                    Id = 1,
                     Name = "Free",
                     NameAr = "مجاني",
                     MonthlyPrice = 0,
@@ -43,7 +40,7 @@ namespace MangaRestaurant.SaasControl.Data.Configurations
                 },
                 new Plan
                 {
-                    Id = "pro",
+                    Id = 2,
                     Name = "Professional",
                     NameAr = "احترافي",
                     MonthlyPrice = 99,
@@ -58,7 +55,7 @@ namespace MangaRestaurant.SaasControl.Data.Configurations
                 },
                 new Plan
                 {
-                    Id = "enterprise",
+                    Id = 3,
                     Name = "Enterprise",
                     NameAr = "مؤسسي",
                     MonthlyPrice = 299,

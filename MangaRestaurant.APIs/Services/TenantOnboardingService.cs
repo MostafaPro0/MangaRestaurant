@@ -88,7 +88,7 @@ namespace MangaRestaurant.APIs.Services
                     StoreDbName = storeDbName,
                     IdentityDbName = identityDbName,
                     AdminEmail = dto.AdminEmail,
-                    PlanId = string.IsNullOrEmpty(dto.PlanId) ? "free" : dto.PlanId,
+                    PlanId = dto.PlanId == 0 ? 1 : dto.PlanId,
                     IsActive = true,
                     CreatedAt = DateTime.UtcNow,
                     SubscriptionStartDate = DateTime.UtcNow,
