@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MangaRestaurant.Repository\MangaRestaurant.Repository.csproj" />
     <ProjectReference Include="..\MangaRestaurant.Service\MangaRestaurant.Service.csproj" />
+    <ProjectReference Include="..\MangaRestaurant.SaasControl\MangaRestaurant.SaasControl.csproj" />
   </ItemGroup>
 
 </Project>

@@ -34,9 +34,20 @@ namespace MangaRestaurant.APIs
 
             builder.Services.AddApplicationServices();
 
-            builder.Services.AddDbContext<StoreContext>(options =>
+            builder.Services.AddDbContext<MangaRestaurant.SaasControl.Data.SaasControlContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("SaasControlConnection"));
+            });
+
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddMemoryCache();
+            builder.Services.AddScoped<MangaRestaurant.SaasControl.Services.ITenantService, MangaRestaurant.SaasControl.Services.TenantService>();
+            builder.Services.AddScoped<MangaRestaurant.APIs.Services.TenantDbContextFactory>();
+            builder.Services.AddScoped<MangaRestaurant.APIs.Services.TenantOnboardingService>();
+
+            builder.Services.AddScoped<StoreContext>(provider => {
+                var factory = provider.GetRequiredService<MangaRestaurant.APIs.Services.TenantDbContextFactory>();
+                return factory.CreateStoreContext();
             });
 
             builder.Services.AddSingleton<IConnectionMultiplexer>(Option =>
@@ -45,11 +56,10 @@ namespace MangaRestaurant.APIs
                 return ConnectionMultiplexer.Connect(connection);
             });
 
-            builder.Services.AddDbContext<AppIdentityDbContext>(Options =>
-            {
-                Options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
+            builder.Services.AddScoped<AppIdentityDbContext>(provider => {
+                var factory = provider.GetRequiredService<MangaRestaurant.APIs.Services.TenantDbContextFactory>();
+                return factory.CreateIdentityContext();
             });
-
 
             builder.Services.AddIdentityServices(builder.Configuration);
             builder.Services.AddCors(Options =>
@@ -74,18 +84,11 @@ namespace MangaRestaurant.APIs
             var loggerFacotory = services.GetRequiredService<ILoggerFactory>();
             try
             {
-                var _dbContext = services.GetRequiredService<StoreContext>();
-                //ASK CLR Creating Object from DbContext Explicitly
-                await _dbContext.Database.MigrateAsync();
+                var saasDb = services.GetRequiredService<MangaRestaurant.SaasControl.Data.SaasControlContext>();
+                await saasDb.Database.MigrateAsync();
 
-                var identityDbContext = services.GetRequiredService<AppIdentityDbContext>();    
-                await identityDbContext.Database.MigrateAsync();
-
-                await StoreContextSeed.SeedAsync(_dbContext);
-
-                var userManager = services.GetRequiredService<UserManager<AppUser>>();
-                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                await AppIdentityDbContextSeed.SeedUserAsync(userManager, roleManager);
+                // Note: StoreContext and AppIdentityDbContext are now tenant-specific
+                // Migrations for them will be handled later via an admin endpoint.
             }
             catch (Exception ex)
             {
@@ -116,6 +119,7 @@ namespace MangaRestaurant.APIs
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCors("MyPolicy");
+            app.UseMiddleware<MangaRestaurant.APIs.Middlewares.TenantMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
 
