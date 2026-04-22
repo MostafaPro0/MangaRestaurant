@@ -1,152 +1,163 @@
-<div class="landing-wrapper" [class.rtl]="currentLang === 'ar'">
-  <!-- Floating Glass Navbar -->
-  <nav class="glass-nav">
-    <div class="nav-content">
-      <div class="logo">
-        <img src="assets/images/logo.png" alt="Logo">
-        <span>SaaS <span>Central</span></span>
+<div class="lp" [class.dark]="currentTheme() === 'dark'" [class.rtl]="currentLang === 'ar'">
+
+  <!-- ─── Glass Navbar ─── -->
+  <nav class="lp-nav">
+    <div class="lp-nav__inner">
+      <a class="lp-nav__logo" routerLink="/">
+        <i class="pi pi-bolt"></i>
+        <span>Manga<strong>SaaS</strong></span>
+      </a>
+
+      <div class="lp-nav__links">
+        <a (click)="scrollTo('features')">{{ 'LANDING.WHY_CHOOSE_US' | translate }}</a>
+        <a (click)="scrollTo('partners')" *ngIf="publicTenants.length > 0">{{ 'LANDING.PARTNERS_TITLE' | translate }}</a>
+        <a (click)="scrollTo('pricing')">{{ 'LANDING.PRICING_TITLE' | translate }}</a>
       </div>
-      <div class="nav-links">
-        <a href="#features">{{ 'LANDING.WHY_CHOOSE_US' | translate }}</a>
-        <a href="#pricing">{{ 'LANDING.PRICING_TITLE' | translate }}</a>
-      </div>
-      <div class="nav-actions">
-        <div class="lang-group">
-          <button (click)="setLang('ar')" [class.active]="currentLang === 'ar'">AR</button>
-          <button (click)="setLang('en')" [class.active]="currentLang === 'en'">EN</button>
+
+      <div class="lp-nav__actions">
+        <div class="lp-lang-switch">
+          <button [class.active]="currentLang === 'en'" (click)="setLang('en')">EN</button>
+          <button [class.active]="currentLang === 'ar'" (click)="setLang('ar')">AR</button>
         </div>
-        
-        <button class="theme-btn" (click)="toggleTheme()" [pTooltip]="currentTheme() === 'light' ? 'Dark Mode' : 'Light Mode'">
+
+        <button class="lp-icon-btn" (click)="toggleTheme()" [pTooltip]="currentTheme() === 'light' ? 'Dark Mode' : 'Light Mode'">
           <i [class]="currentTheme() === 'light' ? 'pi pi-moon' : 'pi pi-sun'"></i>
         </button>
 
-        <button pButton [label]="'NAV.LOGIN' | translate" severity="secondary" [text]="true" routerLink="/login" class="hide-mobile"></button>
-        <button pButton [label]="'NAV.REGISTER' | translate" severity="primary" class="p-button-raised neon-btn" routerLink="/register"></button>
+        <a routerLink="/login" class="lp-btn lp-btn--ghost">{{ 'NAV.LOGIN' | translate }}</a>
+        <a routerLink="/register" class="lp-btn lp-btn--primary">{{ 'NAV.REGISTER' | translate }}</a>
       </div>
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <header class="hero-section">
-    <div class="blob-1"></div>
-    <div class="blob-2"></div>
-    
-    <div class="hero-container">
-      <div class="hero-text">
-        <h1 [innerHTML]="'LANDING.HERO_TITLE' | translate"></h1>
-        <p>{{ 'LANDING.HERO_SUBTITLE' | translate }}</p>
-        <div class="hero-btns">
-          <button pButton [label]="'LANDING.GET_STARTED' | translate" icon="pi pi-rocket" class="p-button-lg p-button-rounded ripple-btn"></button>
-          <button pButton [label]="'SUPER_ADMIN.DASHBOARD' | translate" icon="pi pi-lock" severity="help" [text]="true" routerLink="/super-admin" class="p-button-lg ml-2"></button>
-        </div>
-      </div>
-      <div class="hero-image">
-        <img src="assets/images/dashboard-preview.png" alt="Dashboard Preview" class="floating-img">
+  <!-- ─── Hero ─── -->
+  <section class="lp-hero">
+    <div class="lp-hero__bg-blob lp-hero__bg-blob--1"></div>
+    <div class="lp-hero__bg-blob lp-hero__bg-blob--2"></div>
+    <div class="lp-hero__bg-blob lp-hero__bg-blob--3"></div>
+
+    <div class="lp-hero__content">
+      <span class="lp-hero__badge">
+        <i class="pi pi-sparkles"></i>
+        {{ currentLang === 'ar' ? 'منصة إدارة المطاعم' : 'Restaurant Management Platform' }}
+      </span>
+      <h1 [innerHTML]="'LANDING.HERO_TITLE' | translate"></h1>
+      <p>{{ 'LANDING.HERO_SUBTITLE' | translate }}</p>
+      <div class="lp-hero__cta">
+        <button pButton [label]="'LANDING.GET_STARTED' | translate" icon="pi pi-arrow-right" iconPos="right"
+                class="p-button-lg p-button-rounded" (click)="scrollTo('pricing')"></button>
+        <a routerLink="/super-admin" class="lp-btn lp-btn--outline-light">
+          <i class="pi pi-shield"></i>
+          {{ 'SUPER_ADMIN.DASHBOARD' | translate }}
+        </a>
       </div>
     </div>
-  </header>
+  </section>
 
-  <!-- Success Partners (Dynamic with Skeleton) -->
-  <section class="partners-section" *ngIf="loadingTenants || publicTenants.length > 0">
-    <div class="section-header">
-      <span class="badge">{{ 'LANDING.PARTNERS_TITLE' | translate }}</span>
+  <!-- ─── Features ─── -->
+  <section id="features" class="lp-features">
+    <div class="lp-section-header">
+      <span class="lp-badge">{{ 'LANDING.WHY_CHOOSE_US' | translate }}</span>
+    </div>
+    <div class="lp-features__grid">
+      <div class="lp-feature-card" *ngFor="let f of [
+        { icon: 'pi pi-cloud', color: '#3b82f6', titleKey: 'LANDING.FEATURE_1_TITLE', descKey: 'LANDING.FEATURE_1_DESC' },
+        { icon: 'pi pi-shopping-cart', color: '#f59e0b', titleKey: 'LANDING.FEATURE_2_TITLE', descKey: 'LANDING.FEATURE_2_DESC' },
+        { icon: 'pi pi-chart-line', color: '#8b5cf6', titleKey: 'LANDING.FEATURE_3_TITLE', descKey: 'LANDING.FEATURE_3_DESC' }
+      ]">
+        <div class="lp-feature-card__icon" [style.color]="f.color" [style.background]="f.color + '15'">
+          <i [class]="f.icon"></i>
+        </div>
+        <h3>{{ f.titleKey | translate }}</h3>
+        <p>{{ f.descKey | translate }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Partners / Tenants ─── -->
+  <section id="partners" class="lp-partners" *ngIf="loadingTenants || publicTenants.length > 0">
+    <div class="lp-section-header">
+      <span class="lp-badge">{{ 'LANDING.PARTNERS_TITLE' | translate }}</span>
       <h2>{{ 'LANDING.PARTNERS_SUBTITLE' | translate }}</h2>
     </div>
-    <div class="partners-wrapper">
-       <!-- Skeleton Loader -->
-       <div class="partners-scroll" *ngIf="loadingTenants">
-          <div *ngFor="let i of [1,2,3,4,5]" class="partner-item gap-2">
-            <p-skeleton shape="circle" size="40px"></p-skeleton>
-            <p-skeleton width="80px" height="1rem"></p-skeleton>
-          </div>
-       </div>
-       <!-- Real Data -->
-       <div class="partners-scroll" *ngIf="!loadingTenants">
-          <a *ngFor="let tenant of publicTenants" [href]="getTenantUrl(tenant.slug)" target="_blank" class="partner-item">
-            <img [src]="tenant.logoUrl" [alt]="tenant.name">
-            <span>{{ currentLang === 'ar' ? tenant.nameAr : tenant.name }}</span>
-          </a>
-       </div>
+
+    <!-- Skeleton -->
+    <div class="lp-partners__grid" *ngIf="loadingTenants">
+      <div class="lp-tenant-card" *ngFor="let _ of [1,2,3,4]">
+        <p-skeleton shape="circle" size="64px"></p-skeleton>
+        <p-skeleton width="100px" height="1rem" styleClass="mt-3"></p-skeleton>
+        <p-skeleton width="80px" height="0.75rem" styleClass="mt-2"></p-skeleton>
+      </div>
+    </div>
+
+    <!-- Real data -->
+    <div class="lp-partners__grid" *ngIf="!loadingTenants">
+      <a *ngFor="let t of publicTenants" [href]="getTenantUrl(t.slug)" target="_blank" class="lp-tenant-card">
+        <div class="lp-tenant-card__avatar">
+          <img [src]="t.logoUrl" [alt]="t.name">
+        </div>
+        <h4>{{ currentLang === 'ar' ? t.nameAr : t.name }}</h4>
+        <span class="lp-tenant-card__link">
+          {{ currentLang === 'ar' ? 'زيارة الموقع' : 'Visit Site' }}
+          <i class="pi pi-external-link"></i>
+        </span>
+      </a>
     </div>
   </section>
 
-  <!-- Features Grid -->
-  <section id="features" class="features-section">
-    <div class="grid-container">
-      <div class="feature-box">
-        <div class="icon-circle blue"><i class="pi pi-cloud"></i></div>
-        <h3>{{ 'LANDING.FEATURE_1_TITLE' | translate }}</h3>
-        <p>{{ 'LANDING.FEATURE_1_DESC' | translate }}</p>
-      </div>
-      <div class="feature-box">
-        <div class="icon-circle orange"><i class="pi pi-shopping-cart"></i></div>
-        <h3>{{ 'LANDING.FEATURE_2_TITLE' | translate }}</h3>
-        <p>{{ 'LANDING.FEATURE_2_DESC' | translate }}</p>
-      </div>
-      <div class="feature-box">
-        <div class="icon-circle purple"><i class="pi pi-chart-line"></i></div>
-        <h3>{{ 'LANDING.FEATURE_3_TITLE' | translate }}</h3>
-        <p>{{ 'LANDING.FEATURE_3_DESC' | translate }}</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Dynamic Pricing Plans (from API with Skeleton) -->
-  <section id="pricing" class="pricing-section">
-    <div class="section-header text-center">
-      <span class="badge">{{ 'LANDING.PRICING_TITLE' | translate }}</span>
-      <h2 class="mt-3">{{ 'LANDING.PRICING_SUBTITLE' | translate }}</h2>
+  <!-- ─── Pricing ─── -->
+  <section id="pricing" class="lp-pricing">
+    <div class="lp-section-header">
+      <span class="lp-badge">{{ 'LANDING.PRICING_TITLE' | translate }}</span>
+      <h2>{{ 'LANDING.PRICING_SUBTITLE' | translate }}</h2>
     </div>
 
-    <div class="pricing-container">
-      <!-- Loading Skeletons -->
+    <div class="lp-pricing__grid">
+      <!-- Skeleton -->
       <ng-container *ngIf="loadingPlans">
-        <div *ngFor="let i of [1,2,3]" class="plan-card">
-           <p-skeleton width="60%" height="2rem" styleClass="mb-4"></p-skeleton>
-           <p-skeleton width="40%" height="3rem" styleClass="mb-5"></p-skeleton>
-           <p-skeleton width="100%" height="1rem" styleClass="mb-2"></p-skeleton>
-           <p-skeleton width="100%" height="1rem" styleClass="mb-2"></p-skeleton>
-           <p-skeleton width="80%" height="1rem" styleClass="mb-5"></p-skeleton>
-           <p-skeleton width="100%" height="3rem" borderRadius="30px"></p-skeleton>
+        <div class="lp-plan-card" *ngFor="let _ of [1,2,3]">
+          <p-skeleton width="50%" height="1.5rem" styleClass="mb-3"></p-skeleton>
+          <p-skeleton width="35%" height="3rem" styleClass="mb-4"></p-skeleton>
+          <div class="lp-plan-card__divider"></div>
+          <p-skeleton width="100%" height="1rem" styleClass="mb-2" *ngFor="let __ of [1,2,3,4,5]"></p-skeleton>
+          <p-skeleton width="100%" height="3rem" borderRadius="30px" styleClass="mt-4"></p-skeleton>
         </div>
       </ng-container>
 
       <!-- Real Data -->
       <ng-container *ngIf="!loadingPlans">
-        <div *ngFor="let plan of plans" class="plan-card" [class.featured]="plan.monthlyPrice > 0 && plan.monthlyPrice < 100">
-          <div class="featured-badge" *ngIf="plan.monthlyPrice > 0 && plan.monthlyPrice < 100">{{ 'LANDING.MOST_POPULAR' | translate }}</div>
-          
-          <div class="plan-header">
-            <h3>{{ currentLang === 'ar' ? plan.nameAr : plan.name }}</h3>
-            <div class="price">
-              <span class="curr">$</span>
-              <span class="val">{{plan.monthlyPrice}}</span>
-              <span class="per">/mo</span>
-            </div>
-          </div>
-          
-          <div class="plan-body">
-             <p class="description">{{ currentLang === 'ar' ? plan.descriptionAr : plan.description }}</p>
-             <ul class="features-list">
-                <li><i class="pi pi-check"></i> {{ 'ADMIN.DASHBOARD' | translate }}</li>
-                <li><i class="pi pi-check" *ngIf="plan.monthlyPrice > 0"></i> {{ 'LANDING.FEATURE_3_TITLE' | translate }}</li>
-                <li><i class="pi pi-check" *ngIf="plan.monthlyPrice > 50"></i> 24/7 Support</li>
-             </ul>
+        <div *ngFor="let plan of plans; let i = index" class="lp-plan-card" [class.lp-plan-card--featured]="i === 1">
+          <div class="lp-plan-card__popular" *ngIf="i === 1">{{ 'LANDING.MOST_POPULAR' | translate }}</div>
+
+          <h3 class="lp-plan-card__name">{{ currentLang === 'ar' ? plan.nameAr : plan.name }}</h3>
+
+          <div class="lp-plan-card__price">
+            <span class="lp-plan-card__currency">$</span>
+            <span class="lp-plan-card__amount">{{ plan.monthlyPrice }}</span>
+            <span class="lp-plan-card__period">/{{ currentLang === 'ar' ? 'شهر' : 'mo' }}</span>
           </div>
 
-          <div class="plan-footer">
-            <button pButton [label]="'LANDING.SUBSCRIBE_NOW' | translate" 
-                    [severity]="plan.monthlyPrice > 0 ? 'primary' : 'secondary'"
-                    class="w-full p-button-rounded h-12"></button>
+          <div class="lp-plan-card__divider"></div>
+
+          <ul class="lp-plan-card__features">
+            <li *ngFor="let feat of getPlanFeatures(plan)">
+              <i class="pi pi-check-circle"></i>
+              <span>{{ feat }}</span>
+            </li>
+          </ul>
+
+          <div class="lp-plan-card__action">
+            <button pButton [label]="'LANDING.SUBSCRIBE_NOW' | translate"
+                    class="p-button-rounded w-full"
+                    [class.p-button-outlined]="i !== 1"></button>
           </div>
         </div>
       </ng-container>
     </div>
   </section>
 
-  <footer class="main-footer">
-    <div class="footer-bottom">
-      <p>&copy; 2026 Manga SaaS - Premium Multi-Tenant Management. All rights reserved.</p>
-    </div>
+  <!-- ─── Footer ─── -->
+  <footer class="lp-footer">
+    <p>&copy; 2026 MangaSaaS &mdash; {{ currentLang === 'ar' ? 'نظام إدارة مطاعم متكامل' : 'Premium Multi-Tenant Restaurant Management' }}</p>
   </footer>
 </div>

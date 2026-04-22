@@ -2,9 +2,235 @@
   <p-toast position="top-right" (onClick)="notificationService.handleNotificationClick($event)"></p-toast>
   <!-- Premium Responsive Mango Header -->
   <header class="navbar-manga" *ngIf="showStoreLayout()">
-    <!-- ... (existing content) ... -->
     <div class="nav-container">
-      <!-- ... (Rest of Header) ... -->
+
+      <!-- Brand & Home Link -->
+      <a routerLink="/" class="manga-brand" *ngIf="settings$ | async as settings">
+        <img src="logo.png" class="brand-logo" alt="Logo" style="width: 35px; height: 35px; object-fit: contain;" />
+        <span class="brand-text">{{ lang() === 'ar' ? settings.restaurantNameAr : settings.restaurantName }}</span>
+      </a>
+      <a routerLink="/" class="manga-brand" *ngIf="!(settings$ | async)">
+        <img src="logo.png" class="brand-logo" alt="Logo" style="width: 35px; height: 35px; object-fit: contain;" />
+        <span class="brand-text">{{ lang() === 'ar' ? '┘à╪╖╪╣┘à ┘à╪د┘╪ش╪د' : 'MANGARESTO' }}</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="nav-center hidden md:flex">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">{{ 'NAV.HOME' | translate
+          }}</a>
+        <a routerLink="/products" routerLinkActive="active">{{ 'NAV.PRODUCTS' | translate }}</a>
+        <a *ngIf="isAuthenticated()" routerLink="/orders" routerLinkActive="active">{{ 'NAV.MY_ORDERS' | translate
+          }}</a>
+        <a *ngIf="(settings$ | async)?.isLuckyRewardsEnabled" routerLink="/lucky-rewards" routerLinkActive="active" class="flex align-items-center gap-1">
+          <i class="pi pi-star-fill text-yellow-400"></i>
+          {{ 'NAV.GACHA' | translate }}
+        </a>
+        <a routerLink="/basket" routerLinkActive="active" class="relative">
+          {{ 'NAV.BASKET' | translate }}
+          <span class="basket-badge" *ngIf="basketCount() > 0">{{basketCount()}}</span>
+        </a>
+        <a routerLink="/pos" routerLinkActive="active"
+           class="pill-nav-btn pill-primary">
+          <i class="pi pi-desktop"></i>
+          <span>{{ 'NAV.DINE_IN' | translate }}</span>
+        </a>
+        <!-- Delivery Agent Link -->
+        <a *ngIf="isDelivery()" routerLink="/delivery-agent" routerLinkActive="active"
+           class="pill-nav-btn pill-amber">
+          <i class="pi pi-truck"></i>
+          <span>{{ 'NAV.DELIVERY' | translate }}</span>
+        </a>
+      </nav>
+
+
+      <!-- Desktop Actions -->
+      <div class="nav-right hidden lg:flex">
+        <div class="manga-toggle-group">
+          <button (click)="setLang('ar')" class="manga-toggle-btn" [class.active]="lang() === 'ar'">AR</button>
+          <button (click)="setLang('en')" class="manga-toggle-btn" [class.active]="lang() === 'en'">EN</button>
+          <button (click)="toggleTheme()" class="manga-toggle-btn" 
+                  [pTooltip]="(lang() === 'ar' ? '╪ز╪ذ╪»┘è┘ ╪د┘┘ê╪╢╪╣' : 'Toggle Theme')">
+            <i [class]="currentTheme() === 'light' ? 'pi pi-moon' : 'pi pi-sun'"></i>
+          </button>
+        </div>
+
+        <!-- Notification Bell -->
+        <button class="manga-toggle-btn relative mx-2" (click)="op.toggle($event); resetNotificationCount()" 
+                pTooltip="{{ (lang() === 'ar' ? '╪د┘╪ح╪┤╪╣╪د╪▒╪د╪ز' : 'Notifications') }}">
+          <i class="pi pi-bell"></i>
+          <span class="basket-badge" *ngIf="notificationCount() > 0" 
+                style="top: -5px; right: -5px; background: var(--primary-color); min-width: 18px; height: 18px; font-size: 10px;">
+            {{ notificationCount() }}
+          </span>
+        </button>
+
+        <!-- Notification Overlay Panel -->
+        <p-overlayPanel #op styleClass="notification-panel">
+          <div class="p-3 w-20rem md:w-25rem">
+            <div class="flex justify-content-between align-items-center mb-3">
+              <h4 class="m-0 text-xl font-bold">{{ (lang() === 'ar' ? '╪د┘╪ح╪┤╪╣╪د╪▒╪د╪ز' : 'Notifications') }}</h4>
+              <span class="text-dim text-xs">{{ notifications().length }} {{ (lang() === 'ar' ? '╪ز┘╪ذ┘è┘ç' : 'Total') }}</span>
+            </div>
+            
+            <div class="notification-list custom-scroll" style="max-height: 400px; overflow-y: auto;">
+              <div *ngIf="notifications().length === 0" class="text-center py-6">
+                <i class="pi pi-bell-slash text-5xl text-dim-subtle mb-3"></i>
+                <p class="text-dim-subtle">{{ (lang() === 'ar' ? '┘╪د ╪ز┘ê╪ش╪» ╪ح╪┤╪╣╪د╪▒╪د╪ز ╪ص╪د┘┘è╪د┘ï' : 'No new notifications') }}</p>
+              </div>
+
+              <div *ngFor="let notif of notifications()" 
+                   class="notification-item p-3 mb-2 border-round-lg cursor-pointer transition-all relative"
+                   [ngStyle]="{'background': notif.isRead ? 'transparent' : 'var(--surface-ground)'}"
+                   (click)="handleNotificationItemClick(notif, op)">
+                <!-- Unread Dot -->
+                <div *ngIf="!notif.isRead" class="absolute border-circle bg-red-500" style="width: 8px; height: 8px; top: 12px; left: 12px;"></div>
+                <div class="flex align-items-start gap-3 pl-3">
+                  <div class="notification-icon-wrap" [ngClass]="notif.type">
+                    <i [class]="'pi ' + notificationService.getNotificationIcon(notif.type)"></i>
+                  </div>
+                  <div class="flex-1">
+                    <div class="text-sm font-bold text-main line-height-1 mb-1" [ngStyle]="{'opacity': notif.isRead ? '0.7' : '1'}">
+                      {{ (lang() === 'ar' ? notif.titleAr : notif.title) }}
+                    </div>
+                    <div class="text-xs text-dim line-height-2" [ngStyle]="{'opacity': notif.isRead ? '0.7' : '1'}">
+                       {{ (lang() === 'ar' ? notif.messageAr : notif.message) }}
+                    </div>
+                    <div class="text-right mt-1">
+                      <span class="text-2xs text-dim-subtle">{{ notif.createdAt | date:'short' }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </p-overlayPanel>
+
+        <div class="auth-box">
+          <ng-container *ngIf="isAuthenticated(); else guest">
+            <!-- Profile Avatar with Menu -->
+            <div class="profile-container flex align-items-center gap-2 cursor-pointer" (click)="menu.toggle($event)">
+              <p-avatar *ngIf="!user()?.profilePictureUrl" [label]="(user()?.displayName || 'U').charAt(0).toUpperCase()" shape="circle" size="large"
+                styleClass="manga-avatar">
+              </p-avatar>
+              <img *ngIf="user()?.profilePictureUrl" [src]="getProfilePicUrl(user()?.profilePictureUrl)" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-color);" />
+              <div class="hidden xl:block">
+                <div class="text-sm font-bold line-height-1">{{ user()?.displayName }}</div>
+              </div>
+              <i class="pi pi-chevron-down text-xs text-dim"></i>
+            </div>
+            <p-menu #menu [model]="profileMenuItems" [popup]="true" appendTo="body"></p-menu>
+          </ng-container>
+          <ng-template #guest>
+            <a routerLink="/login" class="auth-link">{{ 'NAV.LOGIN' | translate }}</a>
+            <a routerLink="/register" class="auth-btn">{{ 'NAV.REGISTER' | translate }}</a>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- Mobile Controls (Cart & Hamburger) -->
+      <div class="flex align-items-center gap-3 lg:hidden">
+        <button (click)="op_mob.toggle($event); resetNotificationCount()" class="relative text-2xl nav-item p-0 border-none bg-transparent" style="color:var(--text-main); cursor:pointer">
+          <i class="pi pi-bell"></i>
+          <span class="basket-badge" style="top:-8px; right:-8px; background: var(--primary-color)" *ngIf="notificationCount() > 0">
+            {{ notificationCount() }}
+          </span>
+        </button>
+        <p-overlayPanel #op_mob styleClass="notification-panel">
+          <!-- Mobile Notifications (Same content as Desktop for simplicity) -->
+          <div class="p-3 w-18rem max-w-screen">
+             <h4 class="m-0 mb-3 text-lg font-bold">{{ (lang() === 'ar' ? '╪د┘╪ح╪┤╪╣╪د╪▒╪د╪ز' : 'Notifications') }}</h4>
+             <div class="notification-list" style="max-height: 300px; overflow-y: auto;">
+                <div *ngIf="notifications().length === 0" class="text-center py-4">
+                  <p class="text-dim-subtle text-sm">{{ (lang() === 'ar' ? '┘╪د ╪ز┘ê╪ش╪» ╪ح╪┤╪╣╪د╪▒╪د╪ز' : 'No notifications') }}</p>
+                </div>
+                <div *ngFor="let notif of notifications()" 
+                     class="notification-item p-2 mb-2 border-round cursor-pointer relative"
+                     [ngStyle]="{'background': notif.isRead ? 'transparent' : 'var(--surface-ground)'}"
+                     (click)="handleNotificationItemClick(notif, op_mob)">
+                  <div *ngIf="!notif.isRead" class="absolute border-circle bg-red-500" style="width: 6px; height: 6px; top: 12px; left: 8px;"></div>
+                  <div class="pl-2">
+                    <div class="text-xs font-bold" [ngStyle]="{'opacity': notif.isRead ? '0.7' : '1'}">{{ (lang() === 'ar' ? notif.titleAr : notif.title) }}</div>
+                    <div class="text-2xs text-dim" [ngStyle]="{'opacity': notif.isRead ? '0.7' : '1'}">{{ (lang() === 'ar' ? notif.messageAr : notif.message) }}</div>
+                    <div class="text-right mt-1">
+                      <span class="text-2xs text-dim-subtle" style="font-size: 9px">{{ notif.createdAt | date:'short' }}</span>
+                    </div>
+                  </div>
+                </div>
+             </div>
+          </div>
+        </p-overlayPanel>
+        <a routerLink="/basket" class="relative text-2xl nav-item p-0" style="color:var(--text-main)" 
+           [pTooltip]="(lang() === 'ar' ? '╪د┘╪│┘╪ر' : 'Basket')">
+          <i class="pi pi-shopping-cart"></i>
+          <span class="basket-badge" style="top:-8px; right:-8px" *ngIf="basketCount() > 0">{{basketCount()}}</span>
+        </a>
+        <button (click)="toggleMobileMenu()" class="menu-trigger">
+          <i [class]="mobileMenuOpened() ? 'pi pi-times' : 'pi pi-bars'"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-drawer" [class.active]="mobileMenuOpened()">
+      <nav class="mobile-nav px-4 pt-4">
+        <a routerLink="/" (click)="toggleMobileMenu()" routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact:true}">{{ 'NAV.HOME' | translate }}</a>
+        <a routerLink="/products" (click)="toggleMobileMenu()" routerLinkActive="active">{{ 'NAV.PRODUCTS' | translate
+          }}</a>
+        <a *ngIf="isAuthenticated()" routerLink="/orders" (click)="toggleMobileMenu()" routerLinkActive="active">{{
+          'NAV.MY_ORDERS' | translate }}</a>
+        <a *ngIf="(settings$ | async)?.isLuckyRewardsEnabled" routerLink="/lucky-rewards" (click)="toggleMobileMenu()" routerLinkActive="active">
+          <i class="pi pi-star-fill text-yellow-400 mr-2"></i> {{ 'NAV.GACHA' | translate }}
+        </a>
+        <a routerLink="/basket" (click)="toggleMobileMenu()" routerLinkActive="active">{{ 'NAV.BASKET' | translate
+          }}</a>
+        <a *ngIf="isAdmin()" routerLink="/admin" (click)="toggleMobileMenu()" routerLinkActive="active">{{ 'NAV.ADMIN' |
+          translate }}</a>
+        <a routerLink="/pos" (click)="toggleMobileMenu()" routerLinkActive="active" 
+           class="p-button p-button-warning p-button-lg w-full mt-3 mb-1 shadow-md border-none flex align-items-center justify-content-center gap-2"
+           style="background: linear-gradient(135deg, #ffcc33 0%, #ffb300 100%); color: #000; font-weight: 800;">
+           <i class="pi pi-desktop"></i> {{ 'NAV.DINE_IN' | translate }}
+        </a>
+        <!-- Delivery Agent Mobile Link -->
+        <a *ngIf="isDelivery()" routerLink="/delivery-agent" (click)="toggleMobileMenu()" routerLinkActive="active"
+           class="p-button p-button-lg w-full mt-2 mb-1 shadow-md border-none flex align-items-center justify-content-center gap-2"
+           style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #fff; font-weight: 800;">
+          <i class="pi pi-truck"></i> {{ 'NAV.DELIVERY' | translate }}
+        </a>
+
+        <div class="border-top-1 border-white-alpha-10 my-4"></div>
+
+        <div class="flex justify-content-between align-items-center mb-5">
+          <div class="manga-toggle-group">
+            <button (click)="setLang('ar')" class="manga-toggle-btn" [class.active]="lang() === 'ar'">AR</button>
+            <button (click)="setLang('en')" class="manga-toggle-btn" [class.active]="lang() === 'en'">EN</button>
+          </div>
+          <button (click)="toggleTheme()" class="manga-toggle-btn bg-soft border-radius-sm">
+            <i [class]="currentTheme() === 'light' ? 'pi pi-moon' : 'pi pi-sun'"></i>
+          </button>
+        </div>
+
+        <div class="auth-stack flex flex-column gap-3">
+          <ng-container *ngIf="isAuthenticated(); else mobileGuest">
+            <div class="flex align-items-center gap-3 p-3 bg-soft border-radius-md mb-2">
+              <p-avatar *ngIf="!user()?.profilePictureUrl" [label]="(user()?.displayName || 'U').charAt(0).toUpperCase()" shape="circle"
+                size="large"></p-avatar>
+              <img *ngIf="user()?.profilePictureUrl" [src]="getProfilePicUrl(user()?.profilePictureUrl)" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-color);" />
+              <div>
+                <div class="font-bold">{{ user()?.displayName }}</div>
+              </div>
+            </div>
+            <button pButton icon="pi pi-sign-out" [label]="'NAV.LOGOUT' | translate"
+              (click)="logout(); toggleMobileMenu()" class="p-button-danger w-full"></button>
+          </ng-container>
+          <ng-template #mobileGuest>
+            <a routerLink="/login" (click)="toggleMobileMenu()"
+              class="p-button p-button-outlined p-button-lg w-full text-center">{{ 'NAV.LOGIN' | translate }}</a>
+            <a routerLink="/register" (click)="toggleMobileMenu()"
+              class="p-button p-button-primary p-button-lg w-full text-center">{{ 'NAV.REGISTER' | translate }}</a>
+          </ng-template>
+        </div>
+      </nav>
     </div>
   </header>
 
@@ -13,6 +239,56 @@
   </main>
 
   <footer class="manga-footer mt-5" *ngIf="showStoreLayout() && (settings$ | async) as settings">
-    <!-- ... (existing footer) ... -->
+    <div class="container py-4">
+      <div class="grid align-items-start">
+        <div class="col-12 md:col-4 mb-6 md:mb-0">
+          <div class="manga-brand mb-4">
+            <img src="logo.png" class="brand-logo" alt="Logo" style="width: 35px; height: 35px; object-fit: contain;" />
+            <span class="brand-text">{{ lang() === 'ar' ? settings.restaurantNameAr : settings.restaurantName }}</span>
+          </div>
+          <p class="text-dim pr-6" [innerHTML]="lang() === 'ar' ? '╪ث┘╪╢┘ ┘à╪╖╪╣┘à ┘è┘é╪»┘à ╪ث╪╖╪ذ╪د┘é╪د┘ï ╪┤┘ç┘è╪ر ╪ذ╪ش┘ê╪»╪ر ╪╣╪د┘┘è╪ر.' : 'The best restaurant offering delicious dishes with premium quality.'"></p>
+          <div class="flex gap-3 mt-6">
+            <a [href]="settings.facebookUrl" target="_blank" class="social-icon" *ngIf="settings.facebookUrl"><i class="pi pi-facebook"></i></a>
+            <a [href]="settings.instagramUrl" target="_blank" class="social-icon" *ngIf="settings.instagramUrl"><i class="pi pi-instagram"></i></a>
+            <a [href]="settings.twitterUrl" target="_blank" class="social-icon" *ngIf="settings.twitterUrl"><i class="pi pi-twitter"></i></a>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-4 mb-6 md:mb-0">
+          <h4 class="manga-font mb-4 primary-text text-xl">{{ 'COMMON.QUICK_LINKS' | translate }}</h4>
+          <ul class="flex flex-column gap-2 text-dim font-medium">
+            <li><a routerLink="/" class="hover:text-primary transition-colors">{{ 'NAV.HOME' | translate }}</a></li>
+            <li><a routerLink="/products" class="hover:text-primary transition-colors">{{ 'COMMON.MENU' | translate
+                }}</a></li>
+            <li><a routerLink="/basket" class="hover:text-primary transition-colors">{{ 'COMMON.CART_ORDERS' | translate
+                }}</a></li>
+            <li><a *ngIf="(settings$ | async)?.isLuckyRewardsEnabled" routerLink="/lucky-rewards" class="hover:text-primary transition-colors">{{ 'NAV.GACHA' | translate }}</a></li>
+          </ul>
+        </div>
+
+        <div class="col-12 md:col-4">
+          <h4 class="manga-font mb-4 primary-text text-xl">{{ 'COMMON.CONTACT_US' | translate }}</h4>
+          <ul class="flex flex-column gap-3 text-dim font-medium">
+            <li class="flex align-items-center gap-3"><i class="pi pi-map-marker primary-text"></i> 
+                {{ lang() === 'ar' ? settings.addressAr : settings.address }}
+            </li>
+            <li class="flex align-items-center gap-3"><i class="pi pi-phone primary-text"></i> 
+                {{ settings.phone1 }} <span *ngIf="settings.phone2">/ {{ settings.phone2 }}</span>
+            </li>
+            <li class="flex align-items-center gap-3"><i class="pi pi-envelope primary-text"></i>
+              {{ settings.email }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <div
+        class="border-top-1 border-white-alpha-10 pt-2 flex flex-column md:flex-row justify-content-between align-items-center gap-3 text-xs text-muted font-bold opacity-50">
+        <div>&copy; 2025 {{ 'COMMON.RIGHTS' | translate }}.</div>
+        <div class="flex gap-4">
+          <a href="#">{{ 'COMMON.PRIVACY' | translate }}</a>
+          <a href="#">{{ 'COMMON.TERMS' | translate }}</a>
+        </div>
+      </div>
+    </div>
   </footer>
 </div>
