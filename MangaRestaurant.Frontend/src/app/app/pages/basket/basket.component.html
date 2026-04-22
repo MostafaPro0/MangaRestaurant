@@ -51,12 +51,12 @@
                 <div class="flex align-items-center justify-content-center gap-2">
                   <button pButton icon="pi pi-minus" class="p-button-rounded p-button-text p-button-sm"
                     (click)="updateQuantity(item.productId, item.quantity, -1)"
-                    [pTooltip]="(translateService.currentLanguage === 'ar' ? 'تقليل' : 'Decrease')"></button>
+                    [pTooltip]="'COMMON.DECREASE' | translate"></button>
                   <span class="px-3 py-2 bg-soft font-bold rounded-lg min-w-min"
                     style="display:inline-block; width: 40px; text-align: center;">{{ item.quantity }}</span>
                   <button pButton icon="pi pi-plus" class="p-button-rounded p-button-text p-button-sm"
                     (click)="updateQuantity(item.productId, item.quantity, 1)"
-                    [pTooltip]="(translateService.currentLanguage === 'ar' ? 'زيادة' : 'Increase')"></button>
+                    [pTooltip]="'COMMON.INCREASE' | translate"></button>
                 </div>
               </td>
               <td class="p-4 text-center font-bold text-primary">
@@ -109,8 +109,7 @@
           </div>
           <div class="flex justify-content-between p-3 bg-soft rounded-lg">
             <span class="text-dim font-bold">{{ 'BASKET.DELIVERY' | translate }}</span>
-            <span class="text-primary font-bold">{{ (translateService.currentLanguage === 'ar' ? 'مجاني' : 'FREE')
-              }}</span>
+            <span class="text-primary font-bold">{{ 'BASKET.FREE' | translate }}</span>
           </div>
           <div class="flex justify-content-between p-3 mt-2 border-top-1 border-white-alpha-10">
             <span class="text-xl font-bold">{{ 'BASKET.GRAND_TOTAL' | translate }}</span>
@@ -180,7 +179,7 @@
               </div>
               <button pButton icon="pi pi-cart-plus" class="p-button-rounded p-button-primary shadow-sm"
                 (click)="addToBasket(product)" 
-                [pTooltip]="(translateService.currentLanguage === 'ar' ? 'إضافة للسلة' : 'Add to Basket')"></button>
+                [pTooltip]="'PRODUCTS.ADD_TO_CART' | translate"></button>
             </div>
           </div>
         </div>

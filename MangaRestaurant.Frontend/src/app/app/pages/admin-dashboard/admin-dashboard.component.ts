@@ -295,7 +295,7 @@ export class AdminDashboardComponent implements OnInit {
 
   saveItem() {
     if (!this.selectedItem.name || !this.selectedItem.nameAr) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please fill all required fields' });
+      this.messageService.add({ severity: 'error', summary: this.translateService.instant('TOAST.ERROR'), detail: this.translateService.instant('ADMIN.REQUIRED_FIELDS_ERROR') });
       return;
     }
 
@@ -308,13 +308,13 @@ export class AdminDashboardComponent implements OnInit {
       obs.subscribe({
         next: () => {
           this.savingItem = false;
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Category saved' });
+          this.messageService.add({ severity: 'success', summary: this.translateService.instant('TOAST.SUCCESS'), detail: this.translateService.instant('ADMIN.CATEGORY_SAVED') });
           this.itemDialog = false;
           this.loadCategories();
         },
         error: () => {
           this.savingItem = false;
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Save failed' });
+          this.messageService.add({ severity: 'error', summary: this.translateService.instant('TOAST.ERROR'), detail: this.translateService.instant('TOAST.SAVE_FAILED') });
         }
       });
     } else {
@@ -326,27 +326,27 @@ export class AdminDashboardComponent implements OnInit {
       obs.subscribe({
         next: () => {
           this.savingItem = false;
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Brand saved' });
+          this.messageService.add({ severity: 'success', summary: this.translateService.instant('TOAST.SUCCESS'), detail: this.translateService.instant('ADMIN.BRAND_SAVED') });
           this.itemDialog = false;
           this.loadBrands();
         },
         error: () => {
           this.savingItem = false;
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Save failed' });
+          this.messageService.add({ severity: 'error', summary: this.translateService.instant('TOAST.ERROR'), detail: this.translateService.instant('TOAST.SAVE_FAILED') });
         }
       });
     }
   }
 
   deleteItem(id: number, mode: 'categories' | 'brands') {
-    if (confirm('Are you sure you want to delete this item?')) {
+    if (confirm(this.translateService.instant('ADMIN.DELETE_CONFIRM'))) {
       const obs = mode === 'categories' 
         ? this.productsService.deleteCategory(id)
         : this.productsService.deleteBrand(id);
       
       obs.subscribe({
         next: () => {
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Deleted successfully' });
+          this.messageService.add({ severity: 'success', summary: this.translateService.instant('TOAST.SUCCESS'), detail: this.translateService.instant('ADMIN.ITEM_DELETED') });
           mode === 'categories' ? this.loadCategories() : this.loadBrands();
         }
       });
@@ -360,7 +360,7 @@ export class AdminDashboardComponent implements OnInit {
     
     obs.subscribe({
       next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: hide ? 'Hidden' : 'Shown' });
+        this.messageService.add({ severity: 'success', summary: this.translateService.instant('TOAST.SUCCESS'), detail: hide ? this.translateService.instant('ADMIN.STATUS_HIDDEN') : this.translateService.instant('ADMIN.STATUS_SHOWN') });
         mode === 'categories' ? this.loadCategories() : this.loadBrands();
       }
     });
@@ -371,32 +371,32 @@ export class AdminDashboardComponent implements OnInit {
     this.adminService.createUser(this.newUser, this.selectedUserRole).subscribe({
       next: () => {
         this.savingUserStatus = false;
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User created' });
+        this.messageService.add({ severity: 'success', summary: this.translateService.instant('TOAST.SUCCESS'), detail: this.translateService.instant('ADMIN.USER_CREATED') });
         this.userDialog = false;
         this.loadUsers();
       },
       error: () => {
         this.savingUserStatus = false;
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to create user' });
+        this.messageService.add({ severity: 'error', summary: this.translateService.instant('TOAST.ERROR'), detail: this.translateService.instant('TOAST.SAVE_FAILED') });
       }
     });
   }
 
   onRoleChange(user: any, newRole: string) {
     this.adminService.updateUserRole(user.id, newRole).subscribe({
-      next: () => this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Role updated' }),
-      error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update role' })
+      next: () => this.messageService.add({ severity: 'success', summary: this.translateService.instant('TOAST.SUCCESS'), detail: this.translateService.instant('ADMIN.ROLE_UPDATED') }),
+      error: () => this.messageService.add({ severity: 'error', summary: this.translateService.instant('TOAST.ERROR'), detail: this.translateService.instant('TOAST.UPDATE_FAILED') })
     });
   }
 
   onDeleteUser(userId: string) {
-    if (confirm('Are you sure you want to delete this user?')) {
+    if (confirm(this.translateService.instant('ADMIN.DELETE_CONFIRM'))) {
       this.adminService.deleteUser(userId).subscribe({
         next: () => {
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User deleted' });
+          this.messageService.add({ severity: 'success', summary: this.translateService.instant('TOAST.SUCCESS'), detail: this.translateService.instant('ADMIN.USER_DELETED') });
           this.loadAllData();
         },
-        error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete user' })
+        error: () => this.messageService.add({ severity: 'error', summary: this.translateService.instant('TOAST.ERROR'), detail: this.translateService.instant('TOAST.DELETE_FAILED') })
       });
     }
   }
@@ -414,8 +414,8 @@ export class AdminDashboardComponent implements OnInit {
       error: (err) => {
         this.messageService.add({ 
           severity: 'error', 
-          summary: 'Error', 
-          detail: err.error?.message || 'Failed to update status' 
+          summary: this.translateService.instant('TOAST.ERROR'), 
+          detail: err.error?.message || this.translateService.instant('TOAST.UPDATE_FAILED') 
         });
       }
     });
@@ -596,12 +596,12 @@ export class AdminDashboardComponent implements OnInit {
     this.ordersService.updateOrderStatus(orderId, status).subscribe({
       next: () => {
         this.savingOrderStatus = false;
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Order updated' });
+        this.messageService.add({ severity: 'success', summary: this.translateService.instant('TOAST.SUCCESS'), detail: this.translateService.instant('ADMIN.ORDER_UPDATED') });
         this.loadAllData();
       },
       error: () => {
         this.savingOrderStatus = false;
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update failed' });
+        this.messageService.add({ severity: 'error', summary: this.translateService.instant('TOAST.ERROR'), detail: this.translateService.instant('TOAST.UPDATE_FAILED') });
       }
     });
   }
@@ -628,7 +628,7 @@ export class AdminDashboardComponent implements OnInit {
   deleteProduct(id: number) {
     if (confirm(this.translateService.instant('ADMIN.DELETE_CONFIRM'))) {
       this.productsService.deleteProduct(id).subscribe(() => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product deleted' });
+        this.messageService.add({ severity: 'success', summary: this.translateService.instant('TOAST.SUCCESS'), detail: this.translateService.instant('ADMIN.PRODUCT_DELETED') });
         this.loadAllData();
       });
     }
@@ -656,13 +656,13 @@ export class AdminDashboardComponent implements OnInit {
     operation.subscribe({
       next: () => {
         this.savingProduct = false;
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product saved' });
+        this.messageService.add({ severity: 'success', summary: this.translateService.instant('TOAST.SUCCESS'), detail: this.translateService.instant('ADMIN.PRODUCT_SAVED') });
         this.productDialogVisible = false;
         this.loadAllData();
       },
       error: (err) => {
         this.savingProduct = false;
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Save failed' });
+        this.messageService.add({ severity: 'error', summary: this.translateService.instant('TOAST.ERROR'), detail: this.translateService.instant('TOAST.SAVE_FAILED') });
       }
     });
   }
@@ -675,11 +675,11 @@ export class AdminDashboardComponent implements OnInit {
         next: (path: string) => {
           this.selectedProduct.pictureUrl = path;
           this.uploadingImage = false;
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Image uploaded successfully' });
+          this.messageService.add({ severity: 'success', summary: this.translateService.instant('TOAST.SUCCESS'), detail: this.translateService.instant('ADMIN.IMAGE_UPLOADED') });
         },
         error: () => {
           this.uploadingImage = false;
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Image upload failed' });
+          this.messageService.add({ severity: 'error', summary: this.translateService.instant('TOAST.ERROR'), detail: this.translateService.instant('ADMIN.IMAGE_UPLOAD_FAIL') });
         }
       });
     }
@@ -712,7 +712,7 @@ export class AdminDashboardComponent implements OnInit {
         this.savingSettings = false;
       },
       error: () => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update failed' });
+        this.messageService.add({ severity: 'error', summary: this.translateService.instant('TOAST.ERROR'), detail: this.translateService.instant('TOAST.UPDATE_FAILED') });
         this.savingSettings = false;
       }
     });
@@ -749,7 +749,7 @@ export class AdminDashboardComponent implements OnInit {
 
   saveLuckyPrize() {
     if (!this.selectedLuckyPrize.title || !this.selectedLuckyPrize.titleAr) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please fill all required fields' });
+      this.messageService.add({ severity: 'error', summary: this.translateService.instant('TOAST.ERROR'), detail: this.translateService.instant('ADMIN.REQUIRED_FIELDS_ERROR') });
       return;
     }
 
@@ -761,22 +761,22 @@ export class AdminDashboardComponent implements OnInit {
     obs.subscribe({
       next: () => {
         this.savingLuckyPrize = false;
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Prize saved' });
+        this.messageService.add({ severity: 'success', summary: this.translateService.instant('TOAST.SUCCESS'), detail: this.translateService.instant('ADMIN.PRIZE_SAVED') });
         this.luckyPrizeDialog = false;
         this.loadLuckyPrizes();
       },
       error: () => {
         this.savingLuckyPrize = false;
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Save failed' });
+        this.messageService.add({ severity: 'error', summary: this.translateService.instant('TOAST.ERROR'), detail: this.translateService.instant('TOAST.SAVE_FAILED') });
       }
     });
   }
 
   deleteLuckyPrize(id: number) {
-    if (confirm('Are you sure you want to delete this prize?')) {
+    if (confirm(this.translateService.instant('ADMIN.DELETE_CONFIRM'))) {
       this.luckyRewardsService.deletePrize(id).subscribe({
         next: () => {
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Prize deleted' });
+          this.messageService.add({ severity: 'success', summary: this.translateService.instant('TOAST.SUCCESS'), detail: this.translateService.instant('ADMIN.PRIZE_DELETED') });
           this.loadLuckyPrizes();
         }
       });

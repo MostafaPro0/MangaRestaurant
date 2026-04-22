@@ -130,8 +130,8 @@ export class PosComponent implements OnInit {
     if (!basket || basket.items.length === 0) {
       this.messageService.add({ 
         severity: 'warn', 
-        summary: 'Warning', 
-        detail: (this.translate.currentLanguage === 'ar' ? 'يرجى إضافة أصناف أولاً' : 'Please add items first')
+        summary: this.translate.instant('TOAST.WARN'), 
+        detail: this.translate.instant('POS.ADD_ITEMS_FIRST')
       });
       return;
     }
@@ -143,13 +143,13 @@ export class PosComponent implements OnInit {
       basketId: basket.id,
       orderType: 1, // DineIn
       shippingAddress: {
-        firstName: this.translate.currentLanguage === 'ar' ? 'طلب' : 'Dine-In',
-        lastName: this.translate.currentLanguage === 'ar' ? 'طاولة' : 'Customer',
-        street: this.translate.currentLanguage === 'ar' ? 'طاولة المطعم' : 'Restaurant Table',
-        city: this.translate.currentLanguage === 'ar' ? 'داخل الصالة' : 'Inside',
+        firstName: this.translate.instant('COMMON.DINE_IN'),
+        lastName: this.translate.instant('COMMON.CUSTOMER'),
+        street: this.translate.instant('COMMON.RESTAURANT_TABLE'),
+        city: this.translate.instant('COMMON.INSIDE'),
         state: 'POS',
         zipCode: '0000',
-        country: this.translate.currentLanguage === 'ar' ? 'المطعم' : 'Restaurant'
+        country: this.translate.instant('COMMON.RESTAURANT')
       }
     };
 
@@ -157,8 +157,8 @@ export class PosComponent implements OnInit {
           next: () => {
             this.messageService.add({ 
               severity: 'success', 
-              summary: 'Success', 
-              detail: (this.translate.currentLanguage === 'ar' ? 'تم إرسال طلبك بنجاح!' : 'Order submitted successfully!') 
+              summary: this.translate.instant('TOAST.SUCCESS'), 
+              detail: this.translate.instant('POS.ORDER_SUBMITTED') 
             });
             this.basketService.deleteBasket(basket.id).subscribe();
             this.loading = false;
@@ -166,8 +166,8 @@ export class PosComponent implements OnInit {
           error: () => {
             this.messageService.add({ 
               severity: 'error', 
-              summary: 'Error', 
-              detail: (this.translate.currentLanguage === 'ar' ? 'فشل إرسال الطلب' : 'Failed to submit order') 
+              summary: this.translate.instant('TOAST.ERROR'), 
+              detail: this.translate.instant('POS.ORDER_FAILED') 
             });
             this.loading = false;
           }

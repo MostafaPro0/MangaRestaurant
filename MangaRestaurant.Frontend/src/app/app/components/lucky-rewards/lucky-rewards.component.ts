@@ -86,7 +86,7 @@ export class LuckyRewardsComponent implements OnInit {
         }, 1500);
       },
       error: (err) => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error?.message || 'Failed to draw' });
+        this.messageService.add({ severity: 'error', summary: this.translateService.instant('TOAST.ERROR'), detail: err.error?.message || this.translateService.instant('LUCKY.DRAW_FAIL') });
         this.isDrawing = false;
       }
     });

@@ -151,8 +151,8 @@ export class OrdersComponent implements OnInit {
         this.editAddressVisible = false;
         this.messageService.add({ 
             severity: 'success', 
-            summary: this.translate.instant('TOAST.SUCCESS') || 'Success', 
-            detail: this.translate.instant('ORDERS.ADDRESS_UPDATED') || 'Address updated successfully.' 
+            summary: this.translate.instant('TOAST.SUCCESS'), 
+            detail: this.translate.instant('ORDERS.ADDRESS_UPDATED') 
         });
       },
       error: (err) => {
@@ -160,8 +160,8 @@ export class OrdersComponent implements OnInit {
         this.updatingAddress = false;
         this.messageService.add({ 
           severity: 'error', 
-          summary: this.translate.instant('TOAST.ERROR') || 'Error', 
-          detail: this.translate.instant('ORDERS.ADDRESS_UPDATE_FAIL') || 'Could not update address.' 
+          summary: this.translate.instant('TOAST.ERROR'), 
+          detail: this.translate.instant('ORDERS.ADDRESS_UPDATE_FAIL') 
         });
       }
     });
@@ -169,7 +169,7 @@ export class OrdersComponent implements OnInit {
 
   detectLocation(): void {
     if (!navigator.geolocation) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Geolocation not supported' });
+      this.messageService.add({ severity: 'error', summary: this.translate.instant('TOAST.ERROR'), detail: this.translate.instant('LOCATION.NOT_SUPPORTED') });
       return;
     }
 
@@ -182,16 +182,16 @@ export class OrdersComponent implements OnInit {
         this.detectingLocation = false;
         this.messageService.add({ 
             severity: 'success', 
-            summary: this.translate.instant('TOAST.SUCCESS') || 'Success', 
-            detail: this.translate.instant('CHECKOUT.LOCATION_DETECTED') || 'Location detected!' 
+            summary: this.translate.instant('TOAST.SUCCESS'), 
+            detail: this.translate.instant('CHECKOUT.LOCATION_DETECTED') 
         });
       },
       (err) => {
         this.detectingLocation = false;
         this.messageService.add({ 
             severity: 'error', 
-            summary: this.translate.instant('TOAST.ERROR') || 'Error', 
-            detail: this.translate.instant('CHECKOUT.LOCATION_DENIED') || 'Location access denied' 
+            summary: this.translate.instant('TOAST.ERROR'), 
+            detail: this.translate.instant('CHECKOUT.LOCATION_DENIED') 
         });
       }
     );
@@ -207,7 +207,7 @@ export class OrdersComponent implements OnInit {
       },
       error: (err) => {
         console.error('Failed to load orders', err);
-        this.messageService.add({ severity: 'error', summary: this.translate.instant('TOAST.ERROR') || 'Error', detail: this.translate.instant('TOAST.ORDERS_FAIL') || 'Could not load orders.' });
+        this.messageService.add({ severity: 'error', summary: this.translate.instant('TOAST.ERROR'), detail: this.translate.instant('TOAST.ORDERS_FAIL') });
         this.loading = false;
       }
     });

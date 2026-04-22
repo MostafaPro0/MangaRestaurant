@@ -280,7 +280,7 @@ export class UserProfileComponent implements OnInit {
 
   changePassword(): void {
     if (this.passwordData.newPassword !== this.passwordData.confirmPassword) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: this.translate.instant('AUTH.PASSWORDS_DONT_MATCH') });
+      this.messageService.add({ severity: 'error', summary: this.translate.instant('TOAST.ERROR'), detail: this.translate.instant('AUTH.PASSWORDS_DONT_MATCH') });
       return;
     }
 
@@ -290,14 +290,14 @@ export class UserProfileComponent implements OnInit {
 
     obs.subscribe({
       next: (res: any) => {
-        this.messageService.add({ severity: 'success', summary: this.translate.instant('TOAST.SUCCESS'), detail: res.message || 'Updated' });
+        this.messageService.add({ severity: 'success', summary: this.translate.instant('TOAST.SUCCESS'), detail: res.message || this.translate.instant('TOAST.UPDATE_SUCCESS') });
         this.passwordData = { currentPassword: '', newPassword: '', confirmPassword: '' };
         if (!this.user?.hasPassword) {
            this.user = this.authService.currentUser;
         }
       },
       error: (err) => {
-        const detail = err.error?.message || err.error?.errors?.[0] || 'Failed to update password';
+        const detail = err.error?.message || err.error?.errors?.[0] || this.translate.instant('TOAST.UPDATE_FAILED');
         this.messageService.add({ severity: 'error', summary: this.translate.instant('TOAST.ERROR'), detail });
       }
     });
@@ -305,7 +305,7 @@ export class UserProfileComponent implements OnInit {
 
   saveProfile(): void {
     if (this.phoneNumber && this.phoneNumber2 && this.phoneNumber === this.phoneNumber2) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: this.translate.instant('PROFILE.PHONE_MATCH_ERROR') || 'Phone numbers cannot be identical' });
+      this.messageService.add({ severity: 'error', summary: this.translate.instant('TOAST.ERROR'), detail: this.translate.instant('PROFILE.PHONE_MATCH_ERROR') || 'Phone numbers cannot be identical' });
       return;
     }
 
@@ -353,13 +353,13 @@ export class UserProfileComponent implements OnInit {
             next: (updatedUser) => {
               this.user = updatedUser;
               this.profilePictureUrl = res.url;
-              this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Profile picture updated' });
+              this.messageService.add({ severity: 'success', summary: this.translate.instant('TOAST.SUCCESS'), detail: this.translate.instant('TOAST.UPDATE_SUCCESS') });
               this.loadingPicture = false;
             }
           });
         },
         error: () => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to upload image' });
+          this.messageService.add({ severity: 'error', summary: this.translate.instant('TOAST.ERROR'), detail: this.translate.instant('TOAST.UPLOAD_FAIL') || 'Failed to upload image' });
           this.loadingPicture = false;
         }
       });

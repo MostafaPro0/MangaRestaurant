@@ -174,8 +174,8 @@ export class CheckoutComponent implements OnInit {
 
         this.messageService.add({
           severity: 'success',
-          summary: this.translate.instant('TOAST.SUCCESS') || 'Success',
-          detail: this.translate.instant('TOAST.ORDER_SUCCESS') || 'Order has been placed successfully!',
+          summary: this.translate.instant('TOAST.SUCCESS'),
+          detail: this.translate.instant('TOAST.ORDER_SUCCESS'),
           life: 4000
         });
 
@@ -191,8 +191,8 @@ export class CheckoutComponent implements OnInit {
 
         this.messageService.add({
           severity: 'error',
-          summary: this.translate.instant('TOAST.ERROR') || 'Error',
-          detail: this.translate.instant('TOAST.ORDER_FAIL') || 'Failed to create order. Please try again.',
+          summary: this.translate.instant('TOAST.ERROR'),
+          detail: this.translate.instant('TOAST.ORDER_FAIL'),
           life: 4000
         });
       }

@@ -6,7 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { PasswordModule } from 'primeng/password';
 
 @Component({
@@ -58,7 +58,13 @@ export class ResetPasswordComponent implements OnInit {
   loading: boolean = false;
   data = { email: '', token: '', newPassword: '', confirmPassword: '' };
 
-  constructor(private route: ActivatedRoute, private auth: AuthService, private messageService: MessageService, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute, 
+    public auth: AuthService, 
+    private messageService: MessageService, 
+    private router: Router,
+    private translate: TranslateService
+  ) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -67,7 +73,7 @@ export class ResetPasswordComponent implements OnInit {
     });
 
     if (!this.data.token || !this.data.email) {
-      this.messageService.add({ severity: 'error', summary: 'Invalid Link', detail: 'The reset link is invalid or expired.' });
+      this.messageService.add({ severity: 'error', summary: this.translate.instant('AUTH.INVALID_LINK'), detail: this.translate.instant('AUTH.INVALID_LINK_DESC') });
       this.router.navigate(['/login']);
     }
   }
@@ -77,14 +83,14 @@ export class ResetPasswordComponent implements OnInit {
     this.auth.resetPassword(this.data).subscribe({
       next: (res) => {
         this.loading = false;
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: res.message });
+        this.messageService.add({ severity: 'success', summary: this.translate.instant('TOAST.SUCCESS'), detail: res.message || this.translate.instant('AUTH.RESET_SUCCESS') });
         this.router.navigate(['/login']);
       },
       error: (err) => {
         this.loading = false;
         console.error('Reset error', err);
-        const errorMsg = err.error?.message || err.error?.errors?.[0] || 'Reset failed';
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: errorMsg });
+        const errorMsg = err.error?.message || err.error?.errors?.[0] || this.translate.instant('TOAST.UPDATE_FAILED');
+        this.messageService.add({ severity: 'error', summary: this.translate.instant('TOAST.ERROR'), detail: errorMsg });
       }
     });
   }

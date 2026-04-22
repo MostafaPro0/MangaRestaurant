@@ -87,18 +87,18 @@ export class RegisterComponent implements AfterViewInit {
           this.loading = false;
           this.messageService.add({
             severity: 'success',
-            summary: this.translate.instant('TOAST.SUCCESS') || 'Success',
-            detail: this.translate.instant('TOAST.REGISTER_SUCCESS') || 'Generated Account Successfully via Google',
+            summary: this.translate.instant('TOAST.SUCCESS'),
+            detail: this.translate.instant('TOAST.REGISTER_SUCCESS'),
             life: 3000
           });
           this.router.navigate([this.authService.isAdmin(user?.token ?? null) ? '/admin' : '/']);
         },
         error: (err) => {
           this.loading = false;
-          this.error = 'Failed to continue via Google';
+          this.error = this.translate.instant('TOAST.REGISTER_FAIL');
           this.messageService.add({
             severity: 'error',
-            summary: 'Error',
+            summary: this.translate.instant('TOAST.ERROR'),
             detail: this.error,
             life: 3000
           });

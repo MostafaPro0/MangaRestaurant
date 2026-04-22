@@ -5,7 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -52,7 +52,7 @@ export class ForgotPasswordComponent {
   email: string = '';
   loading: boolean = false;
 
-  constructor(private auth: AuthService, private messageService: MessageService) {}
+  constructor(private auth: AuthService, private messageService: MessageService, private translate: TranslateService) {}
 
   onSubmit() {
     this.loading = true;
@@ -61,16 +61,16 @@ export class ForgotPasswordComponent {
         this.loading = false;
         this.messageService.add({
           severity: 'success',
-          summary: 'Success',
-          detail: res.message || 'If your email exists, a reset link has been sent.'
+          summary: this.translate.instant('TOAST.SUCCESS'),
+          detail: res.message || this.translate.instant('AUTH.FORGOT_SUCCESS')
         });
       },
       error: (err) => {
         this.loading = false;
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to send reset link. Please try again later.'
+          summary: this.translate.instant('TOAST.ERROR'),
+          detail: this.translate.instant('AUTH.FORGOT_ERROR')
         });
       }
     });

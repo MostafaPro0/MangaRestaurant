@@ -467,7 +467,7 @@
               <span class="p-input-icon-left">
                 <i class="pi pi-envelope text-primary"></i>
                 <input type="email" pInputText id="email" [(ngModel)]="newUser.email"
-                  [placeholder]="translateService.currentLang === 'ar' ? 'example@mail.com' : 'example@mail.com'"
+                  [placeholder]="'ADMIN.EMAIL_PLACEHOLDER' | translate"
                   required class="p-inputtext-lg border-round-xl" />
               </span>
             </div>
@@ -490,7 +490,7 @@
               <span class="p-input-icon-left">
                 <i class="pi pi-phone text-primary"></i>
                 <input type="text" pInputText id="phone" [(ngModel)]="newUser.phoneNumber"
-                  [placeholder]="translateService.currentLang === 'ar' ? '01xxxxxxxxx' : '01xxxxxxxxx'" required
+                  [placeholder]="'ADMIN.PHONE_PLACEHOLDER' | translate" required
                   class="p-inputtext-lg border-round-xl" />
               </span>
             </div>
@@ -859,8 +859,7 @@
 
               <!-- Group: Identity (Stacked) -->
               <div class="form-group-card mb-4">
-                <div class="section-badge mb-4">{{ (translateService.currentLang === 'ar' ? 'بيانات الجائزة' : 'Prize
-                  Identity') }}</div>
+                <div class="section-badge mb-4">{{ 'GACHA.PRIZE_IDENTITY' | translate }}</div>
 
                 <div class="field mb-4">
                   <label class="block mb-2 font-bold text-xs text-dim">{{ 'GACHA.TITLE_EN' | translate }}</label>
@@ -894,8 +893,7 @@
 
               <!-- Group: Configuration (Side-by-Side) -->
               <div class="form-group-card">
-                <div class="section-badge mb-4">{{ (translateService.currentLang === 'ar' ? 'الإعدادات الفنية' :
-                  'Technical Config') }}</div>
+                <div class="section-badge mb-4">{{ 'GACHA.TECHNICAL_CONFIG' | translate }}</div>
 
                 <div class="grid">
                   <div class="col-12 md:col-6 field mb-4">
@@ -925,8 +923,7 @@
                       <input type="number" pInputText [(ngModel)]="selectedLuckyPrize.probabilityWeight"
                         class="lucky-input" style="max-width: 120px;" />
                       <div class="p-2 px-3 bg-black-alpha-10 border-round-lg text-xs opacity-60 flex-grow-1">
-                        {{ (translateService.currentLang === 'ar' ? 'الوزن يحدد نسبة الفوز بالجائزة.' : 'Weight
-                        determines winning probability.') }}
+                        {{ 'GACHA.WEIGHT_HELP' | translate }}
                       </div>
                     </div>
                   </div>

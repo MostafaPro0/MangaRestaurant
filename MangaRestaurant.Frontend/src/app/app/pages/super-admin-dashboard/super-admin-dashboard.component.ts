@@ -49,11 +49,7 @@ export class SuperAdminDashboardComponent implements OnInit {
   editForm: FormGroup;
   selectedTenant: Tenant | null = null;
 
-  plans = [
-    { label: 'Free', value: 1 },
-    { label: 'Professional', value: 2 },
-    { label: 'Enterprise', value: 3 }
-  ];
+  plans: any[] = [];
 
   constructor(
     private superAdminService: SuperAdminService,
@@ -61,9 +57,11 @@ export class SuperAdminDashboardComponent implements OnInit {
     private messageService: MessageService,
     private translate: TranslateService
   ) {
+    this.initPlans();
     this.currentLang = this.translate.currentLang || 'en';
     this.translate.onLangChange.subscribe(event => {
       this.currentLang = event.lang;
+      this.initPlans();
     });
 
     this.createForm = this.fb.group({
@@ -84,6 +82,14 @@ export class SuperAdminDashboardComponent implements OnInit {
     });
   }
 
+  initPlans() {
+    this.plans = [
+      { label: this.translate.instant('SUPER_ADMIN.PLAN_FREE'), value: 1 },
+      { label: this.translate.instant('SUPER_ADMIN.PLAN_PRO'), value: 2 },
+      { label: this.translate.instant('SUPER_ADMIN.PLAN_ENTERPRISE'), value: 3 }
+    ];
+  }
+
   ngOnInit() {
     this.loadTenants();
   }
@@ -99,7 +105,7 @@ export class SuperAdminDashboardComponent implements OnInit {
         this.messageService.add({ 
           severity: 'error', 
           summary: this.translate.instant('TOAST.ERROR'), 
-          detail: 'Failed to load tenants' 
+          detail: this.translate.instant('SUPER_ADMIN.ERROR_LOAD') 
         });
         this.loading = false;
       }
