@@ -10,6 +10,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
 import { TagModule } from 'primeng/tag';
+import { TabViewModule } from 'primeng/tabview';
+import { DropdownModule } from 'primeng/dropdown';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -25,6 +27,8 @@ import { TranslateService, TranslateModule } from '@ngx-translate/core';
     PasswordModule,
     ToastModule,
     TagModule,
+    TabViewModule,
+    DropdownModule,
     TranslateModule
   ],
   providers: [MessageService],
@@ -37,8 +41,19 @@ export class SuperAdminDashboardComponent implements OnInit {
   currentLang: string = 'en';
 
   displayCreateDialog: boolean = false;
+  displayEditDialog: boolean = false;
   creating: boolean = false;
+  updating: boolean = false;
+  
   createForm: FormGroup;
+  editForm: FormGroup;
+  selectedTenant: Tenant | null = null;
+
+  plans = [
+    { label: 'Free', value: 1 },
+    { label: 'Professional', value: 2 },
+    { label: 'Enterprise', value: 3 }
+  ];
 
   constructor(
     private superAdminService: SuperAdminService,
@@ -59,6 +74,13 @@ export class SuperAdminDashboardComponent implements OnInit {
       adminName: ['', Validators.required],
       adminPassword: ['', [Validators.required, Validators.minLength(6)]],
       planId: [1]
+    });
+
+    this.editForm = this.fb.group({
+      name: ['', Validators.required],
+      nameAr: ['', Validators.required],
+      planId: [Validators.required],
+      isActive: [true]
     });
   }
 
@@ -112,7 +134,37 @@ export class SuperAdminDashboardComponent implements OnInit {
     });
   }
 
+  onEdit(tenant: Tenant) {
+    this.selectedTenant = tenant;
+    this.editForm.patchValue({
+      name: tenant.name,
+      nameAr: tenant.nameAr,
+      planId: tenant.planId,
+      isActive: tenant.isActive
+    });
+    this.displayEditDialog = true;
+  }
+
+  onUpdateSubmit() {
+    if (this.editForm.invalid || !this.selectedTenant) return;
+
+    this.updating = true;
+    this.superAdminService.updateTenant(this.selectedTenant.slug, this.editForm.value).subscribe({
+      next: (updatedTenant) => {
+        this.messageService.add({ severity: 'success', summary: 'Updated', detail: 'Tenant updated successfully' });
+        this.loadTenants();
+        this.displayEditDialog = false;
+        this.updating = false;
+      },
+      error: () => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update tenant' });
+        this.updating = false;
+      }
+    });
+  }
+
   deleteTenant(slug: string) {
+    // ...
     if (confirm(`Are you sure you want to deactivate tenant: ${slug}?`)) {
       this.superAdminService.deleteTenant(slug).subscribe({
         next: () => {

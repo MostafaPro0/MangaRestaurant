@@ -51,6 +51,21 @@ namespace MangaRestaurant.APIs.Controllers.SuperAdmin
             return Ok(result.Tenant);
         }
 
+        [HttpPut("{slug}")]
+        public async Task<ActionResult> UpdateTenant(string slug, [FromBody] UpdateTenantDto dto)
+        {
+            var tenant = await _saasDb.Tenants.FirstOrDefaultAsync(t => t.Slug == slug);
+            if (tenant == null) return NotFound(new ApiResponse(404));
+
+            tenant.Name = dto.Name;
+            tenant.NameAr = dto.NameAr;
+            tenant.PlanId = dto.PlanId;
+            tenant.IsActive = dto.IsActive;
+
+            await _saasDb.SaveChangesAsync();
+            return Ok(tenant);
+        }
+
         [HttpDelete("{slug}")]
         public async Task<ActionResult> DeleteTenant(string slug)
         {

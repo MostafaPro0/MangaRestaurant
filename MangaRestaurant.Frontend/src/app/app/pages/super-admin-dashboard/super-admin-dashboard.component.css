@@ -1,141 +1,49 @@
-/* Premium SAAS Dialog Styling */
-:host ::ng-deep .premium-saas-dialog .p-dialog-header {
-    background: #ffffff;
-    border-bottom: 1px solid #f1f5f9;
-    padding: 1.5rem 2rem;
-    color: #1e293b;
+.super-admin-layout {
+  min-height: 100vh;
+  background: var(--lp-bg);
 }
 
-:host ::ng-deep .premium-saas-dialog .p-dialog-content {
-    background: #f8fafc;
-    padding: 2rem;
+::ng-deep .premium-tabs .p-tabview-nav {
+  background: transparent !important;
+  border: none !important;
+  display: flex !important;
+  gap: 1rem !important;
+  margin-bottom: 2rem !important;
+  padding: 0 !important;
 }
 
-.premium-form-layout {
-    display: flex;
-    flex-direction: column;
+::ng-deep .premium-tabs .p-tabview-nav li {
+  margin-right: 0 !important;
 }
 
-.form-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+::ng-deep .premium-tabs .p-tabview-nav li .p-tabview-nav-link {
+  background: var(--lp-surface-card) !important;
+  border: 1px solid var(--lp-border) !important;
+  border-radius: 12px !important;
+  padding: 1rem 2rem !important;
+  color: var(--lp-text-muted) !important;
+  font-weight: 700 !important;
+  transition: all 0.3s !important;
 }
 
-.card-header {
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    padding: 1.25rem 1.5rem;
-    background: #fdfdfd;
-    border-bottom: 1px solid #f1f5f9;
+::ng-deep .premium-tabs .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  background: var(--lp-primary-soft) !important;
+  border-color: var(--lp-primary) !important;
+  color: var(--lp-primary) !important;
 }
 
-.card-header .header-icon {
-    font-size: 1.5rem;
-    color: #3b82f6;
-    background: #eff6ff;
-    padding: 0.75rem;
-    border-radius: 10px;
+::ng-deep .premium-tabs .p-tabview-panels {
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
 }
 
-.card-header.secondary .header-icon {
-    color: #f59e0b;
-    background: #fffbeb;
+.field label {
+  color: var(--lp-text);
 }
 
-.header-text h3 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #0f172a;
-    margin: 0;
-}
-
-.header-text p {
-    font-size: 0.875rem;
-    color: #64748b;
-    margin: 0.25rem 0 0;
-}
-
-.card-body {
-    padding: 1.5rem;
-}
-
-.field-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.field-group label {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #475569;
-}
-
-/* Slug Input Styling - Forced LTR */
-.slug-input-wrapper {
-    display: flex;
-    align-items: center;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #fcfcfc;
-    transition: all 0.2s;
-}
-
-.slug-input-wrapper:focus-within {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.slug-input-wrapper .prefix {
-    padding: 0 0.75rem;
-    color: #94a3b8;
-    background: #f8fafc;
-    border-right: 1px solid #e2e8f0;
-    line-height: 2.5rem;
-}
-
-.slug-input-wrapper .suffix {
-    padding: 0 0.75rem;
-    color: #3b82f6;
-    font-weight: 700;
-    background: #f8fafc;
-    border-left: 1px solid #e2e8f0;
-    line-height: 2.5rem;
-}
-
-.slug-input-wrapper .slug-input {
-    flex: 1;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0.5rem 0.75rem !important;
-    font-weight: bold;
-    color: #1e293b;
-}
-
-.help-text {
-    font-size: 0.75rem;
-    color: #ef4444;
-    margin-top: 0.25rem;
-}
-
-.footer-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 1rem;
-}
-
-:host ::ng-deep [dir="rtl"] .slug-input-wrapper .prefix {
-    border-right: none;
-    border-left: 1px solid #e2e8f0;
-}
-
-:host ::ng-deep [dir="rtl"] .slug-input-wrapper .suffix {
-    border-left: none;
-    border-right: 1px solid #e2e8f0;
+.bg-gradient-text {
+  background: var(--lp-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

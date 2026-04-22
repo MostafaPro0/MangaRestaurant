@@ -1,53 +1,105 @@
 <p-toast></p-toast>
-<div class="p-6 max-w-7xl mx-auto" [dir]="currentLang === 'ar' ? 'rtl' : 'ltr'">
-  <div class="flex justify-between items-center mb-6" [class.flex-row-reverse]="currentLang === 'ar'">
-    <h1 class="text-3xl font-bold dark:text-white text-gray-800">
+<div class="lp super-admin-layout" [class.dark]="true" [class.rtl]="currentLang === 'ar'" [dir]="currentLang === 'ar' ? 'rtl' : 'ltr'">
+  
+  <header class="p-8 pb-0">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-4xl font-black bg-gradient-to-r from-emerald-400 to-blue-500 bg-clip-text text-transparent">
         {{ currentLang === 'ar' ? '🌍 لوحة التحكم المركزية' : '🌍 Super Admin Dashboard' }}
-    </h1>
-    <p-button [label]="'SUPER_ADMIN.ADD_TENANT' | translate" icon="pi pi-plus" (click)="showCreateDialog()"></p-button>
-  </div>
+      </h1>
+      <p-button [label]="'SUPER_ADMIN.ADD_TENANT' | translate" icon="pi pi-plus" (click)="showCreateDialog()" styleClass="p-button-rounded p-button-success shadow-lg"></p-button>
+    </div>
 
-  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4">
-    <p-table [value]="tenants" [loading]="loading" [rowHover]="true" styleClass="p-datatable-striped">
-      <ng-template pTemplate="header">
-        <tr>
-          <th [class.text-right]="currentLang === 'ar'">{{ 'SUPER_ADMIN.RESTAURANT_NAME' | translate }}</th>
-          <th [class.text-right]="currentLang === 'ar'">{{ 'SUPER_ADMIN.RESTAURANT_NAME_AR' | translate }}</th>
-          <th [class.text-right]="currentLang === 'ar'">{{ 'SUPER_ADMIN.SLUG' | translate }}</th>
-          <th [class.text-right]="currentLang === 'ar'">{{ 'SUPER_ADMIN.PLAN' | translate }}</th>
-          <th [class.text-right]="currentLang === 'ar'">{{ 'SUPER_ADMIN.STATUS' | translate }}</th>
-          <th [class.text-right]="currentLang === 'ar'">{{ 'SUPER_ADMIN.CREATED_AT' | translate }}</th>
-          <th [class.text-right]="currentLang === 'ar'">{{ 'SUPER_ADMIN.ACTIONS' | translate }}</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-tenant>
-        <tr>
-          <td [class.text-right]="currentLang === 'ar'">{{ tenant.name }}</td>
-          <td [class.text-right]="currentLang === 'ar'">{{ tenant.nameAr }}</td>
-          <td [class.text-right]="currentLang === 'ar'">
-              <span class="font-mono text-primary-600 bg-primary-50 px-2 py-1 rounded">{{ tenant.slug }}</span>
-          </td>
-          <td [class.text-right]="currentLang === 'ar'">
-            <p-tag [value]="tenant.plan?.name || (tenant.planId === 1 ? 'Free' : tenant.planId === 2 ? 'Pro' : 'Enterprise')" 
-                   [severity]="tenant.planId >= 2 ? 'warning' : 'info'"></p-tag>
-          </td>
-          <td [class.text-right]="currentLang === 'ar'">
-            <p-tag [value]="tenant.isActive ? ('SUPER_ADMIN.ACTIVE' | translate) : ('SUPER_ADMIN.SUSPENDED' | translate)" [severity]="tenant.isActive ? 'success' : 'danger'"></p-tag>
-          </td>
-          <td [class.text-right]="currentLang === 'ar'">{{ tenant.createdAt | date }}</td>
-          <td [class.text-right]="currentLang === 'ar'">
-             <p-button icon="pi pi-ban" severity="danger" [text]="true" (click)="deleteTenant(tenant.slug)" *ngIf="tenant.isActive"></p-button>
-          </td>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="7" class="text-center py-6 text-gray-500">{{ 'SUPER_ADMIN.EMPTY' | translate }}</td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
+    <p-tabView styleClass="premium-tabs">
+      <!-- TAB 1: TENANTS MANAGEMENT -->
+      <p-tabPanel [header]="currentLang === 'ar' ? 'إدارة المشتركين' : 'Tenants Management'" leftIcon="pi pi-users">
+        <div class="lp-card mt-4 p-4">
+          <p-table [value]="tenants" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines p-datatable-sm">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>{{ 'SUPER_ADMIN.RESTAURANT_NAME' | translate }}</th>
+                <th>{{ 'SUPER_ADMIN.SLUG' | translate }}</th>
+                <th>{{ 'SUPER_ADMIN.PLAN' | translate }}</th>
+                <th>{{ 'SUPER_ADMIN.STATUS' | translate }}</th>
+                <th>{{ 'SUPER_ADMIN.CREATED_AT' | translate }}</th>
+                <th class="text-center">{{ 'SUPER_ADMIN.ACTIONS' | translate }}</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-tenant>
+              <tr>
+                <td class="font-bold">{{ currentLang === 'ar' ? tenant.nameAr : tenant.name }}</td>
+                <td><code class="bg-surface-200 dark:bg-gray-700 px-2 py-1 rounded text-emerald-400">{{ tenant.slug }}</code></td>
+                <td>
+                  <p-tag [value]="tenant.plan?.name || (tenant.planId === 1 ? 'Free' : tenant.planId === 2 ? 'Pro' : 'Enterprise')" 
+                         [severity]="tenant.planId >= 2 ? 'warning' : 'info'"></p-tag>
+                </td>
+                <td>
+                  <p-tag [value]="tenant.isActive ? ('SUPER_ADMIN.ACTIVE' | translate) : ('SUPER_ADMIN.SUSPENDED' | translate)" [severity]="tenant.isActive ? 'success' : 'danger'"></p-tag>
+                </td>
+                <td>{{ tenant.createdAt | date:'mediumDate' }}</td>
+                <td class="text-center">
+                  <div class="flex justify-center gap-2">
+                    <p-button icon="pi pi-pencil" [text]="true" severity="info" (click)="onEdit(tenant)" pTooltip="Edit Details"></p-button>
+                    <p-button icon="pi pi-ban" severity="danger" [text]="true" (click)="deleteTenant(tenant.slug)" *ngIf="tenant.isActive" pTooltip="Suspend Tenant"></p-button>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </p-tabPanel>
+
+      <!-- TAB 2: ADMIN CONTROL PANEL -->
+      <p-tabPanel [header]="currentLang === 'ar' ? 'لوحة تحكم النظام' : 'Admin Control Panel'" leftIcon="pi pi-cog">
+         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+            <div class="lp-card p-8 text-center hover:scale-105 transition-transform cursor-pointer">
+               <i class="pi pi-database text-4xl text-emerald-400 mb-4"></i>
+               <h3 class="text-xl font-bold mb-2">Backups</h3>
+               <p class="text-gray-400">Manage global SaaS backups</p>
+            </div>
+            <div class="lp-card p-8 text-center hover:scale-105 transition-transform cursor-pointer">
+               <i class="pi pi-shield text-4xl text-blue-400 mb-4"></i>
+               <h3 class="text-xl font-bold mb-2">Security</h3>
+               <p class="text-gray-400">Global security audit logs</p>
+            </div>
+            <div class="lp-card p-8 text-center hover:scale-105 transition-transform cursor-pointer">
+               <i class="pi pi-chart-bar text-4xl text-purple-400 mb-4"></i>
+               <h3 class="text-xl font-bold mb-2">Platform Metrics</h3>
+               <p class="text-gray-400">Total revenue and growth</p>
+            </div>
+         </div>
+      </p-tabPanel>
+    </p-tabView>
+  </header>
 </div>
+
+<!-- Edit Tenant Dialog -->
+<p-dialog [header]="currentLang === 'ar' ? 'تعديل بيانات المطعم' : 'Edit Restaurant Settings'" [(visible)]="displayEditDialog" [modal]="true" 
+          [style]="{ 'width': '600px' }" [draggable]="false" [resizable]="false">
+  
+  <form [formGroup]="editForm" (ngSubmit)="onUpdateSubmit()" class="p-fluid mt-4" [dir]="currentLang === 'ar' ? 'rtl' : 'ltr'">
+    <div class="field mb-4">
+      <label class="block font-bold mb-2">Name (EN)</label>
+      <input pInputText formControlName="name" />
+    </div>
+    <div class="field mb-4">
+      <label class="block font-bold mb-2">Name (AR)</label>
+      <input pInputText formControlName="nameAr" />
+    </div>
+    <div class="field mb-4">
+      <label class="block font-bold mb-2">Subscription Plan</label>
+      <p-dropdown [options]="plans" formControlName="planId" placeholder="Select a Plan"></p-dropdown>
+    </div>
+    <div class="field flex align-items-center gap-2 mb-6">
+       <input type="checkbox" formControlName="isActive" id="isActiveCheck">
+       <label for="isActiveCheck">{{ currentLang === 'ar' ? 'الحساب نشط' : 'Account is Active' }}</label>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-8">
+      <p-button [label]="'SUPER_ADMIN.CANCEL' | translate" severity="secondary" [text]="true" (click)="displayEditDialog = false"></p-button>
+      <p-button [label]="'COMMON.SAVE' | translate" type="submit" [loading]="updating" [disabled]="editForm.invalid"></p-button>
+    </div>
+  </form>
+</p-dialog>
 
 <!-- Create Tenant Dialog -->
 <p-dialog [header]="'SUPER_ADMIN.MODAL_TITLE' | translate" [(visible)]="displayCreateDialog" [modal]="true" 

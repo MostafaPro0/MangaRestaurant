@@ -44,4 +44,8 @@ export class SuperAdminService {
   deleteTenant(slug: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${slug}`);
   }
+
+  updateTenant(slug: string, dto: any): Observable<Tenant> {
+    return this.http.put<Tenant>(`${this.baseUrl}/${slug}`, dto);
+  }
 }
