@@ -15,7 +15,21 @@
     "DINE_IN": "طلب داخلي",
     "DELIVERY": "طلبات التوصيل",
     "GACHA": "مكافآت الحظ",
-    "PLATFORM_HOME": "المنصة الرئيسية"
+    "PLATFORM_HOME": "المنصة الرئيسية",
+    "MENU": "القائمة",
+    "FAVORITES": "المفضلة"
+  },
+  "COMMON": {
+    "SITE_NAME": "مطعم مانجا",
+    "SITE_DESCRIPTION": "مطعم مانجا - تجربة الطعم الياباني الأصيل من أفخر أنواع الرامن والسوشي.",
+    "USER": "المستخدم",
+    "ALL": "الكل",
+    "LOADING": "جاري التحميل...",
+    "CLOSE": "إغلاق",
+    "SAVE": "حفظ",
+    "CANCEL": "إلغاء",
+    "INCREASE": "زيادة",
+    "DECREASE": "نقص"
   },
   "HOME": {
     "BADGE": "مطعم ياباني فاخر",
@@ -702,5 +716,14 @@
     "ADD_ITEMS_FIRST": "يرجى إضافة أصناف أولاً",
     "ORDER_SUBMITTED": "تم إرسال طلبك بنجاح!",
     "ORDER_FAILED": "فشل إرسال الطلب"
+  },
+  "NOTIF": {
+    "AUTO_UPDATE": "📢 تحديث تلقائي",
+    "PRICE_REFRESHED": "تم تحديث سعر \"{{product}}\" في سلتك",
+    "SETTINGS_UPDATED_TITLE": "⚙️ تحديث الإعدادات",
+    "SETTINGS_UPDATED_DESC": "تم تحديث إعدادات الموقع بنجاح",
+    "SECURITY_ALERT": "تنبيه أمني",
+    "SET_PASSWORD_REQ": "يجب تعيين كلمة مرور لحسابك. اضغط هنا للتعيين الآن.",
+    "ADMIN_ALERT_PREFIX": "تنبيه إداري: "
   }
 }

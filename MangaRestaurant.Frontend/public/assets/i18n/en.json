@@ -15,7 +15,21 @@
     "DINE_IN": "Dine-in Order",
     "DELIVERY": "My Deliveries",
     "GACHA": "Lucky Rewards",
-    "PLATFORM_HOME": "Platform Home"
+    "PLATFORM_HOME": "Platform Home",
+    "MENU": "Menu",
+    "FAVORITES": "Favorites"
+  },
+  "COMMON": {
+    "SITE_NAME": "Manga Restaurant",
+    "SITE_DESCRIPTION": "Manga Restaurant - Authentic Japanese taste from the finest Ramen and Sushi.",
+    "USER": "User",
+    "ALL": "All",
+    "LOADING": "Loading...",
+    "CLOSE": "Close",
+    "SAVE": "Save",
+    "CANCEL": "Cancel",
+    "INCREASE": "Increase",
+    "DECREASE": "Decrease"
   },
   "HOME": {
     "BADGE": "Premium Japanese Restaurant",
@@ -698,5 +712,14 @@
     "ADD_ITEMS_FIRST": "Please add items first",
     "ORDER_SUBMITTED": "Order submitted successfully!",
     "ORDER_FAILED": "Failed to submit order"
+  },
+  "NOTIF": {
+    "AUTO_UPDATE": "📢 Auto Update",
+    "PRICE_REFRESHED": "Price updated for \"{{product}}\" in your cart",
+    "SETTINGS_UPDATED_TITLE": "⚙️ Settings Updated",
+    "SETTINGS_UPDATED_DESC": "Site settings have been updated in real-time",
+    "SECURITY_ALERT": "Security Alert",
+    "SET_PASSWORD_REQ": "You must set a password for your account. Click here to set it now.",
+    "ADMIN_ALERT_PREFIX": "Admin Alert: "
   }
 }

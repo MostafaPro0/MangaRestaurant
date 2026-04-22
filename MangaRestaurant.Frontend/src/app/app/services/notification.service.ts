@@ -78,7 +78,7 @@ export class NotificationService {
       
       this.messageService.add({
         severity: 'warn',
-        summary: (this.translateService.currentLanguage === 'ar' ? 'تنبيه إداري: ' : 'Admin Alert: ') + notification.title,
+        summary: this.translateService.instant('NOTIF.ADMIN_ALERT_PREFIX') + notification.title,
         detail: notification.message,
         sticky: true,
         styleClass: 'clickable-toast',
@@ -109,10 +109,8 @@ export class NotificationService {
             
             this.messageService.add({
               severity: 'info',
-              summary: isAr ? '📢 تحديث تلقائي' : '📢 Auto Update',
-              detail: isAr 
-                ? `تم تحديث سعر "${productLabel}" في سلتك` 
-                : `Price updated for "${productLabel}" in your cart`,
+              summary: this.translateService.instant('NOTIF.AUTO_UPDATE'),
+              detail: this.translateService.instant('NOTIF.PRICE_REFRESHED', { product: productLabel }),
               life: 5000,
               icon: 'pi pi-sync'
             });
@@ -125,13 +123,10 @@ export class NotificationService {
       console.log('[SignalR] Site settings updated. Refreshing...');
       this.settingsService.loadSettings();
       
-      const isAr = this.translateService.currentLanguage === 'ar';
       this.messageService.add({
         severity: 'info',
-        summary: isAr ? '⚙️ تحديث الإعدادات' : '⚙️ Settings Updated',
-        detail: isAr 
-          ? 'تم تحديث إعدادات الموقع بنجاح' 
-          : 'Site settings have been updated in real-time',
+        summary: this.translateService.instant('NOTIF.SETTINGS_UPDATED_TITLE'),
+        detail: this.translateService.instant('NOTIF.SETTINGS_UPDATED_DESC'),
         life: 3000
       });
     });

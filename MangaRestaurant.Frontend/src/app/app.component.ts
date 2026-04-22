@@ -109,72 +109,68 @@ export class AppComponent {
   }
 
   updatePageInfo(): void {
-    const isAr = this.translateService.currentLanguage === 'ar';
-    const siteName = isAr ? 'مطعم مانجا' : 'Manga Restaurant';
+    const siteName = this.translateService.instant('COMMON.SITE_NAME');
     const currentUrl = this.router.url;
     
-    let pageTitle = '';
+    let pageTitleKey = '';
     
     if (currentUrl === '/' || currentUrl === '/home') {
-      pageTitle = isAr ? 'الرئيسية' : 'Home';
+      pageTitleKey = 'NAV.HOME';
     } else if (currentUrl.includes('/products') && !currentUrl.includes('/product/')) {
-      pageTitle = isAr ? 'القائمة' : 'Menu';
+      pageTitleKey = 'NAV.MENU';
     } else if (currentUrl.includes('/basket')) {
-      pageTitle = isAr ? 'سلّة المشتريات' : 'Shopping Cart';
+      pageTitleKey = 'BASKET.TITLE';
     } else if (currentUrl.includes('/checkout')) {
-      pageTitle = isAr ? 'إتمام الدفع' : 'Checkout';
+      pageTitleKey = 'CHECKOUT.TITLE';
     } else if (currentUrl.includes('/admin')) {
       const tab = currentUrl.split('/').pop();
-      if (tab === 'reports') pageTitle = isAr ? 'التقارير' : 'Reports';
-      else if (tab === 'orders') pageTitle = isAr ? 'سجل الطلبات' : 'Order Log';
-      else if (tab === 'products') pageTitle = isAr ? 'المنتجات' : 'Products';
-      else if (tab === 'users') pageTitle = isAr ? 'الموظفين' : 'Employees';
-      else if (tab === 'settings') pageTitle = isAr ? 'الإعدادات' : 'Settings';
-      else pageTitle = isAr ? 'لوحة التحكم' : 'Admin Control';
+      if (tab === 'reports') pageTitleKey = 'ADMIN.REPORTS';
+      else if (tab === 'orders') pageTitleKey = 'ADMIN.ORDER_LOG';
+      else if (tab === 'products') pageTitleKey = 'ADMIN.PRODUCTS';
+      else if (tab === 'users') pageTitleKey = 'ADMIN.STAFF_MANAGEMENT';
+      else if (tab === 'settings') pageTitleKey = 'ADMIN.SETTINGS';
+      else pageTitleKey = 'ADMIN.DASHBOARD_TITLE';
     } else if (currentUrl.includes('/profile')) {
-      pageTitle = isAr ? 'الملف الشخصي' : 'Profile';
+      pageTitleKey = 'PROFILE.TITLE';
     } else if (currentUrl.includes('/orders')) {
-      pageTitle = isAr ? 'طلباتي' : 'My Orders';
+      pageTitleKey = 'ORDERS.TITLE';
     } else if (currentUrl.includes('/wishlist')) {
-      pageTitle = isAr ? 'المفضلة' : 'Favorites';
+      pageTitleKey = 'NAV.FAVORITES';
     }
 
-    if (pageTitle) {
-      this.titleService.setTitle(`${siteName} - ${pageTitle}`);
+    if (pageTitleKey) {
+      this.titleService.setTitle(`${siteName} - ${this.translateService.instant(pageTitleKey)}`);
     } else if (!currentUrl.includes('/product/')) {
        this.titleService.setTitle(siteName);
     }
     
     // Global Meta Description
-    const siteDesc = isAr 
-      ? 'مطعم مانجا - تجربة الطعم الياباني الأصيل من أفخر أنواع الرامن والسوشي.' 
-      : 'Manga Restaurant - Authentic Japanese taste from the finest Ramen and Sushi.';
+    const siteDesc = this.translateService.instant('COMMON.SITE_DESCRIPTION');
     this.metaService.updateTag({ name: 'description', content: siteDesc });
   }
 
   initProfileMenu(): void {
-    const isAr = this.lang() === 'ar';
     this.profileMenuItems = [
       {
-        label: this.user()?.displayName || (isAr ? 'المستخدم' : 'User'),
+        label: this.user()?.displayName || this.translateService.instant('COMMON.USER'),
         items: [
           {
-            label: isAr ? 'طلباتي' : 'My Orders',
+            label: this.translateService.instant('ORDERS.TITLE'),
             icon: 'pi pi-shopping-bag',
             routerLink: '/orders'
           },
           {
-            label: isAr ? 'المفضلة' : 'Favorites',
+            label: this.translateService.instant('NAV.FAVORITES'),
             icon: 'pi pi-heart',
             routerLink: '/wishlist'
           },
           {
-            label: isAr ? 'الملف الشخصي' : 'Profile',
+            label: this.translateService.instant('PROFILE.TITLE'),
             icon: 'pi pi-user-edit',
             routerLink: '/profile'
           },
           {
-            label: isAr ? 'خروج' : 'Logout',
+            label: this.translateService.instant('AUTH.LOGOUT'),
             icon: 'pi pi-sign-out',
             command: () => this.logout()
           }
@@ -184,7 +180,7 @@ export class AppComponent {
 
     if (this.isAdmin()) {
       this.profileMenuItems[0].items?.unshift({
-        label: isAr ? 'لوحة التحكم' : 'Admin Control',
+        label: this.translateService.instant('ADMIN.DASHBOARD_TITLE'),
         icon: 'pi pi-lock',
         command: () => this.router.navigate(['/admin'])
       });
