@@ -176,7 +176,8 @@
     "TRACK": "تتبع طلبك",
     "EDIT_ADDRESS": "تعديل العنوان",
     "ADDRESS_UPDATED": "تم تحديث العنوان بنجاح",
-    "ADDRESS_UPDATE_FAIL": "فشل تحديث العنوان. يمكنك التعديل فقط عندما يكون الطلب 'قيد الانتظار'."
+    "ADDRESS_UPDATE_FAIL": "فشل تحديث العنوان. يمكنك التعديل فقط عندما يكون الطلب 'قيد الانتظار'.",
+    "DINE_IN_DETAILS": "معلومات الطلب داخلياً"
   },
   "TRACKING": {
     "TAG": "تتبع بالمتحرك",
@@ -244,7 +245,12 @@
     "CURRENT_PASSWORD": "كلمة المرور الحالية",
     "PASSWORD_CHANGED": "تم تغيير كلمة المرور بنجاح",
     "ADDRESS_SAVED": "تم حفظ العنوان بنجاح!",
-    "ADDRESS_SAVE_FAILED": "فشل حفظ العنوان. يرجى التأكد من البيانات."
+    "ADDRESS_SAVE_FAILED": "فشل حفظ العنوان. يرجى التأكد من البيانات.",
+    "ADDRESS_DELETED": "تم حذف العنوان بنجاح",
+    "DELETE_FAILED": "فشل حذف العنوان",
+    "UPDATED": "تم تحديث الملف الشخصي بنجاح",
+    "UPDATE_FAILED": "فشل تحديث الملف الشخصي",
+    "DELETE_ADDRESS_CONFIRM": "هل أنت متأكد من حذف هذا العنوان؟"
   },
   "COMMON": {
     "ACTION": "إجراء",
@@ -269,7 +275,10 @@
     "ADDRESS_VAL": "123 شارع رامن، طوكيو",
     "EMAIL_VAL": "support@mangaresto.com",
     "PHONE_VAL": "+123 456 789",
-    "ALL": "الكل"
+    "ALL": "الكل",
+    "MONTH": "شهر",
+    "FOOTER_PLATFORM_DESC": "نظام إدارة مطاعم متكامل",
+    "SUPPORT": "الدعم الفني"
   },
   "TOAST": {
     "SUCCESS": "نجاح",
@@ -285,7 +294,10 @@
     "WARN": "تنبيه",
     "CHECKOUT": {
       "VALIDATION_ERROR": "يرجى إضافة منتج واحد على الأقل وتعبئة جميع حقول العنوان الإجبارية (بما في ذلك الدولة)"
-    }
+    },
+    "INFO": "تنبيه",
+    "LOGIN_REQUIRED": "برجاء تسجيل الدخول أولاً لإتمام الطلب",
+    "CLEAR": "مسح السلة"
   },
   "ORDER_STATUS": {
     "PENDING": "قيد الانتظار",
@@ -424,7 +436,36 @@
     "CLICK_TO_BAN": "اضغط لتعطيل الحساب",
     "PHONE": "رقم الهاتف",
     "DINE_IN": "داخل المطعم",
-    "DELIVERY_TAKEAWAY": "توصيل/سفري"
+    "DELIVERY_TAKEAWAY": "توصيل/سفري",
+    "REQUIRED_FIELDS_ERROR": "يرجى ملء جميع الحقول المطلوبة",
+    "DELIVERY_ASSIGNED": "تم تعيين عامل التوصيل بنجاح",
+    "ASSIGNMENT_FAILED": "فشل التعيين",
+    "SETTINGS_UPDATED": "تم تحديث الإعدادات بنجاح",
+    "ORDERS_SHOWING": "طلب معروض",
+    "ORDER_TYPE": "النوع",
+    "DELIVERY_PERSON": "مسؤول التوصيل",
+    "SELECT_DRIVER": "اختر عامل",
+    "ASSIGN": "تعيين",
+    "SAVE_STATUS": "حفظ الحالة",
+    "ENTER_STAFF_NAME": "أدخل اسم الموظف",
+    "SELECT_ROLE": "اختر الدور",
+    "NAME_EN": "الاسم بالإنجليزية",
+    "NAME_AR": "الاسم بالعربية",
+    "HIDE_FROM_STORE": "إخفاء من المتجر",
+    "ADD_CATEGORY": "إضافة فئة",
+    "EDIT_CATEGORY": "تعديل فئة",
+    "ADD_BRAND": "إضافة علامة تجارية",
+    "EDIT_BRAND": "تعديل علامة تجارية",
+    "SERVICE_TYPE": "نوع الخدمة",
+    "DINE_IN_ORDER": "طلب داخلي",
+    "EDIT": "تعديل",
+    "DELETE": "حذف",
+    "PLAN_FREE": "مجاني",
+    "PLAN_PRO": "احترافي",
+    "PLAN_ENT": "مؤسسات",
+    "EDIT_DETAILS": "تعديل التفاصيل",
+    "SUSPEND_TENANT": "إيقاف الحساب",
+    "SELECT_PLAN": "اختر خطة"
   },
   "REVIEWS": {
     "TITLE": "آراء العملاء",
@@ -497,6 +538,10 @@
     "DEACTIVATE_CONFIRM": "هل أنت متأكد من إيقاف المطعم:",
     "SUCCESS_CREATE": "تم إنشاء قاعدة بيانات المطعم بنجاح",
     "ERROR_CREATE": "فشل في إنشاء المطعم",
+    "SUCCESS_UPDATE": "تم تحديث بيانات المطعم بنجاح",
+    "ERROR_UPDATE": "فشل في تحديث بيانات المطعم",
+    "SUCCESS_DEACTIVATE": "تم إيقاف المطعم بنجاح",
+    "ERROR_DEACTIVATE": "فشل في إيقاف المطعم",
     "MODAL_TITLE": "تأسيس مطعم جديد بالداتا بيز",
     "ADMIN_EMAIL": "بريد المدير",
     "ADMIN_FULL_NAME": "اسم المدير بالكامل",
@@ -506,7 +551,24 @@
     "EMPTY": "لا يوجد مطاعم حالياً، ابدأ بإضافة أول مطعم!",
     "LOADING": "جاري التحميل...",
     "NAME_EN": "الاسم (إنجليزي)",
-    "NAME_AR": "الاسم (عربي)"
+    "NAME_AR": "الاسم (عربي)",
+    "TENANTS_MGMT": "إدارة المشتركين",
+    "CONTROL_PANEL": "لوحة تحكم النظام",
+    "CENTRAL_DASHBOARD": "🌍 لوحة التحكم المركزية",
+    "EDIT_MODAL_TITLE": "تعديل بيانات المطعم",
+    "SUB_PLAN": "خطة الاشتراك",
+    "ACCOUNT_ACTIVE": "الحساب نشط",
+    "BACKUPS": "النسخ الاحتياطي",
+    "BACKUPS_DESC": "إدارة النسخ الاحتياطية للمنصة",
+    "SECURITY": "الأمان",
+    "SECURITY_DESC": "سجل عمليات الأمان والوصول",
+    "METRICS": "إحصائيات المنصة",
+    "METRICS_DESC": "إجمالي الإيرادات والنمو",
+    "RESTAURANT_IDENTITY": "هوية المطعم الجديد",
+    "RESTAURANT_IDENTITY_DESC": "أدخل البيانات الأساسية ورابط النظام للمطعم",
+    "OWNER_ACCOUNT": "حساب المدير (Owner)",
+    "OWNER_ACCOUNT_DESC": "هذا الحساب سيكون له كامل الصلاحيات لإدارة هذا المطعم",
+    "SLUG_HELP": "استخدم أحرف إنجليزية صغيرة وأرقام فقط (بدون مسافات)"
   },
   "LANDING": {
     "HERO_TITLE": "منصة إدارة المطاعم <span>المتكاملة</span>",
@@ -528,6 +590,26 @@
     "PRO_PLAN": "الخطة الاحترافية",
     "ENTERPRISE_PLAN": "خطة الشركات",
     "PARTNERS_TITLE": "شركاء النجاح",
-    "PARTNERS_SUBTITLE": "مطاعم حية تستخدم منصتنا حالياً وتنمو معنا."
+    "PARTNERS_SUBTITLE": "مطاعم حية تستخدم منصتنا حالياً وتنمو معنا.",
+    "HERO_BADGE": "منصة إدارة المطاعم",
+    "VISIT_SITE": "زيارة الموقع",
+    "BE_PARTNER": "كن أول شريك نجاح معنا!",
+    "PLANS_UNAVAILABLE": "خطط الأسعار غير متوفرة حالياً. يرجى العودة لاحقاً.",
+    "UNLIMITED": "غير محدود",
+    "PRODUCTS_COUNT": "منتج",
+    "STAFF_COUNT": "موظفين",
+    "UP_TO": "حتى",
+    "CUSTOM_DOMAIN": "دومين خاص"
+  },
+  "ONBOARDING": {
+    "SUCCESS_TITLE": "تهانينا! مطعمك جاهز للعمل",
+    "SUCCESS_DESC": "لقد قمنا بإعداد هوية مطعمك الرقمية بنجاح. يمكنك الآن البدء في إضافة المنتجات واستلام الطلبات.",
+    "SITE_URL_LABEL": "رابط موقعك الجديد:",
+    "GO_TO_SITE": "الانتقال للموقع الآن",
+    "NEXT_STEPS_TITLE": "ماذا تفعل الآن؟",
+    "STEP_LOGIN": "قم بتسجيل الدخول باستخدام بريدك الإلكتروني وكلمة المرور التي اخترتها.",
+    "STEP_SETTINGS": "انتقل إلى لوحة التحكم لضبط إعدادات المطعم وشعارك.",
+    "STEP_ADD_PRODUCT": "أضف أول فئة ومنتج لبدء بيع أطباقك.",
+    "PROVISIONING_FAILED": "فشل نظام الاشتراك. يرجى المحاولة مرة أخرى لاحقاً."
   }
 }

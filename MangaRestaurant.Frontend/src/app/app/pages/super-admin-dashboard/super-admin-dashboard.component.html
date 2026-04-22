@@ -4,14 +4,14 @@
   <header class="p-8 pb-0">
     <div class="flex justify-between items-center mb-8">
       <h1 class="text-4xl font-black bg-gradient-to-r from-emerald-400 to-blue-500 bg-clip-text text-transparent">
-        {{ currentLang === 'ar' ? '🌍 لوحة التحكم المركزية' : '🌍 Super Admin Dashboard' }}
+        {{ 'SUPER_ADMIN.CENTRAL_DASHBOARD' | translate }}
       </h1>
       <p-button [label]="'SUPER_ADMIN.ADD_TENANT' | translate" icon="pi pi-plus" (click)="showCreateDialog()" styleClass="p-button-rounded p-button-success shadow-lg"></p-button>
     </div>
 
     <p-tabView styleClass="premium-tabs">
       <!-- TAB 1: TENANTS MANAGEMENT -->
-      <p-tabPanel [header]="currentLang === 'ar' ? 'إدارة المشتركين' : 'Tenants Management'" leftIcon="pi pi-users">
+      <p-tabPanel [header]="'SUPER_ADMIN.TENANTS_MGMT' | translate" leftIcon="pi pi-users">
         <div class="lp-card mt-4 p-4">
           <p-table [value]="tenants" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines p-datatable-sm">
             <ng-template pTemplate="header">
@@ -29,7 +29,7 @@
                 <td class="font-bold">{{ currentLang === 'ar' ? tenant.nameAr : tenant.name }}</td>
                 <td><code class="bg-surface-200 dark:bg-gray-700 px-2 py-1 rounded text-emerald-400">{{ tenant.slug }}</code></td>
                 <td>
-                  <p-tag [value]="tenant.plan?.name || (tenant.planId === 1 ? 'Free' : tenant.planId === 2 ? 'Pro' : 'Enterprise')" 
+                  <p-tag [value]="tenant.plan?.name || ('SUPER_ADMIN.PLAN_' + (tenant.planId === 1 ? 'FREE' : tenant.planId === 2 ? 'PRO' : 'ENT') | translate)" 
                          [severity]="tenant.planId >= 2 ? 'warning' : 'info'"></p-tag>
                 </td>
                 <td>
@@ -38,8 +38,8 @@
                 <td>{{ tenant.createdAt | date:'mediumDate' }}</td>
                 <td class="text-center">
                   <div class="flex justify-center gap-2">
-                    <p-button icon="pi pi-pencil" [text]="true" severity="info" (click)="onEdit(tenant)" pTooltip="Edit Details"></p-button>
-                    <p-button icon="pi pi-ban" severity="danger" [text]="true" (click)="deleteTenant(tenant.slug)" *ngIf="tenant.isActive" pTooltip="Suspend Tenant"></p-button>
+                    <p-button icon="pi pi-pencil" [text]="true" severity="info" (click)="onEdit(tenant)" [pTooltip]="'SUPER_ADMIN.EDIT_DETAILS' | translate"></p-button>
+                    <p-button icon="pi pi-ban" severity="danger" [text]="true" (click)="deleteTenant(tenant.slug)" *ngIf="tenant.isActive" [pTooltip]="'SUPER_ADMIN.SUSPEND_TENANT' | translate"></p-button>
                   </div>
                 </td>
               </tr>
@@ -49,22 +49,22 @@
       </p-tabPanel>
 
       <!-- TAB 2: ADMIN CONTROL PANEL -->
-      <p-tabPanel [header]="currentLang === 'ar' ? 'لوحة تحكم النظام' : 'Admin Control Panel'" leftIcon="pi pi-cog">
+      <p-tabPanel [header]="'SUPER_ADMIN.CONTROL_PANEL' | translate" leftIcon="pi pi-cog">
          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
             <div class="lp-card p-8 text-center hover:scale-105 transition-transform cursor-pointer">
                <i class="pi pi-database text-4xl text-emerald-400 mb-4"></i>
-               <h3 class="text-xl font-bold mb-2">Backups</h3>
-               <p class="text-gray-400">Manage global SaaS backups</p>
+               <h3 class="text-xl font-bold mb-2">{{ 'SUPER_ADMIN.BACKUPS' | translate }}</h3>
+               <p class="text-gray-400">{{ 'SUPER_ADMIN.BACKUPS_DESC' | translate }}</p>
             </div>
             <div class="lp-card p-8 text-center hover:scale-105 transition-transform cursor-pointer">
                <i class="pi pi-shield text-4xl text-blue-400 mb-4"></i>
-               <h3 class="text-xl font-bold mb-2">Security</h3>
-               <p class="text-gray-400">Global security audit logs</p>
+               <h3 class="text-xl font-bold mb-2">{{ 'SUPER_ADMIN.SECURITY' | translate }}</h3>
+               <p class="text-gray-400">{{ 'SUPER_ADMIN.SECURITY_DESC' | translate }}</p>
             </div>
             <div class="lp-card p-8 text-center hover:scale-105 transition-transform cursor-pointer">
                <i class="pi pi-chart-bar text-4xl text-purple-400 mb-4"></i>
-               <h3 class="text-xl font-bold mb-2">Platform Metrics</h3>
-               <p class="text-gray-400">Total revenue and growth</p>
+               <h3 class="text-xl font-bold mb-2">{{ 'SUPER_ADMIN.METRICS' | translate }}</h3>
+               <p class="text-gray-400">{{ 'SUPER_ADMIN.METRICS_DESC' | translate }}</p>
             </div>
          </div>
       </p-tabPanel>
@@ -73,25 +73,25 @@
 </div>
 
 <!-- Edit Tenant Dialog -->
-<p-dialog [header]="currentLang === 'ar' ? 'تعديل بيانات المطعم' : 'Edit Restaurant Settings'" [(visible)]="displayEditDialog" [modal]="true" 
+<p-dialog [header]="'SUPER_ADMIN.EDIT_MODAL_TITLE' | translate" [(visible)]="displayEditDialog" [modal]="true" 
           [style]="{ 'width': '600px' }" [draggable]="false" [resizable]="false">
   
   <form [formGroup]="editForm" (ngSubmit)="onUpdateSubmit()" class="p-fluid mt-4" [dir]="currentLang === 'ar' ? 'rtl' : 'ltr'">
     <div class="field mb-4">
-      <label class="block font-bold mb-2">Name (EN)</label>
+      <label class="block font-bold mb-2">{{ 'SUPER_ADMIN.NAME_EN' | translate }}</label>
       <input pInputText formControlName="name" />
     </div>
     <div class="field mb-4">
-      <label class="block font-bold mb-2">Name (AR)</label>
+      <label class="block font-bold mb-2">{{ 'SUPER_ADMIN.NAME_AR' | translate }}</label>
       <input pInputText formControlName="nameAr" />
     </div>
     <div class="field mb-4">
-      <label class="block font-bold mb-2">Subscription Plan</label>
-      <p-dropdown [options]="plans" formControlName="planId" placeholder="Select a Plan"></p-dropdown>
+      <label class="block font-bold mb-2">{{ 'SUPER_ADMIN.SUB_PLAN' | translate }}</label>
+      <p-dropdown [options]="plans" formControlName="planId" [placeholder]="'SUPER_ADMIN.SELECT_PLAN' | translate"></p-dropdown>
     </div>
     <div class="field flex align-items-center gap-2 mb-6">
        <input type="checkbox" formControlName="isActive" id="isActiveCheck">
-       <label for="isActiveCheck">{{ currentLang === 'ar' ? 'الحساب نشط' : 'Account is Active' }}</label>
+       <label for="isActiveCheck">{{ 'SUPER_ADMIN.ACCOUNT_ACTIVE' | translate }}</label>
     </div>
 
     <div class="flex justify-end gap-2 mt-8">
@@ -113,8 +113,8 @@
       <div class="card-header">
         <i class="pi pi-building header-icon"></i>
         <div class="header-text">
-          <h3>{{ currentLang === 'ar' ? 'هوية المطعم الجديد' : 'Restaurant Identity' }}</h3>
-          <p>{{ currentLang === 'ar' ? 'أدخل البيانات الأساسية ورابط النظام للمطعم' : 'Enter basic details and system URL for the restaurant' }}</p>
+          <h3>{{ 'SUPER_ADMIN.RESTAURANT_IDENTITY' | translate }}</h3>
+          <p>{{ 'SUPER_ADMIN.RESTAURANT_IDENTITY_DESC' | translate }}</p>
         </div>
       </div>
 
@@ -138,7 +138,7 @@
              <span class="suffix">.manga.com</span>
           </div>
           <small class="help-text" *ngIf="createForm.get('slug')?.hasError('pattern')">
-            {{ currentLang === 'ar' ? 'استخدم أحرف إنجليزية صغيرة وأرقام فقط (بدون مسافات)' : 'Use lowercase English letters and numbers only (no spaces).' }}
+            {{ 'SUPER_ADMIN.SLUG_HELP' | translate }}
           </small>
         </div>
       </div>
@@ -149,8 +149,8 @@
       <div class="card-header secondary">
         <i class="pi pi-user-plus header-icon"></i>
         <div class="header-text">
-          <h3>{{ currentLang === 'ar' ? 'حساب المدير (Owner)' : 'Owner Account' }}</h3>
-          <p>{{ currentLang === 'ar' ? 'هذا الحساب سيكون له كامل الصلاحيات لإدارة هذا المطعم' : 'This account will have full permissions to manage this restaurant' }}</p>
+          <h3>{{ 'SUPER_ADMIN.OWNER_ACCOUNT' | translate }}</h3>
+          <p>{{ 'SUPER_ADMIN.OWNER_ACCOUNT_DESC' | translate }}</p>
         </div>
       </div>
 

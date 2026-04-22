@@ -36,33 +36,33 @@
         <i class="pi pi-check-circle"></i>
       </div>
       
-      <h1>{{ currentLang === 'ar' ? 'تهانينا! مطعمك جاهز للعمل' : 'Congratulations! Your Restaurant is Ready' }}</h1>
+      <h1>{{ 'ONBOARDING.SUCCESS_TITLE' | translate }}</h1>
       <p class="subtitle">
-        {{ currentLang === 'ar' ? 'لقد قمنا بإعداد هوية مطعمك الرقمية بنجاح. يمكنك الآن البدء في إضافة المنتجات واستلام الطلبات.' : 'We have successfully provisioned your restaurant digital identity. You can now start adding products and receiving orders.' }}
+        {{ 'ONBOARDING.SUCCESS_DESC' | translate }}
       </p>
 
       <div class="site-link-card">
-        <div class="label">{{ currentLang === 'ar' ? 'رابط موقعك الجديد:' : 'Your new site URL:' }}</div>
+        <div class="label">{{ 'ONBOARDING.SITE_URL_LABEL' | translate }}</div>
         <div class="url-badge">{{ newSiteUrl }}</div>
-        <button pButton [label]="currentLang === 'ar' ? 'الانتقال للموقع الآن' : 'Go to Site Now'" 
+        <button pButton [label]="'ONBOARDING.GO_TO_SITE' | translate" 
                 icon="pi pi-external-link" class="p-button-lg p-button-success w-full mt-3 p-button-rounded shadow-3"
                 (click)="goToSite()"></button>
       </div>
 
       <div class="next-steps">
-        <h3>{{ currentLang === 'ar' ? 'ماذا تفعل الآن؟' : 'What to do next?' }}</h3>
+        <h3>{{ 'ONBOARDING.NEXT_STEPS_TITLE' | translate }}</h3>
         <ul>
           <li>
             <i class="pi pi-user"></i>
-            <span>{{ currentLang === 'ar' ? 'قم بتسجيل الدخول باستخدام بريدك الإلكتروني وكلمة المرور التي اخترتها.' : 'Login using the admin email and password you chose.' }}</span>
+            <span>{{ 'ONBOARDING.STEP_LOGIN' | translate }}</span>
           </li>
           <li>
             <i class="pi pi-cog"></i>
-            <span>{{ currentLang === 'ar' ? 'انتقل إلى لوحة التحكم لضبط إعدادات المطعم وشعارك.' : 'Go to Admin Control to set up restaurant settings and logo.' }}</span>
+            <span>{{ 'ONBOARDING.STEP_SETTINGS' | translate }}</span>
           </li>
           <li>
             <i class="pi pi-plus"></i>
-            <span>{{ currentLang === 'ar' ? 'أضف أول فئة ومنتج لبدء بيع أطباقك.' : 'Add your first category and product to start selling your dishes.' }}</span>
+            <span>{{ 'ONBOARDING.STEP_ADD_PRODUCT' | translate }}</span>
           </li>
         </ul>
       </div>
@@ -70,7 +70,7 @@
       <div class="footer-links">
         <a routerLink="/">{{ 'NAV.HOME' | translate }}</a>
         <span class="dot"></span>
-        <a href="#">{{ currentLang === 'ar' ? 'الدعم الفني' : 'Support' }}</a>
+        <a href="#">{{ 'COMMON.SUPPORT' | translate }}</a>
       </div>
     </div>
   </div>

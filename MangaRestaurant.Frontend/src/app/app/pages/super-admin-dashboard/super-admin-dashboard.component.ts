@@ -96,7 +96,11 @@ export class SuperAdminDashboardComponent implements OnInit {
         this.loading = false;
       },
       error: () => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load tenants' });
+        this.messageService.add({ 
+          severity: 'error', 
+          summary: this.translate.instant('TOAST.ERROR'), 
+          detail: 'Failed to load tenants' 
+        });
         this.loading = false;
       }
     });
@@ -122,13 +126,21 @@ export class SuperAdminDashboardComponent implements OnInit {
 
     this.superAdminService.createTenant(dto).subscribe({
       next: (newTenant) => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Tenant Database Provisioned Successfully' });
+        this.messageService.add({ 
+          severity: 'success', 
+          summary: this.translate.instant('TOAST.SUCCESS'), 
+          detail: this.translate.instant('SUPER_ADMIN.SUCCESS_CREATE') 
+        });
         this.tenants.push(newTenant);
         this.hideCreateDialog();
         this.creating = false;
       },
       error: (err) => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error?.message || 'Failed to provision tenant' });
+        this.messageService.add({ 
+          severity: 'error', 
+          summary: this.translate.instant('TOAST.ERROR'), 
+          detail: err.error?.message || this.translate.instant('SUPER_ADMIN.ERROR_CREATE') 
+        });
         this.creating = false;
       }
     });
@@ -151,27 +163,42 @@ export class SuperAdminDashboardComponent implements OnInit {
     this.updating = true;
     this.superAdminService.updateTenant(this.selectedTenant.slug, this.editForm.value).subscribe({
       next: (updatedTenant) => {
-        this.messageService.add({ severity: 'success', summary: 'Updated', detail: 'Tenant updated successfully' });
+        this.messageService.add({ 
+          severity: 'success', 
+          summary: this.translate.instant('TOAST.SUCCESS'), 
+          detail: this.translate.instant('SUPER_ADMIN.SUCCESS_UPDATE') 
+        });
         this.loadTenants();
         this.displayEditDialog = false;
         this.updating = false;
       },
       error: () => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update tenant' });
+        this.messageService.add({ 
+          severity: 'error', 
+          summary: this.translate.instant('TOAST.ERROR'), 
+          detail: this.translate.instant('SUPER_ADMIN.ERROR_UPDATE') 
+        });
         this.updating = false;
       }
     });
   }
 
   deleteTenant(slug: string) {
-    // ...
-    if (confirm(`Are you sure you want to deactivate tenant: ${slug}?`)) {
+    if (confirm(`${this.translate.instant('SUPER_ADMIN.DEACTIVATE_CONFIRM')} ${slug}?`)) {
       this.superAdminService.deleteTenant(slug).subscribe({
         next: () => {
-          this.messageService.add({ severity: 'success', summary: 'Deactivated', detail: 'Tenant deactivated successfully' });
+          this.messageService.add({ 
+            severity: 'success', 
+            summary: this.translate.instant('TOAST.SUCCESS'), 
+            detail: this.translate.instant('SUPER_ADMIN.SUCCESS_DEACTIVATE') 
+          });
           this.loadTenants();
         },
-        error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to deactivate tenant' })
+        error: () => this.messageService.add({ 
+          severity: 'error', 
+          summary: this.translate.instant('TOAST.ERROR'), 
+          detail: this.translate.instant('SUPER_ADMIN.ERROR_DEACTIVATE') 
+        })
       });
     }
   }

@@ -81,7 +81,7 @@
       <div class="flex align-items-center gap-2">
         <button pButton icon="pi pi-refresh" class="p-button-rounded p-button-text p-button-secondary" 
                 (click)="clearBasket()" *ngIf="totalItemsCount > 0"
-                [pTooltip]="(translate.currentLang === 'ar' ? 'مسح السلة' : 'Clear Basket')"></button>
+                [pTooltip]="'BASKET.CLEAR' | translate"></button>
         <button pButton icon="pi pi-times" class="p-button-rounded p-button-text p-button-secondary lg:hidden" 
                 (click)="isCartVisible = false"></button>
       </div>
@@ -108,13 +108,13 @@
           </div>
           <div class="flex align-items-center gap-2 bg-soft rounded-full p-1">
             <button pButton icon="pi pi-minus" class="p-button-rounded p-button-text p-button-sm qty-btn" 
-                    (click)="decrementQuantity(item)" [pTooltip]="(translate.currentLang === 'ar' ? 'تقليل' : 'Decrease')"></button>
+                    (click)="decrementQuantity(item)" [pTooltip]="'COMMON.DECREASE' | translate"></button>
             <span class="font-black px-2">{{ item.quantity }}</span>
             <button pButton icon="pi pi-plus" class="p-button-rounded p-button-text p-button-sm qty-btn" 
-                    (click)="incrementQuantity(item)" [pTooltip]="(translate.currentLang === 'ar' ? 'زيادة' : 'Increase')"></button>
+                    (click)="incrementQuantity(item)" [pTooltip]="'COMMON.INCREASE' | translate"></button>
           </div>
           <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger qty-btn" 
-                  (click)="removeFromBasket(item)" [pTooltip]="(translate.currentLang === 'ar' ? 'حذف' : 'Remove')"></button>
+                  (click)="removeFromBasket(item)" [pTooltip]="'COMMON.REMOVE' | translate"></button>
         </div>
 
         <!-- Empty state -->

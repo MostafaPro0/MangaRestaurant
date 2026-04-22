@@ -244,7 +244,7 @@
               class="p-buttonset-sm"></p-selectButton>
           </div>
           <div class="text-dim font-bold">
-            {{ filteredOrders.length }} {{ (translateService.currentLang === 'ar' ? 'طلب معروض' : 'Orders showing') }}
+            {{ filteredOrders.length }} {{ 'ADMIN.ORDERS_SHOWING' | translate }}
           </div>
         </div>
 
@@ -255,9 +255,8 @@
               <th style="width: 15%">{{ 'ORDERS.DATE' | translate }}</th>
               <th style="width: 12%">{{ 'ORDERS.TOTAL' | translate }}</th>
               <th style="width: 15%">{{ 'ORDERS.STATUS' | translate }}</th>
-              <th style="width: 12%">{{ (translateService.currentLang === 'ar' ? 'النوع' : 'Type') }}</th>
-              <th style="width: 18%">{{ (translateService.currentLang === 'ar' ? 'مسؤول التوصيل' : 'Delivery Person') }}
-              </th>
+              <th style="width: 12%">{{ 'ADMIN.ORDER_TYPE' | translate }}</th>
+              <th style="width: 18%">{{ 'ADMIN.DELIVERY_PERSON' | translate }}</th>
               <th style="width: 20%" class="text-center">{{ 'ADMIN.ORDERS.STATUS_UPDATE' | translate }}</th>
             </tr>
           </ng-template>
@@ -280,7 +279,7 @@
               </td>
               <td>
                 <p-tag [severity]="order.orderType === 'DineIn' ? 'warning' : 'info'"
-                  [value]="order.orderType === 'DineIn' ? (translateService.currentLang === 'ar' ? 'داخل المطعم' : 'Dine-In') : (translateService.currentLang === 'ar' ? 'توصيل' : 'Delivery')"
+                  [value]="(order.orderType === 'DineIn' ? 'ADMIN.DINE_IN' : 'ADMIN.DELIVERY_TAKEAWAY') | translate"
                   [rounded]="true" class="font-bold">
                 </p-tag>
               </td>
@@ -288,13 +287,13 @@
                 <div class="flex align-items-center gap-2" *ngIf="order.orderType !== 'DineIn'">
                   <p-dropdown [options]="deliveryEmployees" [(ngModel)]="orderDeliveryAssignee[order.id]"
                     optionLabel="displayName" optionValue="id"
-                    [placeholder]="(translateService.currentLang === 'ar' ? 'اختر عامل' : 'Select Driver')"
+                    [placeholder]="'ADMIN.SELECT_DRIVER' | translate"
                     class="p-inputtext-sm w-full">
                   </p-dropdown>
                   <button pButton [icon]="savingOrderStatus ? 'pi pi-spin pi-spinner' : 'pi pi-user-plus'"
                     [loading]="savingOrderStatus" class="p-button-rounded p-button-text p-button-info p-button-sm"
                     (click)="updateOrderDelivery(order.id)"
-                    [pTooltip]="(translateService.currentLang === 'ar' ? 'تعيين' : 'Assign')"
+                    [pTooltip]="'ADMIN.ASSIGN' | translate"
                     [disabled]="!orderDeliveryAssignee[order.id] || savingOrderStatus"></button>
                 </div>
                 <span class="text-dim italic" *ngIf="order.orderType === 'DineIn'">N/A</span>
@@ -307,7 +306,7 @@
                   <button pButton [icon]="savingOrderStatus ? 'pi pi-spin pi-spinner' : 'pi pi-save'"
                     [loading]="savingOrderStatus" [disabled]="savingOrderStatus"
                     class="p-button-rounded p-button-warning" (click)="updateOrderStatus(order.id)"
-                    [pTooltip]="(translateService.currentLang === 'ar' ? 'حفظ الحالة' : 'Save Status')"></button>
+                    [pTooltip]="'ADMIN.SAVE_STATUS' | translate"></button>
                 </div>
               </td>
             </tr>
@@ -348,7 +347,7 @@
                 <div class="flex align-items-center gap-2">
                   {{ (translateService.currentLang === 'ar' && product.nameAr) ? product.nameAr : product.name }}
                   <p-tag *ngIf="product.isHidden" severity="danger"
-                    [value]="(translateService.currentLang === 'ar' ? 'مخفي' : 'Hidden')" [rounded]="true"
+                    [value]="'ADMIN.HIDDEN' | translate" [rounded]="true"
                     class="text-xs"></p-tag>
                 </div>
               </td>
@@ -383,10 +382,10 @@
                 <div class="flex justify-content-center gap-2">
                   <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-warning"
                     (click)="openEditProduct(product)"
-                    [pTooltip]="(translateService.currentLang === 'ar' ? 'تعديل' : 'Edit')"></button>
+                    [pTooltip]="'ADMIN.EDIT' | translate"></button>
                   <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
                     (click)="deleteProduct(product.id)"
-                    [pTooltip]="(translateService.currentLang === 'ar' ? 'حذف' : 'Delete')"></button>
+                    [pTooltip]="'ADMIN.DELETE' | translate"></button>
                 </div>
               </td>
             </tr>
@@ -439,10 +438,10 @@
                   (click)="onToggleUserBan(user)">
                 </p-button>
               </td>
-              <td class="text-center">
+                  <td class="text-center">
                 <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"
                   (click)="onDeleteUser(user.id)"
-                  [pTooltip]="(translateService.currentLang === 'ar' ? 'حذف' : 'Delete')"></button>
+                  [pTooltip]="'ADMIN.DELETE' | translate"></button>
               </td>
             </tr>
           </ng-template>
@@ -458,7 +457,7 @@
               <span class="p-input-icon-left">
                 <i class="pi pi-user text-primary"></i>
                 <input type="text" pInputText id="name" [(ngModel)]="newUser.displayName"
-                  [placeholder]="translateService.currentLang === 'ar' ? 'أدخل اسم الموظف' : 'Enter employee name'"
+                  [placeholder]="'ADMIN.ENTER_STAFF_NAME' | translate"
                   required autofocus class="p-inputtext-lg border-round-xl" />
               </span>
             </div>
@@ -500,7 +499,7 @@
               <label for="role" class="block font-bold mb-2 opacity-80">{{ 'ADMIN.ROLE' | translate }}</label>
               <p-dropdown [options]="roleOptions" [(ngModel)]="selectedUserRole" id="role" appendTo="body"
                 styleClass="p-dropdown-lg border-round-xl" [style]="{'width': '100%'}" [panelStyle]="{'width': '410px'}"
-                [placeholder]="translateService.currentLang === 'ar' ? 'اختر الدور' : 'Select Role'">
+                [placeholder]="'ADMIN.SELECT_ROLE' | translate">
                 <ng-template let-option pTemplate="item">
                   <div class="flex align-items-center gap-2">
                     <i class="pi" [ngClass]="option.value === 'Admin' ? 'pi-shield' : 'pi-user'"></i>
@@ -619,21 +618,20 @@
 
       <!-- Item Dialog (Shared for Cat/Brand) -->
       <p-dialog [(visible)]="itemDialog" [style]="{width: '450px'}"
-        [header]="(isCategoryMode ? (editingItem ? 'Edit Category' : 'Add Category') : (editingItem ? 'Edit Brand' : 'Add Brand'))"
+        [header]="(isCategoryMode ? (editingItem ? 'ADMIN.EDIT_CATEGORY' : 'ADMIN.ADD_CATEGORY') : (editingItem ? 'ADMIN.EDIT_BRAND' : 'ADMIN.ADD_BRAND')) | translate"
         [modal]="true" styleClass="p-fluid glass-panel">
         <ng-template pTemplate="content">
           <div class="field mb-3">
-            <label>{{ (translateService.currentLang === 'ar' ? 'الاسم بالإنجليزية' : 'Name (EN)') }}</label>
+            <label>{{ 'ADMIN.NAME_EN' | translate }}</label>
             <input type="text" pInputText [(ngModel)]="selectedItem.name" required />
           </div>
           <div class="field mb-3">
-            <label>{{ (translateService.currentLang === 'ar' ? 'الاسم بالعربية' : 'Name (AR)') }}</label>
+            <label>{{ 'ADMIN.NAME_AR' | translate }}</label>
             <input type="text" pInputText [(ngModel)]="selectedItem.nameAr" dir="rtl" required />
           </div>
           <div class="field flex align-items-center gap-2 mb-3">
             <p-checkbox [(ngModel)]="selectedItem.isHidden" [binary]="true" inputId="isHidden"></p-checkbox>
-            <label for="isHidden">{{ (translateService.currentLang === 'ar' ? 'إخفاء من المتجر' : 'Hide from store')
-              }}</label>
+            <label for="isHidden">{{ 'ADMIN.HIDE_FROM_STORE' | translate }}</label>
           </div>
         </ng-template>
 

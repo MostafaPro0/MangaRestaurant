@@ -57,7 +57,7 @@ export class CheckoutComponent implements OnInit {
       this.messageService.add({
         severity: 'info',
         summary: this.translate.instant('TOAST.INFO'),
-        detail: this.translate.currentLang === 'ar' ? 'برجاء تسجيل الدخول أولاً لإتمام الطلب' : 'Please login first to complete your order.'
+        detail: this.translate.instant('TOAST.LOGIN_REQUIRED')
       });
       this.router.navigate(['/login'], { queryParams: { returnUrl: '/checkout' } });
       return;

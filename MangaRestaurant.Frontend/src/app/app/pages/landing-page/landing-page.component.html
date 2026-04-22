@@ -37,7 +37,7 @@
     <div class="lp-hero__content">
       <span class="lp-hero__badge">
         <i class="pi pi-sparkles"></i>
-        {{ currentLang === 'ar' ? 'منصة إدارة المطاعم' : 'Restaurant Management Platform' }}
+        {{ 'LANDING.HERO_BADGE' | translate }}
       </span>
       <h1 [innerHTML]="'LANDING.HERO_TITLE' | translate"></h1>
       <p>{{ 'LANDING.HERO_SUBTITLE' | translate }}</p>
@@ -96,14 +96,14 @@
         </div>
         <h4>{{ currentLang === 'ar' ? t.nameAr : t.name }}</h4>
         <span class="lp-tenant-card__link">
-          {{ currentLang === 'ar' ? 'زيارة الموقع' : 'Visit Site' }}
+          {{ 'LANDING.VISIT_SITE' | translate }}
           <i class="pi pi-external-link"></i>
         </span>
       </a>
     </div>
 
     <div class="lp-empty-state" *ngIf="!loadingTenants && publicTenants.length === 0">
-       <p>{{ currentLang === 'ar' ? 'كن أول شريك نجاح معنا!' : 'Be our first success partner!' }}</p>
+       <p>{{ 'LANDING.BE_PARTNER' | translate }}</p>
     </div>
   </section>
 
@@ -136,7 +136,7 @@
           <div class="lp-plan-card__price">
             <span class="lp-plan-card__currency">$</span>
             <span class="lp-plan-card__amount">{{ plan.monthlyPrice }}</span>
-            <span class="lp-plan-card__period">/{{ currentLang === 'ar' ? 'شهر' : 'mo' }}</span>
+            <span class="lp-plan-card__period">/{{ 'COMMON.MONTH' | translate }}</span>
           </div>
 
           <div class="lp-plan-card__divider"></div>
@@ -159,13 +159,13 @@
 
       <div class="col-12 text-center py-8" *ngIf="!loadingPlans && plans.length === 0">
          <i class="pi pi-info-circle text-4xl mb-3 text-secondary"></i>
-         <p class="text-xl">{{ currentLang === 'ar' ? 'خطط الأسعار غير متوفرة حالياً. يرجى العودة لاحقاً.' : 'Pricing plans are currently unavailable. Please check back later.' }}</p>
+         <p class="text-xl">{{ 'LANDING.PLANS_UNAVAILABLE' | translate }}</p>
       </div>
     </div>
   </section>
 
   <!-- ─── Footer ─── -->
   <footer class="lp-footer">
-    <p>&copy; 2026 MangaSaaS &mdash; {{ currentLang === 'ar' ? 'نظام إدارة مطاعم متكامل' : 'Premium Multi-Tenant Restaurant Management' }}</p>
+    <p>&copy; 2026 MangaSaaS &mdash; {{ 'COMMON.FOOTER_PLATFORM_DESC' | translate }}</p>
   </footer>
 </div>

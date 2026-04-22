@@ -97,7 +97,7 @@ export class OnboardingComponent implements OnInit {
       this.messageService.add({
         severity: 'warn',
         summary: this.translate.instant('TOAST.WARN'),
-        detail: this.currentLang === 'ar' ? 'يرجى ملء جميع الحقول المطلوبة' : 'Please fill all required fields'
+        detail: this.translate.instant('ADMIN.REQUIRED_FIELDS_ERROR')
       });
       return;
     }
@@ -145,7 +145,7 @@ export class OnboardingComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: this.translate.instant('TOAST.ERROR'),
-          detail: err.error?.message || 'Provisioning failed. Please try again later.'
+          detail: err.error?.message || this.translate.instant('ONBOARDING.PROVISIONING_FAILED')
         });
       }
     });

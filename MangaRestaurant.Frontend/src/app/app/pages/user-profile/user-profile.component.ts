@@ -252,15 +252,25 @@ export class UserProfileComponent implements OnInit {
   }
 
   deleteAddress(id: number): void {
-    this.authService.deleteAddress(id).subscribe({
-      next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Address deleted' });
-        this.loadAddresses();
-      },
-      error: () => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete address' });
-      }
-    });
+    if (confirm(this.translate.instant('PROFILE.DELETE_ADDRESS_CONFIRM') || 'Are you sure?')) {
+      this.authService.deleteAddress(id).subscribe({
+        next: () => {
+          this.messageService.add({ 
+            severity: 'success', 
+            summary: this.translate.instant('TOAST.SUCCESS'), 
+            detail: this.translate.instant('PROFILE.ADDRESS_DELETED') || 'Address deleted' 
+          });
+          this.loadAddresses();
+        },
+        error: () => {
+          this.messageService.add({ 
+            severity: 'error', 
+            summary: this.translate.instant('TOAST.ERROR'), 
+            detail: this.translate.instant('PROFILE.DELETE_FAILED') || 'Failed' 
+          });
+        }
+      });
+    }
   }
 
   openChangePassword(): void {
@@ -306,12 +316,19 @@ export class UserProfileComponent implements OnInit {
        phoneNumber2: this.phoneNumber2 
     }).subscribe({
       next: (updatedUser) => {
-        this.user = updatedUser;
-        this.messageService.add({ severity: 'success', summary: this.translate.instant('TOAST.SUCCESS') || 'Success', detail: 'Profile updated successfully' });
+        this.messageService.add({ 
+          severity: 'success', 
+          summary: this.translate.instant('TOAST.SUCCESS'), 
+          detail: this.translate.instant('PROFILE.UPDATED') || 'Profile updated successfully' 
+        });
         this.loadingProfile = false;
       },
       error: () => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update profile' });
+        this.messageService.add({ 
+          severity: 'error', 
+          summary: this.translate.instant('TOAST.ERROR'), 
+          detail: this.translate.instant('PROFILE.UPDATE_FAILED') || 'Failed to update profile' 
+        });
         this.loadingProfile = false;
       }
     });

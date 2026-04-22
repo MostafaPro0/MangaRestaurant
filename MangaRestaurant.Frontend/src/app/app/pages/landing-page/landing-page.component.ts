@@ -100,27 +100,26 @@ export class LandingPageComponent implements OnInit {
   }
 
   getPlanFeatures(plan: any): string[] {
-    const isAr = this.currentLang === 'ar';
     const features: string[] = [];
 
-    const unlimitedAr = 'غير محدود';
-    const unlimitedEn = 'Unlimited';
+    const unlimitedText = this.translate.instant('LANDING.UNLIMITED');
+    const upToText = this.translate.instant('LANDING.UP_TO');
 
     const productsText = plan.maxProducts >= 9999
-      ? (isAr ? `${unlimitedAr} منتج` : `${unlimitedEn} Products`)
-      : (isAr ? `حتى ${plan.maxProducts} منتج` : `Up to ${plan.maxProducts} products`);
+      ? `${unlimitedText} ${this.translate.instant('LANDING.PRODUCTS_COUNT')}`
+      : `${upToText} ${plan.maxProducts} ${this.translate.instant('LANDING.PRODUCTS_COUNT')}`;
     features.push(productsText);
 
     const staffText = plan.maxStaff >= 9999
-      ? (isAr ? `${unlimitedAr} موظفين` : `${unlimitedEn} Staff`)
-      : (isAr ? `حتى ${plan.maxStaff} موظفين` : `Up to ${plan.maxStaff} staff members`);
+      ? `${unlimitedText} ${this.translate.instant('LANDING.STAFF_COUNT')}`
+      : `${upToText} ${plan.maxStaff} ${this.translate.instant('LANDING.STAFF_COUNT')}`;
     features.push(staffText);
 
-    if (plan.hasAdvancedReports) features.push(isAr ? 'تقارير متقدمة' : 'Advanced Reports');
-    if (plan.hasDeliveryTracking) features.push(isAr ? 'تتبع التوصيل' : 'Delivery Tracking');
-    if (plan.hasLuckyRewards) features.push(isAr ? 'نظام المكافآت' : 'Lucky Rewards System');
-    if (plan.hasEmailNotifications) features.push(isAr ? 'إشعارات البريد' : 'Email Notifications');
-    if (plan.hasCustomDomain) features.push(isAr ? 'دومين خاص' : 'Custom Domain');
+    if (plan.hasAdvancedReports) features.push(this.translate.instant('ADMIN.REPORTS'));
+    if (plan.hasDeliveryTracking) features.push(this.translate.instant('TRACKING.TITLE'));
+    if (plan.hasLuckyRewards) features.push(this.translate.instant('GACHA.TITLE'));
+    if (plan.hasEmailNotifications) features.push(this.translate.instant('ADMIN.SETTINGS'));
+    if (plan.hasCustomDomain) features.push(this.translate.instant('LANDING.CUSTOM_DOMAIN'));
 
     return features;
   }

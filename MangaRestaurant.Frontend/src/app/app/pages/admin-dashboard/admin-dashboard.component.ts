@@ -431,16 +431,16 @@ export class AdminDashboardComponent implements OnInit {
               this.savingOrderStatus = false;
               this.messageService.add({ 
                   severity: 'success', 
-                  summary: 'Success', 
-                  detail: this.translateService.currentLang === 'ar' ? 'تم تعيين عامل التوصيل بنجاح' : 'Delivery person assigned' 
+                  summary: this.translateService.instant('TOAST.SUCCESS'), 
+                  detail: this.translateService.instant('ADMIN.DELIVERY_ASSIGNED')
               });
           },
           error: () => {
             this.savingOrderStatus = false;
             this.messageService.add({ 
                 severity: 'error', 
-                summary: 'Error', 
-                detail: this.translateService.currentLang === 'ar' ? 'فشل التعيين' : 'Assignment failed' 
+                summary: this.translateService.instant('TOAST.ERROR'), 
+                detail: this.translateService.instant('ADMIN.ASSIGNMENT_FAILED')
             });
           }
       });
@@ -578,7 +578,7 @@ export class AdminDashboardComponent implements OnInit {
     // 8. Top Wishlisted Products
     this.topWishlistedProductsChartOptions = {
         series: [{ 
-            name: this.translateService.instant('ADMIN.WISHLIST_COUNT') || (isAr ? 'عدد الإضافات للمفضلة' : 'Wishlist Count'), 
+            name: this.translateService.instant('ADMIN.WISHLIST_COUNT'), 
             data: report.topWishlistedProducts.map((p: any) => p.quantity) 
         }],
         chart: { type: 'bar', height: 350, ...chartBaseConfig },
@@ -643,7 +643,7 @@ export class AdminDashboardComponent implements OnInit {
       this.messageService.add({ 
         severity: 'error', 
         summary: this.translateService.instant('TOAST.ERROR'), 
-        detail: this.translateService.currentLang === 'ar' ? 'يرجى ملء جميع الحقول المطلوبة' : 'Please fill all required fields' 
+        detail: this.translateService.instant('ADMIN.REQUIRED_FIELDS_ERROR')
       });
       return;
     }
@@ -706,8 +706,8 @@ export class AdminDashboardComponent implements OnInit {
       next: () => {
         this.messageService.add({ 
             severity: 'success', 
-            summary: this.translateService.currentLang === 'ar' ? 'نجاح' : 'Success', 
-            detail: this.translateService.currentLang === 'ar' ? 'تم تحديث الإعدادات' : 'Settings updated successfully' 
+            summary: this.translateService.instant('TOAST.SUCCESS'), 
+            detail: this.translateService.instant('ADMIN.SETTINGS_UPDATED')
         });
         this.savingSettings = false;
       },
