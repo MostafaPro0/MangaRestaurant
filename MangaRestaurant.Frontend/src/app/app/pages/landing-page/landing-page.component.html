@@ -25,7 +25,7 @@
         </button>
 
         <a routerLink="/login" class="lp-btn lp-btn--ghost">{{ 'NAV.LOGIN' | translate }}</a>
-        <a routerLink="/register" class="lp-btn lp-btn--primary">{{ 'NAV.REGISTER' | translate }}</a>
+        <a routerLink="/onboarding" class="lp-btn lp-btn--primary">{{ 'NAV.REGISTER' | translate }}</a>
       </div>
     </div>
   </nav>
@@ -45,7 +45,7 @@
       <p>{{ 'LANDING.HERO_SUBTITLE' | translate }}</p>
       <div class="lp-hero__cta">
         <button pButton [label]="'LANDING.GET_STARTED' | translate" icon="pi pi-arrow-right" iconPos="right"
-                class="p-button-lg p-button-rounded" (click)="scrollTo('pricing')"></button>
+                class="p-button-lg p-button-rounded" routerLink="/onboarding"></button>
         <a routerLink="/super-admin" class="lp-btn lp-btn--outline-light">
           <i class="pi pi-shield"></i>
           {{ 'SUPER_ADMIN.DASHBOARD' | translate }}
@@ -91,8 +91,8 @@
     </div>
 
     <!-- Real data -->
-    <div class="lp-partners__grid" *ngIf="!loadingTenants">
-      <a *ngFor="let t of publicTenants" [href]="getTenantUrl(t.slug)" target="_blank" class="lp-tenant-card">
+    <div class="lp-partners__grid" *ngIf="!loadingTenants && publicTenants.length > 0">
+      <a *ngFor="let t of publicTenants" [href]="getTenantUrl(t)" target="_blank" class="lp-tenant-card">
         <div class="lp-tenant-card__avatar">
           <img [src]="t.logoUrl" [alt]="t.name">
         </div>
@@ -102,6 +102,10 @@
           <i class="pi pi-external-link"></i>
         </span>
       </a>
+    </div>
+
+    <div class="lp-empty-state" *ngIf="!loadingTenants && publicTenants.length === 0">
+       <p>{{ currentLang === 'ar' ? 'كن أول شريك نجاح معنا!' : 'Be our first success partner!' }}</p>
     </div>
   </section>
 
@@ -125,7 +129,7 @@
       </ng-container>
 
       <!-- Real Data -->
-      <ng-container *ngIf="!loadingPlans">
+      <ng-container *ngIf="!loadingPlans && plans.length > 0">
         <div *ngFor="let plan of plans; let i = index" class="lp-plan-card" [class.lp-plan-card--featured]="i === 1">
           <div class="lp-plan-card__popular" *ngIf="i === 1">{{ 'LANDING.MOST_POPULAR' | translate }}</div>
 
@@ -149,10 +153,16 @@
           <div class="lp-plan-card__action">
             <button pButton [label]="'LANDING.SUBSCRIBE_NOW' | translate"
                     class="p-button-rounded w-full"
-                    [class.p-button-outlined]="i !== 1"></button>
+                    [class.p-button-outlined]="i !== 1"
+                    [routerLink]="['/onboarding']" [queryParams]="{planId: plan.id || (i+1)}"></button>
           </div>
         </div>
       </ng-container>
+
+      <div class="col-12 text-center py-8" *ngIf="!loadingPlans && plans.length === 0">
+         <i class="pi pi-info-circle text-4xl mb-3 text-secondary"></i>
+         <p class="text-xl">{{ currentLang === 'ar' ? 'خطط الأسعار غير متوفرة حالياً. يرجى العودة لاحقاً.' : 'Pricing plans are currently unavailable. Please check back later.' }}</p>
+      </div>
     </div>
   </section>
 

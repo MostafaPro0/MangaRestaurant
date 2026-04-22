@@ -228,7 +228,7 @@ export class AppComponent {
 
   checkLayout(): void {
     const url = this.router.url;
-    const isLanding = url === '/landing' || (url === '/' && this.isPlatformMode());
+    const isLanding = url === '/landing' || url.includes('/onboarding') || url.includes('/onboarding-success') || (url === '/' && this.isPlatformMode());
     const isSuperAdmin = url.includes('/super-admin');
     
     // Hide store navbar/footer for landing pages and super admin dashboard

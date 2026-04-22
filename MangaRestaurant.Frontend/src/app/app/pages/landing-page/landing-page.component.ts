@@ -4,8 +4,8 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
+import { SaasInfoService } from '../../services/saas-info.service';
+import { SaasPlan, SaasTenant } from '../../models/saas.models';
 import { TooltipModule } from 'primeng/tooltip';
 import { SkeletonModule } from 'primeng/skeleton';
 
@@ -18,33 +18,14 @@ import { SkeletonModule } from 'primeng/skeleton';
   encapsulation: ViewEncapsulation.None
 })
 export class LandingPageComponent implements OnInit {
-  publicTenants: any[] = [];
-  plans: any[] = [];
+  publicTenants: SaasTenant[] = [];
+  plans: SaasPlan[] = [];
   loadingTenants = true;
   loadingPlans = true;
   currentTheme = signal<'light' | 'dark'>(localStorage.getItem('theme') === 'dark' ? 'dark' : 'light');
 
-  // Fallback plans if API returns empty or fails
-  private fallbackPlans = [
-    {
-      name: 'Free', nameAr: 'مجاني', monthlyPrice: 0, maxProducts: 20, maxStaff: 2,
-      hasLuckyRewards: false, hasAdvancedReports: false, hasCustomDomain: false,
-      hasDeliveryTracking: false, hasEmailNotifications: false
-    },
-    {
-      name: 'Professional', nameAr: 'احترافي', monthlyPrice: 99, maxProducts: 200, maxStaff: 10,
-      hasLuckyRewards: true, hasAdvancedReports: true, hasCustomDomain: false,
-      hasDeliveryTracking: true, hasEmailNotifications: true
-    },
-    {
-      name: 'Enterprise', nameAr: 'مؤسسي', monthlyPrice: 299, maxProducts: 999999, maxStaff: 999999,
-      hasLuckyRewards: true, hasAdvancedReports: true, hasCustomDomain: true,
-      hasDeliveryTracking: true, hasEmailNotifications: true
-    }
-  ];
-
   constructor(
-    private http: HttpClient,
+    private saasService: SaasInfoService,
     private translate: TranslateService,
     private scroller: ViewportScroller
   ) {}
@@ -60,27 +41,22 @@ export class LandingPageComponent implements OnInit {
   }
 
   loadTenants(): void {
-    this.http.get<any[]>(`${environment.apiUrl}/saas-info/active-tenants`).subscribe({
+    this.saasService.getActiveTenants().subscribe({
       next: (data) => {
-        this.publicTenants = data || [];
+        this.publicTenants = data;
         this.loadingTenants = false;
       },
-      error: () => {
-        this.loadingTenants = false;
-      }
+      error: () => this.loadingTenants = false
     });
   }
 
   loadPlans(): void {
-    this.http.get<any[]>(`${environment.apiUrl}/saas-info/plans`).subscribe({
+    this.saasService.getAvailablePlans().subscribe({
       next: (data) => {
-        this.plans = (data && data.length > 0) ? data : this.fallbackPlans;
+        this.plans = data;
         this.loadingPlans = false;
       },
-      error: () => {
-        this.plans = this.fallbackPlans;
-        this.loadingPlans = false;
-      }
+      error: () => this.loadingPlans = false
     });
   }
 
@@ -109,9 +85,13 @@ export class LandingPageComponent implements OnInit {
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
   }
 
-  getTenantUrl(slug: string): string {
+  getTenantUrl(tenant: any): string {
+    if (tenant.customDomain) return `${window.location.protocol}//${tenant.customDomain}`;
+    
     const protocol = window.location.protocol;
     const host = window.location.host;
+    const slug = tenant.slug;
+
     if (host.includes('localhost')) {
       const port = host.split(':')[1] || '4200';
       return `${protocol}//${slug}.localhost:${port}`;
@@ -123,8 +103,18 @@ export class LandingPageComponent implements OnInit {
     const isAr = this.currentLang === 'ar';
     const features: string[] = [];
 
-    features.push(isAr ? `حتى ${plan.maxProducts} منتج` : `Up to ${plan.maxProducts} products`);
-    features.push(isAr ? `حتى ${plan.maxStaff} موظفين` : `Up to ${plan.maxStaff} staff members`);
+    const unlimitedAr = 'غير محدود';
+    const unlimitedEn = 'Unlimited';
+
+    const productsText = plan.maxProducts >= 9999
+      ? (isAr ? `${unlimitedAr} منتج` : `${unlimitedEn} Products`)
+      : (isAr ? `حتى ${plan.maxProducts} منتج` : `Up to ${plan.maxProducts} products`);
+    features.push(productsText);
+
+    const staffText = plan.maxStaff >= 9999
+      ? (isAr ? `${unlimitedAr} موظفين` : `${unlimitedEn} Staff`)
+      : (isAr ? `حتى ${plan.maxStaff} موظفين` : `Up to ${plan.maxStaff} staff members`);
+    features.push(staffText);
 
     if (plan.hasAdvancedReports) features.push(isAr ? 'تقارير متقدمة' : 'Advanced Reports');
     if (plan.hasDeliveryTracking) features.push(isAr ? 'تتبع التوصيل' : 'Delivery Tracking');

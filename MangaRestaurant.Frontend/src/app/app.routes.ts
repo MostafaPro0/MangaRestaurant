@@ -42,6 +42,14 @@ export const routes: Route[] = [
   { path: 'register', canActivate: [guestGuard], loadComponent: () => import('./app/pages/register/register.component').then(m => m.RegisterComponent) },
   { path: 'pos', loadComponent: () => import('./app/pages/pos/pos.component').then(m => m.PosComponent) },
   { path: 'lucky-rewards', canActivate: [authGuard, luckyRewardsGuard], loadComponent: () => import('./app/pages/lucky-rewards/lucky.component').then(m => m.LuckyRewardsPageComponent) },
+  { 
+    path: 'onboarding', 
+    loadComponent: () => import('./app/pages/onboarding/onboarding.component').then(m => m.OnboardingComponent) 
+  },
+  { 
+    path: 'onboarding-success', 
+    loadComponent: () => import('./app/pages/onboarding-success/onboarding-success.component').then(m => m.OnboardingSuccessComponent) 
+  },
   { path: 'super-admin', canActivate: [superAdminGuard], loadComponent: () => import('./app/pages/super-admin-dashboard/super-admin-dashboard.component').then(m => m.SuperAdminDashboardComponent) },
   { path: '**', loadComponent: () => import('./app/pages/not-found/not-found.component').then(m => m.NotFoundComponent) }
 ];

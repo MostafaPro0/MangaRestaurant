@@ -1,0 +1,118 @@
+<div class="onboarding-page" [class.rtl]="currentLang === 'ar'">
+  <p-toast></p-toast>
+  
+  <div class="onboarding-header">
+    <div class="logo" routerLink="/">
+      <i class="pi pi-bolt"></i>
+      <span>Manga<strong>SaaS</strong></span>
+    </div>
+    <div class="header-links">
+      <a routerLink="/">{{ 'NAV.HOME' | translate }}</a>
+      <div class="lang-toggle">
+         <!-- Add lang toggle here if needed -->
+      </div>
+    </div>
+  </div>
+
+  <div class="onboarding-container">
+    <div class="onboarding-sidebar">
+      <div class="onboarding-info">
+        <h1>{{ currentLang === 'ar' ? 'ابدأ رحلة نجاح مطعمك اليوم' : 'Start Your Restaurant Success Journey' }}</h1>
+        <p>{{ currentLang === 'ar' ? 'انضم إلى مئات المطاعم التي تدير أعمالها بذكاء مع MangaSaaS. قم بإنشاء هويتك الرقمية في دقائق.' : 'Join hundreds of restaurants managing their business smarter with MangaSaaS. Create your digital identity in minutes.' }}</p>
+        
+        <div class="benefit-item">
+          <i class="pi pi-check"></i>
+          <span>{{ currentLang === 'ar' ? 'إعداد فوري لقاعدة بياناتك' : 'Instant database provisioning' }}</span>
+        </div>
+        <div class="benefit-item">
+          <i class="pi pi-check"></i>
+          <span>{{ currentLang === 'ar' ? 'لوحة تحكم كاملة بالعربية والإنجليزية' : 'Full Dashboard in AR/EN' }}</span>
+        </div>
+        <div class="benefit-item">
+          <i class="pi pi-check"></i>
+          <span>{{ currentLang === 'ar' ? 'نظام دفع وتقارير متقدمة' : 'Advanced Payment & Reporting' }}</span>
+        </div>
+
+        <div class="onboarding-testimonial">
+          <div class="quote">"{{ currentLang === 'ar' ? 'أفضل قرار اتخذته لنمو مطعمي.' : 'Best decision I made for my restaurant growth.' }}"</div>
+          <div class="author">- Ahmed K., Ramen Station</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="onboarding-form-area">
+      <p-card styleClass="onboarding-card">
+        <form (ngSubmit)="onSubmit()" #onboardingForm="ngForm">
+          <h2 class="form-title">{{ currentLang === 'ar' ? 'إنشاء حساب المطعم' : 'Create Restaurant Account' }}</h2>
+          <p class="form-subtitle">{{ currentLang === 'ar' ? 'يرجى إدخال البيانات الأساسية لمطعمك' : 'Please enter your restaurant base details' }}</p>
+
+          <div class="grid">
+            <!-- Restaurant Names -->
+            <div class="col-12 md:col-6 field">
+              <label for="resNameEn">{{ currentLang === 'ar' ? 'اسم المطعم (EN)' : 'Restaurant Name (EN)' }}</label>
+              <input pInputText id="resNameEn" name="resNameEn" [(ngModel)]="restaurantName" 
+                     (blur)="generateSlug()" placeholder="e.g. Manga Station" class="w-full" required />
+            </div>
+            <div class="col-12 md:col-6 field">
+              <label for="resNameAr">{{ currentLang === 'ar' ? 'اسم المطعم (AR)' : 'Restaurant Name (AR)' }}</label>
+              <input pInputText id="resNameAr" name="resNameAr" [(ngModel)]="restaurantNameAr" 
+                     placeholder="مثلاً: محطة مانجا" class="w-full text-right" required />
+            </div>
+
+            <!-- Subdomain / Slug -->
+            <div class="col-12 field">
+              <label for="slug">{{ currentLang === 'ar' ? 'الدومين الفرعي المطلوب' : 'Desired Subdomain' }}</label>
+              <div class="p-inputgroup">
+                <span class="p-inputgroup-addon">https://</span>
+                <input pInputText id="slug" name="slug" [(ngModel)]="slug" placeholder="my-restaurant" class="w-full" required />
+                <span class="p-inputgroup-addon">.mangasaas.com</span>
+              </div>
+              <small class="text-muted">{{ currentLang === 'ar' ? 'هذا هو الرابط الذي ستستخدمه للوصول لموقعك' : 'This is the URL you will use to access your site' }}</small>
+            </div>
+
+            <div class="col-12 divider">
+              <span>{{ currentLang === 'ar' ? 'بيانات المسؤول' : 'Admin Details' }}</span>
+            </div>
+
+            <!-- Admin Details -->
+            <div class="col-12 field">
+              <label for="admName">{{ currentLang === 'ar' ? 'اسم المسؤول' : 'Admin Full Name' }}</label>
+              <input pInputText id="admName" name="admName" [(ngModel)]="adminName" placeholder="John Doe" class="w-full" required />
+            </div>
+            <div class="col-12 md:col-6 field">
+              <label for="admEmail">{{ currentLang === 'ar' ? 'البريد الإلكتروني' : 'Admin Email' }}</label>
+              <input pInputText id="admEmail" name="admEmail" [(ngModel)]="adminEmail" placeholder="admin@restaurant.com" class="w-full" required />
+            </div>
+            <div class="col-12 md:col-6 field">
+              <label for="admPass">{{ currentLang === 'ar' ? 'كلمة المرور' : 'Password' }}</label>
+              <p-password id="admPass" name="admPass" [(ngModel)]="adminPassword" [toggleMask]="true" styleClass="w-full" inputStyleClass="w-full" [feedback]="false" required></p-password>
+            </div>
+
+            <!-- Plan Selection -->
+            <div class="col-12 field">
+              <label for="plan">{{ currentLang === 'ar' ? 'الخطة المختارة' : 'Selected Plan' }}</label>
+              <p-dropdown [options]="plans" [(ngModel)]="selectedPlanId" name="plan"
+                         [optionLabel]="currentLang === 'ar' ? 'nameAr' : 'name'" 
+                         optionValue="id" styleClass="w-full" appendTo="body">
+              </p-dropdown>
+            </div>
+
+            <div class="col-12 mt-4">
+              <button pButton type="submit" [label]="currentLang === 'ar' ? 'تأكيد وإنشاء المطعم' : 'Confirm & Create Restaurant'" 
+                      [icon]="loading ? 'pi pi-spin pi-spinner' : 'pi pi-rocket'" 
+                      [disabled]="loading || !onboardingForm.valid"
+                      class="w-full p-button-lg p-button-success p-button-rounded shadow-3"></button>
+            </div>
+            
+            <div class="col-12 text-center mt-3">
+               <p class="text-sm text-secondary">
+                 {{ currentLang === 'ar' ? 'بالضغط على إنشاء، أنت توافق على' : 'By clicking create, you agree to our' }}
+                 <a href="#" class="font-bold underline">{{ currentLang === 'ar' ? 'شروط الخدمة' : 'Terms of Service' }}</a>
+               </p>
+            </div>
+          </div>
+        </form>
+      </p-card>
+    </div>
+  </div>
+</div>

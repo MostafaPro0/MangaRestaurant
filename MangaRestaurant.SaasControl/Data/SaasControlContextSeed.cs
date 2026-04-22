@@ -39,10 +39,33 @@ namespace MangaRestaurant.SaasControl.Data
 
                     context.Tenants.Add(mangaTenant);
 
+                    // Add some sample partners for the landing page
+                    context.Tenants.AddRange(new List<Tenant>
+                    {
+                        new Tenant { 
+                            Name = "Ramen Station", NameAr = "محطة رامن", Slug = "ramen-station", 
+                            AdminEmail = "ramen@example.com", PlanId = 2, IsActive = true,
+                            LogoUrl = "https://cdn-icons-png.flaticon.com/512/3443/3443338.png", 
+                            CreatedAt = DateTime.UtcNow
+                        },
+                        new Tenant { 
+                            Name = "Sushi Master", NameAr = "سوشي ماستر", Slug = "sushi-master", 
+                            AdminEmail = "sushi@example.com", PlanId = 3, IsActive = true,
+                            LogoUrl = "https://cdn-icons-png.flaticon.com/512/2252/2252438.png",
+                            CreatedAt = DateTime.UtcNow
+                        },
+                        new Tenant { 
+                            Name = "Burger House", NameAr = "بيت البرجر", Slug = "burger-house", 
+                            AdminEmail = "burger@example.com", PlanId = 1, IsActive = true,
+                            LogoUrl = "https://cdn-icons-png.flaticon.com/512/3075/3075977.png",
+                            CreatedAt = DateTime.UtcNow
+                        }
+                    });
+
                     context.AuditLogs.Add(new AuditLog
                     {
                         EventType = "SystemSeed",
-                        Description = "Seeded default Manga tenant for multi-tenant transition",
+                        Description = "Seeded default Manga tenant and sample partners",
                         PerformedBy = "System",
                         CreatedAt = DateTime.UtcNow
                     });

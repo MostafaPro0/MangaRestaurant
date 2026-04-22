@@ -19,7 +19,8 @@ export class TenantInterceptor implements HttpInterceptor {
     
     // Only intercept requests going to our API backend.
     // Skip requests to local assets (like translation json files)
-    if (request.url.includes('/api/')) {
+    // AND skip platform-wide SaaS info requests
+    if (request.url.includes('/api/') && tenantSlug && !request.url.includes('/saas-info/')) {
       const clonedRequest = request.clone({
         headers: request.headers.set('X-Tenant-Slug', tenantSlug)
       });

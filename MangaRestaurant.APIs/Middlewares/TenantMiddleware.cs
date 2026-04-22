@@ -15,9 +15,12 @@ namespace MangaRestaurant.APIs.Middlewares
 
         public async Task InvokeAsync(HttpContext context, ITenantService tenantService)
         {
-            // Skip tenant resolution for Super Admin and Public SaaS info endpoints
-            if (context.Request.Path.StartsWithSegments("/api/super-admin") || 
-                context.Request.Path.StartsWithSegments("/api/saas-info"))
+            var path = context.Request.Path.Value?.ToLower() ?? "";
+
+            // Skip tenant resolution for Super Admin, Identity Seed, and Public SaaS info endpoints
+            if (path.Contains("/api/super-admin") || 
+                path.Contains("/api/saas-info") ||
+                path.Contains("/api/identity/seed")) // Seed endpoint might need to be global too
             {
                 await _next(context);
                 return;

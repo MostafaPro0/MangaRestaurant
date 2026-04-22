@@ -1,0 +1,145 @@
+@import "../saas-platform.css";
+
+.onboarding-success-wrapper {
+    min-height: 100vh;
+    padding-top: 100px;
+}
+
+.success-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.success-container {
+    max-width: 600px;
+    width: 100%;
+    background: var(--lp-surface);
+    padding: 3rem;
+    border-radius: 2rem;
+    text-align: center;
+}
+
+.confetti-icon {
+    font-size: 5rem;
+    color: #10b981;
+    margin-bottom: 2rem;
+    animation: bouncePop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes bouncePop {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+}
+
+h1 {
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.subtitle {
+    color: var(--lp-text-muted);
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin-bottom: 2.5rem;
+}
+
+.site-link-card {
+    background: var(--lp-bg);
+    border: 2px solid var(--lp-border);
+    padding: 2rem;
+    border-radius: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.site-link-card .label {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: var(--lp-text-muted);
+    margin-bottom: 0.75rem;
+}
+
+.url-badge {
+    font-family: monospace;
+    font-size: 1.25rem;
+    color: #2563eb;
+    background: #dbeafe;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    word-break: break-all;
+    font-weight: 700;
+}
+
+.next-steps {
+    text-align: left;
+    margin-bottom: 3rem;
+}
+
+.next-steps h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.next-steps ul {
+    list-style: none;
+    padding: 0;
+}
+
+.next-steps li {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: var(--lp-bg);
+    border-radius: 0.75rem;
+    transition: transform 0.2s;
+}
+
+.next-steps li:hover {
+    transform: translateX(5px);
+}
+
+.next-steps li i {
+    width: 32px;
+    height: 32px;
+    background: var(--lp-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #3b82f6;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    color: var(--lp-text-muted);
+    font-weight: 600;
+}
+
+.footer-links a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.footer-links .dot {
+    width: 4px;
+    height: 4px;
+    background: var(--lp-border);
+    border-radius: 50%;
+}
+
+/* RTL */
+.lp.rtl .next-steps {
+    text-align: right;
+}
+
+.lp.rtl .next-steps li:hover {
+    transform: translateX(-5px);
+}

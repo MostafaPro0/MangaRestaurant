@@ -482,3 +482,15 @@
   .lp-plan-card--featured:hover { transform: translateY(-4px); }
   .lp-nav__inner { padding: 0.5rem 1rem; }
 }
+
+.lp-empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: var(--lp-text-muted);
+  font-size: 1.1rem;
+  font-weight: 500;
+  border: 1px dashed var(--lp-border);
+  border-radius: var(--lp-radius);
+  width: 100%;
+  margin: 1rem 0;
+}

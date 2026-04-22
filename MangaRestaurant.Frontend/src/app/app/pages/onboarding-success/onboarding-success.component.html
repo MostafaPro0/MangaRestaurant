@@ -1,0 +1,77 @@
+<div class="lp onboarding-success-wrapper" [class.dark]="currentTheme() === 'dark'" [class.rtl]="currentLang === 'ar'">
+  
+  <!-- ─── Shared SaaS Navbar ─── -->
+  <nav class="lp-nav">
+    <div class="lp-nav__inner">
+      <a class="lp-nav__logo" routerLink="/">
+        <i class="pi pi-bolt"></i>
+        <span>Manga<strong>SaaS</strong></span>
+      </a>
+
+      <div class="lp-nav__links">
+        <a (click)="scrollTo('features')">{{ 'LANDING.WHY_CHOOSE_US' | translate }}</a>
+        <a (click)="scrollTo('pricing')">{{ 'LANDING.PRICING_TITLE' | translate }}</a>
+      </div>
+
+      <div class="lp-nav__actions">
+        <div class="lp-lang-switch">
+          <button [class.active]="currentLang === 'en'" (click)="setLang('en')">EN</button>
+          <button [class.active]="currentLang === 'ar'" (click)="setLang('ar')">AR</button>
+        </div>
+
+        <button class="lp-icon-btn" (click)="toggleTheme()" [pTooltip]="currentTheme() === 'light' ? 'Dark Mode' : 'Light Mode'">
+          <i [class]="currentTheme() === 'light' ? 'pi pi-moon' : 'pi pi-sun'"></i>
+        </button>
+
+        <a routerLink="/login" class="lp-btn lp-btn--ghost">{{ 'NAV.LOGIN' | translate }}</a>
+        <a routerLink="/onboarding" class="lp-btn lp-btn--primary">{{ 'NAV.REGISTER' | translate }}</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── Success Content ─── -->
+  <div class="success-page">
+    <div class="success-container shadow-8">
+      <div class="confetti-icon">
+        <i class="pi pi-check-circle"></i>
+      </div>
+      
+      <h1>{{ currentLang === 'ar' ? 'تهانينا! مطعمك جاهز للعمل' : 'Congratulations! Your Restaurant is Ready' }}</h1>
+      <p class="subtitle">
+        {{ currentLang === 'ar' ? 'لقد قمنا بإعداد هوية مطعمك الرقمية بنجاح. يمكنك الآن البدء في إضافة المنتجات واستلام الطلبات.' : 'We have successfully provisioned your restaurant digital identity. You can now start adding products and receiving orders.' }}
+      </p>
+
+      <div class="site-link-card">
+        <div class="label">{{ currentLang === 'ar' ? 'رابط موقعك الجديد:' : 'Your new site URL:' }}</div>
+        <div class="url-badge">{{ newSiteUrl }}</div>
+        <button pButton [label]="currentLang === 'ar' ? 'الانتقال للموقع الآن' : 'Go to Site Now'" 
+                icon="pi pi-external-link" class="p-button-lg p-button-success w-full mt-3 p-button-rounded shadow-3"
+                (click)="goToSite()"></button>
+      </div>
+
+      <div class="next-steps">
+        <h3>{{ currentLang === 'ar' ? 'ماذا تفعل الآن؟' : 'What to do next?' }}</h3>
+        <ul>
+          <li>
+            <i class="pi pi-user"></i>
+            <span>{{ currentLang === 'ar' ? 'قم بتسجيل الدخول باستخدام بريدك الإلكتروني وكلمة المرور التي اخترتها.' : 'Login using the admin email and password you chose.' }}</span>
+          </li>
+          <li>
+            <i class="pi pi-cog"></i>
+            <span>{{ currentLang === 'ar' ? 'انتقل إلى لوحة التحكم لضبط إعدادات المطعم وشعارك.' : 'Go to Admin Control to set up restaurant settings and logo.' }}</span>
+          </li>
+          <li>
+            <i class="pi pi-plus"></i>
+            <span>{{ currentLang === 'ar' ? 'أضف أول فئة ومنتج لبدء بيع أطباقك.' : 'Add your first category and product to start selling your dishes.' }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="footer-links">
+        <a routerLink="/">{{ 'NAV.HOME' | translate }}</a>
+        <span class="dot"></span>
+        <a href="#">{{ currentLang === 'ar' ? 'الدعم الفني' : 'Support' }}</a>
+      </div>
+    </div>
+  </div>
+</div>

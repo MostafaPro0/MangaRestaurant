@@ -1,0 +1,227 @@
+.onboarding-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    display: flex;
+    flex-direction: column;
+}
+
+.theme-dark .onboarding-page {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f1f5f9;
+}
+
+/* Header */
+.onboarding-header {
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.logo i {
+    color: #10b981;
+    font-size: 1.8rem;
+}
+
+.header-links a {
+    text-decoration: none;
+    font-weight: 600;
+    color: #64748b;
+    transition: color 0.2s;
+}
+
+.header-links a:hover {
+    color: #10b981;
+}
+
+/* Main Container */
+.onboarding-container {
+    flex: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    padding: 2rem;
+    gap: 4rem;
+    align-items: center;
+}
+
+/* Sidebar Info */
+.onboarding-sidebar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.onboarding-info h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(to right, #10b981, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.onboarding-info p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #475569;
+    margin-bottom: 2.5rem;
+}
+
+.theme-dark .onboarding-info p {
+    color: #94a3b8;
+}
+
+.benefit-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    font-weight: 600;
+}
+
+.benefit-item i {
+    background: #d1fae5;
+    color: #059669;
+    padding: 6px;
+    border-radius: 50%;
+    font-size: 0.9rem;
+}
+
+.onboarding-testimonial {
+    margin-top: 4rem;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border-left: 4px solid #10b981;
+}
+
+.theme-dark .onboarding-testimonial {
+    background: rgba(30, 41, 59, 0.5);
+}
+
+.onboarding-testimonial .quote {
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.onboarding-testimonial .author {
+    font-weight: 700;
+    color: #64748b;
+}
+
+/* Form Area */
+.onboarding-form-area {
+    flex: 1;
+    max-width: 600px;
+    width: 100%;
+}
+
+::ng-deep .onboarding-card {
+    border-radius: 1.5rem !important;
+    border: none !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.form-title {
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.form-subtitle {
+    color: #64748b;
+    margin-bottom: 2rem;
+}
+
+.field {
+    margin-bottom: 1.5rem;
+}
+
+.field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #334155;
+}
+
+.theme-dark .field label {
+    color: #cbd5e1;
+}
+
+.divider {
+    position: relative;
+    text-align: center;
+    margin: 1rem 0 2rem;
+}
+
+.divider::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1px;
+    background: #e2e8f0;
+}
+
+.theme-dark .divider::before {
+    background: #334155;
+}
+
+.divider span {
+    position: relative;
+    background: #fff;
+    padding: 0 1rem;
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.theme-dark .divider span {
+    background: #1e293b;
+}
+
+/* RTL */
+.onboarding-page.rtl {
+    direction: rtl;
+    font-family: 'Almarai', sans-serif;
+}
+
+.onboarding-page.rtl .onboarding-testimonial {
+    border-left: none;
+    border-right: 4px solid #10b981;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .onboarding-container {
+        flex-direction: column;
+        padding-top: 1rem;
+    }
+    .onboarding-sidebar {
+        text-align: center;
+        align-items: center;
+    }
+    .onboarding-info h1 {
+        font-size: 2.2rem;
+    }
+    .onboarding-testimonial {
+        display: none;
+    }
+}
