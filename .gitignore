@@ -364,3 +364,7 @@ FodyWeavers.xsd
 
 # User uploaded images
 MangaRestaurant.APIs/wwwroot/Images/profiles/
+/MangaRestaurant.APIs/MangaRestaurant.APIs.csproj.lscache
+/MangaRestaurant.Core/MangaRestaurant.Core.csproj.lscache
+/MangaRestaurant.Repository/MangaRestaurant.Repository.csproj.lscache
+/MangaRestaurant.Service/MangaRestaurant.Service.csproj.lscache
